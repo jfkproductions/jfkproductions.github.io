@@ -1,3 +1,3 @@
 layout: CV
 title: "CV"
-permalink: /URL-PATH
+permalink: /CV/
