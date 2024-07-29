@@ -1,0 +1,566 @@
+<!DOCTYPE html><html><head>
+<title>AI Toolset - Multi-purpose Utilities</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff;
+    margin: 0;
+    padding: 20px;
+}
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+h1 {
+    color: #4a4a4a;
+    text-align: center;
+}
+.tool {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #e6f3ff;
+    border-radius: 5px;
+}
+.tool h2 {
+    color: #2c3e50;
+    margin-top: 0;
+}
+textarea, input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+button:hover {
+    background-color: #2980b9;
+}
+#output {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+#convertedDocMemo {
+    width: 100%;
+    height: 200px;
+    font-family: monospace;
+    white-space: pre;
+    overflow: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    resize: vertical;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1> IT toolbelt</h1>
+    
+    <div class="tool-buttons">
+    <button onclick="showTool('regex')">Regex Creator</button>
+    <button onclick="showTool('base64')">Base64 Encoder/Decoder</button>
+    <button onclick="showTool('imageEncoder')">Image Encoder</button>
+    <button onclick="showTool('urlShortener')">URL Shortener</button>
+    <button onclick="showTool('docConverter')">Document Converter</button>
+    <button onclick="showTool('cronGenerator')">Cron Generator</button>
+    <button onclick="showTool('jwtDecoder')">JWT Decoder</button>
+    <button onclick="showTool('subnetCalculator')">Subnet Calculator</button>
+    <button onclick="showTool('jsonFormatter')">JSON Formatter/Validator</button>
+    <style>
+        .tool-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .tool-buttons button {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 15px;
+            font-size: 14px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        .tool-buttons button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+    </style>
+</div>
+
+    <div id="regex" class="tool" style="display: none;">
+        <h2>Regex Creator</h2>
+        <select id="regexType">
+            <option value="telephone">Telephone</option>
+            <option value="email">Email</option>
+            <option value="numeric">Numeric</option>
+            <option value="camelCase">Camel Case</option>
+            <option value="uppercase">Uppercase</option>
+            <option value="alphanumeric">Alphanumeric</option>
+            <option value="password">Password</option>
+            <option value="url">URL</option>
+            <option value="ipv4">IPv4</option>
+            <option value="date">Date (YYYY-MM-DD)</option>
+            <option value="time">Time (HH:MM)</option>
+            <option value="hexColor">Hex Color</option>
+            <option value="zipCode">ZIP Code</option>
+            <option value="creditCard">Credit Card</option>
+        </select>
+        <input type="text" id="regexInput" placeholder="Enter text to test">
+        <button onclick="createRegex()">Test Regex</button>
+        <div id="regexOutput"></div>
+    </div>
+
+    <div id="base64" class="tool" style="display: none;">
+        <h2>Base64 Encoder/Decoder</h2>
+        <textarea id="stringInput" placeholder="Enter text to encode/decode"></textarea>
+        <button onclick="encodeString()">Encode</button>
+        <button onclick="decodeString()">Decode</button>
+        <div id="stringOutput"></div>
+    </div>
+
+    <div id="imageEncoder" class="tool" style="display: none;">
+        <h2>Image Encoder</h2>
+        <input type="file" id="imageInput" accept="image/*">
+        <button onclick="encodeImage()">Encode Image</button>
+        <textarea id="imageEncodedOutput" readonly=""></textarea>
+        <button onclick="copyToClipboard()">Copy to Clipboard</button>
+    </div>
+
+    <div id="urlShortener" class="tool" style="display: none;">
+        <h2>URL Shortener</h2>
+        <input type="text" id="urlInput" placeholder="Enter long URL">
+        <button onclick="shortenURL()">Shorten URL</button>
+        <div id="urlOutput"></div>
+    </div>
+
+    <div id="docConverter" class="tool" style="display: none;">
+        <h2>Document Converter</h2>
+        <select id="conversionType">
+            <option value="json2xml">JSON to XML</option>
+            <option value="xml2json">XML to JSON</option>
+            <option value="json2yaml">JSON to YAML</option>
+            <option value="yaml2json">YAML to JSON</option>
+        </select>
+        <textarea id="conversionInput" placeholder="Enter input text"></textarea>
+        <button onclick="convertDocument()">Convert</button>
+        <textarea id="convertedDocMemo" readonly=""></textarea>
+    </div>
+
+    <div id="cronGenerator" class="tool" style="display: none;">
+        <h2>Cron Generator</h2>
+        <input type="text" id="minute" placeholder="Minute (0-59)">
+        <input type="text" id="hour" placeholder="Hour (0-23)">
+        <input type="text" id="day" placeholder="Day of month (1-31)">
+        <input type="text" id="month" placeholder="Month (1-12)">
+        <input type="text" id="weekday" placeholder="Day of week (0-6)">
+        <button onclick="generateCron()">Generate Cron</button>
+        <div id="cronOutput"></div>
+        <div id="cronExplanation"></div>
+    </div>
+
+    <div id="jwtDecoder" class="tool" style="display: none;">
+        <h2>JWT Decoder</h2>
+        <textarea id="jwtInput" placeholder="Enter JWT token"></textarea>
+        <select id="algorithm-select">
+            <option value="HS256">HS256</option>
+            <option value="HS384">HS384</option>
+            <option value="HS512">HS512</option>
+            <option value="RS256">RS256</option>
+            <option value="RS384">RS384</option>
+            <option value="RS512">RS512</option>
+        </select>
+        <button onclick="decodeJWT()">Decode JWT</button>
+        <div id="jwtOutput"></div>
+    </div>
+
+    <div id="subnetCalculator" class="tool" style="display: none;">
+        <h2>Subnet Calculator</h2>
+        <input type="text" id="ipInput" placeholder="Enter IP address (e.g., 192.168.1.1)">
+        <select id="subnetMaskSelect">
+            <option value="24">/24 (255.255.255.0)</option>
+            <option value="25">/25 (255.255.255.128)</option>
+            <option value="26">/26 (255.255.255.192)</option>
+            <option value="27">/27 (255.255.255.224)</option>
+            <option value="28">/28 (255.255.255.240)</option>
+            <option value="29">/29 (255.255.255.248)</option>
+            <option value="30">/30 (255.255.255.252)</option>
+        </select>
+        <button onclick="calculateSubnet()">Calculate</button>
+        <div id="subnetOutput"></div>
+    </div>
+
+    <div id="jsonFormatter" class="tool" style="display: none;">
+        <h2>JSON Formatter/Validator</h2>
+        <textarea id="jsonInput" placeholder="Enter JSON here" rows="10" style="width: 100%; margin-bottom: 10px;"></textarea>
+        <button onclick="formatJSON()">Format JSON</button>
+        <button onclick="validateJSON()">Validate JSON</button>
+        <div id="jsonOutput" style="margin-top: 10px; white-space: pre-wrap; font-family: monospace;"></div>
+    </div>
+
+    <style>
+        /* Existing styles remain unchanged */
+    </style>
+
+    <script>
+        function showTool(toolId) {
+            // Hide all tools
+            document.querySelectorAll('.tool').forEach(tool => {
+                tool.style.display = 'none';
+            });
+            // Show the selected tool
+            document.getElementById(toolId).style.display = 'block';
+        }
+
+        // Existing JavaScript functions remain unchanged
+    </script>
+</div>
+
+<script>
+function createRegex() {
+    const regexType = document.getElementById('regexType').value;
+    const input = document.getElementById('regexInput').value;
+    let regex, explanation;
+
+    switch(regexType) {
+        case 'telephone':
+            regex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
+            explanation = 'Matches most common telephone number formats';
+            break;
+        case 'email':
+            regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            explanation = 'Matches standard email address format';
+            break;
+        case 'numeric':
+            regex = /^\d+$/;
+            explanation = 'Matches one or more digits';
+            break;
+        case 'camelCase':
+            regex = /^[a-z][a-zA-Z0-9]*$/;
+            explanation = 'Matches camelCase format (first letter lowercase, no spaces)';
+            break;
+        case 'uppercase':
+            regex = /^[A-Z]+$/;
+            explanation = 'Matches one or more uppercase letters';
+            break;
+        case 'alphanumeric':
+            regex = /^[a-zA-Z0-9]+$/;
+            explanation = 'Matches one or more alphanumeric characters';
+            break;
+        case 'password':
+            regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            explanation = 'Matches password with at least 8 characters, one uppercase, one lowercase, one number and one special character';
+            break;
+        case 'url':
+            regex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+            explanation = 'Matches most common URL formats';
+            break;
+        case 'ipv4':
+            regex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+            explanation = 'Matches IPv4 address format';
+            break;
+        case 'date':
+            regex = /^\d{4}-\d{2}-\d{2}$/;
+            explanation = 'Matches date in YYYY-MM-DD format';
+            break;
+        case 'time':
+            regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
+            explanation = 'Matches time in HH:MM format (24-hour)';
+            break;
+        case 'hexColor':
+            regex = /^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/;
+            explanation = 'Matches hexadecimal color code (with or without #)';
+            break;
+        case 'zipCode':
+            regex = /^\d{5}(-\d{4})?$/;
+            explanation = 'Matches US ZIP code (5 digits, optional 4 digit extension)';
+            break;
+        case 'creditCard':
+            regex = /^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|6(?:011|5[0-9]{2})[0-9]{12}|(?:2131|1800|35\d{3})\d{11})$/;
+            explanation = 'Matches most common credit card number formats';
+            break;
+        default:
+            regex = /./;
+            explanation = 'Matches any character';
+    }
+
+    const isMatch = regex.test(input);
+    const result = isMatch ? 'Match' : 'No match';
+    document.getElementById('regexOutput').innerHTML = `
+        <p><strong>Regex:</strong> ${regex}</p>
+        <p><strong>Explanation:</strong> ${explanation}</p>
+        <p><strong>Test result:</strong> ${result}</p>
+    `;
+}
+
+function encodeString() {
+    const input = document.getElementById('stringInput').value;
+    const encoded = btoa(input);
+    document.getElementById('stringOutput').textContent = encoded;
+}
+
+function decodeString() {
+    const input = document.getElementById('stringInput').value;
+    try {
+        const decoded = atob(input);
+        document.getElementById('stringOutput').textContent = decoded;
+    } catch (error) {
+        document.getElementById('stringOutput').textContent = 'Error: Invalid Base64 string';
+    }
+}
+
+function encodeImage() {
+    const fileInput = document.getElementById('imageInput');
+    const file = fileInput.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const base64String = event.target.result;
+            document.getElementById('imageEncodedOutput').value = base64String;
+        };
+        reader.readAsDataURL(file);
+    } else {
+        alert('Please select an image file.');
+    }
+}
+
+function copyToClipboard() {
+    const encodedOutput = document.getElementById('imageEncodedOutput');
+    encodedOutput.select();
+    document.execCommand('copy');
+    alert('Encoded image data copied to clipboard!');
+}
+
+function shortenURL() {
+    const longUrl = document.getElementById('urlInput').value;
+    // This is a mock function. In a real application, you would send a request to a URL shortening service.
+    const shortUrl = 'https://short.url/' + Math.random().toString(36).substr(2, 5);
+    document.getElementById('urlOutput').innerHTML = `
+        <p>Short URL: <a href="${shortUrl}" target="_blank">${shortUrl}</a></p>
+    `;
+}
+
+function convertDocument() {
+    const conversionType = document.getElementById('conversionType').value;
+    const input = document.getElementById('conversionInput').value;
+    let output = '';
+
+    try {
+        switch (conversionType) {
+            case 'json2xml':
+                output = json2xml(JSON.parse(input));
+                break;
+            case 'xml2json':
+                output = JSON.stringify(xml2json(input), null, 2);
+                break;
+            case 'json2yaml':
+                output = jsyaml.dump(JSON.parse(input));
+                break;
+            case 'yaml2json':
+                output = JSON.stringify(jsyaml.load(input), null, 2);
+                break;
+        }
+        document.getElementById('convertedDocMemo').value = output;
+    } catch (error) {
+        document.getElementById('convertedDocMemo').value = 'Error: ' + error.message;
+    }
+}
+
+function json2xml(json) {
+    let xml = '';
+    for (let prop in json) {
+        xml += json[prop] instanceof Array ? '' : "<" + prop + ">";
+        if (json[prop] instanceof Array) {
+            for (let array in json[prop]) {
+                xml += "<" + prop + ">";
+                xml += json2xml(json[prop][array]);
+                xml += "</" + prop + ">";
+            }
+        } else if (typeof json[prop] == "object") {
+            xml += json2xml(json[prop]);
+        } else {
+            xml += json[prop];
+        }
+        xml += json[prop] instanceof Array ? '' : "</" + prop + ">";
+    }
+    return xml;
+}
+
+function xml2json(xml) {
+    let obj = {};
+    if (xml.nodeType == 1) {
+        if (xml.attributes.length > 0) {
+            obj["@attributes"] = {};
+            for (let j = 0; j < xml.attributes.length; j++) {
+                let attribute = xml.attributes.item(j);
+                obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+            }
+        }
+    } else if (xml.nodeType == 3) {
+        obj = xml.nodeValue;
+    }
+    if (xml.hasChildNodes()) {
+        for (let i = 0; i < xml.childNodes.length; i++) {
+            let item = xml.childNodes.item(i);
+            let nodeName = item.nodeName;
+            if (typeof(obj[nodeName]) == "undefined") {
+                obj[nodeName] = xml2json(item);
+            } else {
+                if (typeof(obj[nodeName].push) == "undefined") {
+                    let old = obj[nodeName];
+                    obj[nodeName] = [];
+                    obj[nodeName].push(old);
+                }
+                obj[nodeName].push(xml2json(item));
+            }
+        }
+    }
+    return obj;
+}
+
+function generateCron() {
+    const minute = document.getElementById('minute').value || '*';
+    const hour = document.getElementById('hour').value || '*';
+    const day = document.getElementById('day').value || '*';
+    const month = document.getElementById('month').value || '*';
+    const weekday = document.getElementById('weekday').value || '*';
+
+    const cronExpression = `${minute} ${hour} ${day} ${month} ${weekday}`;
+    document.getElementById('cronOutput').textContent = cronExpression;
+
+    let explanation = 'This cron job will run ';
+    if (minute !== '*') explanation += `at minute ${minute} `;
+    if (hour !== '*') explanation += `at hour ${hour} `;
+    if (day !== '*') explanation += `on day ${day} of the month `;
+    if (month !== '*') explanation += `in month ${month} `;
+    if (weekday !== '*') explanation += `on weekday ${weekday} `;
+    explanation += 'of every applicable date.';
+
+    document.getElementById('cronExplanation').textContent = explanation;
+}
+
+function decodeJWT() {
+    const jwtToken = document.getElementById('jwtInput').value;
+    const algorithm = document.getElementById('algorithm-select').value;
+    try {
+        const [headerBase64, payloadBase64, signature] = jwtToken.split('.');
+        const header = JSON.parse(atob(headerBase64));
+        const payload = JSON.parse(atob(payloadBase64));
+        
+        let output = `
+            <h3>Header:</h3>
+            <pre>${JSON.stringify(header, null, 2)}</pre>
+            <h3>Payload:</h3>
+            <pre>${JSON.stringify(payload, null, 2)}</pre>
+            <h3>Signature:</h3>
+            <pre>${signature}</pre>
+        `;
+        
+        // Basic validation
+        if (header.alg !== algorithm) {
+            output += '<p style="color: red;">Warning: Algorithm mismatch!</p>';
+        }
+        
+        if (payload.exp && payload.exp < Date.now() / 1000) {
+            output += '<p style="color: red;">Warning: Token has expired!</p>';
+        }
+
+        document.getElementById('jwtOutput').innerHTML = output;
+    } catch (error) {
+        document.getElementById('jwtOutput').innerHTML = '<p style="color: red;">Error: Invalid JWT token</p>';
+    }
+}
+
+function calculateSubnet() {
+    const ipAddress = document.getElementById('ipInput').value;
+    const subnetMask = parseInt(document.getElementById('subnetMaskSelect').value);
+
+    // Basic IP address validation
+    const ipRegex = /^(\d{1,3}\.){3}\d{1,3}$/;
+    if (!ipRegex.test(ipAddress)) {
+        document.getElementById('subnetOutput').innerHTML = '<p style="color: red;">Error: Invalid IP address format</p>';
+        return;
+    }
+
+    // Convert IP to binary
+    const ipBinary = ipAddress.split('.').map(octet => parseInt(octet).toString(2).padStart(8, '0')).join('');
+
+    // Calculate network and broadcast addresses
+    const networkBinary = ipBinary.substr(0, subnetMask) + '0'.repeat(32 - subnetMask);
+    const broadcastBinary = ipBinary.substr(0, subnetMask) + '1'.repeat(32 - subnetMask);
+
+    // Convert back to decimal
+    const networkAddress = binaryToIp(networkBinary);
+    const broadcastAddress = binaryToIp(broadcastBinary);
+
+    // Calculate total hosts
+    const totalHosts = Math.pow(2, 32 - subnetMask) - 2;
+
+    const output = `
+        <p><strong>Network Address:</strong> ${networkAddress}</p>
+        <p><strong>Broadcast Address:</strong> ${broadcastAddress}</p>
+        <p><strong>Total Usable Hosts:</strong> ${totalHosts}</p>
+        <p><strong>First Usable Host:</strong> ${incrementIp(networkAddress)}</p>
+        <p><strong>Last Usable Host:</strong> ${decrementIp(broadcastAddress)}</p>
+    `;
+
+    document.getElementById('subnetOutput').innerHTML = output;
+}
+
+function binaryToIp(binary) {
+    return binary.match(/.{8}/g).map(octet => parseInt(octet, 2)).join('.');
+}
+
+function incrementIp(ip) {
+    const parts = ip.split('.').map(Number);
+    parts[3]++;
+    return parts.join('.');
+}
+
+function decrementIp(ip) {
+    const parts = ip.split('.').map(Number);
+    parts[3]--;
+    return parts.join('.');
+}
+
+function formatJSON() {
+    const jsonInput = document.getElementById('jsonInput').value;
+    try {
+        const parsedJSON = JSON.parse(jsonInput);
+        const formattedJSON = JSON.stringify(parsedJSON, null, 2);
+        document.getElementById('jsonOutput').textContent = formattedJSON;
+    } catch (error) {
+        document.getElementById('jsonOutput').textContent = 'Error: Invalid JSON';
+    }
+}
+
+function validateJSON() {
+    const jsonInput = document.getElementById('jsonInput').value;
+    try {
+        JSON.parse(jsonInput);
+        document.getElementById('jsonOutput').textContent = 'Valid JSON';
+    } catch (error) {
+        document.getElementById('jsonOutput').textContent = 'Invalid JSON: ' + error.message;
+    }
+}
+</script>
+</body></html>

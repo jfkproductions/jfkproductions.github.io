@@ -1,0 +1,171 @@
+<html w-tid="0"><head w-tid="1"><base href w-tid="2"/>
+
+
+<title w-tid="3">C4 Diagrammer - Generate C4 Architecture Diagrams</title>
+<style w-tid="4">
+  body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  h1, h2 {
+    color: #2c3e50;
+    text-align: center;
+  }
+  #input-form {
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  textarea {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  button {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #2980b9;
+  }
+  #output {
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: #fff;
+  }
+  .loading {
+    text-align: center;
+    font-style: italic;
+    color: #666;
+  }
+  #syntax-guide {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #e8f4f8;
+    border-radius: 5px;
+  }
+  #syntax-guide h3 {
+    margin-top: 0;
+  }
+  pre {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 4px;
+    overflow-x: auto;
+  }
+</style>
+</head>
+<body w-tid="5">
+  <h1 w-tid="6">C4 Diagrammer</h1>
+  
+  <div id="input-form" w-tid="7">
+    <h2 w-tid="8">System Description Input</h2>
+    <p w-tid="9">Welcome to the C4 Diagrammer! This tool helps you create C4 architecture diagrams based on your system description. Follow the syntax guide below to describe your system architecture.</p>
+    <form id="diagram-form" w-tid="10">
+      <textarea id="system-description" placeholder="Describe your system architecture here. Use keywords like 'Person:', 'System:', 'Container:', 'Component:', and 'Rel:' to define your structure. Each entity should be on a new line. For relationships, use the format 'Rel: EntityA -> EntityB: Description'." rows="10" cols="50" w-tid="11"></textarea>
+      <button type="submit" w-tid="12">Generate C4 Diagram</button>
+    </form>
+    <div id="syntax-guide" w-tid="13">
+      <h3 w-tid="14">Syntax Guide:</h3>
+      <pre w-tid="15">
+Example input:
+
+Person: Customer
+System: E-commerce Platform
+Container: Web Application
+Container: Mobile App
+Container: Database
+Component: Product Catalog
+Component: Shopping Cart
+Component: Payment Gateway
+Rel: Customer -> E-commerce Platform: Browses and purchases products
+Rel: Web Application -> Database: Stores and retrieves data
+Rel: Mobile App -> Database: Stores and retrieves data
+Rel: Web Application -> Product Catalog: Displays products
+Rel: Web Application -> Shopping Cart: Manages items
+Rel: Web Application -> Payment Gateway: Processes payments
+Rel: Mobile App -> Product Catalog: Displays products
+Rel: Mobile App -> Shopping Cart: Manages items
+Rel: Mobile App -> Payment Gateway: Processes payments
+
+This input will generate a valid C4 diagram with the correct syntax for Mermaid version 8.11.0.</pre>
+    </div>
+  </div>
+
+  <div id="output" w-tid="16">
+    <h2 w-tid="17">Generated C4 Diagram:</h2>
+    <div id="diagram-output" w-tid="18"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.11.0/mermaid.min.js" w-tid="19"></script>
+  <script w-tid="20">
+    mermaid.initialize({ startOnLoad: true, theme: 'default' });
+
+    document.getElementById('diagram-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const description = document.getElementById('system-description').value;
+      const outputDiv = document.getElementById('diagram-output');
+      
+      outputDiv.innerHTML = '<p class="loading">Generating diagram...</p>';
+      
+      // Generate C4 diagram
+      const diagramCode = generateC4Diagram(description);
+      outputDiv.innerHTML = `<div class="mermaid">${diagramCode}</div>`;
+      mermaid.init(undefined, document.querySelector(".mermaid"));
+    });
+
+    function generateC4Diagram(description) {
+      const lines = description.split('\n');
+      let diagramCode = 'graph TB\n';
+      let entityCounter = 0;
+      const entities = {};
+
+      lines.forEach(line => {
+        const trimmedLine = line.trim();
+        if (trimmedLine.startsWith('Person:')) {
+          const name = trimmedLine.substring(7).trim();
+          const id = `person${++entityCounter}`;
+          entities[name] = id;
+          diagramCode += `  ${id}[${name}]\n`;
+        } else if (trimmedLine.startsWith('System:')) {
+          const name = trimmedLine.substring(7).trim();
+          const id = `system${++entityCounter}`;
+          entities[name] = id;
+          diagramCode += `  ${id}((${name}))\n`;
+        } else if (trimmedLine.startsWith('Container:')) {
+          const name = trimmedLine.substring(10).trim();
+          const id = `container${++entityCounter}`;
+          entities[name] = id;
+          diagramCode += `  ${id}[${name}]\n`;
+        } else if (trimmedLine.startsWith('Component:')) {
+          const name = trimmedLine.substring(10).trim();
+          const id = `component${++entityCounter}`;
+          entities[name] = id;
+          diagramCode += `  ${id}[${name}]\n`;
+        } else if (trimmedLine.startsWith('Rel:')) {
+          const parts = trimmedLine.substring(4).split(':');
+          const [fromTo, label] = parts;
+          const [from, to] = fromTo.split('->').map(s => s.trim());
+          diagramCode += `  ${entities[from]} -->|${label.trim()}| ${entities[to]}\n`;
+        }
+      });
+
+      return diagramCode;
+    }
+  </script>
+
+  
+</body></html>

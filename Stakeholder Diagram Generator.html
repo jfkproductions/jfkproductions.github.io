@@ -1,0 +1,525 @@
+<html><head><base href="/">
+<title>Stakeholder Diagram Generator</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.6/js/jsplumb.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+  #input { width: 100%; height: 200px; }
+  #diagram { 
+    width: 100vw; 
+    height: 100vh; 
+    border: 1px solid #ccc; 
+    position: relative; 
+    overflow: auto;
+  }
+  .node {
+    padding: 10px;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    width: 180px;
+    position: absolute;
+    background-color: #f0f0f0;
+    font-size: 14px;
+    line-height: 1.4;
+    resize: both;
+    overflow: auto;
+    z-index: 10;
+  }
+  .company { 
+    background-color: #e0f0ff; 
+    font-weight: bold;
+  }
+  .stakeholder { 
+    background-color: #f0ffe0; 
+    margin-bottom: 5px;
+    padding-left: 30px;
+    background-image: url('https://i.pngimg.me/thumb/f/350/comdlpng6957531.jpg');
+    background-repeat: no-repeat;
+    background-position: 5px 5px;
+    background-size: 25px 25px;
+  }
+  button { margin-top: 10px; }
+  .connection-label {
+    background-color: white;
+    padding: 2px 4px;
+    border: 1px solid #999;
+    border-radius: 3px;
+    font-size: 12px;
+  }
+  .company-container {
+    position: absolute;
+    border: 2px solid #007bff;
+    border-radius: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    resize: both;
+    overflow: auto;
+    z-index: 5;
+  }
+  .company-icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 50px;
+    height: 50px;
+    background-image: url('https://cdn-icons-png.flaticon.com/512/217/217450.png');
+    background-size: cover;
+    z-index: 1;
+  }
+  .highlighted {
+    box-shadow: 0 0 10px 5px #ffff00;
+    z-index: 1000;
+  }
+  .company-menu {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    z-index: 1000;
+  }
+  .company-menu button {
+    display: block;
+    width: 100%;
+    padding: 5px;
+    margin: 2px 0;
+    background-color: #f0f0f0;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+  }
+  .company-menu button:hover {
+    background-color: #e0e0e0;
+  }
+</style>
+</head>
+<body>
+<h1>Stakeholder Diagram Generator</h1>
+<textarea id="input" placeholder="Enter your diagram structure here...">Company - name - TechHub - Cel : 0123456 - email: techhub@t.com
+Company - name - InnoWorks -Cel : 0234567 - email: innoworks@i.com
+Company - name - DevSphere -Cel : 0345678 - email: devsphere@d.com
+Company - name - CodeStream -Cel : 0456789 - email: codestream@c.com
+Company - name - SysPro -Cel : 0567890 - email: syspro@s.com
+Company - name - CloudNet -Cel : 0678901 - email: cloudnet@c.com
+Connection company TechHub-InnoWorks {partners in AI development}
+Connection company InnoWorks-DevSphere {collaborates on cloud solutions}
+Connection company DevSphere-CodeStream {joint venture in IoT}
+Connection company CodeStream-SysPro {strategic alliance in cybersecurity}
+Connection company SysPro-CloudNet {data management collaboration}
+Connection company CloudNet-TechHub {circular economy initiative}
+TechHub - Stakeholder - Name Alice M - Role : manager - Cel : 0123456 - email: alice.m@t.com
+TechHub - Stakeholder - Name Bob N - Role : developer- Cel : 0123456 - email: bob.n@t.com
+TechHub - Stakeholder - Name Charlie O - Role : snr developer
+InnoWorks - Stakeholder - Name Daniel P - Role : manager - Cel : 0234567 - email: daniel.p@i.com
+InnoWorks - Stakeholder - Name Eva Q - Role : developer- Cel : 0234567 - email: eva.q@i.com
+InnoWorks - Stakeholder - Name Frank R - Role : snr developer
+DevSphere - Stakeholder - Name Grace S - Role : manager - Cel : 0345678 - email: grace.s@d.com
+DevSphere - Stakeholder - Name Henry T - Role : developer- Cel : 0345678 - email: henry.t@d.com
+DevSphere - Stakeholder - Name Isabel U - Role : snr developer
+CodeStream - Stakeholder - Name Jack V - Role : manager - Cel : 0456789 - email: jack.v@c.com
+CodeStream - Stakeholder - Name Karen W - Role : developer- Cel : 0456789 - email: karen.w@c.com
+CodeStream - Stakeholder - Name Leo X - Role : snr developer
+SysPro - Stakeholder - Name Mona Y - Role : manager - Cel : 0567890 - email: mona.y@s.com
+SysPro - Stakeholder - Name Nina Z - Role : developer- Cel : 0567890 - email: nina.z@s.com
+SysPro - Stakeholder - Name Oscar A - Role : snr developer
+CloudNet - Stakeholder - Name Paul B - Role : manager - Cel : 0678901 - email: paul.b@c.com
+CloudNet - Stakeholder - Name Quincy C - Role : developer- Cel : 0678901 - email: quincy.c@c.com
+CloudNet - Stakeholder - Name Rita D - Role : snr developer
+Connection stakeholder Bob N-Alice M {reports to Alice M}
+Connection stakeholder Charlie O-Bob N {reports to Bob N}
+Connection stakeholder Eva Q-Daniel P {reports to Daniel P}
+Connection stakeholder Frank R-Eva Q {reports to Eva Q}
+Connection stakeholder Henry T-Grace S {reports to Grace S}
+Connection stakeholder Isabel U-Henry T {reports to Henry T}
+Connection stakeholder Karen W-Jack V {reports to Jack V}
+Connection stakeholder Leo X-Karen W {reports to Karen W}
+Connection stakeholder Nina Z-Mona Y {reports to Mona Y}
+Connection stakeholder Oscar A-Nina Z {reports to Nina Z}
+Connection stakeholder Quincy C-Paul B {reports to Paul B}
+Connection stakeholder Rita D-Quincy C {reports to Quincy C}
+</textarea>
+<button onclick="generateDiagram()" style="background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 8px; transition: background-color 0.3s;">Generate Diagram</button>
+<button onclick="exportToPDF()" style="background-color: #008CBA; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 8px; transition: background-color 0.3s;">Export to PDF</button>
+<button onclick="exportToImage()" style="background-color: #f44336; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 8px; transition: background-color 0.3s;">Export to Image</button>
+<select id="companiesPerRow" onchange="updateCompaniesPerRow()" style="padding: 10px; font-size: 16px; margin: 4px 2px;">
+  <option value="1">1 Company per Row</option>
+  <option value="2">2 Companies per Row</option>
+  <option value="3" selected="">3 Companies per Row</option>
+  <option value="4">4 Companies per Row</option>
+  <option value="5">5 Companies per Row</option>
+  <option value="6">6 Companies per Row</option>
+</select>
+<div id="diagram" class="jtk-surface" style="width: 100vw; height: 100vh; background-color: #f0f4f8; overflow: auto; box-shadow: inset 0 0 20px rgba(0,0,0,0.1); border-radius: 10px; transition: all 0.3s ease;">
+</div>
+
+<script>
+let jsPlumbInstance;
+let companiesPerRow = 3;
+
+function updateCompaniesPerRow() {
+  companiesPerRow = parseInt(document.getElementById('companiesPerRow').value);
+  generateDiagram();
+}
+
+function generateDiagram() {
+  if (jsPlumbInstance) {
+    jsPlumbInstance.reset();
+  }
+  jsPlumb.ready(function() {
+    jsPlumbInstance = jsPlumb.getInstance({
+      Connector: ["Bezier", { curviness: 50 }],
+      DragOptions: { cursor: "pointer", zIndex: 2000 },
+      PaintStyle: { stroke: "#999", strokeWidth: 2 },
+      EndpointStyle: { radius: 5, fill: "#999" },
+      HoverPaintStyle: { stroke: "#ff0000" },
+      EndpointHoverStyle: { fill: "#ff0000" },
+      Container: "diagram"
+    });
+    
+    const diagramContainer = document.getElementById('diagram');
+    diagramContainer.innerHTML = '';
+    
+    const input = document.getElementById('input').value;
+    const lines = input.split('\n');
+    
+    const companies = {};
+    const stakeholders = {};
+    const connections = [];
+    
+    lines.forEach((line, index) => {
+      if (line.trim().startsWith('Company')) {
+        const [, name, cel, email] = line.match(/Company - name - (.+?)(?:\s*-\s*Cel\s*:\s*(.+?))?(?:\s*-\s*email\s*:\s*(.+))?$/);
+        companies[name] = { stakeholders: [], cel: cel, email: email };
+      } else if (line.trim().startsWith('Connection company')) {
+        const [, from, to, label] = line.match(/Connection company (.+)-(.+)(?:\s*{(.+)})?/);
+        connections.push({ from, to, type: 'company', label: label || `${from} reports to ${to}` });
+      } else if (line.trim().includes('Stakeholder')) {
+        const [company, , name, role, cel, email] = line.split('-').map(s => s.trim());
+        const [, roleName] = role.split(':');
+        const [, celNumber] = cel ? cel.split(':') : [null, null];
+        const [, emailAddress] = email ? email.split(':') : [null, null];
+        companies[company].stakeholders.push({ 
+          name, 
+          role: roleName.trim(), 
+          cel: celNumber ? celNumber.trim() : null,
+          email: emailAddress ? emailAddress.trim() : null
+        });
+      } else if (line.trim().startsWith('Connection stakeholder')) {
+        const [, fromTo, label] = line.match(/Connection stakeholder (.+?)(?:\s*{(.+)})?$/);
+        const [from, to] = fromTo.split('-').map(s => s.trim());
+        connections.push({ from, to, type: 'stakeholder', label: label ? label.trim() : '' });
+      }
+    });
+    
+    // Calculate layout
+    const companyCount = Object.keys(companies).length;
+    const diagramWidth = Math.max(window.innerWidth, companyCount * 400);
+    const diagramHeight = Math.max(window.innerHeight, 800);
+    const companyWidth = 350;
+    const companyHeight = 500;
+    const stakeholderWidth = 180;
+    const stakeholderHeight = 120;
+    const horizontalSpacing = 50;
+    const verticalSpacing = 50;
+    
+    // Update diagram container size
+    diagramContainer.style.width = `${diagramWidth}px`;
+    diagramContainer.style.height = `${diagramHeight}px`;
+    
+    // Position companies
+    let currentX = horizontalSpacing;
+    let currentY = verticalSpacing;
+    let maxHeightInRow = 0;
+    let companiesInRow = 0;
+    
+    Object.keys(companies).forEach((companyName, index) => {
+      const company = companies[companyName];
+      
+      if (companiesInRow === companiesPerRow) {
+        currentX = horizontalSpacing;
+        currentY += maxHeightInRow + verticalSpacing;
+        maxHeightInRow = 0;
+        companiesInRow = 0;
+      }
+      
+      company.x = currentX;
+      company.y = currentY;
+      
+      // Create company container
+      const companyContainer = document.createElement('div');
+      companyContainer.className = 'company-container';
+      companyContainer.style.left = `${company.x}px`;
+      companyContainer.style.top = `${company.y}px`;
+      companyContainer.style.width = `${companyWidth}px`;
+      companyContainer.style.height = `${companyHeight}px`;
+      diagramContainer.appendChild(companyContainer);
+      
+      // Add company icon
+      const companyIcon = document.createElement('div');
+      companyIcon.className = 'company-icon';
+      companyContainer.appendChild(companyIcon);
+      
+      // Make company container draggable and resizable
+      makeElementDraggableAndResizable(companyContainer);
+      
+      // Create company node
+      let companyInfo = companyName;
+      if (company.cel) companyInfo += `<br>Cel: ${company.cel}`;
+      if (company.email) companyInfo += `<br>Email: ${company.email}`;
+      createNode(companyInfo, 0, 0, 'company', companyContainer);
+      
+      // Position stakeholders within the company container
+      const stakeholderCount = company.stakeholders.length;
+      const stakeholderSpacing = 5;
+      const availableHeight = companyHeight - 120 - stakeholderHeight;
+      const totalSpacingHeight = (stakeholderCount - 1) * stakeholderSpacing;
+      const remainingHeight = availableHeight - totalSpacingHeight;
+      const stakeholderVerticalPadding = remainingHeight / (stakeholderCount + 1);
+      
+      company.stakeholders.forEach((stakeholder, stakeholderIndex) => {
+        const x = companyWidth/2 - stakeholderWidth/2;
+        const y = 120 + stakeholderVerticalPadding * (stakeholderIndex + 1) + stakeholderIndex * (stakeholderHeight + stakeholderSpacing);
+        stakeholders[stakeholder.name] = { 
+          company: companyName, 
+          role: stakeholder.role,
+          cel: stakeholder.cel,
+          email: stakeholder.email,
+          x: x, 
+          y: y
+        };
+        let stakeholderInfo = `${stakeholder.name}<br>${stakeholder.role}`;
+        if (stakeholder.cel) stakeholderInfo += `<br>Cel: ${stakeholder.cel}`;
+        if (stakeholder.email) stakeholderInfo += `<br>Email: ${stakeholder.email}`;
+        createNode(stakeholderInfo, x, y, 'stakeholder', companyContainer);
+      });
+      
+      currentX += companyWidth + horizontalSpacing;
+      maxHeightInRow = Math.max(maxHeightInRow, companyHeight);
+      companiesInRow++;
+    });
+    
+    // Create connections using jsPlumb
+    connections.forEach(conn => {
+      let sourceId, targetId;
+      if (conn.type === 'company') {
+        sourceId = conn.from;
+        targetId = conn.to;
+      } else {
+        sourceId = `${conn.from}<br>${stakeholders[conn.from].role}`;
+        targetId = `${conn.to}<br>${stakeholders[conn.to].role}`;
+        if (stakeholders[conn.from].cel) sourceId += `<br>Cel: ${stakeholders[conn.from].cel}`;
+        if (stakeholders[conn.from].email) sourceId += `<br>Email: ${stakeholders[conn.from].email}`;
+        if (stakeholders[conn.to].cel) targetId += `<br>Cel: ${stakeholders[conn.to].cel}`;
+        if (stakeholders[conn.to].email) targetId += `<br>Email: ${stakeholders[conn.to].email}`;
+      }
+      jsPlumbInstance.connect({
+        source: sourceId,
+        target: targetId,
+        anchor: ['AutoDefault'],
+        connector: ['Bezier', { curviness: 50 }],
+        endpoint: 'Dot',
+        endpointStyle: { radius: 5 },
+        paintStyle: { stroke: '#999', strokeWidth: 2 },
+        overlays: [
+          ['Arrow', { width: 10, length: 10, location: 1 }],
+          ['Label', { label: conn.label || '', cssClass: 'connection-label' }]
+        ]
+      });
+    });
+
+    // Add click event listeners to highlight connections
+    document.querySelectorAll('.node').forEach(node => {
+      node.addEventListener('click', function() {
+        highlightConnections(this.id);
+      });
+    });
+
+    // Add right-click event listeners for company menu
+    document.querySelectorAll('.company-container').forEach(container => {
+      container.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        showCompanyMenu(e, container);
+      });
+    });
+
+    jsPlumbInstance.repaintEverything();
+  });
+}
+
+function createNode(text, x, y, className, parent) {
+  const node = document.createElement('div');
+  node.className = `node ${className}`;
+  node.id = text;
+  node.innerHTML = text;
+  node.style.left = `${x}px`;
+  node.style.top = `${y}px`;
+  parent.appendChild(node);
+  
+  // Make node draggable and resizable
+  makeElementDraggableAndResizable(node);
+  jsPlumbInstance.draggable(node, {
+    containment: parent,
+    drag: function() {
+      jsPlumbInstance.repaintEverything();
+    }
+  });
+}
+
+function makeElementDraggableAndResizable(element) {
+  let isResizing = false;
+
+  const resizer = document.createElement('div');
+  resizer.style.width = '10px';
+  resizer.style.height = '10px';
+  resizer.style.background = 'blue';
+  resizer.style.position = 'absolute';
+  resizer.style.right = '0';
+  resizer.style.bottom = '0';
+  resizer.style.cursor = 'se-resize';
+  element.appendChild(resizer);
+
+  resizer.addEventListener('mousedown', initResize, false);
+
+  function initResize(e) {
+    isResizing = true;
+    window.addEventListener('mousemove', resize, false);
+    window.addEventListener('mouseup', stopResize, false);
+  }
+
+  function resize(e) {
+    if (isResizing) {
+      const newWidth = e.clientX - element.offsetLeft;
+      const newHeight = e.clientY - element.offsetTop;
+      element.style.width = newWidth + 'px';
+      element.style.height = newHeight + 'px';
+      jsPlumbInstance.repaintEverything();
+    }
+  }
+
+  function stopResize(e) {
+    isResizing = false;
+    window.removeEventListener('mousemove', resize, false);
+    window.removeEventListener('mouseup', stopResize, false);
+  }
+}
+
+function highlightConnections(nodeId) {
+  // Remove existing highlights
+  document.querySelectorAll('.highlighted').forEach(el => el.classList.remove('highlighted'));
+  jsPlumbInstance.select().setPaintStyle({ stroke: '#999', strokeWidth: 2 });
+  
+  // Highlight the clicked node
+  const clickedNode = document.getElementById(nodeId);
+  clickedNode.classList.add('highlighted');
+  
+  // Highlight connected nodes and connections
+  jsPlumbInstance.getConnections().forEach(connection => {
+    if (connection.sourceId === nodeId || connection.targetId === nodeId) {
+      const otherNodeId = connection.sourceId === nodeId ? connection.targetId : connection.sourceId;
+      const otherNode = document.getElementById(otherNodeId);
+      otherNode.classList.add('highlighted');
+      
+      // Highlight the connection
+      connection.setPaintStyle({ stroke: '#ff0000', strokeWidth: 3 });
+    }
+  });
+}
+
+function showCompanyMenu(e, container) {
+  const menu = document.createElement('div');
+  menu.className = 'company-menu';
+  menu.style.left = `${e.pageX}px`;
+  menu.style.top = `${e.pageY}px`;
+
+  const addStakeholderButton = document.createElement('button');
+  addStakeholderButton.textContent = 'Add Stakeholder';
+  addStakeholderButton.onclick = () => addStakeholder(container);
+
+  const editCompanyButton = document.createElement('button');
+  editCompanyButton.textContent = 'Edit Company';
+  editCompanyButton.onclick = () => editCompany(container);
+
+  menu.appendChild(addStakeholderButton);
+  menu.appendChild(editCompanyButton);
+
+  document.body.appendChild(menu);
+
+  // Remove menu when clicking outside
+  document.addEventListener('click', function removeMenu() {
+    document.body.removeChild(menu);
+    document.removeEventListener('click', removeMenu);
+  });
+}
+
+function addStakeholder(container) {
+  const name = prompt('Enter stakeholder name:');
+  const role = prompt('Enter stakeholder role:');
+  const cel = prompt('Enter stakeholder cel (optional):');
+  const email = prompt('Enter stakeholder email (optional):');
+
+  if (name && role) {
+    let stakeholderInfo = `${name}<br>${role}`;
+    if (cel) stakeholderInfo += `<br>Cel: ${cel}`;
+    if (email) stakeholderInfo += `<br>Email: ${email}`;
+
+    const x = 85; // Adjust as needed
+    const y = container.clientHeight - 120; // Place at the bottom of the container
+    createNode(stakeholderInfo, x, y, 'stakeholder', container);
+    jsPlumbInstance.repaintEverything();
+  }
+}
+
+function editCompany(container) {
+  const companyNode = container.querySelector('.node.company');
+  const [name, cel, email] = companyNode.innerHTML.split('<br>');
+
+  const newName = prompt('Enter new company name:', name);
+  const newCel = prompt('Enter new company cel:', cel ? cel.split(': ')[1] : '');
+  const newEmail = prompt('Enter new company email:', email ? email.split(': ')[1] : '');
+
+  if (newName) {
+    let newInfo = newName;
+    if (newCel) newInfo += `<br>Cel: ${newCel}`;
+    if (newEmail) newInfo += `<br>Email: ${newEmail}`;
+
+    companyNode.innerHTML = newInfo;
+    companyNode.id = newInfo;
+    jsPlumbInstance.repaintEverything();
+  }
+}
+
+// Generate the diagram when the page loads and when the window is resized
+window.onload = generateDiagram;
+window.onresize = generateDiagram;
+
+function exportToPDF() {
+  const { jsPDF } = window.jspdf;
+  const diagram = document.getElementById('diagram');
+  
+  html2canvas(diagram).then(canvas => {
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF({
+      orientation: 'landscape',
+      unit: 'px',
+      format: [canvas.width, canvas.height]
+    });
+    
+    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+    pdf.save("stakeholder_diagram.pdf");
+  });
+}
+
+function exportToImage() {
+  const diagram = document.getElementById('diagram');
+  
+  html2canvas(diagram).then(canvas => {
+    const imgData = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.href = imgData;
+    link.download = 'stakeholder_diagram.png';
+    link.click();
+  });
+}
+</script>
+</body></html>

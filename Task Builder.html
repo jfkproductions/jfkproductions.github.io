@@ -1,0 +1,585 @@
+<!DOCTYPE html><html><head><base href="https://adventure-game-creator.com/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text Adventure Game Maker</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.6/js/jsplumb.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    height: 100%;
+    overflow: hidden;
+  }
+  #editor {
+    width: 100%;
+    height: 100%;
+    background-color: #f0f0f0;
+    position: relative;
+    overflow: hidden;
+  }
+  .node {
+    width: 200px;
+    height: auto;
+    background-color: #f0f8ff;
+    border: 2px solid #4682b4;
+    border-radius: 5px;
+    padding: 10px;
+    position: absolute;
+    cursor: move;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+  }
+  .node-title {
+    font-size: 18px;
+    color: #4682b4;
+    margin-bottom: 10px;
+    padding: 5px;
+    border-bottom: 1px solid #4682b4;
+  }
+  .node-description {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 15px;
+    line-height: 1.4;
+  }
+  .node-options {
+    font-size: 12px;
+    margin-bottom: 15px;
+  }
+  .option {
+    background-color: #e6f3ff;
+    border: 1px solid #4682b4;
+    border-radius: 15px;
+    padding: 5px 10px;
+    margin: 5px 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+  }
+  .delete-option {
+    color: #ff6347;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0 5px;
+  }
+  .toolbar {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+  }
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+  }
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+  }
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .node-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  .node-controls button {
+    background-color: #4682b4;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .delete-node {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #ff6347;
+  }
+</style>
+</head>
+<body>
+  <div id="editor">
+    <div id="node_0" class="node jtk-managed jtk-draggable jtk-droppable jtk-endpoint-anchor" style="left: 123px; top: 110px;">
+      <span class="delete-node" onclick="deleteNode('node_0')">×</span>
+      <div class="node-title" contenteditable="true" onblur="updateNodeTitle('node_0', this.textContent)">New Task</div>
+      <div class="node-image">
+        <img src="https://page-images.websim.ai/Node image_80x80xXHDRg8HP1QJBCvxGox0096cc6879573.jpg" alt="A vibrant illustration of a computer node, symbolizing the interconnected digital landscape." width="80" height="80" style="display: none; margin: 10px auto; border-radius: 50%; object-fit: cover;" data-image_id="3554">
+        <input type="file" accept="image/*" onchange="uploadNodeImage('node_0', this.files[0])" style="display: none;">
+      </div>
+      <div class="node-description" contenteditable="true" onblur="updateNodeDescription('node_0', this.textContent)">Enter task description here</div>
+      <div class="node-options"></div>
+      <div class="node-controls">
+        <button onclick="promptAndAddOption('node_0')">Add Subtask</button>
+        <button onclick="document.querySelector('#node_0 .node-image input[type=file]').click()">Upload Image</button>
+      </div>
+    </div>
+</div>
+  
+  <div class="toolbar">
+    <button onclick="addNode()" style="background-color: #4682b4; color: white; border: none; padding: 5px 10px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 15px; transition: all 0.2s ease;">Add Task</button>
+    <button onclick="saveProjectAsJson()" style="background-color: #4682b4; color: white; border: none; padding: 5px 10px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 15px; transition: all 0.2s ease;">Save Project as JSON</button>
+    <button onclick="showOpenModal()" style="background-color: #4682b4; color: white; border: none; padding: 5px 10px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 15px; transition: all 0.2s ease;">Open Project</button>
+    <button onclick="clearCanvas()" style="background-color: #ff6347; color: white; border: none; padding: 5px 10px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 15px; transition: all 0.2s ease;">Clear Canvas</button>
+</div>
+
+  <div id="saveModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('saveModal')">×</span>
+      <h2>Save Project</h2>
+      <input type="text" id="projectName" placeholder="Enter project name">
+      <button onclick="saveProject()">Save</button>
+    </div>
+  </div>
+
+  <div id="openModal" class="modal">
+    <div class="modal-content">
+  <span class="close" onclick="closeModal('openModal')" style="color: #4682b4; float: right; font-size: 28px; font-weight: bold; cursor: pointer;">×</span>
+  <h2 style="color: #4682b4; font-size: 24px; margin-bottom: 20px;">Open Project</h2>
+  <input type="file" id="projectFile" accept=".json" style="display: block; margin-bottom: 20px; padding: 10px; border: 2px solid #4682b4; border-radius: 5px; width: 100%; box-sizing: border-box;">
+  <button onclick="openProject()" style="background-color: #4682b4; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 15px; transition: all 0.2s ease;">Open</button>
+</div>
+  </div>
+
+  <div id="exportModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('exportModal')">×</span>
+      <h2>Export Game</h2>
+      <button onclick="exportGame()">Export</button>
+    </div>
+  </div>
+
+  <div id="previewModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('previewModal')">×</span>
+      <h2>Preview Game</h2>
+      <div id="gamePreview"></div>
+    </div>
+  </div>
+
+  <script>
+    let jsPlumbInstance;
+    let nodes = {};
+    let nodeIdCounter = 1; // Start from 1 since we already have node_0
+
+    document.addEventListener("DOMContentLoaded", function() {
+      jsPlumbInstance = jsPlumb.getInstance({
+        Connector: ["Bezier", { curviness: 50 }],
+        DragOptions: { cursor: "pointer", zIndex: 2000 },
+        PaintStyle: { stroke: "#456", strokeWidth: 2 },
+        EndpointStyle: { radius: 9, fill: "#456" },
+        HoverPaintStyle: { stroke: "#dbe300" },
+        EndpointHoverStyle: { fill: "#dbe300" },
+        Container: "editor"
+      });
+
+      const editor = document.getElementById("editor");
+      
+      editor.addEventListener("wheel", function(e) {
+        e.preventDefault();
+        const scale = e.deltaY > 0 ? 0.9 : 1.1;
+        editor.style.transform = `scale(${scale})`;
+      });
+
+      let isDragging = false;
+      let startX, startY;
+
+      editor.addEventListener("mousedown", function(e) {
+        isDragging = true;
+        startX = e.clientX - editor.offsetLeft;
+        startY = e.clientY - editor.offsetTop;
+      });
+
+      editor.addEventListener("mousemove", function(e) {
+        if (isDragging) {
+          const x = e.clientX - startX;
+          const y = e.clientY - startY;
+          editor.style.left = `${x}px`;
+          editor.style.top = `${y}px`;
+        }
+      });
+
+      editor.addEventListener("mouseup", function() {
+        isDragging = false;
+      });
+
+      initializeExistingNodes();
+    });
+
+    function initializeExistingNodes() {
+      const existingNodes = document.querySelectorAll('.node');
+      existingNodes.forEach(node => {
+        const id = node.id;
+        jsPlumbInstance.draggable(id);
+        jsPlumbInstance.makeSource(id, {
+          filter: ".option",
+          anchor: "Continuous"
+        });
+        jsPlumbInstance.makeTarget(id, {
+          anchor: "Continuous"
+        });
+        
+        nodes[id] = {
+          title: node.querySelector('.node-title').textContent,
+          description: node.querySelector('.node-description').textContent,
+          options: Array.from(node.querySelectorAll('.option')).map(option => ({
+            id: option.id,
+            text: option.querySelector('span:first-child').textContent,
+            target: null
+          })),
+          image: node.querySelector('.node-image img').src
+        };
+      });
+    }
+
+    function editNodeTitle(nodeId) {
+      const newTitle = prompt("Enter new task name:", nodes[nodeId].title);
+      if (newTitle) {
+        nodes[nodeId].title = newTitle;
+        document.querySelector(`#${nodeId} .node-title`).textContent = newTitle;
+      }
+    }
+
+    function deleteNode(nodeId) {
+      if (confirm("Are you sure you want to delete this node?")) {
+        jsPlumbInstance.remove(nodeId);
+        delete nodes[nodeId];
+        document.getElementById(nodeId).remove();
+      }
+    }
+
+    function uploadNodeImage(nodeId, file) {
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const imgSrc = e.target.result;
+          nodes[nodeId].image = imgSrc;
+          const imgElement = document.querySelector(`#${nodeId} .node-image img`);
+          imgElement.src = imgSrc;
+          imgElement.style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function updateNodeTitle(nodeId, newTitle) {
+      nodes[nodeId].title = newTitle;
+    }
+
+    function updateNodeDescription(nodeId, newDescription) {
+      nodes[nodeId].description = newDescription;
+    }
+
+    function promptAndAddOption(nodeId) {
+      const subtaskName = prompt("Enter name for the new subtask:");
+      if (subtaskName) {
+        addOption(nodeId, { text: subtaskName });
+      }
+    }
+
+    function addOption(nodeId, optionData = {}) {
+      const optionId = `${nodeId}_option_${nodes[nodeId].options.length}`;
+      const optionElement = document.createElement("div");
+      optionElement.id = optionId;
+      optionElement.className = "option";
+      optionElement.style.backgroundColor = "#e6f3ff";
+      optionElement.style.border = "1px solid #4682b4";
+      optionElement.style.borderRadius = "15px";
+      optionElement.style.padding = "5px 10px";
+      optionElement.style.margin = "5px 0";
+      optionElement.style.transition = "all 0.2s ease";
+      optionElement.innerHTML = `
+        <span style="color: #4682b4;">${optionData.text || "New Subtask"}</span>
+        <span class="delete-option" onclick="deleteOption('${nodeId}', '${optionId}')" style="color: #ff6347; font-weight: bold; cursor: pointer; padding: 0 5px;">×</span>
+      `;
+      optionElement.querySelector('span:first-child').onclick = () => editOption(nodeId, optionId);
+
+      document.querySelector(`#${nodeId} .node-options`).appendChild(optionElement);
+
+      nodes[nodeId].options.push({
+        id: optionId,
+        text: optionData.text || "New Subtask",
+        target: optionData.target || null
+      });
+
+      if (optionData.target) {
+        jsPlumbInstance.connect({
+          source: optionId,
+          target: optionData.target,
+          anchor: "Continuous"
+        });
+      }
+    }
+
+    function editOption(nodeId, optionId) {
+      const option = nodes[nodeId].options.find(o => o.id === optionId);
+      const newText = prompt("Enter new subtask text:", option.text);
+      if (newText) {
+        option.text = newText;
+        document.querySelector(`#${optionId} span:first-child`).textContent = newText;
+      }
+
+      const newTarget = prompt("Enter target task ID:", option.target);
+      if (newTarget) {
+        jsPlumbInstance.deleteConnectionsForElement(optionId);
+        option.target = newTarget;
+        jsPlumbInstance.connect({
+          source: optionId,
+          target: newTarget,
+          anchor: "Continuous"
+        });
+      }
+    }
+
+    function deleteOption(nodeId, optionId) {
+      const optionIndex = nodes[nodeId].options.findIndex(o => o.id === optionId);
+      if (optionIndex !== -1) {
+        nodes[nodeId].options.splice(optionIndex, 1);
+        jsPlumbInstance.deleteConnectionsForElement(optionId);
+        document.getElementById(optionId).remove();
+      }
+    }
+
+    function addNode() {
+      const id = `node_${nodeIdCounter++}`;
+      const node = document.createElement("div");
+      node.id = id;
+      node.className = "node jtk-managed jtk-draggable jtk-droppable jtk-endpoint-anchor";
+      node.style.left = "200px";
+      node.style.top = "200px";
+
+      node.innerHTML = `
+        <span class="delete-node" onclick="deleteNode('${id}')">×</span>
+        <div class="node-title" contenteditable="true" onblur="updateNodeTitle('${id}', this.textContent)">New Task</div>
+        <div class="node-image">
+          <img src="" alt="Node image" width="80" height="80" style="display: none; margin: 10px auto; border-radius: 50%; object-fit: cover;">
+          <input type="file" accept="image/*" onchange="uploadNodeImage('${id}', this.files[0])" style="display: none;">
+        </div>
+        <div class="node-description" contenteditable="true" onblur="updateNodeDescription('${id}', this.textContent)">Enter task description here</div>
+        <div class="node-options"></div>
+        <div class="node-controls">
+          <button onclick="promptAndAddOption('${id}')">Add Subtask</button>
+          <button onclick="document.querySelector('#${id} .node-image input[type=file]').click()">Upload Image</button>
+        </div>
+      `;
+
+      document.getElementById("editor").appendChild(node);
+      jsPlumbInstance.draggable(id);
+
+      jsPlumbInstance.makeSource(id, {
+        filter: ".option",
+        anchor: "Continuous"
+      });
+
+      jsPlumbInstance.makeTarget(id, {
+        anchor: "Continuous"
+      });
+
+      nodes[id] = {
+        title: "New Task",
+        description: "Enter task description here",
+        options: [],
+        image: ''
+      };
+    }
+
+    function showSaveModal() {
+      document.getElementById('saveModal').style.display = 'block';
+    }
+
+    function showOpenModal() {
+      document.getElementById('openModal').style.display = 'block';
+    }
+
+    function showExportModal() {
+      document.getElementById('exportModal').style.display = 'block';
+    }
+
+    function showPreviewModal() {
+      document.getElementById('previewModal').style.display = 'block';
+      // Implement game preview logic here
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    function saveProject() {
+      const projectName = document.getElementById('projectName').value;
+      if (projectName) {
+        const projectData = JSON.stringify(nodes);
+        const blob = new Blob([projectData], {type: "text/plain;charset=utf-8"});
+        saveAs(blob, `${projectName}.txt`);
+        closeModal('saveModal');
+      } else {
+        alert("Please enter a project name.");
+      }
+    }
+
+    function openProject() {
+      const fileInput = document.getElementById('projectFile');
+      const file = fileInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const projectData = JSON.parse(e.target.result);
+          loadProject(projectData);
+        };
+        reader.readAsText(file);
+        closeModal('openModal');
+      } else {
+        alert("Please select a file to open.");
+      }
+    }
+
+    function loadProject(projectData) {
+      // Clear existing nodes
+      document.getElementById('editor').innerHTML = '';
+      nodes = {};
+      jsPlumbInstance.reset();
+
+      // Create nodes from project data
+      for (const [nodeId, nodeData] of Object.entries(projectData.nodes)) {
+        createNodeFromData(nodeId, nodeData);
+      }
+
+      // Create connections
+      if (projectData.connections && Array.isArray(projectData.connections)) {
+        projectData.connections.forEach(conn => {
+          jsPlumbInstance.connect({
+            source: conn.source,
+            target: conn.target,
+            anchor: "Continuous"
+          });
+        });
+      }
+
+      // Repaint all connections
+      jsPlumbInstance.repaintEverything();
+    }
+
+    function createNodeFromData(nodeId, nodeData) {
+      const node = document.createElement("div");
+      node.id = nodeId;
+      node.className = "node jtk-managed jtk-draggable jtk-droppable jtk-endpoint-anchor";
+      node.style.left = nodeData.left || "100px";
+      node.style.top = nodeData.top || "100px";
+
+      node.innerHTML = `
+        <span class="delete-node" onclick="deleteNode('${nodeId}')">×</span>
+        <div class="node-title" contenteditable="true" onblur="updateNodeTitle('${nodeId}', this.textContent)">${nodeData.title}</div>
+        <div class="node-image">
+          <img src="${nodeData.image}" alt="Node image" width="80" height="80" style="display: ${nodeData.image ? 'block' : 'none'}; margin: 10px auto; border-radius: 50%; object-fit: cover;">
+          <input type="file" accept="image/*" onchange="uploadNodeImage('${nodeId}', this.files[0])" style="display: none;">
+        </div>
+        <div class="node-description" contenteditable="true" onblur="updateNodeDescription('${nodeId}', this.textContent)">${nodeData.description}</div>
+        <div class="node-options"></div>
+        <div class="node-controls">
+          <button onclick="promptAndAddOption('${nodeId}')">Add Subtask</button>
+          <button onclick="document.querySelector('#${nodeId} .node-image input[type=file]').click()">Upload Image</button>
+        </div>
+      `;
+
+      document.getElementById("editor").appendChild(node);
+      jsPlumbInstance.draggable(nodeId);
+
+      jsPlumbInstance.makeSource(nodeId, {
+        filter: ".option",
+        anchor: "Continuous"
+      });
+
+      jsPlumbInstance.makeTarget(nodeId, {
+        anchor: "Continuous"
+      });
+
+      nodes[nodeId] = nodeData;
+
+      // Add options
+      nodeData.options.forEach(option => addOption(nodeId, option));
+    }
+
+    function exportGame() {
+      // Implement game export logic here
+      alert("Game export functionality to be implemented.");
+      closeModal('exportModal');
+    }
+
+    function saveProjectAsJson() {
+      const projectData = {
+        nodes: nodes,
+        connections: getConnections()
+      };
+      const jsonData = JSON.stringify(projectData, null, 2);
+      const blob = new Blob([jsonData], {type: "application/json"});
+      saveAs(blob, "project.json");
+    }
+
+    function getConnections() {
+      const connections = jsPlumbInstance.getConnections().map(conn => ({
+        source: conn.source.id,
+        target: conn.target.id
+      }));
+      return connections;
+    }
+
+    function clearCanvas() {
+      // Clear the editor
+      document.getElementById('editor').innerHTML = '';
+      
+      // Reset the nodes object and jsPlumb instance
+      nodes = {};
+      jsPlumbInstance.reset();
+      
+      // Reset the node counter
+      nodeIdCounter = 1;
+      
+      // Add a starting node
+      addNode();
+      
+      // Center the new node
+      const startingNode = document.querySelector('.node');
+      if (startingNode) {
+        startingNode.style.left = '50%';
+        startingNode.style.top = '50%';
+        startingNode.style.transform = 'translate(-50%, -50%)';
+      }
+      
+      // Repaint all connections
+      jsPlumbInstance.repaintEverything();
+    }
+
+    function exportCanvasToPDF() {
+      const pdf = new jsPDF('landscape', 'pt', [window.innerWidth, window.innerHeight]);
+      
+      html2canvas(document.getElementById('editor')).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        pdf.addImage(imgData, 'PNG', 0, 0, window.innerWidth, window.innerHeight);
+        pdf.save('adventure_game_map.pdf');
+      });
+    }
+  </script>
+</body></html>
