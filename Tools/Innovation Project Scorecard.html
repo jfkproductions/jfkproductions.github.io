@@ -1,0 +1,341 @@
+<html><head><base href="https://www.strategyzer.com/library/innovation-project-scorecard">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Innovation Project Scorecard</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f0f0;
+    }
+    .scorecard {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        padding: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    h1 {
+        color: #333;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    .logo {
+        height: 30px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+    .indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 5px;
+    }
+    .red { background-color: #FF4136; }
+    .yellow { background-color: #FFDC00; }
+    .green { background-color: #2ECC40; }
+    .category {
+        font-weight: bold;
+        color: #333;
+        display: flex;
+        align-items: center;
+    }
+    .subcategory {
+        color: #666;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+    .rating {
+        display: flex;
+        justify-content: space-between;
+    }
+    .dot {
+        height: 15px;
+        width: 15px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+        margin: 0 2px;
+        cursor: pointer;
+    }
+    input[type="radio"] {
+        display: none;
+    }
+    input[type="radio"]:checked + .dot {
+        background-color: #FF4136;
+    }
+</style>
+</head>
+<body>
+<div class="scorecard">
+    <h1>
+        Innovation Project Scorecard
+        <img src="https://replicate.delivery/yhqm/9pDAPUM7wWYJClbkYqbOZjBXGWxJ9xfrDFe2T0G5hRwHWRSTA/out-0.webp" alt="Minimalist vector graphic of the Strategyzer logo with clean lines and geometric shapes." class="logo">
+    </h1>
+    
+    <table>
+        <tbody>
+        <tr>
+            <th>Strategic Fit</th>
+            <th>Alignment</th>
+        </tr>
+        <tr>
+            <td>
+                <div class="category">
+                    <span class="indicator red"></span>
+                    Corporate identity
+                </div>
+                <div class="subcategory">This idea/project is aligned with our corporate identity (strategic direction, organizational culture, brand image)</div>
+            </td>
+            <td>
+                <div class="rating">
+                    <input type="radio" name="corporate_identity" value="1" id="ci1"><label for="ci1" class="dot"></label>
+                    <input type="radio" name="corporate_identity" value="2" id="ci2"><label for="ci2" class="dot"></label>
+                    <input type="radio" name="corporate_identity" value="3" id="ci3"><label for="ci3" class="dot"></label>
+                    <input type="radio" name="corporate_identity" value="4" id="ci4"><label for="ci4" class="dot"></label>
+                    <input type="radio" name="corporate_identity" value="5" id="ci5"><label for="ci5" class="dot"></label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="category">
+                    <span class="indicator red"></span>
+                    Innovation Portfolio
+                </div>
+                <div class="subcategory">This idea/project fits well within our company's innovation portfolio</div>
+            </td>
+            <td>
+                <div class="rating">
+                    <input type="radio" name="innovation_portfolio" value="1" id="ip1"><label for="ip1" class="dot"></label>
+                    <input type="radio" name="innovation_portfolio" value="2" id="ip2"><label for="ip2" class="dot"></label>
+                    <input type="radio" name="innovation_portfolio" value="3" id="ip3"><label for="ip3" class="dot"></label>
+                    <input type="radio" name="innovation_portfolio" value="4" id="ip4"><label for="ip4" class="dot"></label>
+                    <input type="radio" name="innovation_portfolio" value="5" id="ip5"><label for="ip5" class="dot"></label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="category">
+                    <span class="indicator red"></span>
+                    Leadership support
+                </div>
+                <div class="subcategory">We have strong executive support for this idea/project</div>
+            </td>
+            <td>
+                <div class="rating">
+                    <input type="radio" name="leadership_support" value="1" id="ls1"><label for="ls1" class="dot"></label>
+                    <input type="radio" name="leadership_support" value="2" id="ls2"><label for="ls2" class="dot"></label>
+                    <input type="radio" name="leadership_support" value="3" id="ls3"><label for="ls3" class="dot"></label>
+                    <input type="radio" name="leadership_support" value="4" id="ls4"><label for="ls4" class="dot"></label>
+                    <input type="radio" name="leadership_support" value="5" id="ls5"><label for="ls5" class="dot"></label>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table>
+        <tbody>
+        <tr>
+            <th>Opportunity</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>
+                <div class="category">
+                    <span class="indicator yellow"></span>
+                    Expected impact
+                </div>
+                <div class="subcategory">Financial potential of the idea</div>
+            </td>
+            <td>
+                <div class="rating">
+                    <input type="radio" name="expected_impact" value="1" id="ei1"><label for="ei1" class="dot"></label>
+                    <input type="radio" name="expected_impact" value="2" id="ei2"><label for="ei2" class="dot"></label>
+                    <input type="radio" name="expected_impact" value="3" id="ei3"><label for="ei3" class="dot"></label>
+                    <input type="radio" name="expected_impact" value="4" id="ei4"><label for="ei4" class="dot"></label>
+                    <input type="radio" name="expected_impact" value="5" id="ei5"><label for="ei5" class="dot"></label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="category">
+                    <span class="indicator yellow"></span>
+                    Market dynamics
+                </div>
+                <div class="subcategory">We have a clear understanding of the market dynamics for this idea/project</div>
+            </td>
+            <td>
+                <div class="rating">
+                    <input type="radio" name="market_dynamics" value="1" id="md1"><label for="md1" class="dot"></label>
+                    <input type="radio" name="market_dynamics" value="2" id="md2"><label for="md2" class="dot"></label>
+                    <input type="radio" name="market_dynamics" value="3" id="md3"><label for="md3" class="dot"></label>
+                    <input type="radio" name="market_dynamics" value="4" id="md4"><label for="md4" class="dot"></label>
+                    <input type="radio" name="market_dynamics" value="5" id="md5"><label for="md5" class="dot"></label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="category">
+                    <span class="indicator yellow"></span>
+                    Customer impact
+                </div>
+                <div class="subcategory">This idea/project delivers significant value to customers</div>
+            </td>
+            <td>
+                <div class="rating">
+                    <input type="radio" name="customer_impact" value="1" id="cui1"><label for="cui1" class="dot"></label>
+                    <input type="radio" name="customer_impact" value="2" id="cui2"><label for="cui2" class="dot"></label>
+                    <input type="radio" name="customer_impact" value="3" id="cui3"><label for="cui3" class="dot"></label>
+                    <input type="radio" name="customer_impact" value="4" id="cui4"><label for="cui4" class="dot"></label>
+                    <input type="radio" name="customer_impact" value="5" id="cui5"><label for="cui5" class="dot"></label>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table>
+        <tbody>
+        <tr>
+            <th>Risk Reduction</th>
+            <th>Confidence</th>
+        </tr>
+        <tr>
+            <td>
+                <div class="category">
+                    <span class="indicator yellow"></span>
+                    Desirability
+                </div>
+                <div class="subcategory">We have evidence that customers want this solution</div>
+            </td>
+            <td>
+                <div class="rating">
+                    <input type="radio" name="desirability" value="1" id="d1"><label for="d1" class="dot"></label>
+                    <input type="radio" name="desirability" value="2" id="d2"><label for="d2" class="dot"></label>
+                    <input type="radio" name="desirability" value="3" id="d3"><label for="d3" class="dot"></label>
+                    <input type="radio" name="desirability" value="4" id="d4"><label for="d4" class="dot"></label>
+                    <input type="radio" name="desirability" value="5" id="d5"><label for="d5" class="dot"></label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="category">
+                    <span class="indicator yellow"></span>
+                    Feasibility
+                </div>
+                <div class="subcategory">We have evidence that we can build and deliver this solution</div>
+            </td>
+            <td>
+                <div class="rating">
+                    <input type="radio" name="feasibility" value="1" id="f1"><label for="f1" class="dot"></label>
+                    <input type="radio" name="feasibility" value="2" id="f2"><label for="f2" class="dot"></label>
+                    <input type="radio" name="feasibility" value="3" id="f3"><label for="f3" class="dot"></label>
+                    <input type="radio" name="feasibility" value="4" id="f4"><label for="f4" class="dot"></label>
+                    <input type="radio" name="feasibility" value="5" id="f5"><label for="f5" class="dot"></label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="category">
+                    <span class="indicator yellow"></span>
+                    Viability
+                </div>
+                <div class="subcategory">We have evidence that we can create a sustainable business with this solution</div>
+            </td>
+            <td>
+                <div class="rating">
+                    <input type="radio" name="viability" value="1" id="v1"><label for="v1" class="dot"></label>
+                    <input type="radio" name="viability" value="2" id="v2"><label for="v2" class="dot"></label>
+                    <input type="radio" name="viability" value="3" id="v3"><label for="v3" class="dot"></label>
+                    <input type="radio" name="viability" value="4" id="v4"><label for="v4" class="dot"></label>
+                    <input type="radio" name="viability" value="5" id="v5"><label for="v5" class="dot"></label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="category">
+                    <span class="indicator yellow"></span>
+                    Adaptability
+                </div>
+                <div class="subcategory">We have the ability to adapt the solution based on new learnings</div>
+            </td>
+            <td>
+                <div class="rating">
+                    <input type="radio" name="adaptability" value="1" id="a1"><label for="a1" class="dot"></label>
+                    <input type="radio" name="adaptability" value="2" id="a2"><label for="a2" class="dot"></label>
+                    <input type="radio" name="adaptability" value="3" id="a3"><label for="a3" class="dot"></label>
+                    <input type="radio" name="adaptability" value="4" id="a4"><label for="a4" class="dot"></label>
+                    <input type="radio" name="adaptability" value="5" id="a5"><label for="a5" class="dot"></label>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    
+    <table>
+        <tbody>
+        <tr>
+            <th>Progress</th>
+            <th>Stage</th>
+        </tr>
+        <tr>
+            <td>
+                <div class="category">
+                    <span class="indicator green"></span>
+                    Stage
+                </div>
+                <div class="subcategory">Current stage of the innovation project</div>
+            </td>
+            <td>
+                <div class="rating">
+                    <input type="radio" name="stage" value="1" id="s1"><label for="s1" class="dot"></label>
+                    <input type="radio" name="stage" value="2" id="s2"><label for="s2" class="dot"></label>
+                    <input type="radio" name="stage" value="3" id="s3"><label for="s3" class="dot"></label>
+                    <input type="radio" name="stage" value="4" id="s4"><label for="s4" class="dot"></label>
+                    <input type="radio" name="stage" value="5" id="s5"><label for="s5" class="dot"></label>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // JavaScript to handle dot selection
+    document.querySelectorAll('.rating').forEach(rating => {
+        rating.addEventListener('click', (e) => {
+            if (e.target.classList.contains('dot')) {
+                const input = e.target.previousElementSibling;
+                input.checked = true;
+            }
+        });
+    });
+</script>
+
+</body></html>

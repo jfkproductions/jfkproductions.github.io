@@ -1,0 +1,597 @@
+<html><head><base href="https://businesscanvaswizard.example.com">
+<title>Business Model Canvas Creator Wizard</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+  
+  body {
+    font-family: 'Roboto', sans-serif;
+    background: #f4f7f9;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header {
+    padding: 20px;
+    background: #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  h1, h2 {
+    text-align: center;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  h1 {
+    color: #2c3e50;
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    color: #34495e;
+    font-size: 20px;
+  }
+
+  .main-content {
+    display: flex;
+    flex-grow: 1;
+  }
+
+  .menu {
+    width: 200px;
+    background: #ffffff;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menu-item {
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    background: #3498db;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+  }
+
+  .menu-item:hover {
+    background: #2980b9;
+  }
+
+  #whiteboard {
+    flex-grow: 1;
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(#aaa 1px, transparent 1px);
+    background-size: 10px 10px;
+  }
+
+  .canvas-section {
+    position: absolute;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 14px;
+    box-sizing: border-box;
+    resize: both;
+    overflow: auto;
+    border: 2px solid;
+    transition: box-shadow 0.3s ease;
+    cursor: move;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .canvas-section:hover {
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  }
+
+  .canvas-section::before {
+    content: '↔️';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-size: 12px;
+    opacity: 0.5;
+  }
+
+  .canvas-section h3 {
+    margin: 0 0 8px;
+    font-weight: 500;
+    padding-left: 15px;
+    font-size: 16px;
+  }
+
+  .canvas-section form {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .canvas-section textarea {
+    width: 100%;
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    background-color: #fff;
+    resize: none;
+    font-size: 12px;
+    min-height: 80px;
+  }
+
+  .color-squares {
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    padding: 3px;
+    background-color: #ffffff;
+  }
+
+  .color-square {
+    width: 15px;
+    height: 15px;
+    margin: 0 3px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  /* Define unique colors for each section of the canvas */
+  .key-partners { background-color: #e7f9ed; border-color: #27ae60; }
+  .key-activities { background-color: #eaf4ff; border-color: #3498db; }
+  .value-proposition { background-color: #fff9e5; border-color: #f1c40f; }
+  .customer-relationships { background-color: #f3e7f9; border-color: #9b59b6; }
+  .customer-segments { background-color: #f9f9e7; border-color: #f39c12; }
+  .key-resources { background-color: #fde2e1; border-color: #e74c3c; }
+  .channels { background-color: #fdeff2; border-color: #e67e22; }
+  .revenue-streams { background-color: #e0f3f4; border-color: #1abc9c; }
+  .cost-structure { background-color: #e7eff9; border-color: #2980b9; }
+  
+  /* Color options */
+  .color-option { background-color: #e7f9ed; }
+  .color-option-2 { background-color: #eaf4ff; }
+  .color-option-3 { background-color: #fff9e5; }
+  .color-option-4 { background-color: #f3e7f9; }
+  .color-option-5 { background-color: #fde2e1; }
+
+  .resize-handle {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 8px;
+    height: 8px;
+    cursor: se-resize;
+  }
+
+  #tips-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    z-index: 1000;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  #tips-popup h3 {
+    margin-top: 0;
+    color: #2c3e50;
+  }
+
+  #tips-popup ul {
+    padding-left: 20px;
+  }
+
+  #tips-popup li {
+    margin-bottom: 10px;
+  }
+
+  #close-tips {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  #save-canvas, #load-canvas {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  #save-canvas:hover, #load-canvas:hover {
+    background: #2980b9;
+  }
+
+  #loading-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+  }
+
+  #loading-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+  }
+</style>
+<script src="https://unpkg.com/htmx.org@1.9.2"></script>
+<script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script>
+  function changeColor(section, color) {
+    var target = document.querySelector('.' + section);
+    target.style.backgroundColor = color;
+  }
+
+  function initializeCanvas() {
+    const whiteboard = document.getElementById('whiteboard');
+    const sections = document.querySelectorAll('.canvas-section');
+    const whiteboardRect = whiteboard.getBoundingClientRect();
+
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      const leftPercent = (rect.left - whiteboardRect.left) / whiteboardRect.width * 100;
+      const topPercent = (rect.top - whiteboardRect.top) / whiteboardRect.height * 100;
+      const widthPercent = rect.width / whiteboardRect.width * 100;
+      const heightPercent = rect.height / whiteboardRect.height * 100;
+
+      section.style.left = `${leftPercent}%`;
+      section.style.top = `${topPercent}%`;
+      section.style.width = `${widthPercent}%`;
+      section.style.height = `${heightPercent}%`;
+    });
+  }
+
+  window.addEventListener('load', initializeCanvas);
+  window.addEventListener('resize', initializeCanvas);
+
+  interact('.canvas-section')
+    .draggable({
+      inertia: true,
+      modifiers: [
+        interact.modifiers.restrictRect({
+          restriction: 'parent',
+          endOnly: true
+        })
+      ],
+      autoScroll: true,
+      listeners: {
+        move: dragMoveListener,
+      }
+    })
+    .resizable({
+      edges: { left: true, right: true, bottom: true, top: true },
+      listeners: {
+        move: resizeMoveListener,
+      },
+      modifiers: [
+        interact.modifiers.restrictEdges({
+          outer: 'parent'
+        }),
+        interact.modifiers.restrictSize({
+          min: { width: 100, height: 50 }
+        })
+      ],
+      inertia: true
+    })
+
+  function dragMoveListener(event) {
+    var target = event.target
+    var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
+    var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
+
+    target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+
+    target.setAttribute('data-x', x)
+    target.setAttribute('data-y', y)
+  }
+
+  function resizeMoveListener(event) {
+    var target = event.target
+    var x = (parseFloat(target.getAttribute('data-x')) || 0)
+    var y = (parseFloat(target.getAttribute('data-y')) || 0)
+
+    target.style.width = event.rect.width + 'px'
+    target.style.height = event.rect.height + 'px'
+
+    x += event.deltaRect.left
+    y += event.deltaRect.top
+
+    target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
+
+    target.setAttribute('data-x', x)
+    target.setAttribute('data-y', y)
+  }
+
+  window.dragMoveListener = dragMoveListener
+
+  function exportToPdf() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('l', 'mm', 'a4');
+    const canvas = document.getElementById('whiteboard');
+
+    html2canvas(canvas).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const imgProps= doc.getImageProperties(imgData);
+      const pdfWidth = doc.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      doc.save('business-model-canvas.pdf');
+    });
+  }
+
+  function showTips() {
+    document.getElementById('tips-popup').style.display = 'block';
+  }
+
+  function closeTips() {
+    document.getElementById('tips-popup').style.display = 'none';
+  }
+
+  function showLoadingOverlay() {
+    document.getElementById('loading-overlay').style.display = 'block';
+  }
+
+  function hideLoadingOverlay() {
+    document.getElementById('loading-overlay').style.display = 'none';
+  }
+
+  function saveCanvas() {
+    const canvasData = {
+      sections: {},
+      layout: {}
+    };
+
+    document.querySelectorAll('.canvas-section').forEach(section => {
+      const sectionName = section.classList[1];
+      const textarea = section.querySelector('textarea');
+      canvasData.sections[sectionName] = textarea.value;
+      canvasData.layout[sectionName] = {
+        top: section.style.top,
+        left: section.style.left,
+        width: section.style.width,
+        height: section.style.height,
+        backgroundColor: section.style.backgroundColor
+      };
+    });
+
+    localStorage.setItem('businessModelCanvas', JSON.stringify(canvasData));
+    alert('Canvas saved successfully!');
+  }
+
+  function loadCanvas() {
+    const savedCanvas = localStorage.getItem('businessModelCanvas');
+    if (savedCanvas) {
+      const canvasData = JSON.parse(savedCanvas);
+      
+      Object.keys(canvasData.sections).forEach(sectionName => {
+        const section = document.querySelector(`.${sectionName}`);
+        const textarea = section.querySelector('textarea');
+        textarea.value = canvasData.sections[sectionName];
+        
+        const layout = canvasData.layout[sectionName];
+        section.style.top = layout.top;
+        section.style.left = layout.left;
+        section.style.width = layout.width;
+        section.style.height = layout.height;
+        section.style.backgroundColor = layout.backgroundColor;
+      });
+
+      alert('Canvas loaded successfully!');
+    } else {
+      alert('No saved canvas found.');
+    }
+  }
+</script>
+</head>
+<body>
+<div class="header">
+  <h1>Business Model Canvas Creator Wizard</h1>
+  <h2>Your ultimate tool for designing professional Business Model Canvases</h2>
+</div>
+
+<div class="main-content">
+  <div class="menu">
+    <a href="#" class="menu-item" onclick="exportToPdf()">Export as PDF</a>
+    <a href="#" class="menu-item" onclick="showTips()">Tips</a>
+    <button id="save-canvas" onclick="saveCanvas()">Save Canvas</button>
+    <button id="load-canvas" onclick="loadCanvas()">Load Canvas</button>
+  </div>
+
+  <div id="whiteboard">
+    <div class="canvas-section key-partners" style="top: 1.99983%; left: 0.999377%; width: 17.9992%; height: 29.9974%;">
+      <h3>Key Partners</h3>
+      <form hx-post="/canvas/key-partners" hx-trigger="keyup changed delay:500ms" hx-target=".response-key-partners" hx-vals="js:{pageHTML: __getPageHTMLWithoutScripts()}">
+        <textarea name="key-partners" placeholder="Define your key partners and their roles..."></textarea>
+        <div class="response-message response-key-partners"></div>
+      </form>
+      <div class="color-squares">
+        <div class="color-square color-option" onclick="changeColor('key-partners', '#e7f9ed')"></div>
+        <div class="color-square color-option-2" onclick="changeColor('key-partners', '#eaf4ff')"></div>
+        <div class="color-square color-option-3" onclick="changeColor('key-partners', '#fff9e5')"></div>
+        <div class="color-square color-option-4" onclick="changeColor('key-partners', '#f3e7f9')"></div>
+        <div class="color-square color-option-5" onclick="changeColor('key-partners', '#fde2e1')"></div>
+      </div>
+      <div class="resize-handle" style="background: #27ae60;"></div>
+    </div>
+    <div class="canvas-section key-activities" style="top: 1.99983%; left: 19.9987%; width: 17.9992%; height: 29.9974%;">
+      <h3>Key Activities</h3>
+      <form hx-post="/canvas/key-activities" hx-trigger="keyup changed delay:500ms" hx-target=".response-key-activities" hx-vals="js:{pageHTML: __getPageHTMLWithoutScripts()}">
+        <textarea name="key-activities" placeholder="Identify key activities needed to run your business..."></textarea>
+        <div class="response-message response-key-activities"></div>
+      </form>
+      <div class="color-squares">
+        <div class="color-square color-option" onclick="changeColor('key-activities', '#e7f9ed')"></div>
+        <div class="color-square color-option-2" onclick="changeColor('key-activities', '#eaf4ff')"></div>
+        <div class="color-square color-option-3" onclick="changeColor('key-activities', '#fff9e5')"></div>
+        <div class="color-square color-option-4" onclick="changeColor('key-activities', '#f3e7f9')"></div>
+        <div class="color-square color-option-5" onclick="changeColor('key-activities', '#fde2e1')"></div>
+      </div>
+      <div class="resize-handle" style="background: #3498db;"></div>
+    </div>
+    <div class="canvas-section value-proposition" style="top: 1.99983%; left: 38.9987%; width: 21.9989%; height: 29.9974%;">
+      <h3>Value Proposition</h3>
+      <form hx-post="/canvas/value-proposition" hx-trigger="keyup changed delay:500ms" hx-target=".response-value-proposition" hx-vals="js:{pageHTML: __getPageHTMLWithoutScripts()}">
+        <textarea name="value-proposition" placeholder="Outline what makes your product or service unique..."></textarea>
+        <div class="response-message response-value-proposition"></div>
+      </form>
+      <div class="color-squares">
+        <div class="color-square color-option" onclick="changeColor('value-proposition', '#e7f9ed')"></div>
+        <div class="color-square color-option-2" onclick="changeColor('value-proposition', '#eaf4ff')"></div>
+        <div class="color-square color-option-3" onclick="changeColor('value-proposition', '#fff9e5')"></div>
+        <div class="color-square color-option-4" onclick="changeColor('value-proposition', '#f3e7f9')"></div>
+        <div class="color-square color-option-5" onclick="changeColor('value-proposition', '#fde2e1')"></div>
+      </div>
+      <div class="resize-handle" style="background: #f1c40f;"></div>
+    </div>
+    <div class="canvas-section customer-relationships" style="top: 1.99983%; left: 61.9992%; width: 17.9992%; height: 29.9974%;">
+      <h3>Customer Relationships</h3>
+      <form hx-post="/canvas/customer-relationships" hx-trigger="keyup changed delay:500ms" hx-target=".response-customer-relationships" hx-vals="js:{pageHTML: __getPageHTMLWithoutScripts()}">
+        <textarea name="customer-relationships" placeholder="Describe how you will interact with your customers..."></textarea>
+        <div class="response-message response-customer-relationships"></div>
+      </form>
+      <div class="color-squares">
+        <div class="color-square color-option" onclick="changeColor('customer-relationships', '#e7f9ed')"></div>
+        <div class="color-square color-option-2" onclick="changeColor('customer-relationships', '#eaf4ff')"></div>
+        <div class="color-square color-option-3" onclick="changeColor('customer-relationships', '#fff9e5')"></div>
+        <div class="color-square color-option-4" onclick="changeColor('customer-relationships', '#f3e7f9')"></div>
+        <div class="color-square color-option-5" onclick="changeColor('customer-relationships', '#fde2e1')"></div>
+      </div>
+      <div class="resize-handle" style="background: #9b59b6;"></div>
+    </div>
+    <div class="canvas-section customer-segments" style="top: 1.99983%; left: 81%; width: 17.9992%; height: 29.9974%;">
+      <h3>Customer Segments</h3>
+      <form hx-post="/canvas/customer-segments" hx-trigger="keyup changed delay:500ms" hx-target=".response-customer-segments" hx-vals="js:{pageHTML: __getPageHTMLWithoutScripts()}">
+        <textarea name="customer-segments" placeholder="Identify your target customers and their characteristics..."></textarea>
+        <div class="response-message response-customer-segments"></div>
+      </form>
+      <div class="color-squares">
+        <div class="color-square color-option" onclick="changeColor('customer-segments', '#e7f9ed')"></div>
+        <div class="color-square color-option-2" onclick="changeColor('customer-segments', '#eaf4ff')"></div>
+        <div class="color-square color-option-3" onclick="changeColor('customer-segments', '#fff9e5')"></div>
+        <div class="color-square color-option-4" onclick="changeColor('customer-segments', '#f3e7f9')"></div>
+        <div class="color-square color-option-5" onclick="changeColor('customer-segments', '#fde2e1')"></div>
+      </div>
+      <div class="resize-handle" style="background: #f39c12;"></div>
+    </div>
+    <div class="canvas-section key-resources" style="top: 32.9979%; left: 0.999377%; width: 48.9999%; height: 29.9974%;">
+      <h3>Key Resources</h3>
+      <form hx-post="/canvas/key-resources" hx-trigger="keyup changed delay:500ms" hx-target=".response-key-resources" hx-vals="js:{pageHTML: __getPageHTMLWithoutScripts()}">
+        <textarea name="key-resources" placeholder="List the key resources your business requires..."></textarea>
+        <div class="response-message response-key-resources"></div>
+      </form>
+      <div class="color-squares">
+        <div class="color-square color-option" onclick="changeColor('key-resources', '#e7f9ed')"></div>
+        <div class="color-square color-option-2" onclick="changeColor('key-resources', '#eaf4ff')"></div>
+        <div class="color-square color-option-3" onclick="changeColor('key-resources', '#fff9e5')"></div>
+        <div class="color-square color-option-4" onclick="changeColor('key-resources', '#f3e7f9')"></div>
+        <div class="color-square color-option-5" onclick="changeColor('key-resources', '#fde2e1')"></div>
+      </div>
+      <div class="resize-handle" style="background: #e74c3c;"></div>
+    </div>
+    <div class="canvas-section channels" style="top: 32.9979%; left: 50.9994%; width: 47.9998%; height: 29.9974%;">
+      <h3>Channels</h3>
+      <form hx-post="/canvas/channels" hx-trigger="keyup changed delay:500ms" hx-target=".response-channels" hx-vals="js:{pageHTML: __getPageHTMLWithoutScripts()}">
+        <textarea name="channels" placeholder="Determine how you will reach your customers..."></textarea>
+        <div class="response-message response-channels"></div>
+      </form>
+      <div class="color-squares">
+        <div class="color-square color-option" onclick="changeColor('channels', '#e7f9ed')"></div>
+        <div class="color-square color-option-2" onclick="changeColor('channels', '#eaf4ff')"></div>
+        <div class="color-square color-option-3" onclick="changeColor('channels', '#fff9e5')"></div>
+        <div class="color-square color-option-4" onclick="changeColor('channels', '#f3e7f9')"></div>
+        <div class="color-square color-option-5" onclick="changeColor('channels', '#fde2e1')"></div>
+      </div>
+      <div class="resize-handle" style="background: #e67e22;"></div>
+    </div>
+    <div class="canvas-section revenue-streams" style="top: 63.9988%; left: 0.999377%; width: 48.9999%; height: 33.9985%;">
+      <h3>Revenue Streams</h3>
+      <form hx-post="/canvas/revenue-streams" hx-trigger="keyup changed delay:500ms" hx-target=".response-revenue-streams" hx-vals="js:{pageHTML: __getPageHTMLWithoutScripts()}">
+        <textarea name="revenue-streams" placeholder="Explain how your business will make money..."></textarea>
+        <div class="response-message response-revenue-streams"></div>
+      </form>
+      <div class="color-squares">
+        <div class="color-square color-option" onclick="changeColor('revenue-streams', '#e7f9ed')"></div>
+        <div class="color-square color-option-2" onclick="changeColor('revenue-streams', '#eaf4ff')"></div>
+        <div class="color-square color-option-3" onclick="changeColor('revenue-streams', '#fff9e5')"></div>
+        <div class="color-square color-option-4" onclick="changeColor('revenue-streams', '#f3e7f9')"></div>
+        <div class="color-square color-option-5" onclick="changeColor('revenue-streams', '#fde2e1')"></div>
+      </div>
+      <div class="resize-handle" style="background: #1abc9c;"></div>
+    </div>
+    <div class="canvas-section cost-structure" style="top: 63.9988%; left: 50.9994%; width: 47.9998%; height: 33.9985%;">
+      <h3>Cost Structure</h3>
+      <form hx-post="/canvas/cost-structure" hx-trigger="keyup changed delay:500ms" hx-target=".response-cost-structure" hx-vals="js:{pageHTML: __getPageHTMLWithoutScripts()}">
+        <textarea name="cost-structure" placeholder="Outline the costs associated with your business model..."></textarea>
+        <div class="response-message response-cost-structure"></div>
+      </form>
+      <div class="color-squares">
+        <div class="color-square color-option" onclick="changeColor('cost-structure', '#e7f9ed')"></div>
+        <div class="color-square color-option-2" onclick="changeColor('cost-structure', '#eaf4ff')"></div>
+        <div class="color-square color-option-3" onclick="changeColor('cost-structure', '#fff9e5')"></div>
+        <div class="color-square color-option-4" onclick="changeColor('cost-structure', '#f3e7f9')"></div>
+        <div class="color-square color-option-5" onclick="changeColor('cost-structure', '#fde2e1')"></div>
+      </div>
+      <div class="resize-handle" style="background: #2980b9;"></div>
+    </div>
+  </div>
+
+  <div id="tips-popup">
+    <h3>Tips for Creating a Business Model Canvas</h3>
+    <button id="close-tips" onclick="closeTips()">×</button>
+    <ul>
+      <li><strong>Customer Segments:</strong> Be specific about who your customers are. Consider demographics, behaviors, and needs.</li>
+      <li><strong>Value Propositions:</strong> Clearly articulate the unique value you offer to each customer segment.</li>
+      <li><strong>Channels:</strong> Think about how you'll reach your customers at each stage of the buyer's journey.</li>
+      <li><strong>Customer Relationships:</strong> Define how you'll interact with customers and build lasting relationships.</li>
+      <li><strong>Revenue Streams:</strong> List all the ways your business will generate income.</li>
+      <li><strong>Key Resources:</strong> Identify the most important assets required to make your business model work.</li>
+    </ul>
+  </div>
+
+  <div id="loading-overlay">
+    <div id="loading-message">Please Wait...</div>
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,284 @@
+<html><head><base href="https://www.strategyzer.com/library/disruption-risk-assessment/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Disruption Risk Assessment</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f0f0;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+        color: #333;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+    }
+    .description {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 20px;
+    }
+    .assessment-section {
+        margin-bottom: 30px;
+    }
+    .assessment-title {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    .assessment-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .assessment-question {
+        flex: 1;
+        font-size: 14px;
+    }
+    .assessment-scale {
+        display: flex;
+        gap: 5px;
+    }
+    .scale-point {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 1px solid #999;
+        cursor: pointer;
+    }
+    .scale-point.active {
+        background-color: #ff4444;
+    }
+    .export-btn {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Disruption Risk Assessment</h1>
+    <p class="description">The Disruption Risk Assessment helps identify how healthy or at risk a business model in your portfolio actually is and how much attention it needs to be improved and de-risked. This assessment includes two dimensions.</p>
+
+    <div class="assessment-section">
+        <div class="assessment-title">Frontstage</div>
+        
+        <div class="assessment-row">
+            <div class="assessment-question">Our products and services perform worse than those of our competitors</div>
+            <div class="assessment-scale">
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+            </div>
+            <div class="assessment-question">Our products and services are highly differentiated and loved by our customers</div>
+        </div>
+
+        <div class="assessment-row">
+            <div class="assessment-question">We lost over 20% of our customer base in the last six months</div>
+            <div class="assessment-scale">
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+            </div>
+            <div class="assessment-question">We increased our customer base by at least 20% over the last six months</div>
+        </div>
+
+        <div class="assessment-row">
+            <div class="assessment-question">We are 100% dependent on intermediaries to get products and services to customers and they are taking control of the customer relationship</div>
+            <div class="assessment-scale">
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+            </div>
+            <div class="assessment-question">We have direct market access and fully own the relationship with the customers we serve and interact with</div>
+        </div>
+
+        <div class="assessment-row">
+            <div class="assessment-question">All our customers could theoretically leave us immediately, without incurring direct or indirect switching costs if they left</div>
+            <div class="assessment-scale">
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+            </div>
+            <div class="assessment-question">All our customers are locked in for several years and face significant direct and indirect switching costs if they left</div>
+        </div>
+    </div>
+
+    <div class="assessment-section">
+        <div class="assessment-title">Backstage</div>
+        
+        <div class="assessment-row">
+            <div class="assessment-question">Our key resources are significantly inferior to those of our competitors and have been deteriorating over the last six months. New entrants compete with far superior resources</div>
+            <div class="assessment-scale">
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+            </div>
+            <div class="assessment-question">Our key resources can't easily be copied or emulated for the next couple of years and our competitors can't easily catch up (e.g., intellectual property, brand, etc.)</div>
+        </div>
+
+        <div class="assessment-row">
+            <div class="assessment-question">The performance of our key activities is significantly inferior to that of our closest competitors and has been deteriorating over the last six months. New entrants compete with new, superior activities</div>
+            <div class="assessment-scale">
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+            </div>
+            <div class="assessment-question">Our key activities can't easily be copied or emulated for the next couple of years and our competitors can't easily catch up (e.g., cost effectiveness, scale, etc.)</div>
+        </div>
+
+        <div class="assessment-row">
+            <div class="assessment-question">Over the last six months we lost access to key partners</div>
+            <div class="assessment-scale">
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+            </div>
+            <div class="assessment-question">Our key partners are locked in for several years</div>
+        </div>
+    </div>
+
+    <div class="assessment-section">
+        <div class="assessment-title">Profit Formula</div>
+        
+        <div class="assessment-row">
+            <div class="assessment-question">We lost over 20% of our revenues in the last six months</div>
+            <div class="assessment-scale">
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+            </div>
+            <div class="assessment-question">We doubled our revenues over the last six months and are growing significantly better than our competitors</div>
+        </div>
+
+        <div class="assessment-row">
+            <div class="assessment-question">Our cost structure grew faster than revenues and is significantly less effective than that of our competitors</div>
+            <div class="assessment-scale">
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+            </div>
+            <div class="assessment-question">Our cost structure shrank compared to revenue growth and is significantly more effective than that of our competitors</div>
+        </div>
+
+        <div class="assessment-row">
+            <div class="assessment-question">Our margins shrank by over 50% in the last six months and are significantly lower than that of our competitors (e.g., over 50% lower)</div>
+            <div class="assessment-scale">
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+                <div class="scale-point" onclick="toggleActive(this)"></div>
+            </div>
+            <div class="assessment-question">Our margins increased by at least 50% in the last six months and are significantly higher than that of our competitors (e.g., over 50% higher)</div>
+        </div>
+    </div>
+
+    <button class="export-btn" onclick="exportToPDF()">Export to PDF</button>
+</div>
+
+<script>
+function toggleActive(element) {
+    // Remove active class from all siblings
+    let siblings = element.parentNode.children;
+    for (let sibling of siblings) {
+        sibling.classList.remove('active');
+    }
+    // Add active class to clicked element
+    element.classList.add('active');
+}
+
+function exportToPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    const content = document.querySelector('.container');
+    
+    doc.text('Disruption Risk Assessment', 10, 10);
+    let yOffset = 20;
+    
+    content.querySelectorAll('.assessment-section').forEach(section => {
+        doc.setFontSize(14);
+        doc.text(section.querySelector('.assessment-title').textContent, 10, yOffset);
+        yOffset += 10;
+        
+        section.querySelectorAll('.assessment-row').forEach(row => {
+            doc.setFontSize(10);
+            const leftText = row.querySelector('.assessment-question:first-child').textContent;
+            doc.text(leftText, 10, yOffset, { maxWidth: 80 });
+            
+            const rightText = row.querySelector('.assessment-question:last-child').textContent;
+            doc.text(rightText, 120, yOffset, { maxWidth: 80 });
+            
+            yOffset += 20;
+            
+            if (yOffset > 280) {
+                doc.addPage();
+                yOffset = 20;
+            }
+        });
+        
+        yOffset += 10;
+    });
+    
+    doc.save('disruption-risk-assessment.pdf');
+}
+</script>
+
+</body></html>
