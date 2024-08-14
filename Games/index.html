@@ -1,0 +1,91 @@
+<html><head><base href="">
+    <title>Retro Arcade Games</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .arcade-screen {
+            width: 320px;
+            border: 2px solid #0f0;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .game-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .game-list li {
+            margin: 10px 0;
+            text-align: center;
+        }
+        a {
+            color: #0f0;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .instructions {
+            font-size: 12px;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+    </head>
+    <body>
+        <div class="arcade-screen">
+            <h1>ARCADE VIDEOGAMES</h1>
+            <ul class="game-list">
+                <li><a href="https://jfkproductions.github.io/Games/Balloon Shooter.html">BALLOON SHOOTER</a></li>
+                <li><a href="https://jfkproductions.github.io/Games/tetris/Tetrissim.html">TETRIS</a></li>
+    
+            </ul>
+            <p class="instructions">USE ARROW KEYS<br>AND SPACEBAR</p>
+        </div>
+    
+        <script>
+            document.addEventListener('keydown', function(event) {
+                const gameLinks = document.querySelectorAll('.game-list a');
+                let currentIndex = -1;
+    
+                gameLinks.forEach((link, index) => {
+                    if (link.innerHTML.includes('»') && link.innerHTML.includes('«')) {
+                        currentIndex = index;
+                    }
+                });
+    
+                if (event.key === 'ArrowUp') {
+                    event.preventDefault();
+                    currentIndex = (currentIndex - 1 + gameLinks.length) % gameLinks.length;
+                } else if (event.key === 'ArrowDown') {
+                    event.preventDefault();
+                    currentIndex = (currentIndex + 1) % gameLinks.length;
+                } else if (event.key === ' ' || event.key === 'Enter') {
+                    event.preventDefault();
+                    if (currentIndex !== -1) {
+                        window.location.href = gameLinks[currentIndex].href;
+                    }
+                }
+    
+                gameLinks.forEach((link, index) => {
+                    if (index === currentIndex) {
+                        link.innerHTML = `» ${link.innerHTML.replace(/»|«/g, '').trim()} «`;
+                    } else {
+                        link.innerHTML = link.innerHTML.replace(/»|«/g, '').trim();
+                    }
+                });
+            });
+        </script>
+    </body>
+    </html>

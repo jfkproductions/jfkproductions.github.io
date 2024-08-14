@@ -1,0 +1,195 @@
+<html><head><base href="https://websim.ai">
+<title>TetroSim - Real-time Tetris Simulation</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+  }
+  #game-container {
+    text-align: center;
+  }
+  #tetris-board {
+    border: 2px solid #333;
+    display: inline-block;
+  }
+  .controls {
+    margin-top: 20px;
+  }
+  .controls button {
+    font-size: 18px;
+    margin: 0 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div id="game-container">
+  <h1>TetroSim</h1>
+  <canvas id="tetris-board" width="300" height="600"></canvas>
+  <div class="controls">
+    <button id="left-btn">←</button>
+    <button id="rotate-btn">Rotate</button>
+    <button id="right-btn">→</button>
+    <button id="down-btn">↓</button>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('tetris-board');
+const ctx = canvas.getContext('2d');
+const blockSize = 30;
+const boardWidth = 10;
+const boardHeight = 20;
+
+let board = Array(boardHeight).fill().map(() => Array(boardWidth).fill(0));
+let currentPiece;
+let currentX;
+let currentY;
+
+const pieces = [
+  [[1,1,1,1]],
+  [[1,1],[1,1]],
+  [[1,1,1],[0,1,0]],
+  [[1,1,1],[1,0,0]],
+  [[1,1,1],[0,0,1]],
+  [[1,1,0],[0,1,1]],
+  [[0,1,1],[1,1,0]]
+];
+
+function drawBoard() {
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  for (let y = 0; y < boardHeight; y++) {
+    for (let x = 0; x < boardWidth; x++) {
+      if (board[y][x]) {
+        ctx.fillStyle = 'blue';
+        ctx.fillRect(x * blockSize, y * blockSize, blockSize - 1, blockSize - 1);
+      }
+    }
+  }
+  
+  if (currentPiece) {
+    ctx.fillStyle = 'red';
+    for (let y = 0; y < currentPiece.length; y++) {
+      for (let x = 0; x < currentPiece[y].length; x++) {
+        if (currentPiece[y][x]) {
+          ctx.fillRect((currentX + x) * blockSize, (currentY + y) * blockSize, blockSize - 1, blockSize - 1);
+        }
+      }
+    }
+  }
+}
+
+function newPiece() {
+  currentPiece = pieces[Math.floor(Math.random() * pieces.length)];
+  currentX = Math.floor(boardWidth / 2) - Math.floor(currentPiece[0].length / 2);
+  currentY = 0;
+  
+  if (collision()) {
+    board = Array(boardHeight).fill().map(() => Array(boardWidth).fill(0));
+  }
+}
+
+function rotate() {
+  const rotated = currentPiece[0].map((_, i) => currentPiece.map(row => row[i]).reverse());
+  if (!collisionTest(rotated, currentX, currentY)) {
+    currentPiece = rotated;
+  }
+}
+
+function collision() {
+  return collisionTest(currentPiece, currentX, currentY);
+}
+
+function collisionTest(piece, x, y) {
+  for (let py = 0; py < piece.length; py++) {
+    for (let px = 0; px < piece[py].length; px++) {
+      if (piece[py][px] && 
+          (board[y + py] === undefined || 
+           board[y + py][x + px] === undefined || 
+           board[y + py][x + px])) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function merge() {
+  for (let y = 0; y < currentPiece.length; y++) {
+    for (let x = 0; x < currentPiece[y].length; x++) {
+      if (currentPiece[y][x]) {
+        board[currentY + y][currentX + x] = 1;
+      }
+    }
+  }
+}
+
+function clearLines() {
+  for (let y = boardHeight - 1; y >= 0; y--) {
+    if (board[y].every(cell => cell)) {
+      board.splice(y, 1);
+      board.unshift(Array(boardWidth).fill(0));
+    }
+  }
+}
+
+function moveDown() {
+  currentY++;
+  if (collision()) {
+    currentY--;
+    merge();
+    clearLines();
+    newPiece();
+  }
+}
+
+function moveLeft() {
+  currentX--;
+  if (collision()) {
+    currentX++;
+  }
+}
+
+function moveRight() {
+  currentX++;
+  if (collision()) {
+    currentX--;
+  }
+}
+
+document.getElementById('left-btn').addEventListener('click', moveLeft);
+document.getElementById('right-btn').addEventListener('click', moveRight);
+document.getElementById('rotate-btn').addEventListener('click', rotate);
+document.getElementById('down-btn').addEventListener('click', moveDown);
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'ArrowLeft') moveLeft();
+  if (event.key === 'ArrowRight') moveRight();
+  if (event.key === 'ArrowUp') rotate();
+  if (event.key === 'ArrowDown') moveDown();
+});
+
+function gameLoop() {
+  drawBoard();
+}
+
+function slowMoveDown() {
+  moveDown();
+  drawBoard();
+}
+
+newPiece();
+setInterval(slowMoveDown, 1000); // Move down every 1000ms (1 second)
+gameLoop();
+setInterval(gameLoop, 100); // Update display every 100ms for smoother animations
+</script>
+
+</body></html>

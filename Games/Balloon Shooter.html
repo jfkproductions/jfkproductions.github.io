@@ -1,0 +1,557 @@
+<!DOCTYPE html><html><head><base href="https://websimcreationengine.com/balloon-shooter/">
+    <title>Balloon Shooter</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #87CEEB;
+            font-family: Arial, sans-serif;
+        }
+        #gameCanvas {
+            display: block;
+        }
+        #gameInfo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="1659" height="840"></canvas>
+    <div id="gameInfo">
+        Score: <span id="score">0</span> | Lives: <span id="lives">3</span>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let score = 0;
+        let lives = 3;
+        let balloons = [];
+        let bullets = [];
+        let gameOver = false;
+        let gameStarted = false;
+        let level = 1;
+        let particles = [];
+        let powerUpActive = false;
+        let powerUpTimer = 0;
+
+        let spikeSize = 20;
+        let spikeColor = 'gray';
+
+        const brickWidth = 50;
+        const brickHeight = 25;
+        const brickColor = '#8B4513';
+        const wallWidth = brickWidth * 3;
+
+        // Sound effects
+        const popSound = new Audio('https://websimcreationengine.com/balloon-shooter/pop.mp3');
+        const bombSound = new Audio('https://websimcreationengine.com/balloon-shooter/explosion.mp3');
+        const powerupSound = new Audio('https://websimcreationengine.com/balloon-shooter/powerup.mp3');
+        const spikePopSound = new Audio('https://websimcreationengine.com/balloon-shooter/spike-pop.mp3');
+        const levelUpSound = new Audio('https://websimcreationengine.com/balloon-shooter/level-up.mp3');
+        const shootSound = new Audio('https://websimcreationengine.com/balloon-shooter/shoot.mp3');
+        const backgroundMusic = new Audio('https://websimcreationengine.com/balloon-shooter/background-music.mp3');
+        backgroundMusic.loop = true;
+
+        // Volume controls
+        let musicVolume = 0.5;
+        let sfxVolume = 0.5;
+
+        function setMusicVolume(volume) {
+            musicVolume = volume;
+            backgroundMusic.volume = musicVolume;
+        }
+
+        function setSFXVolume(volume) {
+            sfxVolume = volume;
+            [popSound, bombSound, powerupSound, spikePopSound, levelUpSound, shootSound].forEach(sound => {
+                sound.volume = sfxVolume;
+            });
+        }
+
+        // Menu buttons
+        const menuButtons = [
+            { text: 'Start Game', x: canvas.width / 2 - 100, y: canvas.height / 2 - 75, width: 200, height: 50 },
+            { text: 'How to Play', x: canvas.width / 2 - 100, y: canvas.height / 2, width: 200, height: 50 },
+            { text: 'Settings', x: canvas.width / 2 - 100, y: canvas.height / 2 + 75, width: 200, height: 50 }
+        ];
+
+        let currentMenu = 'main'; // 'main', 'howToPlay', 'settings', 'game'
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.size = Math.random() * 5 + 2;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+                this.life = 30;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.life--;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        class Balloon {
+            constructor(type) {
+                this.x = Math.random() * (canvas.width - 2 * wallWidth) + wallWidth;
+                this.y = canvas.height;
+                this.radius = type === 'small' ? 15 : 30;
+                this.speed = type === 'small' ? 2 : 1;
+                this.type = type;
+                this.color = type === 'normal' ? 'red' : type === 'bomb' ? 'black' : type === 'powerup' ? 'purple' : 'green';
+                this.angle = 0;
+                this.angleSpeed = (Math.random() - 0.5) * 0.05;
+                this.amplitude = Math.random() * 2 + 1;
+                this.popping = false;
+                this.popFrame = 0;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                
+                if (this.popping) {
+                    ctx.beginPath();
+                    for (let i = 0; i < 8; i++) {
+                        const angle = (Math.PI / 4) * i;
+                        const x = Math.cos(angle) * (this.radius + this.popFrame * 2);
+                        const y = Math.sin(angle) * (this.radius + this.popFrame * 2);
+                        ctx.lineTo(x, y);
+                    }
+                    ctx.closePath();
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                    ctx.closePath();
+
+                    ctx.beginPath();
+                    ctx.moveTo(-3, this.radius);
+                    ctx.lineTo(3, this.radius);
+                    ctx.lineTo(0, this.radius + 5);
+                    ctx.closePath();
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+
+                    ctx.beginPath();
+                    ctx.moveTo(0, this.radius + 5);
+                    for (let i = 0; i < 3; i++) {
+                        ctx.quadraticCurveTo(
+                            5 * Math.sin((i + 1) * Math.PI / 2),
+                            this.radius + 10 + i * 5,
+                            0,
+                            this.radius + 15 + i * 5
+                        );
+                    }
+                    ctx.strokeStyle = '#888';
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+
+                    if (this.type === 'powerup') {
+                        ctx.fillStyle = 'yellow';
+                        ctx.font = '20px "Press Start 2P"';
+                        ctx.fillText('P', -6, 6);
+                    }
+                }
+
+                ctx.restore();
+            }
+
+            update() {
+                if (this.popping) {
+                    this.popFrame++;
+                    if (this.popFrame > 5) {
+                        createParticles(this.x, this.y, this.color);
+                        return true;
+                    }
+                } else {
+                    this.y -= this.speed * (1 + level * 0.1);
+                    this.x += Math.sin(this.angle) * this.amplitude;
+                    this.angle += this.angleSpeed;
+                    if (this.y - this.radius < spikeSize) {
+                        this.popping = true;
+                        spikePopSound.currentTime = 0;
+                        spikePopSound.play();
+                        if (this.type === 'normal') {
+                            lives--;
+                        }
+                    }
+                    this.x = Math.max(wallWidth + this.radius, Math.min(canvas.width - wallWidth - this.radius, this.x));
+                }
+                return false;
+            }
+        }
+
+        class Bullet {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.radius = 5;
+                this.speed = 5;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'yellow';
+                ctx.fill();
+                ctx.closePath();
+            }
+
+            update() {
+                this.y -= this.speed;
+                return this.y + this.radius < 0;
+            }
+        }
+
+        function spawnBalloon() {
+            const rand = Math.random();
+            if (rand < 0.65) {
+                balloons.push(new Balloon('normal'));
+            } else if (rand < 0.85) {
+                balloons.push(new Balloon('bomb'));
+            } else if (rand < 0.95) {
+                balloons.push(new Balloon('small'));
+            } else {
+                balloons.push(new Balloon('powerup'));
+            }
+        }
+
+        function drawSpikes() {
+            ctx.beginPath();
+            for (let i = wallWidth; i < canvas.width - wallWidth; i += spikeSize) {
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i + spikeSize / 2, spikeSize);
+                ctx.lineTo(i + spikeSize, 0);
+            }
+            ctx.fillStyle = spikeColor;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function drawBrickWalls() {
+            for (let side = 0; side < 2; side++) {
+                const startX = side === 0 ? 0 : canvas.width - wallWidth;
+                for (let x = 0; x < wallWidth; x += brickWidth) {
+                    for (let y = 0; y < canvas.height; y += brickHeight) {
+                        ctx.fillStyle = brickColor;
+                        ctx.fillRect(startX + x, y, brickWidth, brickHeight);
+                        ctx.strokeStyle = '#000';
+                        ctx.strokeRect(startX + x, y, brickWidth, brickHeight);
+                    }
+                }
+            }
+        }
+
+        function checkCollisions() {
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                for (let j = balloons.length - 1; j >= 0; j--) {
+                    const dx = bullets[i].x - balloons[j].x;
+                    const dy = bullets[i].y - balloons[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < bullets[i].radius + balloons[j].radius) {
+                        bullets.splice(i, 1);
+                        if (balloons[j].type === 'normal') {
+                            score += 10;
+                            popSound.currentTime = 0;
+                            popSound.play();
+                        } else if (balloons[j].type === 'bomb') {
+                            lives--;
+                            bombSound.currentTime = 0;
+                            bombSound.play();
+                        } else if (balloons[j].type === 'small') {
+                            score += 20;
+                            popSound.currentTime = 0;
+                            popSound.play();
+                        } else if (balloons[j].type === 'powerup') {
+                            activatePowerUp();
+                        }
+                        balloons[j].popping = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        function activatePowerUp() {
+            powerUpActive = true;
+            powerUpTimer = 600; // 10 seconds at 60 FPS
+            powerupSound.currentTime = 0;
+            powerupSound.play();
+        }
+
+        function updateGameInfo() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('lives').textContent = lives;
+        }
+
+        function drawButton(button) {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+            ctx.fillRect(button.x, button.y, button.width, button.height);
+            ctx.fillStyle = '#00FF00';
+            ctx.font = '24px "Press Start 2P"';
+            ctx.fillText(button.text, button.x + 20, button.y + 35);
+
+            // Add pixelated border
+            ctx.strokeStyle = '#00FF00';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(button.x, button.y, button.width, button.height);
+        }
+
+        function drawMenu() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00FF00';
+            ctx.font = '48px "Press Start 2P"';
+            ctx.fillText('Balloon Shooter', canvas.width / 2 - 300, 100);
+
+            menuButtons.forEach(drawButton);
+        }
+
+        function drawHowToPlay() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00FF00';
+            ctx.font = '36px "Press Start 2P"';
+            ctx.fillText('How to Play', canvas.width / 2 - 150, 100);
+
+            ctx.font = '18px "Press Start 2P"';
+            ctx.fillText('1. Click to shoot balloons', 100, 200);
+            ctx.fillText('2. Red balloons: +10 points', 100, 250);
+            ctx.fillText('3. Small green: +20 points', 100, 300);
+            ctx.fillText('4. Black balloons: -1 life', 100, 350);
+            ctx.fillText('5. Purple: Power-up', 100, 400);
+            ctx.fillText('6. Avoid spikes', 100, 450);
+
+            drawButton({ text: 'Back', x: canvas.width / 2 - 100, y: canvas.height - 100, width: 200, height: 50 });
+        }
+
+        function drawSettings() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00FF00';
+            ctx.font = '36px "Press Start 2P"';
+            ctx.fillText('Settings', canvas.width / 2 - 100, 100);
+
+            ctx.font = '24px "Press Start 2P"';
+            ctx.fillText('Music Volume:', 100, 200);
+            ctx.fillText('Sound FX Volume:', 100, 250);
+
+            // Draw volume sliders
+            drawVolumeSlider(300, 180, musicVolume);
+            drawVolumeSlider(300, 230, sfxVolume);
+
+            drawButton({ text: 'Back', x: canvas.width / 2 - 100, y: canvas.height - 100, width: 200, height: 50 });
+        }
+
+        function drawVolumeSlider(x, y, value) {
+            const width = 200;
+            const height = 20;
+
+            // Draw background
+            ctx.fillStyle = '#333333';
+            ctx.fillRect(x, y, width, height);
+
+            // Draw filled portion
+            ctx.fillStyle = '#00FF00';
+            ctx.fillRect(x, y, width * value, height);
+
+            // Draw pixelated border
+            ctx.strokeStyle = '#00FF00';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(x, y, width, height);
+        }
+
+        function createParticles(x, y, color) {
+            for (let i = 0; i < 20; i++) {
+                particles.push(new Particle(x, y, color));
+            }
+        }
+
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            drawBrickWalls();
+            drawSpikes();
+
+            if (currentMenu === 'main') {
+                drawMenu();
+            } else if (currentMenu === 'howToPlay') {
+                drawHowToPlay();
+            } else if (currentMenu === 'settings') {
+                drawSettings();
+            } else if (currentMenu === 'game') {
+                if (Math.random() < 0.02 * (1 + level * 0.1)) {
+                    spawnBalloon();
+                }
+
+                balloons = balloons.filter(balloon => !balloon.update());
+                bullets = bullets.filter(bullet => !bullet.update());
+                particles = particles.filter(particle => {
+                    particle.update();
+                    return particle.life > 0;
+                });
+
+                balloons.forEach(balloon => balloon.draw());
+                bullets.forEach(bullet => bullet.draw());
+                particles.forEach(particle => particle.draw());
+
+                checkCollisions();
+                updateGameInfo();
+
+                if (powerUpActive) {
+                    ctx.fillStyle = 'rgba(255, 255, 0, 0.2)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    powerUpTimer--;
+                    if (powerUpTimer <= 0) {
+                        powerUpActive = false;
+                    }
+                }
+
+                if (lives <= 0) {
+                    currentMenu = 'main';
+                    gameOver = true;
+                }
+
+                if (score >= level * 100) {
+                    level++;
+                    levelUpSound.currentTime = 0;
+                    levelUpSound.play();
+                }
+
+                ctx.fillStyle = '#00FF00';
+                ctx.font = '20px "Press Start 2P"';
+                ctx.fillText(`Level: ${level}`, canvas.width - 200, 30);
+            }
+
+            if (gameOver) {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#00FF00';
+                ctx.font = '48px "Press Start 2P"';
+                ctx.fillText('Game Over!', canvas.width / 2 - 200, canvas.height / 2);
+                drawButton({ text: 'Restart', x: canvas.width / 2 - 100, y: canvas.height / 2 + 50, width: 200, height: 50 });
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        canvas.addEventListener('click', (event) => {
+            const mouseX = event.clientX - canvas.getBoundingClientRect().left;
+            const mouseY = event.clientY - canvas.getBoundingClientRect().top;
+
+            if (currentMenu === 'main') {
+                menuButtons.forEach((button, index) => {
+                    if (
+                        mouseX >= button.x &&
+                        mouseX <= button.x + button.width &&
+                        mouseY >= button.y &&
+                        mouseY <= button.y + button.height
+                    ) {
+                        if (index === 0) {
+                            currentMenu = 'game';
+                            gameStarted = true;
+                            gameOver = false;
+                            score = 0;
+                            lives = 3;
+                            level = 1;
+                            balloons = [];
+                            bullets = [];
+                            particles = [];
+                            backgroundMusic.play();
+                        } else if (index === 1) {
+                            currentMenu = 'howToPlay';
+                        } else if (index === 2) {
+                            currentMenu = 'settings';
+                        }
+                    }
+                });
+            } else if (currentMenu === 'howToPlay' || currentMenu === 'settings') {
+                const backButton = { text: 'Back', x: canvas.width / 2 - 100, y: canvas.height - 100, width: 200, height: 50 };
+                if (
+                    mouseX >= backButton.x &&
+                    mouseX <= backButton.x + backButton.width &&
+                    mouseY >= backButton.y &&
+                    mouseY <= backButton.y + backButton.height
+                ) {
+                    currentMenu = 'main';
+                }
+            } else if (currentMenu === 'game') {
+                if (mouseX > wallWidth && mouseX < canvas.width - wallWidth) {
+                    bullets.push(new Bullet(mouseX, mouseY));
+                    shootSound.currentTime = 0;
+                    shootSound.play();
+                }
+            }
+
+            if (gameOver) {
+                const restartButton = { text: 'Restart', x: canvas.width / 2 - 100, y: canvas.height / 2 + 50, width: 200, height: 50 };
+                if (
+                    mouseX >= restartButton.x &&
+                    mouseX <= restartButton.x + restartButton.width &&
+                    mouseY >= restartButton.y &&
+                    mouseY <= restartButton.y + restartButton.height
+                ) {
+                    currentMenu = 'game';
+                    gameStarted = true;
+                    gameOver = false;
+                    score = 0;
+                    lives = 3;
+                    level = 1;
+                    balloons = [];
+                    bullets = [];
+                    particles = [];
+                    backgroundMusic.play();
+                }
+            }
+
+            // Handle volume slider clicks
+            if (currentMenu === 'settings') {
+                if (mouseY >= 180 && mouseY <= 200) {
+                    setMusicVolume((mouseX - 300) / 200);
+                } else if (mouseY >= 230 && mouseY <= 250) {
+                    setSFXVolume((mouseX - 300) / 200);
+                }
+            }
+        });
+
+        function changeSpikeProperties() {
+            spikeSize = Math.floor(Math.random() * 20) + 10;
+            spikeColor = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+        }
+
+        setInterval(changeSpikeProperties, 5 * 60 * 1000);
+
+        // Load the "Press Start 2P" font
+        const font = new FontFace('Press Start 2P', 'url(https://fonts.gstatic.com/s/pressstart2p/v14/e3t4euO8T-267oIAQAu6jDQyK3nVivM.woff2)');
+        font.load().then(function(loadedFont) {
+            document.fonts.add(loadedFont);
+            gameLoop();
+        });
+    </script>
+</body></html>
