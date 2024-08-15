@@ -202,6 +202,7 @@
         <img id="logo" src="assets/KraaiComplete2.png" alt="Logo">
         <div class="message">Click next to get to know me</div>
         <button class="next-btn" onclick="showSlideshow()">Start Slideshow</button>
+        
     </div>
 
     <!-- Slideshow Content -->
@@ -215,13 +216,25 @@
             </div>
             <div class="slide">
                 <video controls>
-                    <source src="assets/videos/Dancing Lights.mp4" type="video/mp4">
+                    <source src="assets/videos/Work.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             </div>
             <div class="slide">
-                <iframe src="https://www.youtube.com/embed/uyAyeUcXps8?si=SgP-U2jU10SkmdBL" frameborder="0"></iframe>
+                <video controls>
+                    <source src="assets/videos/Certifications.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
             </div>
+            <div class="slide">
+                <video controls>
+                    <source src="assets/videos/Comedy.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+       
+
+           
         </div>
         <div id="slideDescription" class="description">Description for the first slide</div>
         <div class="controls">
@@ -232,9 +245,10 @@
 
     <script>
         const descriptions = [
-            "Description for the first slide",
-            "Description for the second slide",
-            "Description for the third slide"
+            "Introduction",
+            "Work",
+            "Certifications",
+            "Comedy",
         ];
 
         function showSlideshow() {

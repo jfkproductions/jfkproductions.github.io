@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combined Welcome and About Page</title>
+    <style>
+        @font-face {
+            font-family: 'CrowFont';
+            src: url('assets/MAEL____.TTF') format('truetype');
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            text-align: center;
+        }
+
+        /* Welcome Page Styles */
+        .header {
+            font-family: 'CrowFont', Arial, sans-serif;
+            font-size: 192px;
+            font-weight: bold;
+            color: red;
+            position: relative;
+            z-index: 2;
+        }
+
+        .welcome-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #logo {
+            width: 50%;
+            position: absolute;
+            transform-origin: center;
+            z-index: 1;
+            animation: fly 4s ease-in-out forwards, scale 4s ease-in-out forwards;
+        }
+
+        @keyframes scale {
+            0% {
+                transform: scale(0.1);
+            }
+            100% {
+                transform: scale(2.5);
+            }
+        }
+
+        @keyframes fly {
+            0% {
+                transform: translateY(300px) scale(0.1);
+            }
+            50% {
+                transform: translateY(-30px) scale(0.8);
+            }
+            100% {
+                transform: translateY(-700px) scale(2.5);
+            }
+        }
+
+        .message {
+            margin-top: 20%;
+            font-size: 36px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            opacity: 0;
+            animation: showText 4s ease-in-out forwards;
+        }
+
+        @keyframes showText {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+       /* Updated styles for ensuring the button is clickable */
+        .next-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            color: #000;
+            background-color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateX(-10px); /* Adjusted for slight left movement */
+            animation: showButton 4s ease-in-out forwards;
+            z-index: 3; /* Ensure the button is on top */
+            position: relative; /* Ensure it respects the z-index */
+        }
+
+        @keyframes showButton {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Slideshow Styles */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            flex-direction: column;
+        }
+
+        .slider-content {
+            display: flex;
+            width: 300%;
+            transition: transform 0.5s ease-in-out;
+            transform: translateX(0%);
+            flex-grow: 1;
+            align-items: center;
+        }
+
+        .slide {
+            width: 100%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide img, .slide iframe, .slide video {
+            max-width: 90%;
+            height: 70%;
+            object-fit: contain;
+        }
+
+        .description {
+            margin: 10px 0; /* Reduced margin */
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            max-width: 90%;
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: space-between;
+            width: 200px;
+        }
+
+        .controls button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .controls button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Welcome Content -->
+    <div id="welcomePage" class="welcome-container">
+        <div class="header">Kraai</div>
+        <img id="logo" src="assets/KraaiComplete2.png" alt="Logo">
+        <div class="message">Click next to get to know me</div>
+        <button class="next-btn" onclick="showSlideshow()">Start Slideshow</button>
+        
+    </div>
+
+    <!-- Slideshow Content -->
+    <div id="slideshowPage" class="slider-container">
+        <div class="slide">
+            <video id="slide1Video" controls muted>
+                <source src="assets/videos/introShowCase.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+            <div class="slide">
+                <iframe style="border-radius:12px; max-width: 50%; width: 30%; height: 352px;" 
+                    src="https://open.spotify.com/embed/artist/3DwWrzCxBOv47oIMpRwJCU?utm_source=generator" 
+                    width="30%" height="352" frameBorder="0" allowfullscreen="false" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" 
+                    loading="lazy"></iframe>
+            </div>
+
+          
+            <div class="slide">
+                <iframe style="border-radius:12px; max-width: 50%; width: 30%; height: 352px;" 
+                    src="https://open.spotify.com/embed/album/7IddTFUNL3gUxAS6hmWmIq?utm_source=generator" 
+                    width="30%" height="352" frameBorder="0" allowfullscreen="false" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" 
+                    loading="lazy"></iframe>
+            </div>
+
+            <div class="slide">
+                <iframe style="border-radius:12px; max-width: 50%; width: 30%; height: 352px;" 
+                    src="https://open.spotify.com/embed/album/7n5bhXPYNUwqZzlOKmEHKW?utm_source=generator" 
+                    width="30%" height="352" frameBorder="0" allowfullscreen="false" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" 
+                    loading="lazy"></iframe>
+            </div>
+
+            <div class="slide">
+                <iframe style="border-radius:12px; max-width: 50%; width: 30%; height: 352px;" 
+                    src="https://www.youtube.com/embed/cXEowOKmCMc?si=0blJ5-C8JVS1eMY_" 
+                    width="30%" height="352" frameBorder="0" allowfullscreen="false" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" 
+                    loading="lazy"></iframe>
+            </div>
+            <div class="slide">
+                <iframe style="border-radius:12px; max-width: 50%; width: 30%; height: 352px;" 
+                    src="https://www.youtube.com/embed/HbIA-l_LuLY?si=cm5rsf0E9GNAT-i5" 
+                    width="30%" height="352" frameBorder="0" allowfullscreen="false" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" 
+                    loading="lazy"></iframe>
+            </div>
+           
+        </div>
+        <div id="slideDescription" class="description">Description for the first slide</div>
+        <div class="controls">
+            <button id="prevBtn" onclick="prevSlide()">Prev</button>
+            <button id="nextBtn" onclick="nextSlide()">Next</button>
+        </div>
+    </div>
+
+    <script>
+        const descriptions = [
+            "Introduction",
+            "Comedy Album",
+            "Music",
+            "Music",
+            "Animation",
+            "Music-Video",
+
+        ];
+
+        function showSlideshow() {
+            // Hide Welcome Page
+            document.getElementById('welcomePage').style.display = 'none';
+
+            // Show Slideshow
+            const slideshowPage = document.getElementById('slideshowPage');
+            slideshowPage.style.visibility = 'visible';
+            slideshowPage.style.opacity = '1';
+
+            // Enable sound on the first slide's video
+            const slide1Video = document.getElementById('slide1Video');
+            slide1Video.muted = false;
+            slide1Video.play();
+        }
+
+        const sliderContent = document.querySelector('.slider-content');
+        const slides = document.querySelectorAll('.slide');
+        const slideDescription = document.getElementById('slideDescription');
+        let currentIndex = 0;
+
+        function updateSlider() {
+            // Pause all videos
+            slides.forEach(slide => {
+                const video = slide.querySelector('video');
+                if (video) {
+                    video.pause();
+                    video.currentTime = 0; // Reset video to start
+                }
+            });
+
+            // Move the slider to the correct position
+            const offset = -currentIndex * 100;
+            sliderContent.style.transform = `translateX(${offset}%)`;
+
+            // Update the description
+            slideDescription.textContent = descriptions[currentIndex];
+
+            // Play the video if the current slide contains one
+            const currentSlide = slides[currentIndex];
+            const video = currentSlide.querySelector('video');
+            if (video) {
+                video.play();
+            }
+        }
+
+        function nextSlide() {
+            if (currentIndex < slides.length - 1) {
+                currentIndex++;
+            } else {
+                currentIndex = 0;
+            }
+            updateSlider();
+        }
+
+        function prevSlide() {
+            if (currentIndex > 0) {
+                currentIndex--;
+            } else {
+                currentIndex = slides.length - 1;
+            }
+            updateSlider();
+        }
+
+        // Always start with the first slide
+        window.addEventListener('load', () => {
+            currentIndex = 0;
+            updateSlider();
+        });
+    </script>
+
+</body>
+</html>
