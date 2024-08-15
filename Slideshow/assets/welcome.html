@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flying Logo Animation</title>
+    <style>
+        @font-face {
+            font-family: 'CrowFont';
+            src: url('MAEL____.TTF') format('truetype');
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            text-align: center;
+        }
+
+        .header {
+            font-family: 'CrowFont', Arial, sans-serif;
+            font-size: 192px; /* 4 times the original size (48px * 4) */
+            font-weight: bold;
+            color: red;
+            position: relative;
+            z-index: 2; /* Ensure text stays above the image */
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #logo {
+            width: 50%;
+            position: absolute;
+            transform-origin: center;
+            z-index: 1; /* Ensure image is below the text */
+            animation: fly 4s ease-in-out forwards, scale 4s ease-in-out forwards;
+        }
+
+        @keyframes scale {
+            0% {
+                transform: scale(0.1);
+            }
+            100% {
+                transform: scale(2.5);
+            }
+        }
+
+        @keyframes fly {
+            0% {
+                transform: translateY(300px) scale(0.1);
+            }
+            50% {
+                transform: translateY(-30px) scale(0.8); /* Image approaches the text */
+            }
+            100% {
+                transform: translateY(-700px) scale(2.5); /* Image flies through and behind the text */
+            }
+        }
+
+        .message {
+            margin-top: 20%;
+            font-size: 36px;
+            font-weight: bold;
+            font-family: Arial, sans-serif; /* Reset to standard font */
+            opacity: 0;
+            animation: showText 4s ease-in-out forwards;
+        }
+
+        @keyframes showText {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .next-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            font-family: Arial, sans-serif; /* Reset to standard font */
+            color: #000;
+            background-color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            opacity: 0;
+            animation: showButton 4s ease-in-out forwards;
+        }
+
+        @keyframes showButton {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">Kraai</div>
+
+    <div class="container">
+        <img id="logo" src="KraaiComplete2.png" alt="Logo">
+        <div class="message">Click next to get to know me</div>
+    </div>
+
+</body>
+</html>
