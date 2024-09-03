@@ -1,0 +1,144 @@
+<html><head><base href="">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Converter</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        #uploadBtn, #convertBtn, #downloadBtn {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #convertBtn, #downloadBtn {
+            display: none;
+        }
+        #preview {
+            max-width: 300px;
+            max-height: 300px;
+            margin-top: 1rem;
+        }
+        #formatSelect {
+            margin: 1rem 0;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Image Converter</h1>
+        <input type="file" id="fileInput" accept="image/webp,image/png,image/bmp,image/jpeg,image/svg+xml" style="display: none;">
+        <button id="uploadBtn">Upload Image</button>
+        <br>
+        <img id="preview" style="display: none;">
+        <br>
+        <select id="formatSelect" style="display: none;">
+            <option value="webp">WebP</option>
+            <option value="png">PNG</option>
+            <option value="jpeg">JPEG</option>
+            <option value="svg">SVG</option>
+        </select>
+        <br>
+        <button id="convertBtn">Convert</button>
+        <button id="downloadBtn">Download</button>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const preview = document.getElementById('preview');
+        const formatSelect = document.getElementById('formatSelect');
+        const convertBtn = document.getElementById('convertBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        let originalImage;
+
+        uploadBtn.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.src = e.target.result;
+                    preview.style.display = 'inline-block';
+                    formatSelect.style.display = 'inline-block';
+                    convertBtn.style.display = 'inline-block';
+                    originalImage = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        convertBtn.addEventListener('click', () => {
+            const selectedFormat = formatSelect.value;
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+
+            img.onload = () => {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+
+                if (selectedFormat === 'svg') {
+                    convertToSVG(canvas);
+                } else {
+                    const convertedImage = canvas.toDataURL(`image/${selectedFormat}`);
+                    preview.src = convertedImage;
+                    downloadBtn.style.display = 'inline-block';
+                }
+            };
+
+            img.src = originalImage;
+        });
+
+        function convertToSVG(canvas) {
+            const fabricCanvas = new fabric.Canvas(null, { width: canvas.width, height: canvas.height });
+            fabric.Image.fromURL(canvas.toDataURL(), (img) => {
+                fabricCanvas.add(img);
+                const svgData = fabricCanvas.toSVG();
+                const blob = new Blob([svgData], { type: 'image/svg+xml' });
+                const url = URL.createObjectURL(blob);
+                preview.src = url;
+                downloadBtn.style.display = 'inline-block';
+            });
+        }
+
+        downloadBtn.addEventListener('click', () => {
+            const format = formatSelect.value;
+            const link = document.createElement('a');
+            link.download = `converted_image.${format}`;
+            link.href = preview.src;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    </script>
+</body></html>

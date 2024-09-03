@@ -1,0 +1,642 @@
+<html><head><base href="">
+<meta charset="UTF-8">
+<title>Advanced Database Schema Visualization</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.6/dist/vis-network.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+    color: #333;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 20px;
+  }
+  h1, h2, h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+  }
+  #mynetwork {
+    width: 100%;
+    height: 600px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  #fileInput {
+    margin-bottom: 20px;
+  }
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  button:hover {
+    background-color: #2980b9;
+  }
+  #structureOutput {
+    margin-top: 20px;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f8f8;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    max-height: 600px;
+    overflow-y: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  .table-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  .zoom-buttons {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+  }
+  .zoom-btn {
+    font-size: 18px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  .file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+  }
+  .file-input-label {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+  }
+  .file-input {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  #loadingOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+  }
+  .spinner {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">Advanced Database Schema Visualization</h1>
+    <div class="button-group">
+      <div class="file-input-wrapper">
+        <label for="fileInput" class="file-input-label">Choose SQL File</label>
+        <input type="file" id="fileInput" accept=".sql" class="file-input">
+      </div>
+      <button onclick="analyzeSqlFile()" class="action-button analyze">Analyze SQL File</button>
+      <button onclick="toggleStructure()" class="action-button toggle">Toggle Structure</button>
+      <button onclick="exportToSqlScript()" class="action-button save">Export to SQL Script</button>
+    </div>
+    <div id="mynetwork" class="network-container">
+      <div class="zoom-buttons">
+        <button class="zoom-btn" onclick="zoomIn()">+</button>
+        <button class="zoom-btn" onclick="zoomOut()">-</button>
+      </div>
+    </div>
+    <div id="structureOutput" class="structure-output" style="display: none;"></div>
+  </div>
+
+  <div id="loadingOverlay">
+    <div class="spinner"></div>
+  </div>
+
+  <script>
+    let currentTables = [];
+    let network;
+    let nodes;
+    let edges;
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+      if (typeof vis === 'undefined') {
+        console.error('vis library is not loaded. Please check your internet connection and try again.');
+        return;
+      }
+      
+      // Initial visualization with sample data
+      createSchemaVisualization(sampleTables);
+    });
+
+    function parseSql(sql) {
+      const tables = [];
+      const tableRegex = /CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?`?(\w+)`?\s*\(([\s\S]*?)\)\s*(?:ENGINE\s*=\s*\w+)?(?:\s*DEFAULT\s+CHARSET\s*=\s*\w+)?(?:\s*COLLATION.*?)?;/gi;
+      const columnRegex = /\s*`?(\w+)`?\s+([\w()]+)(?:\(([^)]+)\))?(\s+(?:NOT NULL|NULL|AUTO_INCREMENT|DEFAULT\s+(?:'[^']*'|\w+)|COMMENT\s+'[^']*'|UNSIGNED)[^,\)]*)?/gi;
+      const keyRegex = /\s*(PRIMARY KEY|UNIQUE(?: KEY)?|KEY|CONSTRAINT)\s+(?:`?(\w+)`?)?\s*\(([^)]+)\)/gi;
+      const foreignKeyRegex = /FOREIGN\s+KEY\s*\(`?(\w+)`?\)\s*REFERENCES\s+`?(\w+)`?\s*\(`?(\w+)`?\)/gi;
+
+      let tableMatch;
+      while ((tableMatch = tableRegex.exec(sql)) !== null) {
+        const tableName = tableMatch[1];
+        const tableContent = tableMatch[2];
+        const columns = [];
+        const keys = [];
+        const foreignKeys = [];
+        
+        let columnMatch;
+        while ((columnMatch = columnRegex.exec(tableContent)) !== null) {
+          columns.push({
+            name: columnMatch[1],
+            type: columnMatch[2] + (columnMatch[3] ? `(${columnMatch[3]})` : ''),
+            constraints: columnMatch[4] ? columnMatch[4].trim() : ''
+          });
+        }
+
+        let keyMatch;
+        while ((keyMatch = keyRegex.exec(tableContent)) !== null) {
+          keys.push({
+            type: keyMatch[1],
+            name: keyMatch[2] || '',
+            columns: keyMatch[3].split(',').map(col => col.trim().replace(/`/g, ''))
+          });
+        }
+
+        let foreignKeyMatch;
+        while ((foreignKeyMatch = foreignKeyRegex.exec(tableContent)) !== null) {
+          foreignKeys.push({
+            column: foreignKeyMatch[1],
+            referencedTable: foreignKeyMatch[2],
+            referencedColumn: foreignKeyMatch[3]
+          });
+        }
+        
+        tables.push({ name: tableName, columns, keys, foreignKeys });
+      }
+
+      return tables;
+    }
+
+    function createSchemaVisualization(tables) {
+      if (typeof vis === 'undefined') {
+        console.error('vis library is not loaded. Please check your internet connection and try again.');
+        return;
+      }
+
+      nodes = new vis.DataSet(
+        tables.map(table => ({
+          id: table.name,
+          label: getTableLabel(table),
+          shape: 'box',
+          font: { multi: 'html', face: 'Roboto', size: 14, align: 'left' },
+          color: {
+            background: '#ecf0f1',
+            border: '#34495e',
+            highlight: { background: '#e74c3c', border: '#c0392b' }
+          },
+          borderWidth: 2,
+          shadow: true
+        }))
+      );
+
+      edges = new vis.DataSet();
+
+      tables.forEach(table => {
+        if (table.foreignKeys) {
+          table.foreignKeys.forEach(fk => {
+            edges.add({
+              from: table.name,
+              to: fk.referencedTable,
+              arrows: 'to',
+              label: `${fk.column} -> ${fk.referencedColumn}`,
+              color: { color: '#2980b9', highlight: '#3498db' },
+              width: 2,
+              smooth: { type: 'curvedCW', roundness: 0.2 }
+            });
+          });
+        }
+      });
+
+      const container = document.getElementById('mynetwork');
+      const data = { nodes: nodes, edges: edges };
+      const options = {
+        layout: {
+          improvedLayout: true,
+          hierarchical: {
+            enabled: false
+          }
+        },
+        physics: {
+          enabled: true,
+          barnesHut: {
+            gravitationalConstant: -2000,
+            centralGravity: 0.3,
+            springLength: 200,
+            springConstant: 0.04,
+            damping: 0.09,
+            avoidOverlap: 0.1
+          },
+          stabilization: {
+            iterations: 1000,
+            updateInterval: 100
+          }
+        },
+        interaction: {
+          dragNodes: true,
+          dragView: true,
+          zoomView: true,
+          hover: true
+        },
+        edges: {
+          smooth: {
+            type: 'continuous'
+          }
+        }
+      };
+
+      network = new vis.Network(container, data, options);
+
+      network.once("afterDrawing", function() {
+        network.fit({
+          animation: {
+            duration: 1000,
+            easingFunction: "easeOutQuint"
+          }
+        });
+      });
+
+      network.on("hoverNode", function (params) {
+        document.body.style.cursor = 'pointer';
+      });
+      network.on("blurNode", function (params) {
+        document.body.style.cursor = 'default';
+      });
+
+      network.on("click", function (params) {
+        if (params.nodes.length > 0) {
+          const nodeId = params.nodes[0];
+          const table = tables.find(t => t.name === nodeId);
+          if (table) {
+            showTableDetails(table);
+          }
+        }
+      });
+    }
+
+    function getTableLabel(table) {
+      let label = `<b>${table.name}</b>\n`;
+      table.columns.forEach(column => {
+        const pk = table.keys.some(key => key.type === 'PRIMARY KEY' && key.columns.includes(column.name)) ? '🔑 ' : '';
+        const fk = table.foreignKeys.some(fk => fk.column === column.name) ? '🔗 ' : '';
+        label += `${pk}${fk}${column.name} (${column.type})\n`;
+      });
+      return label;
+    }
+
+    function analyzeSqlFile() {
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
+      if (file) {
+        showLoadingOverlay();
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const sql = e.target.result;
+          setTimeout(() => {
+            const tables = parseSql(sql);
+            currentTables = tables;
+            createSchemaVisualization(tables);
+            updateStructureOutput(tables);
+            hideLoadingOverlay();
+          }, 100);
+        };
+        reader.readAsText(file);
+      } else {
+        alert('Please select a SQL file.');
+      }
+    }
+
+    function showLoadingOverlay() {
+      document.getElementById('loadingOverlay').style.display = 'flex';
+    }
+
+    function hideLoadingOverlay() {
+      document.getElementById('loadingOverlay').style.display = 'none';
+    }
+
+    function showTableDetails(table) {
+      let detailsHtml = `<h2>${table.name}</h2>`;
+      detailsHtml += '<table>';
+      detailsHtml += '<tr><th>Column</th><th>Type</th><th>Constraints</th></tr>';
+      table.columns.forEach(column => {
+        detailsHtml += `<tr>
+          <td>${column.name}</td>
+          <td>${column.type}</td>
+          <td>${column.constraints}</td>
+        </tr>`;
+      });
+      detailsHtml += '</table>';
+
+      if (table.keys.length > 0) {
+        detailsHtml += '<h3>Keys</h3>';
+        detailsHtml += '<ul>';
+        table.keys.forEach(key => {
+          detailsHtml += `<li>${key.type}: ${key.columns.join(', ')}</li>`;
+        });
+        detailsHtml += '</ul>';
+      }
+
+      if (table.foreignKeys.length > 0) {
+        detailsHtml += '<h3>Foreign Keys</h3>';
+        detailsHtml += '<ul>';
+        table.foreignKeys.forEach(fk => {
+          detailsHtml += `<li>${fk.column} -> ${fk.referencedTable}(${fk.referencedColumn})</li>`;
+        });
+        detailsHtml += '</ul>';
+      }
+
+      const detailsContainer = document.createElement('div');
+      detailsContainer.innerHTML = detailsHtml;
+      detailsContainer.style.position = 'fixed';
+      detailsContainer.style.top = '50%';
+      detailsContainer.style.left = '50%';
+      detailsContainer.style.transform = 'translate(-50%, -50%)';
+      detailsContainer.style.backgroundColor = 'white';
+      detailsContainer.style.padding = '20px';
+      detailsContainer.style.border = '1px solid #ccc';
+      detailsContainer.style.borderRadius = '5px';
+      detailsContainer.style.zIndex = '1000';
+      detailsContainer.style.maxHeight = '80vh';
+      detailsContainer.style.overflowY = 'auto';
+
+      const closeButton = document.createElement('button');
+      closeButton.textContent = 'Close';
+      closeButton.style.marginTop = '10px';
+      closeButton.onclick = function() {
+        document.body.removeChild(detailsContainer);
+      };
+      detailsContainer.appendChild(closeButton);
+
+      document.body.appendChild(detailsContainer);
+    }
+
+    function toggleStructure() {
+      const structureOutput = document.getElementById('structureOutput');
+      structureOutput.style.display = structureOutput.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function updateStructureOutput(tables) {
+      const structureOutput = document.getElementById('structureOutput');
+      let output = '';
+      
+      tables.forEach(table => {
+        output += `<div class="table-name">${table.name}</div>`;
+        output += '<table>';
+        output += '<tr><th>#</th><th>Name</th><th>Type</th><th>Null</th><th>Default</th><th>Extra</th></tr>';
+        table.columns.forEach((column, index) => {
+          const nullValue = column.constraints.includes('NOT NULL') ? 'No' : 'Yes';
+          const defaultMatch = column.constraints.match(/DEFAULT\s+(\S+)/);
+          const defaultValue = defaultMatch ? defaultMatch[1] : '';
+          const extra = column.constraints.replace(/NOT NULL|DEFAULT\s+(\S+)/, '').trim();
+          output += `<tr>
+            <td>${index + 1}</td>
+            <td>${column.name}</td>
+            <td>${column.type}</td>
+            <td>${nullValue}</td>
+            <td>${defaultValue}</td>
+            <td>${extra}</td>
+          </tr>`;
+        });
+        output += '</table>';
+        
+        if (table.keys.length > 0) {
+          output += '<h3>Keys</h3>';
+          output += '<table>';
+          output += '<tr><th>Type</th><th>Name</th><th>Columns</th></tr>';
+          table.keys.forEach(key => {
+            output += `<tr>
+              <td>${key.type}</td>
+              <td>${key.name}</td>
+              <td>${key.columns.join(', ')}</td>
+            </tr>`;
+          });
+          output += '</table>';
+        }
+        
+        if (table.foreignKeys.length > 0) {
+          output += '<h3>Foreign Keys</h3>';
+          output += '<table>';
+          output += '<tr><th>Column</th><th>Referenced Table</th><th>Referenced Column</th></tr>';
+          table.foreignKeys.forEach(fk => {
+            output += `<tr>
+              <td>${fk.column}</td>
+              <td>${fk.referencedTable}</td>
+              <td>${fk.referencedColumn}</td>
+            </tr>`;
+          });
+          output += '</table>';
+        }
+        
+        output += '<br>';
+      });
+      
+      structureOutput.innerHTML = output;
+    }
+
+    function zoomIn() {
+      const scale = network.getScale();
+      network.moveTo({
+        scale: scale * 1.2
+      });
+    }
+
+    function zoomOut() {
+      const scale = network.getScale();
+      network.moveTo({
+        scale: scale / 1.2
+      });
+    }
+
+    function exportToSqlScript() {
+      if (currentTables.length === 0) {
+        alert('No tables to export. Please analyze a SQL file first.');
+        return;
+      }
+
+      let sqlScript = '';
+
+      currentTables.forEach(table => {
+        sqlScript += `CREATE TABLE ${table.name} (\n`;
+        
+        table.columns.forEach((column, index) => {
+          sqlScript += `  ${column.name} ${column.type}${column.constraints}`;
+          if (index < table.columns.length - 1 || table.keys.length > 0 || table.foreignKeys.length > 0) {
+            sqlScript += ',';
+          }
+          sqlScript += '\n';
+        });
+
+        table.keys.forEach((key, index) => {
+          if (key.type === 'PRIMARY KEY') {
+            sqlScript += `  PRIMARY KEY (${key.columns.join(', ')})`;
+          } else if (key.type === 'UNIQUE KEY') {
+            sqlScript += `  UNIQUE KEY ${key.name} (${key.columns.join(', ')})`;
+          } else {
+            sqlScript += `  KEY ${key.name} (${key.columns.join(', ')})`;
+          }
+          if (index < table.keys.length - 1 || table.foreignKeys.length > 0) {
+            sqlScript += ',';
+          }
+          sqlScript += '\n';
+        });
+
+        table.foreignKeys.forEach((fk, index) => {
+          sqlScript += `  FOREIGN KEY (${fk.column}) REFERENCES ${fk.referencedTable} (${fk.referencedColumn})`;
+          if (index < table.foreignKeys.length - 1) {
+            sqlScript += ',';
+          }
+          sqlScript += '\n';
+        });
+
+        sqlScript += ');\n\n';
+      });
+
+      const blob = new Blob([sqlScript], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'exported_schema.sql';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // Sample data for initial visualization
+    const sampleTables = [
+      {
+        name: 'customer',
+        columns: [
+          { name: 'id', type: 'INT', constraints: 'NOT NULL AUTO_INCREMENT' },
+          { name: 'name', type: 'VARCHAR(100)', constraints: 'NOT NULL' },
+          { name: 'email', type: 'VARCHAR(100)', constraints: 'NOT NULL' },
+          { name: 'created_at', type: 'TIMESTAMP', constraints: 'DEFAULT CURRENT_TIMESTAMP' }
+        ],
+        keys: [
+          { type: 'PRIMARY KEY', name: '', columns: ['id'] }
+        ],
+        foreignKeys: []
+      },
+      {
+        name: 'order',
+        columns: [
+          { name: 'id', type: 'INT', constraints: 'NOT NULL AUTO_INCREMENT' },
+          { name: 'customer_id', type: 'INT', constraints: 'NOT NULL' },
+          { name: 'total_amount', type: 'DECIMAL(10,2)', constraints: 'NOT NULL' },
+          { name: 'order_date', type: 'DATE', constraints: 'NOT NULL' }
+        ],
+        keys: [
+          { type: 'PRIMARY KEY', name: '', columns: ['id'] },
+          { type: 'KEY', name: 'customer_id', columns: ['customer_id'] }
+        ],
+        foreignKeys: [
+          { column: 'customer_id', referencedTable: 'customer', referencedColumn: 'id' }
+        ]
+      },
+      {
+        name: 'product',
+        columns: [
+          { name: 'id', type: 'INT', constraints: 'NOT NULL AUTO_INCREMENT' },
+          { name: 'name', type: 'VARCHAR(100)', constraints: 'NOT NULL' },
+          { name: 'price', type: 'DECIMAL(10,2)', constraints: 'NOT NULL' },
+          { name: 'stock', type: 'INT', constraints: 'NOT NULL DEFAULT 0' }
+        ],
+        keys: [
+          { type: 'PRIMARY KEY', name: '', columns: ['id'] }
+        ],
+        foreignKeys: []
+      },
+      {
+        name: 'order_item',
+        columns: [
+          { name: 'id', type: 'INT', constraints: 'NOT NULL AUTO_INCREMENT' },
+          { name: 'order_id', type: 'INT', constraints: 'NOT NULL' },
+          { name: 'product_id', type: 'INT', constraints: 'NOT NULL' },
+          { name: 'quantity', type: 'INT', constraints: 'NOT NULL' },
+          { name: 'price', type: 'DECIMAL(10,2)', constraints: 'NOT NULL' }
+        ],
+        keys: [
+          { type: 'PRIMARY KEY', name: '', columns: ['id'] },
+          { type: 'KEY', name: 'order_id', columns: ['order_id'] },
+          { type: 'KEY', name: 'product_id', columns: ['product_id'] }
+        ],
+        foreignKeys: [
+          { column: 'order_id', referencedTable: 'order', referencedColumn: 'id' },
+          { column: 'product_id', referencedTable: 'product', referencedColumn: 'id' }
+        ]
+      }
+    ];
+
+    // Initialize structure output with sample data
+    updateStructureOutput(sampleTables);
+  </script>
+
+</body></html>

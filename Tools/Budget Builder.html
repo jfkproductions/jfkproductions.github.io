@@ -1,0 +1,459 @@
+<!DOCTYPE html><html><head><base href="">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>iBudget Simulator Pro</title>
+<style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f2f2f7;
+        color: #000;
+    }
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    }
+    h1, h2, h3 {
+        text-align: center;
+        color: #007AFF;
+    }
+    .total-accumulated {
+        background-color: #e8f5e9;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+    #totalAmount {
+        font-size: 24px;
+        font-weight: bold;
+        color: #4CAF50;
+    }
+    .tab-container {
+        display: flex;
+        overflow-x: auto;
+        margin-bottom: 20px;
+    }
+    .tab {
+        padding: 10px 20px;
+        background-color: #f0f0f0;
+        border: none;
+        cursor: pointer;
+        margin-right: 5px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+    .tab.active {
+        background-color: #007AFF;
+        color: white;
+    }
+    .income-expense-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    .income-section, .expense-section {
+        width: 48%;
+    }
+    input[type="text"], input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    button {
+        background-color: #007AFF;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+    #incomeList, #expenseList {
+        margin-bottom: 15px;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    #incomeList div, #expenseList div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 0;
+        border-bottom: 1px solid #eee;
+    }
+    .summary-section {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+    .chart-container {
+        margin-top: 30px;
+    }
+    #addMonth {
+        display: block;
+        width: 100%;
+        margin-top: 20px;
+    }
+    .chart-wrapper {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    .chart-container {
+        width: 48%;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>Budget Simulator</h1>
+    
+    <div id="totalAccumulated" class="total-accumulated">
+        <h2>Total Accumulated Amount</h2>
+        <p id="totalAmount">€0.00</p>
+    </div>
+
+    <div id="tabContainer" class="tab-container"></div>
+
+    <div id="tabContent" class="tab-content">
+        <div class="income-expense-container">
+            <div class="income-section">
+                <h3>Income</h3>
+                <div id="incomeList"></div>
+                <input type="text" id="incomeDescription" placeholder="Description">
+                <input type="number" id="incomeAmount" placeholder="Amount">
+                <button id="addIncome">Add Income</button>
+            </div>
+            <div class="expense-section">
+                <h3>Expenses</h3>
+                <div id="expenseList"></div>
+                <input type="text" id="expenseDescription" placeholder="Description">
+                <input type="number" id="expenseAmount" placeholder="Amount">
+                <button id="addExpense">Add Expense</button>
+            </div>
+        </div>
+        <div class="summary-section">
+            <h3>Monthly Summary</h3>
+            <p>Total Income: <span id="totalIncome">€0.00</span></p>
+            <p>Total Expenses: <span id="totalExpenses">€0.00</span></p>
+            <p>Net Balance: <span id="netBalance">€0.00</span></p>
+            <p>Savings Rate: <span id="savingsRate">0.00%</span></p>
+        </div>
+    </div>
+
+    <button id="addMonth">Add New Month</button>
+
+    <div class="chart-wrapper">
+        <div class="chart-container">
+            <canvas id="netBalanceChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="expensePieChart"></canvas>
+        </div>
+    </div>
+
+    <button id="saveData" style="margin-top: 20px;">Save Data</button>
+    <input type="file" id="loadData" style="display: none;">
+    <button id="loadDataBtn" style="margin-top: 10px;">Load Data</button>
+
+    <script>
+        let months = [];
+        let currentMonthIndex = -1;
+        let netBalanceChart, expensePieChart;
+
+        function createNewMonth() {
+            const date = new Date();
+            if (months.length > 0) {
+                date.setMonth(date.getMonth() + months.length);
+            }
+            const monthYear = `${date.toLocaleString('default', { month: 'short' })}_${date.getFullYear()}`;
+            
+            const newMonth = {
+                name: monthYear,
+                incomes: [],
+                expenses: [],
+                totalIncome: 0,
+                totalExpenses: 0,
+                netBalance: 0
+            };
+
+            if (months.length > 0) {
+                const lastMonth = months[months.length - 1];
+                newMonth.incomes = [...lastMonth.incomes];
+                newMonth.expenses = [...lastMonth.expenses];
+                calculateMonthlyTotals(newMonth);
+            }
+
+            months.push(newMonth);
+            currentMonthIndex = months.length - 1;
+            updateUI();
+        }
+
+        function updateUI() {
+            updateTabs();
+            updateTabContent();
+            updateTotalAccumulated();
+            updateNetBalanceChart();
+            updateExpensePieChart();
+        }
+
+        function updateTabs() {
+            const tabContainer = document.getElementById('tabContainer');
+            tabContainer.innerHTML = '';
+            months.forEach((month, index) => {
+                const tab = document.createElement('button');
+                tab.textContent = month.name;
+                tab.className = 'tab';
+                if (index === currentMonthIndex) {
+                    tab.classList.add('active');
+                }
+                tab.onclick = () => {
+                    currentMonthIndex = index;
+                    updateUI();
+                };
+                tabContainer.appendChild(tab);
+            });
+        }
+
+        function updateTabContent() {
+            if (currentMonthIndex === -1) return;
+            const month = months[currentMonthIndex];
+            
+            const incomeList = document.getElementById('incomeList');
+            const expenseList = document.getElementById('expenseList');
+            
+            incomeList.innerHTML = '';
+            expenseList.innerHTML = '';
+            
+            month.incomes.forEach((income, index) => {
+                const item = document.createElement('div');
+                item.innerHTML = `
+                    <span>${income.description}: €${income.amount.toFixed(2)}</span>
+                    <button onclick="deleteItem('income', ${index})">Delete</button>
+                `;
+                incomeList.appendChild(item);
+            });
+            
+            month.expenses.forEach((expense, index) => {
+                const item = document.createElement('div');
+                item.innerHTML = `
+                    <span>${expense.description}: €${expense.amount.toFixed(2)}</span>
+                    <button onclick="deleteItem('expense', ${index})">Delete</button>
+                `;
+                expenseList.appendChild(item);
+            });
+            
+            document.getElementById('totalIncome').textContent = `€${month.totalIncome.toFixed(2)}`;
+            document.getElementById('totalExpenses').textContent = `€${month.totalExpenses.toFixed(2)}`;
+            document.getElementById('netBalance').textContent = `€${month.netBalance.toFixed(2)}`;
+            
+            const savingsRate = month.totalIncome > 0 ? (month.netBalance / month.totalIncome) * 100 : 0;
+            document.getElementById('savingsRate').textContent = `${savingsRate.toFixed(2)}%`;
+        }
+
+        function updateTotalAccumulated() {
+            const total = months.reduce((sum, month) => sum + month.netBalance, 0);
+            document.getElementById('totalAmount').textContent = `€${total.toFixed(2)}`;
+        }
+
+        function updateNetBalanceChart() {
+            const ctx = document.getElementById('netBalanceChart').getContext('2d');
+            const labels = months.map(month => month.name);
+            const data = months.map(month => month.netBalance);
+
+            if (netBalanceChart) {
+                netBalanceChart.destroy();
+            }
+
+            netBalanceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Monthly Net Balance',
+                        data: data,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateExpensePieChart() {
+            if (currentMonthIndex === -1) return;
+            const month = months[currentMonthIndex];
+            
+            const ctx = document.getElementById('expensePieChart').getContext('2d');
+            const expenseData = {};
+            
+            month.expenses.forEach(expense => {
+                if (expenseData[expense.description]) {
+                    expenseData[expense.description] += expense.amount;
+                } else {
+                    expenseData[expense.description] = expense.amount;
+                }
+            });
+            
+            const labels = Object.keys(expenseData);
+            const data = Object.values(expenseData);
+
+            if (expensePieChart) {
+                expensePieChart.destroy();
+            }
+
+            expensePieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(153, 102, 255)',
+                            'rgb(255, 159, 64)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Expense Distribution'
+                        },
+                        legend: {
+                            position: 'right',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    const value = context.parsed || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(2);
+                                    label += `€${value.toFixed(2)} (${percentage}%)`;
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function addItem(type) {
+            if (currentMonthIndex === -1) return;
+            const month = months[currentMonthIndex];
+            const description = document.getElementById(`${type}Description`).value;
+            const amount = parseFloat(document.getElementById(`${type}Amount`).value);
+
+            if (description && !isNaN(amount)) {
+                month[`${type}s`].push({ description, amount });
+                calculateMonthlyTotals(month);
+                updateUI();
+                document.getElementById(`${type}Description`).value = '';
+                document.getElementById(`${type}Amount`).value = '';
+            }
+        }
+
+        function deleteItem(type, index) {
+            if (currentMonthIndex === -1) return;
+            const month = months[currentMonthIndex];
+            month[`${type}s`].splice(index, 1);
+            calculateMonthlyTotals(month);
+            updateUI();
+        }
+
+        function calculateMonthlyTotals(month) {
+            month.totalIncome = month.incomes.reduce((sum, income) => sum + income.amount, 0);
+            month.totalExpenses = month.expenses.reduce((sum, expense) => sum + expense.amount, 0);
+            month.netBalance = month.totalIncome - month.totalExpenses;
+        }
+
+        function saveData() {
+            const data = {
+                months: months.map(month => ({
+                    name: month.name,
+                    incomes: month.incomes,
+                    expenses: month.expenses,
+                    totalIncome: month.totalIncome,
+                    totalExpenses: month.totalExpenses,
+                    netBalance: month.netBalance
+                }))
+            };
+
+            const jsonData = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'budget_data.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            alert('Data saved successfully!');
+        }
+
+        function loadDataFromJSON(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const loadedData = JSON.parse(e.target.result);
+                        if (Array.isArray(loadedData.months)) {
+                            months = loadedData.months;
+                            currentMonthIndex = months.length - 1;
+                            updateUI();
+                            alert('Data loaded successfully!');
+                        } else {
+                            throw new Error('Invalid data format');
+                        }
+                    } catch (error) {
+                        console.error('Error loading data:', error);
+                        alert('Error loading data. Please make sure the file is a valid JSON.');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        document.getElementById('addMonth').addEventListener('click', createNewMonth);
+        document.getElementById('addIncome').addEventListener('click', () => addItem('income'));
+        document.getElementById('addExpense').addEventListener('click', () => addItem('expense'));
+        document.getElementById('saveData').addEventListener('click', saveData);
+        document.getElementById('loadDataBtn').addEventListener('click', () => document.getElementById('loadData').click());
+        document.getElementById('loadData').addEventListener('change', loadDataFromJSON);
+
+        // Initialize with the first month
+        createNewMonth();
+    </script>
+</div>
+</body></html>

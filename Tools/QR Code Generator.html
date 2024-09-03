@@ -1,0 +1,369 @@
+<!DOCTYPE html><html><head><base href="">
+<title>Professional QR Code Generator</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&amp;display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
+<style>
+  :root {
+    --primary-color: #4a90e2;
+    --secondary-color: #50e3c2;
+    --background-color: #f8f9fa;
+    --text-color: #333;
+    --border-color: #e0e0e0;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+  }
+  body {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+  .container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px var(--shadow-color);
+    max-width: 450px;
+    width: 100%;
+  }
+  h1 {
+    text-align: center;
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+  #qrcode {
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem 0;
+    position: relative;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px var(--shadow-color);
+  }
+  #qrcode img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  label {
+    display: inline-block;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 0.85rem;
+  }
+  input, select {
+    width: 100%;
+    padding: 0.6rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;
+  }
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+  }
+  .color-picker {
+    display: flex;
+    align-items: center;
+  }
+  .color-picker input[type="color"] {
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: transparent;
+  }
+  .color-preview {
+    width: 25px;
+    height: 25px;
+    border-radius: 6px;
+    margin-left: 10px;
+    border: 2px solid var(--border-color);
+  }
+  .icon-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 0.4rem;
+  }
+  .icon-option {
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 6px;
+    border-radius: 6px;
+    background-color: #f0f0f0;
+  }
+  .icon-option:hover, .icon-option.selected {
+    color: white;
+    background-color: var(--primary-color);
+  }
+  .button-group {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 1.2rem;
+  }
+  .button-group button {
+    flex: 1;
+    padding: 0.7rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .button-group button:hover {
+    background-color: #3a7bc8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
+  }
+  .button-group button i {
+    margin-right: 0.5rem;
+  }
+  #downloadPngBtn {
+    background-color: var(--secondary-color);
+  }
+  #downloadPngBtn:hover {
+    background-color: #3ec7a8;
+  }
+  #printBtn {
+    background-color: #9b59b6;
+  }
+  #printBtn:hover {
+    background-color: #8e44ad;
+  }
+  .remove-icon {
+    color: #e74c3c;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+  }
+  .remove-icon:hover {
+    color: #c0392b;
+  }
+  @media print {
+    body * {
+      visibility: hidden;
+    }
+    #qrcode, #qrcode *, #qrText {
+      visibility: visible;
+    }
+    #qrcode {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: none;
+    }
+    #qrText {
+      position: absolute;
+      left: 50%;
+      top: 100%;
+      transform: translateX(-50%);
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 14px;
+      color: #333;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+  <h1>Professional QR Code Generator</h1>
+  <div id="qrcode"></div>
+  <div class="form-group">
+    <label for="qrText">Content:</label>
+    <input type="text" id="qrText" value="https://jfkproductions.github.io/" placeholder="Enter URL or text">
+  </div>
+  <div class="form-group">
+    <label for="qrSize">Size: <span id="sizeValue">200x200</span></label>
+    <input type="range" id="qrSize" value="200" min="100" max="400" step="10">
+  </div>
+  <div class="form-group">
+    <label for="qrColor">Foreground Color:</label>
+    <div class="color-picker">
+      <input type="color" id="qrColor" value="#4a90e2">
+      <div class="color-preview" id="colorPreview"></div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="qrBgColor">Background Color:</label>
+    <div class="color-picker">
+      <input type="color" id="qrBgColor" value="#ffffff">
+      <div class="color-preview" id="bgColorPreview"></div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label>Icon: <span id="removeIcon" class="remove-icon" title="Remove Icon">❌</span></label>
+    <div class="icon-selector">
+      <i class="icon-option fas fa-user" data-icon="user"></i>
+      <i class="icon-option fas fa-home" data-icon="home"></i>
+      <i class="icon-option fas fa-envelope" data-icon="envelope"></i>
+      <i class="icon-option fas fa-phone" data-icon="phone"></i>
+      <i class="icon-option fas fa-link" data-icon="link"></i>
+      <i class="icon-option fas fa-wifi" data-icon="wifi"></i>
+      <i class="icon-option fas fa-shopping-cart" data-icon="shopping-cart"></i>
+      <i class="icon-option fas fa-map-marker-alt" data-icon="map-marker-alt"></i>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="errorCorrection">Error Correction:</label>
+    <select id="errorCorrection">
+      <option value="L">Low (7%)</option>
+      <option value="M">Medium (15%)</option>
+      <option value="Q">Quartile (25%)</option>
+      <option value="H" selected="">High (30%)</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="qrShape">QR Code Shape:</label>
+    <select id="qrShape">
+  <option value="square" selected="">Square</option>
+  <option value="rounded">Rounded</option>
+</select>
+  </div>
+  <div class="button-group">
+    <button id="downloadPngBtn"><i class="fas fa-download"></i> PNG</button>
+    <button id="printBtn"><i class="fas fa-print"></i> Print</button>
+  </div>
+</div>
+
+  <script>
+    let qrcode = null;
+    let selectedIcon = 'map-marker-alt';
+
+    function generateQRCode() {
+      const text = document.getElementById('qrText').value;
+      const size = parseInt(document.getElementById('qrSize').value);
+      const color = document.getElementById('qrColor').value;
+      const bgColor = document.getElementById('qrBgColor').value;
+      const errorCorrectionLevel = document.getElementById('errorCorrection').value;
+      const shape = document.getElementById('qrShape').value;
+
+      const qrcodeElement = document.getElementById('qrcode');
+      qrcodeElement.innerHTML = '';
+
+      qrcode = new QRCode(qrcodeElement, {
+        text: text,
+        width: size,
+        height: size,
+        colorDark: color,
+        colorLight: bgColor,
+        correctLevel: QRCode.CorrectLevel[errorCorrectionLevel]
+      });
+
+      setTimeout(() => {
+        const qrImage = qrcodeElement.querySelector('img');
+        if (qrImage) {
+          if (shape === 'rounded') {
+            qrImage.style.borderRadius = '10%';
+          } else if (shape === 'circular') {
+            qrImage.style.borderRadius = '50%';
+          } else {
+            qrImage.style.borderRadius = '0';
+          }
+        }
+
+        if (selectedIcon) {
+          const iconOverlay = document.createElement('div');
+          iconOverlay.innerHTML = `<i class="fas fa-${selectedIcon}" style="font-size: ${size * 0.2}px; color: ${color};"></i>`;
+          iconOverlay.style.position = 'absolute';
+          iconOverlay.style.top = '50%';
+          iconOverlay.style.left = '50%';
+          iconOverlay.style.transform = 'translate(-50%, -50%)';
+          iconOverlay.style.backgroundColor = bgColor;
+          iconOverlay.style.padding = `${size * 0.05}px`;
+          iconOverlay.style.borderRadius = '50%';
+          qrcodeElement.appendChild(iconOverlay);
+        }
+      }, 50);
+    }
+
+    const debounce = (func, delay) => {
+      let timeoutId;
+      return (...args) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => func.apply(null, args), delay);
+      };
+    };
+
+    const updateQRCode = debounce(generateQRCode, 300);
+
+    document.getElementById('qrText').addEventListener('input', updateQRCode);
+    document.getElementById('qrSize').addEventListener('input', (e) => {
+      document.getElementById('sizeValue').textContent = `${e.target.value}x${e.target.value}`;
+      updateQRCode();
+    });
+    document.getElementById('qrColor').addEventListener('input', (e) => {
+      document.getElementById('colorPreview').style.backgroundColor = e.target.value;
+      updateQRCode();
+    });
+    document.getElementById('qrBgColor').addEventListener('input', (e) => {
+      document.getElementById('bgColorPreview').style.backgroundColor = e.target.value;
+      updateQRCode();
+    });
+    document.getElementById('errorCorrection').addEventListener('change', updateQRCode);
+    document.getElementById('qrShape').addEventListener('change', updateQRCode);
+
+    document.querySelectorAll('.icon-option').forEach(icon => {
+      icon.addEventListener('click', (e) => {
+        document.querySelectorAll('.icon-option').forEach(i => i.classList.remove('selected'));
+        e.target.classList.add('selected');
+        selectedIcon = e.target.dataset.icon;
+        updateQRCode();
+      });
+    });
+
+    document.getElementById('removeIcon').addEventListener('click', () => {
+      selectedIcon = null;
+      document.querySelectorAll('.icon-option').forEach(i => i.classList.remove('selected'));
+      updateQRCode();
+    });
+
+    generateQRCode();
+
+    document.getElementById('downloadPngBtn').addEventListener('click', () => {
+      html2canvas(document.getElementById('qrcode')).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'qrcode.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    });
+
+    document.getElementById('printBtn').addEventListener('click', () => {
+      window.print();
+    });
+</script>
+
+</body></html>
