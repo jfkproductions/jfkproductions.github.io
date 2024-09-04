@@ -91,6 +91,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+           
         }
         .hero-content canvas {
             margin-bottom: 20px;
@@ -208,6 +209,19 @@
                 padding: 0 10px;
             }
         }
+        .canvas-container {
+    margin-right: 20px; /* Space between canvas and text */
+}
+
+#sphereCanvas {
+    width: 100px;  /* Set the canvas width */
+    height: 100px; /* Set the canvas height */
+    background-image: url('https://pngimg.com/d/terminator_PNG25.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -239,25 +253,23 @@
     </header>
 
     <main>
+ 
         <section id="home" class="hero">
-    <div class="hero-content">
-        <h1>Welcome to My Portfolio</h1>
-        <p>With a strong foundation in software development, software architecture, and cloud technologies, I am committed to creating innovative solutions that bridge the gap between cutting-edge technology and real-world applications.</p>
-        <p>My passion lies in the evolving field of Artificial Intelligence, with a particular focus on Retrieval-Augmented Generation (RAG) AI development. Beyond the technical realm, I also enjoy exploring creativity through short films and music videos.</p>
-
-        <a href="https://jfkproductions.github.io/portfolio/index.html" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-            Interactive Portfolio - Work in Progress
-        </a>
-        <p><b><i class="fas fa-desktop"></i> Note: The Interactive Portfolio is currently best viewed on desktop.</b></p>
-
-
-    </div>
-    <div>
-    <canvas id="sphereCanvas" style="background-image: url('https://pngimg.com/d/terminator_PNG25.png'); background-size: contain; background-position: center; background-repeat: no-repeat; transform: translateX(80%);"></canvas>
-</div>
-
-   
-</section>
+            <div class="hero-content">
+             
+                <div class="text-content">
+                    <h1>Welcome to My Portfolio</h1>
+                           
+                    <a href="https://jfkproductions.github.io/portfolio/index.html" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                        Interactive Portfolio - Work in Progress
+                    </a>
+                    <p><b><i class="fas fa-desktop"></i> Note: The Interactive Portfolio is currently best viewed on desktop.</b></p>
+                    <div class="canvas-container">
+                        <canvas id="sphereCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
 
 <section id="about" class="section">
     <div class="container">
