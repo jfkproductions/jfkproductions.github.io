@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <base href="https://github.jfkproductions.io/">
     <title>My Professional Portfolio</title>
@@ -12,11 +13,13 @@
             --text-color: #333;
             --background-color: #ecf0f1;
         }
+
         .arcade-screen {
             width: 620px;
             border: 2px solid #0f0;
             padding: 20px;
         }
+
         body {
             font-family: 'Roboto', sans-serif;
             line-height: 1.6;
@@ -25,11 +28,13 @@
             margin: 0;
             padding: 0;
         }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
+
         header {
             background-color: var(--primary-color);
             color: #fff;
@@ -39,11 +44,13 @@
             top: 0;
             z-index: 1000;
         }
+
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         nav ul {
             list-style-type: none;
             padding: 0;
@@ -51,23 +58,28 @@
             justify-content: space-around;
             margin: 0;
         }
+
         nav ul li {
             margin: 0 10px;
         }
+
         nav ul li a {
             color: #fff;
             text-decoration: none;
             font-weight: bold;
             transition: color 0.3s ease;
         }
+
         nav ul li a:hover {
             color: var(--secondary-color);
         }
+
         .hamburger {
             display: none;
             flex-direction: column;
             cursor: pointer;
         }
+
         .hamburger div {
             width: 25px;
             height: 3px;
@@ -75,6 +87,7 @@
             margin: 4px 0;
             transition: 0.4s;
         }
+
         .hero {
             background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://picsum.photos/1200/800');
             background-size: cover;
@@ -87,32 +100,39 @@
             color: #fff;
             flex-direction: column;
         }
+
         .hero-content {
             display: flex;
             flex-direction: column;
             align-items: center;
-           
+
         }
+
         .hero-content canvas {
             margin-bottom: 20px;
         }
+
         .hero-content h1 {
             font-size: 3rem;
             margin-bottom: 1rem;
         }
+
         .hero-content p {
             font-size: 1.5rem;
             max-width: 600px;
             margin: 0 auto;
         }
+
         .section {
             padding: 4rem 0;
         }
+
         .section-title {
             text-align: center;
             font-size: 2.5rem;
             margin-bottom: 2rem;
         }
+
         .profile-pic {
             width: 200px;
             height: 200px;
@@ -122,36 +142,43 @@
             display: block;
             border: 5px solid var(--secondary-color);
         }
+
         .experience-item {
             background-color: #fff;
             border-radius: 5px;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+
         .experience-item h3 {
             margin-top: 0;
         }
+
         .tools-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
         }
+
         .tool-item {
             background-color: #fff;
             border-radius: 5px;
             padding: 1.5rem;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
         }
+
         .tool-item:hover {
             transform: translateY(-5px);
         }
+
         .tool-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
         }
+
         footer {
             background-color: var(--primary-color);
             color: #fff;
@@ -164,6 +191,7 @@
             .hamburger {
                 display: flex;
             }
+
             nav ul {
                 display: none;
                 flex-direction: column;
@@ -174,59 +202,72 @@
                 left: 0;
                 z-index: 1000;
             }
+
             nav ul.active {
                 display: flex;
             }
+
             nav ul li {
                 margin: 0;
                 text-align: center;
                 padding: 10px 0;
             }
+
             .hero-content h1 {
                 font-size: 2rem;
             }
+
             .hero-content p {
                 font-size: 1.2rem;
             }
+
             .profile-pic {
                 width: 150px;
                 height: 150px;
             }
         }
+
         @media (max-width: 480px) {
             .hero-content h1 {
                 font-size: 1.5rem;
             }
+
             .hero-content p {
                 font-size: 1rem;
             }
+
             .arcade-screen {
                 width: 100%;
                 padding: 10px;
                 font-size: 1rem;
             }
+
             .container {
                 padding: 0 10px;
             }
         }
+
         .canvas-container {
-    margin-right: 20px; /* Space between canvas and text */
-}
+            margin-right: 20px;
+            /* Space between canvas and text */
+        }
 
-#sphereCanvas {
-    width: 100px;  /* Set the canvas width */
-    height: 100px; /* Set the canvas height */
-    background-image: url('https://pngimg.com/d/terminator_PNG25.png');
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
+        #sphereCanvas {
+            width: 100px;
+            /* Set the canvas width */
+            height: 100px;
+            /* Set the canvas height */
+            background-image: url('https://pngimg.com/d/terminator_PNG25.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
+
 <body>
     <header>
         <nav class="container">
@@ -253,13 +294,13 @@
     </header>
 
     <main>
- 
+
         <section id="home" class="hero">
             <div class="hero-content">
-             
+
                 <div class="text-content">
                     <h1>Welcome to My Portfolio</h1>
-                           
+
 
                     <!-- <div class="canvas-container">
                         <canvas id="sphereCanvas"></canvas>
@@ -268,16 +309,31 @@
             </div>
         </section>
 
-<section id="about" class="section">
-    <div class="container">
-        <h2 class="section-title">About Me</h2>
-        <img src="https://media.licdn.com/dms/image/C5603AQH0-eZuljeq5w/profile-displayphoto-shrink_200_200/0/1516767430245?e=2147483647&v=beta&t=TlWT5RBTLpbwsK7ykHaGfoHmTxzyF-ZczTADpx2I6KM" alt="Professional headshot" class="profile-pic" width="200" height="200">
-        <p>Hello! I'm Kraai Du Toit, born in May 1979 in South Africa, now living in the Netherlands since 2021. I'm a Solutions Architect with extensive experience in the Insurance and Financial industries. My expertise lies in Microservices Architecture and making solutions cloud-ready and vendor-independent. I have a strong technical background with hands-on programming experience in C#, HTML, Front-end web development , and SQL, and I am well-versed in cloud-based development and deployment practices.</p>
-        <p>Beyond my technical expertise, I've had the unique experience of performing stand-up comedy alongside Trevor Noah, an adventure that taught me the power of storytelling and humor. You can learn more about this chapter of my life on my <a href="https://www.imdb.com/name/nm11530589/?ref_=ttfc_fc_wr4" target="_blank">IMDB page</a>.</p>
-        <p>In 2018, I won the Grab the Mic open mic competition and was selected to perform with Trevor Noah on the Nationwild tour. My work has been featured on television channels like Comedy Central, Kyknet, and Vuse Amp, as well as on radio stations such as Jacaranda FM. I also write and direct comedy for radio and starred in the Telkom Free Me Radio advert.</p>
-        <p>I’m passionate about staying at the forefront of AI, particularly in Retrieval-Augmented Generation (RAG) AI, and continuously seek out new learning opportunities. Fluent in English and Afrikaans, I’m currently expanding my language skills in Dutch at an A1 level. Whether in technology or on stage, I bring creativity, enthusiasm, and dedication to everything I do.</p>
-    </div>
-</section>
+        <section id="about" class="section">
+            <div class="container">
+                <h2 class="section-title">About Me</h2>
+                <img src="https://media.licdn.com/dms/image/C5603AQH0-eZuljeq5w/profile-displayphoto-shrink_200_200/0/1516767430245?e=2147483647&v=beta&t=TlWT5RBTLpbwsK7ykHaGfoHmTxzyF-ZczTADpx2I6KM"
+                    alt="Professional headshot" class="profile-pic" width="200" height="200">
+                <p>Hello! I'm Kraai Du Toit, born in May 1979 in South Africa, now living in the Netherlands since 2021.
+                    I'm a Solutions Architect with extensive experience in the Insurance and Financial industries. My
+                    expertise lies in Microservices Architecture and making solutions cloud-ready and
+                    vendor-independent. I have a strong technical background with hands-on programming experience in C#,
+                    HTML, Front-end web development , and SQL, and I am well-versed in cloud-based development and
+                    deployment practices.</p>
+                <p>Beyond my technical expertise, I've had the unique experience of performing stand-up comedy alongside
+                    Trevor Noah, an adventure that taught me the power of storytelling and humor. You can learn more
+                    about this chapter of my life on my <a href="https://www.imdb.com/name/nm11530589/?ref_=ttfc_fc_wr4"
+                        target="_blank">IMDB page</a>.</p>
+                <p>In 2018, I won the Grab the Mic open mic competition and was selected to perform with Trevor Noah on
+                    the Nationwild tour. My work has been featured on television channels like Comedy Central, Kyknet,
+                    and Vuse Amp, as well as on radio stations such as Jacaranda FM. I also write and direct comedy for
+                    radio and starred in the Telkom Free Me Radio advert.</p>
+                <p>I’m passionate about staying at the forefront of AI, particularly in Retrieval-Augmented Generation
+                    (RAG) AI, and continuously seek out new learning opportunities. Fluent in English and Afrikaans, I’m
+                    currently expanding my language skills in Dutch at an A1 level. Whether in technology or on stage, I
+                    bring creativity, enthusiasm, and dedication to everything I do.</p>
+            </div>
+        </section>
 
 
         <section id="experience" class="section">
@@ -288,19 +344,22 @@
                     <p>Lionsville B.V. · Full-time</p>
                     <p>Apr 2023 - Present · </p>
                     <p>The Hague, South Holland, Netherlands · Hybrid</p>
-                    <ul>                       
-                        <li>Delivered AI Proof of Concepts (POCs) for retail industry with RAG AI models, Neo4j, and React.</li>
+                    <ul>
+                        <li>Delivered AI Proof of Concepts (POCs) for retail industry with RAG AI models, Neo4j, and
+                            React.</li>
                         <li>Created AI Vision POCs for the farming industry, detecting cows using Python and YOLO.</li>
                         <li>Created AI Promotional video as Proof of Concept for future products (see video below)</li>
-                        <li>Skills: Azure DevOps · Azure · Neo4j · React.js · Terraform · Gitlab · Amazon Web Services (AWS) · Bitbucket</li>
-                        <li>Architecture Designs C4. Containerized PHP and React applications on AWS using ECS Fargate, S3, API Management, and full VPC setup.</li>
+                        <li>Skills: Azure DevOps · Azure · Neo4j · React.js · Terraform · Gitlab · Amazon Web Services
+                            (AWS) · Bitbucket</li>
+                        <li>Architecture Designs C4. Containerized PHP and React applications on AWS using ECS Fargate,
+                            S3, API Management, and full VPC setup.</li>
                         <li>Automated deployment pipelines using Terraform and GitLab.</li>
                         <li>Transformed Bitbucket from on-premise to Bitbucket Cloud.</li>
                         <li>Designed and implemented Azure API Management solutions using Terraform.</li>
 
                     </ul>
                 </div>
-                
+
                 <div class="experience-item">
                     <h3>Software Architect</h3>
                     <p>CGI</p>
@@ -308,11 +367,13 @@
                     <p>Rotterdam, South Holland, Netherlands</p>
                     <ul>
                         <li>Skills: Azure devops, Powershell, Power Automate</li>
-                        <li>Developed Azure Functions in C# and Powershell to integrate Azure DevOps with PagerDuty and Dynatrace.</li>
-                        <li>Used Azure Power Apps to support IT4IT projects, integrating them with Power Automate (Flow).</li>
+                        <li>Developed Azure Functions in C# and Powershell to integrate Azure DevOps with PagerDuty and
+                            Dynatrace.</li>
+                        <li>Used Azure Power Apps to support IT4IT projects, integrating them with Power Automate
+                            (Flow).</li>
                     </ul>
                 </div>
-                
+
                 <div class="experience-item">
                     <h3>Solutions Architect</h3>
                     <p>Telesure Investment Holdings (TIH) · Full-time</p>
@@ -320,12 +381,14 @@
                     <p>South Africa</p>
                     <ul>
                         <li>Skills: .NET Core</li>
-                        <li>Working on Microservice architecture using Azure Functions (C#), RabbitMQ, and MSSQL containers locally on Rancher, and in the cloud on Azure Containers.</li>
+                        <li>Working on Microservice architecture using Azure Functions (C#), RabbitMQ, and MSSQL
+                            containers locally on Rancher, and in the cloud on Azure Containers.</li>
                         <li>Using Azure DevOps for continuous deployment and integration.</li>
-                        <li>Applied TOGAF (BDAT) from the ADM framework, collaborating with business analysts, SQL developers, and C# developers to create POCs and architecture designs.</li>
+                        <li>Applied TOGAF (BDAT) from the ADM framework, collaborating with business analysts, SQL
+                            developers, and C# developers to create POCs and architecture designs.</li>
                     </ul>
                 </div>
-                
+
                 <div class="experience-item">
                     <h3>Developer</h3>
                     <p>Telesure Investment Holdings (TIH)</p>
@@ -333,12 +396,14 @@
                     <ul>
                         <li>Skills: .NET Core</li>
                         <li>Developed applications using C#, VB.NET, and Angular 6.</li>
-                        <li>Worked extensively with T-SQL, DB2, and SharePoint development for enterprise solutions.</li>
-                        <li>Built backend APIs and integrated them with the ESB (Enterprise Service Bus) layer for seamless communication between systems.</li>
+                        <li>Worked extensively with T-SQL, DB2, and SharePoint development for enterprise solutions.
+                        </li>
+                        <li>Built backend APIs and integrated them with the ESB (Enterprise Service Bus) layer for
+                            seamless communication between systems.</li>
                         <li>Designed and developed front-end web applications for user-facing functionality.</li>
                     </ul>
                 </div>
-                
+
                 <div class="experience-item">
                     <h3>Web Developer</h3>
                     <p>HR-Focus Holdings (Pty) Ltd</p>
@@ -347,11 +412,15 @@
                     <ul>
                         <li>Working in .net.</li>
                         <li>Writing and maintaining web and windows applications.</li>
-                        <li>Successfully written and maintained Web Payroll at African Bank: <a href="https://www.africanbank.co.za">https://www.africanbank.co.za</a></li>
+                        <li>Successfully written and maintained Web Payroll at African Bank: <a
+                                href="https://www.africanbank.co.za">https://www.africanbank.co.za</a></li>
                         <li>Developing web-based Payroll and HR Software for Clients.</li>
-                        <li>African Bank: <a href="https://www.africanbank.co.za">https://www.africanbank.co.za</a> Financial Institution</li>
-                        <li>Edcon: <a href="http://www.edcon.co.za">http://www.edcon.co.za</a> The leading clothing, footwear and textiles retailing group</li>
-                        <li>Alan Gray: <a href="http://www.allangray.co.za">http://www.allangray.co.za</a> Financial Institution</li>
+                        <li>African Bank: <a href="https://www.africanbank.co.za">https://www.africanbank.co.za</a>
+                            Financial Institution</li>
+                        <li>Edcon: <a href="http://www.edcon.co.za">http://www.edcon.co.za</a> The leading clothing,
+                            footwear and textiles retailing group</li>
+                        <li>Alan Gray: <a href="http://www.allangray.co.za">http://www.allangray.co.za</a> Financial
+                            Institution</li>
                     </ul>
                 </div>
                 <div class="experience-item">
@@ -370,7 +439,8 @@
                     <p>Pretoria Area, South Africa</p>
                     <ul>
                         <li>Work as an Analyst Programmer, working at the department of water affairs.</li>
-                        <li>Working on Engineering software, that involve the planning and distribution of water across the country based on statistical information.</li>
+                        <li>Working on Engineering software, that involve the planning and distribution of water across
+                            the country based on statistical information.</li>
                     </ul>
                 </div>
                 <div class="experience-item">
@@ -379,9 +449,15 @@
                     <p>Jul 2003 - Aug 2006 · 3 yrs 2 mos</p>
                     <p>Sandton and based at Client Edcon</p>
                     <ul>
-                        <li>Worked and maintained the Delphi Applications at the main office including the install packages, HR-focus main software, Custom Capture, Casuals system and Various interfaces.</li>
-                        <li>Later was located to Edcon and promoted to Interface manager, where I was in charge of all interfaces at client Edcon: <a href="http://www.edcon.co.za">http://www.edcon.co.za</a>, the largest textile retail group in Southern Africa.</li>
-                        <li>I had a team of 2 developers under me, and was in charge of maintaining various interfaces from various 3rd party vendors mostly financial eg, Standard Bank, Nedbank, Discovery and many more.</li>
+                        <li>Worked and maintained the Delphi Applications at the main office including the install
+                            packages, HR-focus main software, Custom Capture, Casuals system and Various interfaces.
+                        </li>
+                        <li>Later was located to Edcon and promoted to Interface manager, where I was in charge of all
+                            interfaces at client Edcon: <a href="http://www.edcon.co.za">http://www.edcon.co.za</a>, the
+                            largest textile retail group in Southern Africa.</li>
+                        <li>I had a team of 2 developers under me, and was in charge of maintaining various interfaces
+                            from various 3rd party vendors mostly financial eg, Standard Bank, Nedbank, Discovery and
+                            many more.</li>
                     </ul>
                 </div>
                 <div class="experience-item">
@@ -391,7 +467,8 @@
                     <p>Sandton</p>
                     <ul>
                         <li>Writing Postilion office plugins</li>
-                        <li>Writing the backoffice system called backoffice manager to reconcile all the transactions from the financial institutions involved.</li>
+                        <li>Writing the backoffice system called backoffice manager to reconcile all the transactions
+                            from the financial institutions involved.</li>
                         <li>Applications involving ATM related balancing and reconciling</li>
                     </ul>
                 </div>
@@ -461,229 +538,313 @@
         </section>
 
         <section id="qualifications" class="section">
-    <div class="container">
-        <h2 class="section-title">Qualifications</h2>
-        <div class="experience-item">
-            <h3>Diploma computer engineering</h3>
-            <p>University of Technology | Graduated: 2004</p>
-            <ul>
-                <li>Specialized in Web Technologies and Software Engineering</li>
+            <div class="container">
+                <h2 class="section-title">Qualifications</h2>
+                <div class="experience-item">
+                    <h3>Diploma computer engineering</h3>
+                    <p>University of Technology | Graduated: 2004</p>
+                    <ul>
+                        <li>Specialized in Web Technologies and Software Engineering</li>
 
-            </ul>
-        </div>
+                    </ul>
+                </div>
 
-        <div class="experience-item">
-            <h3>Certifications</h3>
-            <ul>
-                <li>AWS Certified solutions architecth Associate</li>
-                <li>MCSD Web development</li>
-                <li>Azure solutions architect  </li>
-                <li>Azure Developer  </li>
-                <li>Azure Devops engineer  </li>
-                <li>Azure AI fundamentals  </li>
-                <li>Azure databases  </li>
-                <li>Togaf  </li>
-                <li>Azure Administrator  </li>
-                <li>Terraform Associate  </li>
-                <li>Neo4j profetional  </li>
-            </ul>
-        </div>
-    </div>
-</section><section id="github-repos" class="section">
-    <div class="container">
-        <h2 class="section-title">GitHub Repositories</h2>
-        <div id="repo-list">
-            <a href="https://github.com/jfkproductions/AWS-Session-manager" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                AWS Session Manager
-              </a>
-              <a href="https://github.com/jfkproductions/c4DiagramRag" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                C4 Diagram RAG
-              </a>
-              <a href="https://github.com/jfkproductions/ChatwithMax" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                Chat with Max
-              </a>
-              <a href="https://github.com/jfkproductions/YoloCowCammonitoring" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                Yolo Cow Camera monitoring 
-              </a>
-              <a href="https://github.com/jfkproductions/YoloLiveCowDetection" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                Yolo Live Cow detection 
-              </a>
-
-              <a href="https://github.com/jfkproductions/CV2_FacialRecognition" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                CV2 Facial Recognition
-              </a>
-              <a href="https://github.com/jfkproductions/WebcamFaceDetection" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                Web cam Face Detection
-              </a>
-              <a href="https://github.com/jfkproductions/MicorserviceBuilder" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-               Microservice Builder
-              </a>
-        </div>
-    </div>
-
-</section>
-<div class="container">
-    <section id="toolsets" class="section">
-        <h2 class="section-title">Tools</h2>
-        <div id="toolsetslist">
-            <a href="https://jfkproductions.github.io/Tools/toolbelt.html" target="_blank" class="tool-link button" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                <i class="fas fa-toolbox" ></i>
-                IT Toolbelt
-            </a>
-            <a href="https://jfkproductions.github.io/Tools/Simplec4.html" target="_blank" class="tool-link button" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                <i class="fas fa-cogs"></i>
-                Simple C4
-            </a>
-            <a href="https://jfkproductions.github.io/Tools/Task Builder.html" target="_blank" class="tool-link button" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                <i class="fas fa-tasks"></i>
-                Task Builder
-            </a>
-            <a href="https://jfkproductions.github.io/Tools/Stakeholder Diagram Generator.html" target="_blank" class="tool-link button" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                <i class="fas fa-users"></i>
-                Stakeholder Diagram Generator
-            </a>
-            <a href="https://jfkproductions.github.io/Tools/Bussines model canvas 3.html" target="_blank" class="tool-link button"style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                <i class="fas fa-chart-bar"></i>
-                Business Model Canvas
-            </a>
-            <a href="https://jfkproductions.github.io/Tools/Disruption Risk Assessment.html" target="_blank" class="tool-link button"style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                <i class="fas fa-exclamation-triangle"></i>
-                Disruption Risk Assessment
-            </a>
-            <a href="https://jfkproductions.github.io/Tools/Innovation Project Scorecard.html" target="_blank" class="tool-link button"style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                <i class="fas fa-lightbulb"></i>
-                Innovation Project Scorecard
-            </a>
-           
-            <a href="https://jfkproductions.github.io/Tools/Value Proposition Canvas.html" target="_blank" class="tool-link button"style="display: inline-block; padding: 10px 20px;  background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;  ">
-                <i class="fas fa-hand-holding-usd"></i>
-                Value Proposition Canvas
-            </a>
-
-            <a href="https://jfkproductions.github.io/Tools/Budget Builder.html" target="_blank" class="tool-link button"style="display: inline-block; padding: 10px 20px;  background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;  ">
-                <i class="fas fa-money-bill-wave "></i>
-                Budget Builder
-            </a>
-                <a href="https://jfkproductions.github.io/Tools/Mindmap Tool.html" target="_blank" class="tool-link button" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                    <i class="fas fa-sitemap"></i>
-                    Mindmap Creator
-            </a>
-        
-            <a href="https://jfkproductions.github.io/Tools/Mindmap Tool.html" target="_blank" class="tool-link button" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                <i class="fas fa-cogs"></i>
-                Image Converter
-           </a>
-           <a href="https://jfkproductions.github.io/Tools/DB schema visualizer.html" target="_blank" class="tool-link button" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-            <i class="fas fa-chart-bar"></i>
-            Database Schema Visualization
-       </a>
-       <a href="https://jfkproductions.github.io/Tools/QR Code Generator.html" target="_blank" class="tool-link button" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-        <i class="fas fa-solid fa-qrcode"></i>
-        QR Code Generator
-   </a>
-         
-    
-
-        </div>
-        <h3> Cross platform Standalone tools </h3>
-        <h4>Priority Matrix Planning</h4>
-        <div class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-2 wp-block-columns-is-layout-flex">
-            <div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
-            <figure class="wp-block-image size-large is-resized"><a href="https://jfkproductions.com/Software/PriorityMatrix/priority-matrix Setup 1.0.0.exe"><img decoding="async" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/98c2d592-fb7a-4383-adf4-8fcea016dc75/d5keldy-7db476e5-afb1-4e58-97a7-52ff861b27d4.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzk4YzJkNTkyLWZiN2EtNDM4My1hZGY0LThmY2VhMDE2ZGM3NVwvZDVrZWxkeS03ZGI0NzZlNS1hZmIxLTRlNTgtOTdhNy01MmZmODYxYjI3ZDQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.UhBeqJopb3VuRJVxtQEq9o7tXlfiqoNiS0mbLkCp1is" alt="" style="width:105px;height:auto"></a></figure>
+                <div class="experience-item">
+                    <h3>Certifications</h3>
+                    <ul>
+                        <li>AWS Certified solutions architecth Associate</li>
+                        <li>MCSD Web development</li>
+                        <li>Azure solutions architect </li>
+                        <li>Azure Developer </li>
+                        <li>Azure Devops engineer </li>
+                        <li>Azure AI fundamentals </li>
+                        <li>Azure databases </li>
+                        <li>Togaf </li>
+                        <li>Azure Administrator </li>
+                        <li>Terraform Associate </li>
+                        <li>Neo4j profetional </li>
+                    </ul>
+                </div>
             </div>
-            
-            
-            
-            <div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
-            <figure class="wp-block-image size-large is-resized"><a href="https://jfkproductions.com/Software/MindMap/mindmap-creator-1.0.0.dmg"><img decoding="async" src="https://logos-world.net/wp-content/uploads/2023/03/Mac-OS-Logo-1995-500x281.png" alt="" style="width:193px;height:auto"></a></figure>
+        </section>
+        <section id="github-repos" class="section">
+            <div class="container">
+                <h2 class="section-title">GitHub Repositories</h2>
+                <div id="repo-list">
+                    <a href="https://github.com/jfkproductions/AWS-Session-manager" target="_blank"
+                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                        AWS Session Manager
+                    </a>
+                    <a href="https://github.com/jfkproductions/c4DiagramRag" target="_blank"
+                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                        C4 Diagram RAG
+                    </a>
+                    <a href="https://github.com/jfkproductions/ChatwithMax" target="_blank"
+                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                        Chat with Max
+                    </a>
+                    <a href="https://github.com/jfkproductions/YoloCowCammonitoring" target="_blank"
+                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                        Yolo Cow Camera monitoring
+                    </a>
+                    <a href="https://github.com/jfkproductions/YoloLiveCowDetection" target="_blank"
+                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                        Yolo Live Cow detection
+                    </a>
+
+                    <a href="https://github.com/jfkproductions/CV2_FacialRecognition" target="_blank"
+                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                        CV2 Facial Recognition
+                    </a>
+                    <a href="https://github.com/jfkproductions/WebcamFaceDetection" target="_blank"
+                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                        Web cam Face Detection
+                    </a>
+                    <a href="https://github.com/jfkproductions/MicorserviceBuilder" target="_blank"
+                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                        Microservice Builder
+                    </a>
+                </div>
             </div>
-            
-            
-            
-            <div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
-            <figure class="wp-block-image size-large is-resized"><a href="https://jfkproductions.com/Software/MindMap/mindmap-creator_1.0.0_amd64.deb"><img decoding="async" src="https://cdn.shortpixel.ai/spai/q_lossy+ret_img+to_auto/linuxiac.com/wp-content/uploads/2020/06/ubuntu-linux.jpg" alt="" style="width:136px;height:auto"></a></figure>
-            </div>
+
+        </section>
+        <div class="container">
+            <section id="toolsets" class="section">
+                <h2 class="section-title">Tools</h2>
+                <div id="toolsetslist">
+                    <a href="https://jfkproductions.github.io/Tools/toolbelt.html" target="_blank"
+                        class="tool-link button"
+                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                        <i class="fas fa-toolbox"></i>
+                        IT Toolbelt
+                    </a>
+                    <a href="https://jfkproductions.github.io/Tools/Simplec4.html" target="_blank"
+                        class="tool-link button"
+                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                        <i class="fas fa-cogs"></i>
+                        Simple C4
+                    </a>
+                    <a href="https://jfkproductions.github.io/Tools/Task Builder.html" target="_blank"
+                        class="tool-link button"
+                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                        <i class="fas fa-tasks"></i>
+                        Task Builder
+                    </a>
+                    <a href="https://jfkproductions.github.io/Tools/Stakeholder Diagram Generator.html" target="_blank"
+                        class="tool-link button"
+                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                        <i class="fas fa-users"></i>
+                        Stakeholder Diagram Generator
+                    </a>
+                    <a href="https://jfkproductions.github.io/Tools/Bussines model canvas 3.html" target="_blank"
+                        class="tool-link button"
+                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                        <i class="fas fa-chart-bar"></i>
+                        Business Model Canvas
+                    </a>
+                    <a href="https://jfkproductions.github.io/Tools/Disruption Risk Assessment.html" target="_blank"
+                        class="tool-link button"
+                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Disruption Risk Assessment
+                    </a>
+                    <a href="https://jfkproductions.github.io/Tools/Innovation Project Scorecard.html" target="_blank"
+                        class="tool-link button"
+                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                        <i class="fas fa-lightbulb"></i>
+                        Innovation Project Scorecard
+                    </a>
+
+                    <a href="https://jfkproductions.github.io/Tools/Value Proposition Canvas.html" target="_blank"
+                        class="tool-link button"
+                        style="display: inline-block; padding: 10px 20px;  background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;  ">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        Value Proposition Canvas
+                    </a>
+
+                    <a href="https://jfkproductions.github.io/Tools/Budget Builder.html" target="_blank"
+                        class="tool-link button"
+                        style="display: inline-block; padding: 10px 20px;  background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;  ">
+                        <i class="fas fa-money-bill-wave "></i>
+                        Budget Builder
+                    </a>
+                    <a href="https://jfkproductions.github.io/Tools/Mindmap Tool.html" target="_blank"
+                        class="tool-link button"
+                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                        <i class="fas fa-sitemap"></i>
+                        Mindmap Creator
+                    </a>
+
+                    <a href="https://jfkproductions.github.io/Tools/Mindmap Tool.html" target="_blank"
+                        class="tool-link button"
+                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                        <i class="fas fa-cogs"></i>
+                        Image Converter
+                    </a>
+                    <a href="https://jfkproductions.github.io/Tools/DB schema visualizer.html" target="_blank"
+                        class="tool-link button"
+                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                        <i class="fas fa-chart-bar"></i>
+                        Database Schema Visualization
+                    </a>
+                    <a href="https://jfkproductions.github.io/Tools/QR Code Generator.html" target="_blank"
+                        class="tool-link button"
+                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                        <i class="fas fa-solid fa-qrcode"></i>
+                        QR Code Generator
+                    </a>
+
+
+
+                </div>
+                <h3> Cross platform Standalone tools </h3>
+                <h4>Priority Matrix Planning</h4>
+                <div>
+
+                    <a href="https://jfkproductions.com/Software/PriorityMatrix/priority-matrix Setup 1.0.0.exe"><img
+                            decoding="async"
+                            src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/98c2d592-fb7a-4383-adf4-8fcea016dc75/d5keldy-7db476e5-afb1-4e58-97a7-52ff861b27d4.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzk4YzJkNTkyLWZiN2EtNDM4My1hZGY0LThmY2VhMDE2ZGM3NVwvZDVrZWxkeS03ZGI0NzZlNS1hZmIxLTRlNTgtOTdhNy01MmZmODYxYjI3ZDQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.UhBeqJopb3VuRJVxtQEq9o7tXlfiqoNiS0mbLkCp1is"
+                            alt="" style="width:105px;height:auto"></a>
+                    <a href="https://jfkproductions.com/Software/MindMap/mindmap-creator-1.0.0.dmg"><img
+                            decoding="async"
+                            src="https://logos-world.net/wp-content/uploads/2023/03/Mac-OS-Logo-1995-500x281.png" alt=""
+                            style="width:193px;height:auto"></a>
+                    <a href="https://jfkproductions.com/Software/MindMap/mindmap-creator_1.0.0_amd64.deb"><img
+                            decoding="async"
+                            src="https://cdn.shortpixel.ai/spai/q_lossy+ret_img+to_auto/linuxiac.com/wp-content/uploads/2020/06/ubuntu-linux.jpg"
+                            alt="" style="width:136px;height:auto"></a>
+                </div>
+                <h4>Mind Map creator</h4>
+                <div>
+                    <a href="https://jfkproductions.com/Software/MindMap/mindmap-creator Setup 1.0.0.exe"><img
+                            decoding="async"
+                            src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/98c2d592-fb7a-4383-adf4-8fcea016dc75/d5keldy-7db476e5-afb1-4e58-97a7-52ff861b27d4.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzk4YzJkNTkyLWZiN2EtNDM4My1hZGY0LThmY2VhMDE2ZGM3NVwvZDVrZWxkeS03ZGI0NzZlNS1hZmIxLTRlNTgtOTdhNy01MmZmODYxYjI3ZDQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.UhBeqJopb3VuRJVxtQEq9o7tXlfiqoNiS0mbLkCp1is"
+                            alt="" style="width:105px;height:auto"></a>
+                    <a href="https://jfkproductions.com/Software/MindMap/mindmap-creator-1.0.0.dmg"><img
+                            decoding="async"
+                            src="https://logos-world.net/wp-content/uploads/2023/03/Mac-OS-Logo-1995-500x281.png" alt=""
+                            style="width:193px;height:auto"></a>
+                    <a href="https://jfkproductions.com/Software/MindMap/mindmap-creator_1.0.0_amd64.deb"><img
+                            decoding="async"
+                            src="https://cdn.shortpixel.ai/spai/q_lossy+ret_img+to_auto/linuxiac.com/wp-content/uploads/2020/06/ubuntu-linux.jpg"
+                            alt="" style="width:136px;height:auto"></a>
+
+                </div>
+            </section>
         </div>
-    </section>
-</div>
-</div></section>
-<div class="container"><section id="games" class="section">
-    <div class="arcade-screen">
-        <h1>ARCADE VIDEOGAMES</h1>
-        <ul class="game-list">
-            <li><a href="https://jfkproductions.github.io/Games/Balloon Shooter.html" target="_blank">BALLOON SHOOTER</a></li>
-            <li><a href="https://jfkproductions.github.io/Games/Tetrissim.html"target="_blank">TETRIS</a></li>
-
-        </ul>
-        <p class="instructions">USE MOUSE TO SELECT GAME</p>
-    </div>
-    <div class="container"><section id="music" class="section">
-        <h2 class="section-title">music/comedy </h2>
-        <div id="msuic-list">
-             <a href="https://distrokid.com/hyperfollow/diekraaines/die-kraaines" target="_blank">
-                <img src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--63B1B28F-D738-4D3D-9D42A3025F075E0F--0--12461798--DieKraaiNescover.png?fm=jpg&q=75&w=800&s=b59212fc8c1e89f536996b51d5a7fd9f" width="200" height="200" alt="Kraai">
-            </a> 
-            &nbsp;
-            <a href="https://distrokid.com/hyperfollow/diekraaines/my-doellose-lewe" target="_blank">
-                <img src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--91022B46-4B91-4249-BE18BC6A019EA331--0--17876571--BlackandGoldVintageCDAlbumCoversmaller.png?fm=jpg&q=75&w=800&s=a733858595f0d8c81c30486e8ae32b9f" width="200" height="200" alt="My Doellose Lewe">
-            </a>
-            &nbsp;
-            <a href="https://distrokid.com/hyperfollow/kraai/die-mistige-woud" target="_blank">
-                <img src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--37E7FDB0-AD17-4DC4-82D41B4DDEAF939C--0--535596--CDcover.jpeg?fm=jpg&q=75&w=800&s=31ac32578f601089bd69d706e2a08cba" width="200" height="200" alt="In die Mistige Woud">
-            </a>
-            <a href="https://open.spotify.com/embed/artist/3DwWrzCxBOv47oIMpRwJCU?utm_source=generator" target="_blank">
-                <img src="https://i.scdn.co/image/ab67616d0000b27391f671faabb17ceb7f09ee3c" width="200" height="200" alt="Kraai du Toit comedy">
-            </a>
-    
         </div>
-    </div></section>
-    
-</div></section>
+        </section>
+        <div class="container">
+            <section id="games" class="section">
+                <div class="arcade-screen">
+                    <h1>ARCADE VIDEOGAMES</h1>
+                    <ul class="game-list">
+                        <li><a href="https://jfkproductions.github.io/Games/Balloon Shooter.html"
+                                target="_blank">BALLOON SHOOTER</a></li>
+                        <li><a href="https://jfkproductions.github.io/Games/Tetrissim.html" target="_blank">TETRIS</a>
+                        </li>
 
-<div class="container"><section id="video" class="section">
-    <h2 class="section-title">Video </h2>
-    <iframe width="280" height="158" src="https://www.youtube.com/embed/HbIA-l_LuLY?si=JuD1fmehnSHy-wKc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    <iframe width="280" height="158" src="https://www.youtube.com/embed/0bK6Lue6a6k?si=nxEjxbkhLji-A-eS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    <iframe width="280" height="158" src="https://www.youtube.com/embed/GaaC2YSeys8?si=Nuca1rJJeNhImQj6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div></section>
-<div class="container">
-    <section id="contact" class="section">
-    <h2 class="section-title">Contact</h2>
+                    </ul>
+                    <p class="instructions">USE MOUSE TO SELECT GAME</p>
+                </div>
+                <div class="container">
+                    <section id="music" class="section">
+                        <h2 class="section-title">music/comedy </h2>
+                        <div id="msuic-list">
+                            <a href="https://distrokid.com/hyperfollow/diekraaines/die-kraaines" target="_blank">
+                                <img src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--63B1B28F-D738-4D3D-9D42A3025F075E0F--0--12461798--DieKraaiNescover.png?fm=jpg&q=75&w=800&s=b59212fc8c1e89f536996b51d5a7fd9f"
+                                    width="200" height="200" alt="Kraai">
+                            </a>
+                            &nbsp;
+                            <a href="https://distrokid.com/hyperfollow/diekraaines/my-doellose-lewe" target="_blank">
+                                <img src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--91022B46-4B91-4249-BE18BC6A019EA331--0--17876571--BlackandGoldVintageCDAlbumCoversmaller.png?fm=jpg&q=75&w=800&s=a733858595f0d8c81c30486e8ae32b9f"
+                                    width="200" height="200" alt="My Doellose Lewe">
+                            </a>
+                            &nbsp;
+                            <a href="https://distrokid.com/hyperfollow/kraai/die-mistige-woud" target="_blank">
+                                <img src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--37E7FDB0-AD17-4DC4-82D41B4DDEAF939C--0--535596--CDcover.jpeg?fm=jpg&q=75&w=800&s=31ac32578f601089bd69d706e2a08cba"
+                                    width="200" height="200" alt="In die Mistige Woud">
+                            </a>
+                            <a href="https://open.spotify.com/embed/artist/3DwWrzCxBOv47oIMpRwJCU?utm_source=generator"
+                                target="_blank">
+                                <img src="https://i.scdn.co/image/ab67616d0000b27391f671faabb17ceb7f09ee3c" width="200"
+                                    height="200" alt="Kraai du Toit comedy">
+                            </a>
 
-    <a href="https://www.linkedin.com/in/johannes-f-kraai-du-toit-44962b37/" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-        Linkedin
-      </a>
-      
-      <a href="https://www.youtube.com/@kraaidutoit6657" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-        Youtube 
-      </a>
-</div></section>
+                        </div>
+                </div>
+            </section>
 
-<div class="container"><section id="Training" class="section">
-    <h2 class="section-title">Training</h2>
+        </div>
+        </section>
 
-    <a href="https://www.youtube.com/channel/UCaf3Y5Wf-x9my_4kZTpuo6Q/videos" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-        Youtube Training
-      </a>
-      <a href="https://www.udemy.com/course/az-900-microsoft-azure-fundamentals-full-exam-preparation/?referralCode=DF4A5491150284040AA9" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-        Udemy Az-900
-      </a>
-      <a href="https://www.udemy.com/course/brain-hacks-with-and-without-nootropics/?referralCode=3E2DB5F71DB5F81B583F" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-        Udemy Brain Hacks
-      </a>
- 
-</div>
+        <div class="container">
+            <section id="video" class="section">
+                <h2 class="section-title">Video </h2>
+                <iframe width="280" height="158" src="https://www.youtube.com/embed/HbIA-l_LuLY?si=JuD1fmehnSHy-wKc"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe width="280" height="158" src="https://www.youtube.com/embed/0bK6Lue6a6k?si=nxEjxbkhLji-A-eS"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe width="280" height="158" src="https://www.youtube.com/embed/GaaC2YSeys8?si=Nuca1rJJeNhImQj6"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        </section>
+        <div class="container">
+            <section id="contact" class="section">
+                <h2 class="section-title">Contact</h2>
 
-</section>
-<div class="container">
-    <section id="Interactive" class="section">
-    <h2 class="section-title">Interactive Portfolio </h2>
-    <a href="https://jfkproductions.github.io/portfolio/index.html" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-        Interactive Portfolio - Work in Progress
-    </a>
-    <p><b><i class="fas fa-desktop"></i> Note: The Interactive Portfolio is currently best viewed on desktop.</b></p>
-    
-</section></div>
+                <a href="https://www.linkedin.com/in/johannes-f-kraai-du-toit-44962b37/" target="_blank"
+                    style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                    Linkedin
+                </a>
+
+                <a href="https://www.youtube.com/@kraaidutoit6657" target="_blank"
+                    style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                    Youtube
+                </a>
+        </div>
+        </section>
+
+        <div class="container">
+            <section id="Training" class="section">
+                <h2 class="section-title">Training</h2>
+
+                <a href="https://www.youtube.com/channel/UCaf3Y5Wf-x9my_4kZTpuo6Q/videos" target="_blank"
+                    style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                    Youtube Training
+                </a>
+                <a href="https://www.udemy.com/course/az-900-microsoft-azure-fundamentals-full-exam-preparation/?referralCode=DF4A5491150284040AA9"
+                    target="_blank"
+                    style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                    Udemy Az-900
+                </a>
+                <a href="https://www.udemy.com/course/brain-hacks-with-and-without-nootropics/?referralCode=3E2DB5F71DB5F81B583F"
+                    target="_blank"
+                    style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                    Udemy Brain Hacks
+                </a>
+
+        </div>
+
+        </section>
+        <div class="container">
+            <section id="Interactive" class="section">
+                <h2 class="section-title">Interactive Portfolio </h2>
+                <a href="https://jfkproductions.github.io/portfolio/index.html" target="_blank"
+                    style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+                    Interactive Portfolio - Work in Progress
+                </a>
+                <p><b><i class="fas fa-desktop"></i> Note: The Interactive Portfolio is currently best viewed on
+                        desktop.</b></p>
+
+            </section>
+        </div>
 
     </main>
 
@@ -736,14 +897,14 @@
         });
 
         // Canvas setup
-        window.onload = function() {
+        window.onload = function () {
             const canvas = document.getElementById('sphereCanvas');
             const container = document.querySelector('.container');
             const maxSize = Math.min(container.clientWidth - 40, 350); // 40px for padding
             canvas.width = maxSize;
             canvas.height = maxSize;
 
-            const renderer = new THREE.WebGLRenderer({canvas, alpha: true, antialias: true});
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
             renderer.setSize(canvas.width, canvas.height);
 
             const scene = new THREE.Scene();
@@ -845,7 +1006,7 @@
             animate();
 
             // Handle window resizing
-            window.addEventListener('resize', function() {
+            window.addEventListener('resize', function () {
                 const newMaxSize = Math.min(container.clientWidth - 40, 350);
                 canvas.width = newMaxSize;
                 canvas.height = newMaxSize;
@@ -857,6 +1018,9 @@
     </script>
 
 </body>
+
 </html>
 
-</body></html>
+</body>
+
+</html>
