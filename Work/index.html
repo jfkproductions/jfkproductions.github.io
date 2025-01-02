@@ -1,30 +1,1213 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Gist Shared Data</title>
+<html><head><base href="." />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life Pillars Task Manager</title>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root {
+    --primary: #2A3F54;
+    --secondary: #3498db;
+    --accent: #e74c3c;
+    --light: #f5f6fa;
+    --dark: #2c3e50;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.pillars-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.pillar {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    min-height: 400px;
+}
+
+.pillar:hover {
+    transform: translateY(-5px);
+}
+
+.pillar-header {
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--light);
+}
+
+.add-task-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background: var(--secondary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.add-task-btn:hover {
+    background: #2980b9;
+}
+
+.task-item {
+    background: var(--light); /* Default color for not started */
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task-item[data-status="Completed"] {
+    background: #e8f5e9; /* Green background for completed */
+}
+
+.task-item[data-status="In Progress"] {
+    background: #e3f2fd; /* Blue background for in progress */
+}
+
+.task-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.completion-indicator {
+    color: #4caf50;
+    font-size: 1.2rem;
+}
+
+.task-actions button {
+    padding: 0.4rem;
+    margin-left: 0.3rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+}
+
+.task-actions button svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+.edit-btn {
+    background: var(--secondary);
+    color: white;
+}
+
+.delete-btn {
+    background: var(--accent);
+    color: white;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: auto;
+    cursor: pointer;
+}
+
+.star-rating {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.star {
+    color: #ddd;
+    cursor: pointer;
+    font-size: 1.5rem;
+}
+
+.star.active {
+    color: #ffd700;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.modal-actions button {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.save-btn {
+    background: var(--secondary);
+    color: white;
+}
+
+.cancel-btn {
+    background: var(--light);
+    color: var(--dark);
+}
+
+.chart-container {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.chart-container h2 {
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+}
+
+canvas#completionChart {
+    width: 100% !important;
+    height: 400px !important;
+}
+
+.timetable-container {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    margin-top: 2rem;
+}
+
+.timetable-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.timetable-header h2 {
+    color: var(--primary);
+    margin: 0;
+}
+
+#dateRangeFilter {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.timetable table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.timetable th, .timetable td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.timetable th {
+    background: var(--light);
+    color: var(--dark);
+    font-weight: 600;
+}
+
+.timetable tr:hover {
+    background: #f8f9fa;
+}
+
+.task-priority {
+    display: flex;
+    gap: 2px;
+}
+
+.priority-star {
+    color: #ffd700;
+}
+
+.task-status {
+    padding: 0.3rem 0.8rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.status-pending {
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+.status-completed {
+    background: #e8f5e9;
+    color: #4caf50;
+}
+
+.status-not-started {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.status-in-progress {
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+.action-btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 0 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.save-action {
+    background: var(--secondary);
+    color: white;
+}
+
+.save-action:hover {
+    background: #2980b9;
+}
+
+.load-action {
+    background: var(--primary);
+    color: white;
+}
+
+.load-action:hover {
+    background: #1e2f40;
+}
+
+.print-action {
+    background: #8e44ad;
+    color: white;
+}
+
+.print-action:hover {
+    background: #703688;
+}
+
+.sortable {
+    cursor: pointer;
+    position: relative;
+    padding-right: 20px;
+}
+
+.sort-icon {
+    font-size: 12px;
+    position: absolute;
+    right: 5px;
+    opacity: 0.5;
+}
+
+.sortable.asc .sort-icon {
+    content: '↑';
+    opacity: 1;
+}
+
+.sortable.desc .sort-icon {
+    content: '↓';
+    opacity: 1;
+}
+
+.sortable:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+
+@media print {
+    body {
+        background: white;
+    }
+
+    .container {
+        padding: 0;
+    }
+
+    .add-task-btn,  
+    .task-actions,
+    #saveDataBtn,
+    #loadDataBtn,
+    #printPdfBtn,
+    #fileInput {
+        display: none !important;
+    }
+
+    .pillar {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+
+    .chart-container,
+    .timetable-container {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+        page-break-before: always;
+    }
+}
+</style>
 </head>
 <body>
-    <h1>Shared Data via GitHub Gist</h1>
-    <button onclick="fetchGistData()">Fetch Data</button>
-    <pre id="output">Data will appear here...</pre>
+<div class="container">
+    <div class="pillars-container">
+        <div class="pillar" data-pillar="growth">
+            <h2 class="pillar-header">Growth</h2>
+            <button class="add-task-btn">Add Task</button>
+            <div class="tasks-container"></div>
+        </div>
+        <div class="pillar" data-pillar="health">
+            <h2 class="pillar-header">Health</h2>
+            <button class="add-task-btn">Add Task</button>
+            <div class="tasks-container"></div>
+        </div>
+        <div class="pillar" data-pillar="relationships">
+            <h2 class="pillar-header">Relationships</h2>
+            <button class="add-task-btn">Add Task</button>
+            <div class="tasks-container"></div>
+        </div>
+        <div class="pillar" data-pillar="wealth">
+            <h2 class="pillar-header">Wealth</h2>
+            <button class="add-task-btn">Add Task</button>
+            <div class="tasks-container"></div>
+        </div>
+    </div>
 
-    <script>
-        const GIST_RAW_URL = "https://gist.github.com/jfkproductions/53062e3f92776cd3e66700426ca3d32f/raw/data.json";
+    <div style="text-align: center; margin: 2rem 0;">
+        <button id="saveDataBtn" class="action-btn save-action">Save Data</button>
+        <button id="loadDataBtn" class="action-btn load-action">Load Data</button>
+        <button id="printPdfBtn" class="action-btn print-action">Print to PDF</button>
+        <input type="file" id="fileInput" style="display: none;" accept=".json">
+    </div>
 
-        // Function to fetch and display Gist data
-        function fetchGistData() {
-            fetch(GIST_RAW_URL)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("output").textContent = JSON.stringify(data, null, 2);
-                })
-                .catch(error => {
-                    console.error("Error fetching Gist data:", error);
-                    document.getElementById("output").textContent = "Failed to fetch data.";
-                });
+    <div class="timetable-container">
+        <div class="timetable-header">
+            <h2>Upcoming Tasks</h2>
+            <select id="dateRangeFilter">
+                <option value="all">All Tasks</option>
+                <option value="30">Next 30 Days</option>
+                <option value="60">Next 60 Days</option>
+                <option value="90">Next 90 Days</option>
+                <option value="180">Next 180 Days</option>
+            </select>
+        </div>
+        <div class="timetable">
+            <table id="upcomingTasksTable">
+                <thead>
+                    <tr>
+                        <th class="sortable" data-sort="name">Task Name <span class="sort-icon">↕</span></th>
+                        <th class="sortable" data-sort="pillar">Pillar <span class="sort-icon">↕</span></th>
+                        <th class="sortable" data-sort="date">Due Date <span class="sort-icon">↕</span></th>
+                        <th class="sortable" data-sort="priority">Priority <span class="sort-icon">↕</span></th>
+                        <th class="sortable" data-sort="impact">Impact <span class="sort-icon">↕</span></th>
+                        <th class="sortable" data-sort="status">Status <span class="sort-icon">↕</span></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="chart-container">
+        <h2>Task Completion Timeline</h2>
+        <canvas id="completionChart"></canvas>
+    </div>
+</div>
+
+<div class="modal" id="taskModal">
+    <div class="modal-content">
+        <h3>Task Details</h3>
+        <form id="taskForm">
+            <input type="hidden" id="taskId">
+            <input type="hidden" id="pillarType">
+            
+            <div class="form-group">
+                <label for="taskName">Task Name</label>
+                <input type="text" id="taskName" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="endDate">End Date</label>
+                <input type="date" id="endDate" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Priority</label>
+                <div class="star-rating" id="priorityRating"></div>
+            </div>
+            
+            <div class="form-group">
+                <label>Impact</label>
+                <div class="star-rating" id="impactRating"></div>
+            </div>
+            
+            <div class="form-group">
+                <label>Difficulty</label>
+                <div class="star-rating" id="difficultyRating"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="taskStatus">Status</label>
+                <select id="taskStatus" required>
+                    <option value="Not Started">Not Started</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+            
+            <div class="modal-actions">
+                <button type="button" class="cancel-btn">Cancel</button>
+                <button type="submit" class="save-btn">Save Task</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+class TaskManager {
+    constructor() {
+        this.tasks = {
+            growth: [],
+            health: [],
+            relationships: [], 
+            wealth: []
+        };
+        this.currentEditId = null;
+        this.completionChart = null;
+        this.dbName = 'taskManagerDB';
+        this.dbVersion = 1;
+        this.initIndexedDB().then(() => {
+            this.setupEventListeners();
+            this.setupSortableColumns();
+            this.loadTasks().then(() => {
+                this.renderAllTasks();
+                this.setupStarRatings();
+                this.updateCompletionChart();
+                this.updateTimetable();
+            });
+        });
+        
+        document.getElementById('dateRangeFilter').addEventListener('change', () => {
+            this.updateTimetable();
+        });
+    }
+
+    setupEventListeners() {
+        // Add task button listeners
+        document.querySelectorAll('.add-task-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const pillar = btn.closest('.pillar').dataset.pillar;
+                this.showModal(null, pillar);
+            });
+        });
+
+        // Task form submission
+        document.getElementById('taskForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.saveTask();
+        });
+
+        // Modal cancel button
+        document.querySelector('.cancel-btn').addEventListener('click', () => {
+            this.hideModal();
+        });
+
+        // Save/Load data button listeners
+        document.getElementById('saveDataBtn').addEventListener('click', () => {
+            this.saveTasks();
+        });
+
+        document.getElementById('loadDataBtn').addEventListener('click', () => {
+            document.getElementById('fileInput').click();
+        });
+
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                this.loadTasksFromFile(e.target.files[0]);
+            }
+        });
+
+        // Print PDF button listener
+        document.getElementById('printPdfBtn').addEventListener('click', () => {
+            window.print();
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('taskModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('taskModal')) {
+                this.hideModal();
+            }
+        });
+    }
+
+    async initIndexedDB() {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open(this.dbName, this.dbVersion);
+            
+            request.onerror = (event) => {
+                console.error('IndexedDB error:', event.target.error);
+                reject(event.target.error);
+            };
+
+            request.onsuccess = (event) => {
+                this.db = event.target.result;
+                resolve();
+            };
+
+            request.onupgradeneeded = (event) => {
+                const db = event.target.result;
+                if (!db.objectStoreNames.contains('tasks')) {
+                    db.createObjectStore('tasks', { keyPath: 'id' });
+                }
+            };
+        });
+    }
+
+    async saveToIndexedDB() {
+        return new Promise((resolve, reject) => {
+            const transaction = this.db.transaction(['tasks'], 'readwrite');
+            const store = transaction.objectStore('tasks');
+            
+            const data = {
+                id: 'current',
+                tasks: this.tasks,
+                timestamp: new Date().toISOString()
+            };
+            
+            const request = store.put(data);
+            
+            request.onsuccess = () => resolve();
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    async loadFromIndexedDB() {
+        return new Promise((resolve, reject) => {
+            const transaction = this.db.transaction(['tasks'], 'readonly');
+            const store = transaction.objectStore('tasks');
+            const request = store.get('current');
+            
+            request.onsuccess = () => {
+                if (request.result) {
+                    resolve(request.result.tasks);
+                } else {
+                    resolve(null);
+                }
+            };
+            
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    async loadTasks() {
+        try {
+            const indexedDBData = await this.loadFromIndexedDB();
+            if (indexedDBData) {
+                this.tasks = indexedDBData;
+                return;
+            }
+
+            const dataScript = document.getElementById('tasksData');
+            if (dataScript) {
+                this.tasks = JSON.parse(dataScript.textContent);
+                return;
+            }
+        } catch (error) {
+            console.warn('Error loading tasks:', error);
+            this.tasks = {
+                growth: [],
+                health: [],
+                relationships: [],
+                wealth: []
+            };
+            
+            Swal.fire({
+                title: 'Starting Fresh',
+                text: 'No existing tasks found. Starting with a clean slate.',
+                icon: 'info'
+            });
         }
-    </script>
+    }
+
+    async saveTasks() {
+        try {
+            const tasksJSON = JSON.stringify(this.tasks, null, 2);
+            const blob = new Blob([tasksJSON], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Priority_planner.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            Swal.fire({
+                title: 'Success!',
+                text: 'Tasks saved successfully to Priority_planner.json',
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        } catch (error) {
+            console.error('Save failed:', error);
+            Swal.fire({
+                title: 'Error!',
+                text: 'Failed to save tasks. Please try again.',
+                icon: 'error'
+            });
+        }
+    }
+
+    async saveTask() {
+        const pillar = document.getElementById('pillarType').value;
+        const taskData = {
+            id: this.currentEditId || Date.now().toString(),
+            name: document.getElementById('taskName').value,
+            endDate: document.getElementById('endDate').value,
+            priority: this.getStarRating('priority'),
+            impact: this.getStarRating('impact'),
+            difficulty: this.getStarRating('difficulty'),
+            status: document.getElementById('taskStatus').value,
+            completed: document.getElementById('taskStatus').value === 'Completed'
+        };
+
+        try {
+            if (this.currentEditId) {
+                const index = this.tasks[pillar].findIndex(t => t.id === this.currentEditId);
+                if (index !== -1) {
+                    this.tasks[pillar][index] = taskData;
+                }
+            } else {
+                this.tasks[pillar].push(taskData);
+            }
+
+            // Only save to IndexedDB, not to file
+            await this.saveToIndexedDB();
+            
+            this.renderAllTasks();
+            this.updateCompletionChart();
+            this.updateTimetable();
+            this.hideModal();
+            
+            Swal.fire({
+                title: 'Success!',
+                text: `Task ${this.currentEditId ? 'updated' : 'added'} successfully`,
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        } catch (error) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Failed to save task. Please try again.',
+                icon: 'error'
+            });
+        }
+    }
+
+    async deleteTask(taskId, pillar) {
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                this.tasks[pillar] = this.tasks[pillar].filter(t => t.id !== taskId);
+                await this.saveToIndexedDB(); // Only save to IndexedDB
+                this.renderAllTasks();
+                this.updateCompletionChart();
+                this.updateTimetable();
+                
+                Swal.fire(
+                    'Deleted!',
+                    'Your task has been deleted.',
+                    'success'
+                );
+            } catch (error) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Failed to delete task. Please try again.',
+                    icon: 'error'
+                });
+            }
+        }
+    }
+
+    getUpcomingTasks(days) {
+        if (days === 'all') {
+            // Return all tasks without date filtering
+            const allTasks = [];
+            Object.keys(this.tasks).forEach(pillar => {
+                this.tasks[pillar].forEach(task => {
+                    allTasks.push({
+                        ...task,
+                        pillar: pillar
+                    });
+                });
+            });
+            return allTasks.sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
+        }
+        
+        // Existing date filtering logic for other options
+        const today = new Date();
+        const futureDate = new Date();
+        futureDate.setDate(today.getDate() + parseInt(days));
+        
+        const upcomingTasks = [];
+        Object.keys(this.tasks).forEach(pillar => {
+            this.tasks[pillar].forEach(task => {
+                const taskDate = new Date(task.endDate);
+                if (taskDate >= today && taskDate <= futureDate) {
+                    upcomingTasks.push({
+                        ...task,
+                        pillar: pillar
+                    });
+                }
+            });
+        });
+        
+        return upcomingTasks.sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
+    }
+
+    renderStars(count) {
+        return '★'.repeat(count) + '☆'.repeat(5 - count);
+    }
+
+    setupSortableColumns() {
+        const headers = document.querySelectorAll('#upcomingTasksTable th.sortable');
+        headers.forEach(header => {
+            header.addEventListener('click', () => this.sortTable(header));
+        });
+    }
+
+    sortTable(header) {
+        const sortBy = header.dataset.sort;
+        const isAsc = !header.classList.contains('asc');
+        
+        // Remove sort classes from all headers
+        document.querySelectorAll('#upcomingTasksTable th').forEach(th => {
+            th.classList.remove('asc', 'desc');
+        });
+        
+        // Add sort class to clicked header
+        header.classList.add(isAsc ? 'asc' : 'desc');
+        
+        this.updateTimetable(sortBy, isAsc);
+    }
+
+    updateTimetable(sortBy = 'date', isAsc = true) {
+        const days = document.getElementById('dateRangeFilter').value;
+        let upcomingTasks = this.getUpcomingTasks(days);
+        
+        // Sort tasks based on selected column
+        upcomingTasks.sort((a, b) => {
+            let comparison = 0;
+            switch(sortBy) {
+                case 'name':
+                    comparison = a.name.localeCompare(b.name);
+                    break;
+                case 'pillar':
+                    comparison = a.pillar.localeCompare(b.pillar);
+                    break;
+                case 'date':
+                    comparison = new Date(a.endDate) - new Date(b.endDate);
+                    break;
+                case 'priority':
+                    comparison = b.priority - a.priority;
+                    break;
+                case 'impact':
+                    comparison = b.impact - a.impact;
+                    break;
+                case 'status':
+                    comparison = a.status.localeCompare(b.status);
+                    break;
+            }
+            return isAsc ? comparison : -comparison;
+        });
+        
+        const tbody = document.querySelector('#upcomingTasksTable tbody');
+        tbody.innerHTML = '';
+        
+        upcomingTasks.forEach(task => {
+            const tr = document.createElement('tr');
+            const status = task.status || (task.completed ? 'Completed' : 'Not Started');
+            const statusClass = status.toLowerCase().replace(' ', '-');
+            
+            tr.innerHTML = `
+                <td>${task.name}</td>
+                <td style="text-transform: capitalize">${task.pillar}</td>
+                <td>${new Date(task.endDate).toLocaleDateString()}</td>
+                <td>
+                    <div class="task-priority">
+                        ${this.renderStars(task.priority)}
+                    </div>
+                </td>
+                <td>
+                    <div class="task-priority">
+                        ${this.renderStars(task.impact)}
+                    </div>
+                </td>
+                <td>
+                    <span class="task-status status-${statusClass}">
+                        ${status}
+                    </span>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    getCompletedTasksData() {
+        const allTasks = [];
+        Object.keys(this.tasks).forEach(pillar => {
+            this.tasks[pillar].forEach(task => {
+                if (task.completed) {
+                    allTasks.push({
+                        endDate: new Date(task.endDate),
+                        pillar: pillar
+                    });
+                }
+            });
+        });
+        
+        allTasks.sort((a, b) => a.endDate - b.endDate);
+        
+        const groupedData = {};
+        allTasks.forEach(task => {
+            const dateKey = task.endDate.toISOString().split('T')[0];
+            if (!groupedData[dateKey]) {
+                groupedData[dateKey] = {
+                    growth: 0,
+                    health: 0,
+                    relationships: 0,
+                    wealth: 0
+                };
+            }
+            groupedData[dateKey][task.pillar]++;
+        });
+        
+        return groupedData;
+    }
+
+    updateCompletionChart() {
+        const ctx = document.getElementById('completionChart').getContext('2d');
+        const data = this.getCompletedTasksData();
+        const dates = Object.keys(data).sort();
+        
+        const cumulativeData = {
+            growth: [],
+            health: [],
+            relationships: [],
+            wealth: []
+        };
+        
+        const pillars = ['growth', 'health', 'relationships', 'wealth'];
+        const running = {
+            growth: 0,
+            health: 0,
+            relationships: 0,
+            wealth: 0
+        };
+        
+        dates.forEach(date => {
+            pillars.forEach(pillar => {
+                running[pillar] += data[date][pillar];
+                cumulativeData[pillar].push(running[pillar]);
+            });
+        });
+        
+        if (this.completionChart) {
+            this.completionChart.destroy();
+        }
+        
+        this.completionChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [
+                    {
+                        label: 'Growth',
+                        data: cumulativeData.growth,
+                        borderColor: '#4CAF50',
+                        tension: 0.4,
+                        fill: false
+                    },
+                    {
+                        label: 'Health',
+                        data: cumulativeData.health,
+                        borderColor: '#2196F3',
+                        tension: 0.4,
+                        fill: false
+                    },
+                    {
+                        label: 'Relationships',
+                        data: cumulativeData.relationships,
+                        borderColor: '#FF9800',
+                        tension: 0.4,
+                        fill: false
+                    },
+                    {
+                        label: 'Wealth',
+                        data: cumulativeData.wealth,
+                        borderColor: '#E91E63',
+                        tension: 0.4,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Completed Tasks'
+                        },
+                        beginAtZero: true,
+                        stepSize: 1
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Cumulative Completed Tasks Over Time'
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                }
+            }
+        });
+    }
+
+    renderAllTasks() {
+        Object.keys(this.tasks).forEach(pillar => {
+            const container = document.querySelector(`.pillar[data-pillar="${pillar}"] .tasks-container`);
+            container.innerHTML = '';
+            
+            this.tasks[pillar].forEach(task => {
+                const taskElement = document.createElement('div');
+                taskElement.className = 'task-item';
+                taskElement.setAttribute('data-status', task.status || 'Not Started');
+                
+                taskElement.innerHTML = `
+                    <div class="task-info">
+                        ${task.name}
+                    </div>
+                    <div class="task-actions">
+                        <button class="edit-btn" onclick="taskManager.showModal('${task.id}', '${pillar}')">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                            </svg>
+                        </button>
+                        <button class="delete-btn" onclick="taskManager.deleteTask('${task.id}', '${pillar}')">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(taskElement);
+            });
+        });
+    }
+
+    showModal(taskId = null, pillar) {
+        const modal = document.getElementById('taskModal');
+        const form = document.getElementById('taskForm');
+        
+        this.currentEditId = taskId;
+        document.getElementById('pillarType').value = pillar;
+        
+        if (taskId) {
+            const task = this.tasks[pillar].find(t => t.id === taskId);
+            if (task) {
+                document.getElementById('taskName').value = task.name;
+                document.getElementById('endDate').value = task.endDate;
+                document.getElementById('taskStatus').value = task.status || (task.completed ? 'Completed' : 'Not Started');
+                this.setStarRating('priority', task.priority);
+                this.setStarRating('impact', task.impact);
+                this.setStarRating('difficulty', task.difficulty);
+            }
+        } else {
+            form.reset();
+            document.getElementById('taskStatus').value = 'Not Started';
+            this.setStarRating('priority', 0);
+            this.setStarRating('impact', 0);
+            this.setStarRating('difficulty', 0);
+        }
+        
+        modal.style.display = 'flex';
+    }
+
+    hideModal() {
+        const modal = document.getElementById('taskModal');
+        modal.style.display = 'none';
+        this.currentEditId = null;
+    }
+
+    setupStarRatings() {
+        ['priority', 'impact', 'difficulty'].forEach(type => {
+            const container = document.getElementById(`${type}Rating`);
+            container.innerHTML = '';
+            
+            for (let i = 1; i <= 5; i++) {
+                const star = document.createElement('span');
+                star.className = 'star';
+                star.innerHTML = '★';
+                star.dataset.value = i;
+                star.addEventListener('click', () => this.setStarRating(type, i));
+                container.appendChild(star);
+            }
+        });
+    }
+
+    setStarRating(type, value) {
+        const stars = document.querySelectorAll(`#${type}Rating .star`);
+        stars.forEach((star, index) => {
+            star.classList.toggle('active', index < value);
+        });
+    }
+
+    getStarRating(type) {
+        return document.querySelectorAll(`#${type}Rating .star.active`).length;
+    }
+
+    async loadTasksFromFile(file) {
+        try {
+            if (!file.name.endsWith('.json')) {
+                throw new Error('Please select a .json file');
+            }
+
+            const text = await file.text();
+            const loadedTasks = JSON.parse(text);
+            
+            const requiredPillars = ['growth', 'health', 'relationships', 'wealth'];
+            const isValid = requiredPillars.every(pillar => Array.isArray(loadedTasks[pillar]));
+            
+            if (!isValid) {
+                throw new Error('Invalid task data structure');
+            }
+
+            this.tasks = loadedTasks;
+            this.renderAllTasks();
+            this.updateCompletionChart();
+            this.updateTimetable();
+            
+            Swal.fire({
+                title: 'Success!',
+                text: 'Tasks loaded successfully from Priority_planner.json',
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        } catch (error) {
+            console.error('Load failed:', error);
+            Swal.fire({
+                title: 'Error!',
+                text: `Failed to load tasks: ${error.message}`,
+                icon: 'error'
+            });
+        }
+    }
+}
+
+const taskManager = new TaskManager();
+</script>
+<script id="tasksData" type="application/json">
+{
+    "growth": [],
+    "health": [],
+    "relationships": [],
+    "wealth": []
+}
+</script>
 </body>
 </html>
