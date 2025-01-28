@@ -3,9 +3,7 @@
     <head>
         <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
         <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-        <script src="path/to/aframe-websurfaces.js"></script> <!-- Ensure this path points to the modified websurfaces component -->
-        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-detector.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/studio-backend/master/src/modules/marker/tools/gesture-handler.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/aframe-iframe-component@1.0.0/dist/aframe-iframe-component.min.js"></script>
     </head>
 
     <body style="margin: 0; overflow: hidden;">
@@ -14,33 +12,15 @@
             loading-screen="enabled: false;"
             arjs="sourceType: webcam; debugUIEnabled: false;"
             embedded
-            gesture-detector
         >
-            <a-assets>
-                <!-- Assets can be defined here if needed -->
-            </a-assets>
-
-            <a-marker
-                type="pattern"
-                preset="custom"
-                url="assets/marker.patt"
-                smooth="true"
-                smoothCount="10"
-                smoothTolerance="0.01"
-                smoothThreshold="5"
-                raycaster="objects: .clickable"
-                emitevents="true"
-                cursor="fuse: false; rayOrigin: mouse;"
-                id="markerA"
-            >
-                <a-entity
-                    websurface="url: https://www.youtube.com/embed/Ftvhu0oA3R8?si=GR353mFMlUAAW-OY; width: 3.5; height: 2.0;"
+            <a-marker preset="custom" url="assets/marker.patt">
+                <a-entity 
+                    geometry="primitive: plane; height: 2; width: 3.5"
+                    iframe="src: https://www.youtube.com/embed/Ftvhu0oA3R8?autoplay=1&mute=1"
                     scale="1 1 1"
                     position="0 0.1 0"
-                    rotation="-90 0 0"
-                    class="clickable"
-                    gesture-handler
-                ></a-entity>
+                    rotation="-90 0 0">
+                </a-entity>
             </a-marker>
 
             <a-entity camera></a-entity>
