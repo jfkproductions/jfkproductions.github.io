@@ -118,8 +118,7 @@ header {
     background-color: var(--primary-color);
     color: #fff;
     padding: 0.75rem 0;
-    position: fixed;
-    width: 100%;
+    position: sticky;
     top: 0;
     z-index: 1000;
     background-size: cover;
@@ -267,6 +266,9 @@ header {
             text-align: center;
             padding: 1rem 0;
         }
+
+        /* Ensure content is never hidden behind the sticky header */
+        main { padding-top: 0.75rem; }
 
         /* Responsive Layout */
         @media (max-width: 768px) {
