@@ -1115,12 +1115,46 @@ header {
         });
     </script>
     <script>
-        // Hamburger menu toggle
+        // Hamburger menu toggle (targets pill nav on mobile)
         const hamburger = document.getElementById('hamburger');
-        const navMenu = document.getElementById('nav-menu');
-        if (hamburger && navMenu) {
+        const pillNav = document.getElementById('pillNav');
+        if (hamburger && pillNav) {
             hamburger.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
+                pillNav.classList.toggle('active');
+            });
+
+            // Auto-close the mobile menu when a tab/link is selected
+            const closeOnSelect = (e) => {
+                // Allow Bootstrap to switch tabs, then collapse the menu
+                if (window.innerWidth <= 576 && pillNav.classList.contains('active')) {
+                    // Small delay so tab activation doesn't get blocked
+                    setTimeout(() => pillNav.classList.remove('active'), 50);
+                }
+            };
+            pillNav.querySelectorAll('.nav-link').forEach((el) => {
+                el.addEventListener('click', closeOnSelect);
+            });
+
+            // Close when clicking outside the menu
+            document.addEventListener('click', (e) => {
+                const clickedInsideMenu = pillNav.contains(e.target) || hamburger.contains(e.target);
+                if (!clickedInsideMenu && pillNav.classList.contains('active')) {
+                    pillNav.classList.remove('active');
+                }
+            });
+
+            // Close on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && pillNav.classList.contains('active')) {
+                    pillNav.classList.remove('active');
+                }
+            });
+
+            // Reset state when resizing up to desktop widths
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 576 && pillNav.classList.contains('active')) {
+                    pillNav.classList.remove('active');
+                }
             });
         }
         // Bootstrap handles tab activation; smooth scroll and active-on-scroll removed.
