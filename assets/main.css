@@ -109,3 +109,32 @@ footer { background: var(--primary-color); color: white; text-align: center; pad
   .section { padding: 0.75rem 0; }
   .section-title { font-size: 1.4rem; }
 }
+
+/* Home carousel: increase slide height by ~25% and make media fill */
+#homeCarousel .carousel-item { 
+  position: relative; 
+  /* Height scales with viewport width; ~25% taller than 16:9 baseline */
+  height: clamp(280px, calc(56.25vw * 1.25), 760px);
+}
+
+#homeCarousel .carousel-item img { 
+  position: absolute; 
+  inset: 0; 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+}
+
+/* Override Bootstrap ratio for iframe slides to occupy full slide height */
+#homeCarousel .carousel-item .ratio { 
+  height: 100% !important; 
+  width: 100%; 
+  padding-top: 0 !important; 
+}
+
+#homeCarousel .carousel-item iframe { 
+  position: absolute; 
+  inset: 0; 
+  width: 100%; 
+  height: 100%; 
+}
