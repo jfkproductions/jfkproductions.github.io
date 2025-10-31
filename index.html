@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <base href="https://github.jfkproductions.io/">
+    <base href="/">
     <title>My Professional Portfolio</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,12 +12,91 @@
             --secondary-color: #3498db;
             --text-color: #333;
             --background-color: #ecf0f1;
+            --surface-color: #ffffff;
+            --border-color: #e5e7eb;
+            --muted-color: #6b7280;
+            --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
         }
 
         .arcade-screen {
             width: 620px;
             border: 2px solid #0f0;
             padding: 20px;
+        }
+
+        /* Unified table-like layout using divs */
+        .grid-table {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+
+        .grid-table .table-header,
+        .grid-table .table-row {
+            display: grid;
+            grid-template-columns: var(--cols, 2fr 3fr 1fr);
+            gap: 16px;
+            padding: 12px 16px;
+        }
+
+        .grid-table .table-header {
+            background: #f8fafc;
+            font-weight: 600;
+        }
+
+        .grid-table .table-row {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .grid-table.cols-2 { --cols: 3fr 1fr; }
+        .grid-table.cols-3 { --cols: 2fr 3fr 1fr; }
+
+        .badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .thumb {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 6px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .cta-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #1f2937;
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .cta-link:hover {
+            background: #e0e7ff;
+            transform: translateY(-1px);
+        }
+
+        .store-badge {
+            height: 24px;
+            width: auto;
+        }
+
+        @media (max-width: 768px) {
+            .grid-table .table-header { display: none; }
+            .grid-table .table-row {
+                grid-template-columns: 1fr;
+            }
         }
 
         body {
@@ -35,15 +114,18 @@
             padding: 0 20px;
         }
 
-        header {
-            background-color: var(--primary-color);
-            color: #fff;
-            padding: 1rem 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
+header {
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 0.75rem 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 
         nav {
             display: flex;
@@ -123,15 +205,15 @@
             margin: 0 auto;
         }
 
-        .section {
-            padding: 4rem 0;
-        }
+.section {
+    padding: 1rem 0;
+}
 
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-        }
+.section-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
 
         .profile-pic {
             width: 200px;
@@ -265,7 +347,28 @@
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/main.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+      (function () {
+        function isMobile() {
+          const ua = navigator.userAgent || navigator.vendor || window.opera;
+          const mobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+          const coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+          const small = Math.min(screen.width, screen.height) <= 820;
+          return mobileUA || coarse || small;
+        }
+        // Redirect desktop visitors to the interactive portfolio, unless bypassed
+        var onPortfolio = /\/portfolio\//i.test(location.pathname);
+        var noRedirect = (new URLSearchParams(window.location.search).get('redirect') === 'false')
+          || (window.location.hash && window.location.hash.toLowerCase().includes('noredirect'));
+        var fromPortfolio = /\/portfolio\/index\.html$/i.test(document.referrer);
+        if (!isMobile() && !onPortfolio && !noRedirect && !fromPortfolio) {
+          window.location.href = 'portfolio/index.html';
+        }
+      })();
+    </script>
 </head>
 
 <body>
@@ -276,40 +379,109 @@
                 <div></div>
                 <div></div>
             </div>
-            <ul id="nav-menu">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#qualifications">Qualifications</a></li>
-                <li><a href="#tools">Technologies</a></li>
-                <li><a href="#github-repos">Github Repos</a></li>
-                <li><a href="#toolsets">Tools</a></li>
-                <li><a href="#music">Music</a></li>
-                <li><a href="#video">Video</a></li>
-                <li><a href="#games">Games</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="#Training">Training</a></li>
+            <ul class="nav nav-pills nav-fill gap-2 p-1 small bg-primary rounded-5 shadow-sm" id="pillNav" role="tablist"
+                style="--bs-nav-link-color: var(--bs-white); --bs-nav-pills-link-active-color: var(--bs-primary); --bs-nav-pills-link-active-bg: var(--bs-white);">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link rounded-5" href="index.html">Default</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-5" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="false">Home</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active rounded-5" id="about-tab" data-bs-toggle="tab" data-bs-target="#about" type="button" role="tab" aria-controls="about" aria-selected="true">About</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-5" id="experience-tab" data-bs-toggle="tab" data-bs-target="#experience" type="button" role="tab" aria-controls="experience" aria-selected="false">Experience</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-5" id="qualifications-tab" data-bs-toggle="tab" data-bs-target="#qualifications" type="button" role="tab" aria-controls="qualifications" aria-selected="false">Qualifications</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-5" id="tools-tab" data-bs-toggle="tab" data-bs-target="#tools" type="button" role="tab" aria-controls="tools" aria-selected="false">Technologies</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-5" id="github-repos-tab" data-bs-toggle="tab" data-bs-target="#github-repos" type="button" role="tab" aria-controls="github-repos" aria-selected="false">GitHub Repositories</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-5" id="toolsets-tab" data-bs-toggle="tab" data-bs-target="#toolsets" type="button" role="tab" aria-controls="toolsets" aria-selected="false">Applications</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-5" id="blog-tab" data-bs-toggle="tab" data-bs-target="#blog" type="button" role="tab" aria-controls="blog" aria-selected="false">Blog</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-5" id="games-tab" data-bs-toggle="tab" data-bs-target="#games" type="button" role="tab" aria-controls="games" aria-selected="false">Arcade Video Games</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-5" id="music-tab" data-bs-toggle="tab" data-bs-target="#music" type="button" role="tab" aria-controls="music" aria-selected="false">Music &amp; Comedy</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-5" id="video-tab" data-bs-toggle="tab" data-bs-target="#video" type="button" role="tab" aria-controls="video" aria-selected="false">Video</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-5" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-5" id="Training-tab" data-bs-toggle="tab" data-bs-target="#Training" type="button" role="tab" aria-controls="Training" aria-selected="false">Training</button>
+                </li>
             </ul>
         </nav>
     </header>
 
     <main>
 
-        <section id="home" class="hero">
-            <div class="hero-content">
+        <div class="tab-content" id="tabContent">
 
-                <div class="text-content">
-                    <h1>Welcome to My Portfolio</h1>
-
-
-                    <!-- <div class="canvas-container">
-                        <canvas id="sphereCanvas"></canvas>
-                    </div> -->
+        <section id="home" class="section tab-pane fade" role="tabpanel" aria-labelledby="home-tab">
+            <div class="container">
+                <h2 class="section-title">Welcome</h2>
+                <div id="homeCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="AI Tools"></button>
+                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="1" aria-label="Mental Priming"></button>
+                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="2" aria-label="Music"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <a href="https://aitoolsportal.ai/" target="_blank">
+                                <img src="https://www.shutterstock.com/image-vector/artificial-intelligence-ai-logo-futuristic-600nw-2594719979.jpg" class="d-block w-100" alt="AI Tools Portal" onerror="this.onerror=null;this.src='https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png';">
+                                <div class="carousel-caption">
+                                    <h5>AI Tools Portal</h5>
+                                    <p>Welcome to AI Tools Portal — your curated gateway to the best AI tools, GitHub projects, and tutorials.</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="carousel-item">
+                            <a href="https://mentalpriming.com/" target="_blank">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf2NVCsCn9bLFic3HDigBtqJt5Wo7XNV0kiw&s" class="d-block w-100" alt="Mental Priming" onerror="this.onerror=null;this.src='https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png';">
+                                <div class="carousel-caption">
+                                    <h5>Mental Priming</h5>
+                                    <p>Focus, habit, and priming exercises to improve daily performance.</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="carousel-item">
+                            <a href="#music" id="goMusicTab" data-bs-toggle="tab">
+                                <img src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--0A0B2D95-2CA1-46C4-8B80A0A079C631FD--0--5325783--cover.png?fm=jpg&q=75&w=800&s=1493498e5baab78d4ce29adbeabe8165" class="d-block w-100" alt="Music" onerror="this.onerror=null;this.src='https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png';">
+                                <div class="carousel-caption">
+                                    <h5>Music</h5>
+                                    <p>Explore my music — click to open the Music tab.</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
             </div>
         </section>
 
-        <section id="about" class="section">
+        <section id="about" class="section tab-pane fade" role="tabpanel" aria-labelledby="about-tab">
             <div class="container">
                 <h2 class="section-title">About Me</h2>
                 <img src="https://media.licdn.com/dms/image/C5603AQH0-eZuljeq5w/profile-displayphoto-shrink_200_200/0/1516767430245?e=2147483647&v=beta&t=TlWT5RBTLpbwsK7ykHaGfoHmTxzyF-ZczTADpx2I6KM"
@@ -343,7 +515,7 @@
         </section>
 
 
-        <section id="experience" class="section">
+        <section id="experience" class="section tab-pane fade" role="tabpanel" aria-labelledby="experience-tab">
             <div class="container">
                 <h2 class="section-title">Work Experience</h2>
                 <div class="experience-item">
@@ -491,7 +663,7 @@
             </div>
         </section>
 
-        <section id="tools" class="section">
+        <section id="tools" class="section tab-pane fade" role="tabpanel" aria-labelledby="tools-tab">
             <div class="container">
                 <h2 class="section-title">Technologies</h2>
                 <div class="tools-grid">
@@ -547,7 +719,7 @@
             </div>
         </section>
 
-        <section id="qualifications" class="section">
+        <section id="qualifications" class="section tab-pane fade" role="tabpanel" aria-labelledby="qualifications-tab">
             <div class="container">
                 <h2 class="section-title">Qualifications</h2>
                 <div class="experience-item">
@@ -579,339 +751,353 @@
                 </div>
             </div>
         </section>
-        <section id="github-repos" class="section">
+        <section id="github-repos" class="section tab-pane fade" role="tabpanel" aria-labelledby="github-repos-tab">
             <div class="container">
                 <h2 class="section-title">GitHub Repositories</h2>
-                <div id="repo-list">
-                    <a href="https://github.com/jfkproductions/AWS-Session-manager" target="_blank"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        AWS Session Manager
-                    </a>
-                    <a href="https://github.com/jfkproductions/c4DiagramRag" target="_blank"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        C4 Diagram RAG
-                    </a>
-                    <a href="https://github.com/jfkproductions/ChatwithMax" target="_blank"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        Chat with Max
-                    </a>
-                    <a href="https://github.com/jfkproductions/YoloCowCammonitoring" target="_blank"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        Yolo Cow Camera monitoring
-                    </a>
-                    <a href="https://github.com/jfkproductions/YoloLiveCowDetection" target="_blank"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        Yolo Live Cow detection
-                    </a>
-
-                    <a href="https://github.com/jfkproductions/CV2_FacialRecognition" target="_blank"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        CV2 Facial Recognition
-                    </a>
-                    <a href="https://github.com/jfkproductions/WebcamFaceDetection" target="_blank"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        Web cam Face Detection
-                    </a>
-                    <a href="https://github.com/jfkproductions/MicorserviceBuilder" target="_blank"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        Microservice Builder
-                    </a>
+                <div class="grid-table cols-3">
+                    <div class="table-header">
+                        <div>Repository</div>
+                        <div>Summary</div>
+                        <div>Open</div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fab fa-github"></i> AWS Session Manager</div>
+                        <div>Access and manage EC2 via SSM; CLI and docs.</div>
+                        <div><a class="cta-link" href="https://github.com/jfkproductions/AWS-Session-manager" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fab fa-github"></i> C4 Diagram RAG</div>
+                        <div>Generate C4 architecture diagrams with RAG techniques.</div>
+                        <div><a class="cta-link" href="https://github.com/jfkproductions/c4DiagramRag" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fab fa-github"></i> Chat with Max</div>
+                        <div>Conversational AI demo and tooling.</div>
+                        <div><a class="cta-link" href="https://github.com/jfkproductions/ChatwithMax" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fab fa-github"></i> Yolo Cow Camera monitoring</div>
+                        <div>Camera monitoring with YOLO detection.</div>
+                        <div><a class="cta-link" href="https://github.com/jfkproductions/YoloCowCammonitoring" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fab fa-github"></i> Yolo Live Cow detection</div>
+                        <div>Real-time object detection for livestock.</div>
+                        <div><a class="cta-link" href="https://github.com/jfkproductions/YoloLiveCowDetection" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fab fa-github"></i> CV2 Facial Recognition</div>
+                        <div>OpenCV-based face recognition experiments.</div>
+                        <div><a class="cta-link" href="https://github.com/jfkproductions/CV2_FacialRecognition" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fab fa-github"></i> Web cam Face Detection</div>
+                        <div>Webcam integration and face detection samples.</div>
+                        <div><a class="cta-link" href="https://github.com/jfkproductions/WebcamFaceDetection" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fab fa-github"></i> Microservice Builder</div>
+                        <div>Templates and scaffolding for microservices.</div>
+                        <div><a class="cta-link" href="https://github.com/jfkproductions/MicorserviceBuilder" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
                 </div>
             </div>
 
         </section>
-        <div class="container">
-            <section id="toolsets" class="section">
+        <section id="toolsets" class="section tab-pane fade" role="tabpanel" aria-labelledby="toolsets-tab">
+            <div class="container">
                 <h2 class="section-title">Applications</h2>
-                <div id="toolsetslist">
-                    <a href="https://jfkproductions.github.io/Tools/toolbelt.html" target="_blank"
-                        class="tool-link button"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        <i class="fas fa-toolbox"></i>
-                        IT Toolbelt
-                    </a>
-                    <a href="https://jfkproductions.github.io/Tools/Simplec4.html" target="_blank"
-                        class="tool-link button"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        <i class="fas fa-cogs"></i>
-                        Simple C4
-                    </a>
-                    <a href="https://jfkproductions.github.io/Tools/Task Builder.html" target="_blank"
-                        class="tool-link button"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        <i class="fas fa-tasks"></i>
-                        Task Builder
-                    </a>
-                    <a href="https://jfkproductions.github.io/Tools/Stakeholder Diagram Generator.html" target="_blank"
-                        class="tool-link button"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        <i class="fas fa-users"></i>
-                        Stakeholder Diagram Generator
-                    </a>
-                    <a href="https://jfkproductions.github.io/Tools/Bussines model canvas 3.html" target="_blank"
-                        class="tool-link button"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        <i class="fas fa-chart-bar"></i>
-                        Business Model Canvas
-                    </a>
-                    <a href="https://jfkproductions.github.io/Tools/Disruption Risk Assessment.html" target="_blank"
-                        class="tool-link button"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        Disruption Risk Assessment
-                    </a>
-                    <a href="https://jfkproductions.github.io/Tools/Innovation Project Scorecard.html" target="_blank"
-                        class="tool-link button"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        <i class="fas fa-lightbulb"></i>
-                        Innovation Project Scorecard
-                    </a>
-
-                    <a href="https://jfkproductions.github.io/Tools/Value Proposition Canvas.html" target="_blank"
-                        class="tool-link button"
-                        style="display: inline-block; padding: 10px 20px;  background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;  ">
-                        <i class="fas fa-hand-holding-usd"></i>
-                        Value Proposition Canvas
-                    </a>
-
-                    <a href="https://jfkproductions.github.io/Tools/Budget Builder.html" target="_blank"
-                        class="tool-link button"
-                        style="display: inline-block; padding: 10px 20px;  background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;  ">
-                        <i class="fas fa-money-bill-wave "></i>
-                        Budget Builder
-                    </a>
-                    <a href="https://jfkproductions.github.io/Tools/Mindmap Tool.html" target="_blank"
-                        class="tool-link button"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        <i class="fas fa-sitemap"></i>
-                        Mindmap Creator
-                    </a>
-
-                    <a href="https://jfkproductions.github.io/Tools/Mindmap Tool.html" target="_blank"
-                        class="tool-link button"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        <i class="fas fa-cogs"></i>
-                        Image Converter
-                    </a>
-                    <a href="https://jfkproductions.github.io/Tools/DB schema visualizer.html" target="_blank"
-                        class="tool-link button"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        <i class="fas fa-chart-bar"></i>
-                        Database Schema Visualization
-                    </a>
-                    <a href="https://jfkproductions.github.io/Tools/QR Code Generator.html" target="_blank"
-                        class="tool-link button"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        <i class="fas fa-solid fa-qrcode"></i>
-                        QR Code Generator
-                    </a>
-
-                    <a href="https://mentalpriming.com/" target="_blank"
-                        class="tool-link button"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        Mental Priming (Site)
-                    </a>
-
-                    <a href="https://play.google.com/store/apps/details?id=com.kraai.mentalpriming&referrer=utm_source%3Dsite%26utm_medium%3Dbadge%26utm_campaign%3Dhomepage" target="_blank">
-                        <img src="https://fireship.io/lessons/pwa-to-play-store/img/googleplay-badge.png" alt="Get it on Google Play" style="width:160px;height:auto">
-                    </a>
-
-                    <a href="https://aitoolsportal.ai/" target="_blank"
-                        class="tool-link button"
-                        style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                        AI Tools Portal
-                    </a>
-
-
-
+                <div class="grid-table cols-3">
+                    <div class="table-header">
+                        <div>Application</div>
+                        <div>Summary</div>
+                        <div>Open</div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fas fa-toolbox"></i> IT Toolbelt</div>
+                        <div>Shortcuts for common sysadmin/devops tasks.</div>
+                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/toolbelt.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fas fa-cogs"></i> Simple C4</div>
+                        <div>Create C4 diagrams quickly for architecture docs.</div>
+                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/Simplec4.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fas fa-tasks"></i> Task Builder</div>
+                        <div>Generate task plans and structured workflows.</div>
+                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/Task Builder.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fas fa-users"></i> Stakeholder Diagram Generator</div>
+                        <div>Map stakeholders and their relationships.</div>
+                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/Stakeholder Diagram Generator.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fas fa-chart-bar"></i> Business Model Canvas</div>
+                        <div>Interactive business model canvas builder.</div>
+                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/Bussines model canvas 3.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fas fa-exclamation-triangle"></i> Disruption Risk Assessment</div>
+                        <div>Frame and assess disruption risks.</div>
+                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/Disruption Risk Assessment.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fas fa-lightbulb"></i> Innovation Project Scorecard</div>
+                        <div>Score innovation projects across criteria.</div>
+                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/Innovation Project Scorecard.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fas fa-hand-holding-usd"></i> Value Proposition Canvas</div>
+                        <div>Craft and refine value propositions.</div>
+                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/Value Proposition Canvas.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fas fa-money-bill-wave"></i> Budget Builder</div>
+                        <div>Estimate and plan project budgets.</div>
+                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/Budget Builder.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fas fa-sitemap"></i> Mindmap Creator</div>
+                        <div>Create mind maps quickly.</div>
+                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/Mindmap Tool.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fas fa-cogs"></i> Image Converter</div>
+                        <div>Convert images between formats.</div>
+                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/Mindmap Tool.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fas fa-database"></i> Database Schema Visualization</div>
+                        <div>Visualize and inspect database schemas.</div>
+                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/DB schema visualizer.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fas fa-qrcode"></i> QR Code Generator</div>
+                        <div>Generate QR codes for links and text.</div>
+                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/QR Code Generator.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge">Mental Priming (Site)</div>
+                        <div>Focus, habit and priming exercises.</div>
+                        <div><a class="cta-link" href="https://mentalpriming.com/" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge">Mental Priming (Google Play)</div>
+                        <div>Android app available on Google Play.</div>
+                        <div><a class="cta-link" href="https://play.google.com/store/apps/details?id=com.kraai.mentalpriming&referrer=utm_source%3Dsite%26utm_medium%3Dbadge%26utm_campaign%3Dhomepage" target="_blank"><img class="store-badge" src="https://fireship.io/lessons/pwa-to-play-store/img/googleplay-badge.png" alt="Get it on Google Play"></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge">AI Tools Portal</div>
+                        <div>Curated directory of AI tools.</div>
+                        <div><a class="cta-link" href="https://aitoolsportal.ai/" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
                 </div>
-                <h3> Cross platform Standalone tools </h3>
-                <h4>Priority Matrix Planning</h4>
-                <div>
 
-                    <a href="https://jfkproductions.com/Software/PriorityMatrix/priority-matrix Setup 1.0.0.exe"><img
-                            decoding="async"
-                            src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/98c2d592-fb7a-4383-adf4-8fcea016dc75/d5keldy-7db476e5-afb1-4e58-97a7-52ff861b27d4.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzk4YzJkNTkyLWZiN2EtNDM4My1hZGY0LThmY2VhMDE2ZGM3NVwvZDVrZWxkeS03ZGI0NzZlNS1hZmIxLTRlNTgtOTdhNy01MmZmODYxYjI3ZDQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.UhBeqJopb3VuRJVxtQEq9o7tXlfiqoNiS0mbLkCp1is"
-                            alt="" style="width:105px;height:auto"></a>
-                    <a href="https://jfkproductions.com/Software/MindMap/mindmap-creator-1.0.0.dmg"><img
-                            decoding="async"
-                            src="https://logos-world.net/wp-content/uploads/2023/03/Mac-OS-Logo-1995-500x281.png" alt=""
-                            style="width:193px;height:auto"></a>
-                    <a href="https://jfkproductions.com/Software/MindMap/mindmap-creator_1.0.0_amd64.deb"><img
-                            decoding="async"
-                            src="https://cdn.shortpixel.ai/spai/q_lossy+ret_img+to_auto/linuxiac.com/wp-content/uploads/2020/06/ubuntu-linux.jpg"
-                            alt="" style="width:136px;height:auto"></a>
+                <h3 style="text-align:center; margin-top:24px;">Cross‑platform Standalone Tools</h3>
+                <div class="grid-table cols-3">
+                    <div class="table-header">
+                        <div>Tool</div>
+                        <div>Platform</div>
+                        <div>Download</div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge">Priority Matrix Planning</div>
+                        <div>Windows</div>
+                        <div><a class="cta-link" href="https://jfkproductions.com/Software/PriorityMatrix/priority-matrix Setup 1.0.0.exe" target="_blank">Download <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge">Mind Map Creator</div>
+                        <div>Windows</div>
+                        <div><a class="cta-link" href="https://jfkproductions.com/Software/MindMap/mindmap-creator Setup 1.0.0.exe" target="_blank">Download <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge">Mind Map Creator</div>
+                        <div>macOS</div>
+                        <div><a class="cta-link" href="https://jfkproductions.com/Software/MindMap/mindmap-creator-1.0.0.dmg" target="_blank">Download <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge">Mind Map Creator</div>
+                        <div>Ubuntu (amd64)</div>
+                        <div><a class="cta-link" href="https://jfkproductions.com/Software/MindMap/mindmap-creator_1.0.0_amd64.deb" target="_blank">Download <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
                 </div>
-                <h4>Mind Map creator</h4>
-                <div>
-                    <a href="https://jfkproductions.com/Software/MindMap/mindmap-creator Setup 1.0.0.exe"><img
-                            decoding="async"
-                            src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/98c2d592-fb7a-4383-adf4-8fcea016dc75/d5keldy-7db476e5-afb1-4e58-97a7-52ff861b27d4.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzk4YzJkNTkyLWZiN2EtNDM4My1hZGY0LThmY2VhMDE2ZGM3NVwvZDVrZWxkeS03ZGI0NzZlNS1hZmIxLTRlNTgtOTdhNy01MmZmODYxYjI3ZDQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.UhBeqJopb3VuRJVxtQEq9o7tXlfiqoNiS0mbLkCp1is"
-                            alt="" style="width:105px;height:auto"></a>
-                    <a href="https://jfkproductions.com/Software/MindMap/mindmap-creator-1.0.0.dmg"><img
-                            decoding="async"
-                            src="https://logos-world.net/wp-content/uploads/2023/03/Mac-OS-Logo-1995-500x281.png" alt=""
-                            style="width:193px;height:auto"></a>
-                    <a href="https://jfkproductions.com/Software/MindMap/mindmap-creator_1.0.0_amd64.deb"><img
-                            decoding="async"
-                            src="https://cdn.shortpixel.ai/spai/q_lossy+ret_img+to_auto/linuxiac.com/wp-content/uploads/2020/06/ubuntu-linux.jpg"
-                            alt="" style="width:136px;height:auto"></a>
-
-                </div>
-            </section>
-        </div>
-        </div>
+            </div>
         </section>
 
-        <div class="container">
-            <section id="blog" class="section">
+        <section id="blog" class="section tab-pane fade" role="tabpanel" aria-labelledby="blog-tab">
+            <div class="container">
                 <h2 class="section-title">Blog</h2>
-                <div id="blog-list">
-                    <a href="https://jfkproductions.github.io/Blog/slot-safe-react-builds.html" target="_blank"
-                       class="tool-link button"
-                       style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                       <i class="fas fa-blog"></i>
-                       Stop Hardcoding URLs in React Builds
-                    </a>
-                    <a href="https://jfkproductions.github.io/Blog/definitive-guide-sql-compiled.html" target="_blank"
-                       class="tool-link button"
-                       style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                       <i class="fas fa-database"></i>
-                       Definitive Guide to SQL Connection Strings
-                    </a>
+                <div class="card-grid">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-blog"></i> Stop Hardcoding URLs in React Builds</h5>
+                            <p class="card-text">Avoid absolute asset URLs; use relative PUBLIC_URL, CI guard scripts, and runtime config for slot-safe builds.</p>
+                            <a class="btn btn-primary" href="https://jfkproductions.github.io/Blog/slot-safe-react-builds.html" target="_blank">Read</a>
+                        </div>
+                    </div>
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-database"></i> Definitive Guide to SQL Connection Strings</h5>
+                            <p class="card-text">Pooling, retries, timeouts, TLS; patterns across APIs, Functions, Blazor, and mobile for reliable performance.</p>
+                            <a class="btn btn-primary" href="https://jfkproductions.github.io/Blog/definitive-guide-sql-compiled.html" target="_blank">Read</a>
+                        </div>
+                    </div>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
 
-        <div class="container">
-            <section id="games" class="section">
-                <div class="arcade-screen">
-                    <h1>ARCADE VIDEOGAMES</h1>
-                    <ul class="game-list">
-                        <li><a href="https://jfkproductions.github.io/Games/Balloon Shooter.html"
-                                target="_blank">BALLOON SHOOTER</a></li>
-                        <li><a href="https://jfkproductions.github.io/Games/Tetrissim.html" target="_blank">TETRIS</a>
-                        </li>
-
-                    </ul>
-                    <p class="instructions">USE MOUSE TO SELECT GAME</p>
+        <section id="games" class="section tab-pane fade" role="tabpanel" aria-labelledby="games-tab">
+            <div class="container">
+                <h2 class="section-title">Arcade Video Games</h2>
+                <div class="card-grid">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-gamepad"></i> Balloon Shooter</h5>
+                            <a class="btn btn-success" href="https://jfkproductions.github.io/Games/Balloon Shooter.html" target="_blank">Play</a>
+                        </div>
+                    </div>
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-gamepad"></i> Tetris</h5>
+                            <a class="btn btn-success" href="https://jfkproductions.github.io/Games/Tetrissim.html" target="_blank">Play</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="container">
-                    <section id="music" class="section">
-                        <h2 class="section-title">music/comedy </h2>
-                        <div id="msuic-list">
-                            <a href="https://distrokid.com/hyperfollow/kraai/different-tongues" target="_blank">
-                                <img src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--0A0B2D95-2CA1-46C4-8B80A0A079C631FD--0--5325783--cover.png?fm=jpg&q=75&w=800&s=1493498e5baab78d4ce29adbeabe8165"
-                                    width="200" height="200" alt="Kraai">
-                            </a>
-                            &nbsp;
-                        <a href="https://distrokid.com/hyperfollow/kraai/verlore-in-die-geraas" target="_blank">
-                                <img src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--B2876537-EBC6-4B3D-9E85F70C97042EA1--0--730425--CDCover.jpeg?fm=jpg&q=75&w=800&s=495d4b5db6ff5798946bf6a9b60a6fad"
-                                    width="200" height="200" alt="Kraai">
-                            </a>
-                            &nbsp;
+            </div>
+        </section>
 
-                            <a href="https://distrokid.com/hyperfollow/kraai/snaakse-gevoelens" target="_blank">
-                                <img src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--6FC9EA82-749D-4EDA-A7021A4BCF43883A--0--11919856--cdcover2b.png?fm=jpg&q=75&w=800&s=aca6825560955f0454448b3530836f71"
-                                    width="200" height="200" alt="Kraai">
-                            </a>
-                            &nbsp;
-
-                            <a href="https://distrokid.com/hyperfollow/diekraaines/die-kraaines" target="_blank">
-                                <img src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--63B1B28F-D738-4D3D-9D42A3025F075E0F--0--12461798--DieKraaiNescover.png?fm=jpg&q=75&w=800&s=b59212fc8c1e89f536996b51d5a7fd9f"
-                                    width="200" height="200" alt="Kraai">
-                            </a>
-                            &nbsp;
-                            <a href="https://distrokid.com/hyperfollow/diekraaines/my-doellose-lewe" target="_blank">
-                                <img src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--91022B46-4B91-4249-BE18BC6A019EA331--0--17876571--BlackandGoldVintageCDAlbumCoversmaller.png?fm=jpg&q=75&w=800&s=a733858595f0d8c81c30486e8ae32b9f"
-                                    width="200" height="200" alt="My Doellose Lewe">
-                            </a>
-                            &nbsp;
-                            <a href="https://distrokid.com/hyperfollow/kraai/die-mistige-woud" target="_blank">
-                                <img src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--37E7FDB0-AD17-4DC4-82D41B4DDEAF939C--0--535596--CDcover.jpeg?fm=jpg&q=75&w=800&s=31ac32578f601089bd69d706e2a08cba"
-                                    width="200" height="200" alt="In die Mistige Woud">
-                            </a>
-                            <a href="https://open.spotify.com/embed/artist/3DwWrzCxBOv47oIMpRwJCU?utm_source=generator"
-                                target="_blank">
-                                <img src="https://i.scdn.co/image/ab67616d0000b27391f671faabb17ceb7f09ee3c" width="200"
-                                    height="200" alt="Kraai du Toit comedy">
-                            </a>
-
+        <section id="music" class="section tab-pane fade" role="tabpanel" aria-labelledby="music-tab">
+            <div class="container">
+                <h2 class="section-title">Music &amp; Comedy</h2>
+                <div class="grid-table cols-3">
+                            <div class="table-header">
+                                <div>Title</div>
+                                <div>Type</div>
+                                <div>Open</div>
+                            </div>
+                            <div class="table-row">
+                                <div class="badge"><img class="thumb" src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--0A0B2D95-2CA1-46C4-8B80A0A079C631FD--0--5325783--cover.png?fm=jpg&q=75&w=800&s=1493498e5baab78d4ce29adbeabe8165" alt="Different Tongues"> Different Tongues</div>
+                                <div>Album</div>
+                                <div><a class="cta-link" href="https://distrokid.com/hyperfollow/kraai/different-tongues" target="_blank">Listen <i class="fas fa-arrow-right"></i></a></div>
+                            </div>
+                            <div class="table-row">
+                                <div class="badge"><img class="thumb" src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--B2876537-EBC6-4B3D-9E85F70C97042EA1--0--730425--CDCover.jpeg?fm=jpg&q=75&w=800&s=495d4b5db6ff5798946bf6a9b60a6fad" alt="Verlore in die geraas"> Verlore in die geraas</div>
+                                <div>Album</div>
+                                <div><a class="cta-link" href="https://distrokid.com/hyperfollow/kraai/verlore-in-die-geraas" target="_blank">Listen <i class="fas fa-arrow-right"></i></a></div>
+                            </div>
+                            <div class="table-row">
+                                <div class="badge"><img class="thumb" src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--6FC9EA82-749D-4EDA-A7021A4BCF43883A--0--11919856--cdcover2b.png?fm=jpg&q=75&w=800&s=aca6825560955f0454448b3530836f71" alt="Snaakse Gevoelens"> Snaakse Gevoelens</div>
+                                <div>Single</div>
+                                <div><a class="cta-link" href="https://distrokid.com/hyperfollow/kraai/snaakse-gevoelens" target="_blank">Listen <i class="fas fa-arrow-right"></i></a></div>
+                            </div>
+                            <div class="table-row">
+                                <div class="badge"><img class="thumb" src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--63B1B28F-D738-4D3D-9D42A3025F075E0F--0--12461798--DieKraaiNescover.png?fm=jpg&q=75&w=800&s=b59212fc8c1e89f536996b51d5a7fd9f" alt="Die Kraai Nes"> Die Kraai Nes</div>
+                                <div>Album</div>
+                                <div><a class="cta-link" href="https://distrokid.com/hyperfollow/diekraaines/die-kraaines" target="_blank">Listen <i class="fas fa-arrow-right"></i></a></div>
+                            </div>
+                            <div class="table-row">
+                                <div class="badge"><img class="thumb" src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--91022B46-4B91-4249-BE18BC6A019EA331--0--17876571--BlackandGoldVintageCDAlbumCoversmaller.png?fm=jpg&q=75&w=800&s=a733858595f0d8c81c30486e8ae32b9f" alt="My Doellose Lewe"> My Doellose Lewe</div>
+                                <div>Album</div>
+                                <div><a class="cta-link" href="https://distrokid.com/hyperfollow/diekraaines/my-doellose-lewe" target="_blank">Listen <i class="fas fa-arrow-right"></i></a></div>
+                            </div>
+                            <div class="table-row">
+                                <div class="badge"><img class="thumb" src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--37E7FDB0-AD17-4DC4-82D41B4DDEAF939C--0--535596--CDcover.jpeg?fm=jpg&q=75&w=800&s=31ac32578f601089bd69d706e2a08cba" alt="In die Mistige Woud"> In die Mistige Woud</div>
+                                <div>Album</div>
+                                <div><a class="cta-link" href="https://distrokid.com/hyperfollow/kraai/die-mistige-woud" target="_blank">Listen <i class="fas fa-arrow-right"></i></a></div>
+                            </div>
+                            <div class="table-row">
+                                <div class="badge"><img class="thumb" src="https://i.scdn.co/image/ab67616d0000b27391f671faabb17ceb7f09ee3c" alt="Spotify"> Spotify Comedy</div>
+                                <div>Comedy</div>
+                                <div><a class="cta-link" href="https://open.spotify.com/embed/artist/3DwWrzCxBOv47oIMpRwJCU?utm_source=generator" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                            </div>
                         </div>
                 </div>
-            </section>
-
-        </div>
+            </div>
         </section>
 
-        <div class="container">
-            <section id="video" class="section">
-                <h2 class="section-title">Video </h2>
-                <iframe width="280" height="158" src="https://www.youtube.com/embed/HbIA-l_LuLY?si=JuD1fmehnSHy-wKc"
-                    title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                <iframe width="280" height="158" src="https://www.youtube.com/embed/0bK6Lue6a6k?si=nxEjxbkhLji-A-eS"
-                    title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                <iframe width="280" height="158" src="https://www.youtube.com/embed/GaaC2YSeys8?si=Nuca1rJJeNhImQj6"
-                    title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
+        <section id="video" class="section tab-pane fade" role="tabpanel" aria-labelledby="video-tab">
+            <div class="container">
+                <h2 class="section-title">Video</h2>
+                <div class="grid-table cols-2">
+                    <div class="table-header">
+                        <div>Title</div>
+                        <div>Open</div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fas fa-video"></i> YouTube Video 1</div>
+                        <div><a class="cta-link" href="https://www.youtube.com/watch?v=HbIA-l_LuLY" target="_blank">Watch <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fas fa-video"></i> YouTube Video 2</div>
+                        <div><a class="cta-link" href="https://www.youtube.com/watch?v=0bK6Lue6a6k" target="_blank">Watch <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fas fa-video"></i> YouTube Video 3</div>
+                        <div><a class="cta-link" href="https://www.youtube.com/watch?v=GaaC2YSeys8" target="_blank">Watch <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                </div>
+            </div>
         </section>
-        <div class="container">
-            <section id="contact" class="section">
+
+        <section id="contact" class="section tab-pane fade" role="tabpanel" aria-labelledby="contact-tab">
+            <div class="container">
                 <h2 class="section-title">Contact</h2>
-
-                <a href="https://www.linkedin.com/in/johannes-f-kraai-du-toit-44962b37/" target="_blank"
-                    style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                    Linkedin
-                </a>
-
-                <a href="https://www.youtube.com/@kraaidutoit6657" target="_blank"
-                    style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                    Youtube
-                </a>
-        </div>
+                <div class="grid-table cols-2">
+                    <div class="table-header">
+                        <div>Channel</div>
+                        <div>Open</div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fab fa-linkedin"></i> LinkedIn</div>
+                        <div><a class="cta-link" href="https://www.linkedin.com/in/johannes-f-kraai-du-toit-44962b37/" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fab fa-youtube"></i> YouTube</div>
+                        <div><a class="cta-link" href="https://www.youtube.com/@kraaidutoit6657" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <div class="container">
-            <section id="Training" class="section">
+        <section id="Training" class="section tab-pane fade" role="tabpanel" aria-labelledby="Training-tab">
+            <div class="container">
                 <h2 class="section-title">Training</h2>
+                <div class="grid-table cols-2">
+                    <div class="table-header">
+                        <div>Course</div>
+                        <div>Open</div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fab fa-youtube"></i> YouTube Training</div>
+                        <div><a class="cta-link" href="https://www.youtube.com/channel/UCaf3Y5Wf-x9my_4kZTpuo6Q/videos" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fas fa-graduation-cap"></i> Udemy AZ-900</div>
+                        <div><a class="cta-link" href="https://www.udemy.com/course/az-900-microsoft-azure-fundamentals-full-exam-preparation/?referralCode=DF4A5491150284040AA9" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                    <div class="table-row">
+                        <div class="badge"><i class="fas fa-brain"></i> Udemy Brain Hacks</div>
+                        <div><a class="cta-link" href="https://www.udemy.com/course/brain-hacks-with-and-without-nootropics/?referralCode=3E2DB5F71DB5F81B583F" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-                <a href="https://www.youtube.com/channel/UCaf3Y5Wf-x9my_4kZTpuo6Q/videos" target="_blank"
-                    style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                    Youtube Training
-                </a>
-                <a href="https://www.udemy.com/course/az-900-microsoft-azure-fundamentals-full-exam-preparation/?referralCode=DF4A5491150284040AA9"
-                    target="_blank"
-                    style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                    Udemy Az-900
-                </a>
-                <a href="https://www.udemy.com/course/brain-hacks-with-and-without-nootropics/?referralCode=3E2DB5F71DB5F81B583F"
-                    target="_blank"
-                    style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
-                    Udemy Brain Hacks
-                </a>
-
+        <!-- Close tab-content before standalone interactive section -->
         </div>
 
-        </section>
-        <div class="container">
-            <section id="Interactive" class="section">
-                <h2 class="section-title">Interactive Portfolio </h2>
-                <a href="https://jfkproductions.github.io/portfolio/index.html" target="_blank"
-                    style="display: inline-block; padding: 10px 20px; background-color: #4f77c0; color: white; text-align: center; text-decoration: none; border-radius: 4px;">
+        <!-- Standalone section, not part of tabs -->
+        <section id="Interactive" class="section">
+            <div class="container">
+                <h2 class="section-title">Interactive Portfolio</h2>
+                <a href="portfolio/index.html" target="_blank" class="interactive-link-btn">
                     Interactive Portfolio - Work in Progress
                 </a>
-                <p><b><i class="fas fa-desktop"></i> Note: The Interactive Portfolio is currently best viewed on
-                        desktop.</b></p>
-
-            </section>
-        </div>
-
+                <p><b><i class="fas fa-desktop"></i> Note: The Interactive Portfolio is currently best viewed on desktop.</b></p>
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -919,54 +1105,61 @@
             <p>© 2024 Kraai Du Toit. All rights reserved.</p>
         </div>
     </footer>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Normalize any hardcoded absolute portfolio links to site-relative
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('a[href*="jfkproductions.github.io/portfolio/index.html"]').forEach(function (a) {
+                a.setAttribute('href', 'portfolio/index.html');
+            });
+        });
+    </script>
     <script>
         // Hamburger menu toggle
         const hamburger = document.getElementById('hamburger');
         const navMenu = document.getElementById('nav-menu');
-
-        hamburger.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-        });
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
-                navMenu.classList.remove('active'); // Close the menu after clicking a link
+        if (hamburger && navMenu) {
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
             });
-        });
+        }
+        // Bootstrap handles tab activation; smooth scroll and active-on-scroll removed.
 
-        // Add active class to nav items on scroll
-        window.addEventListener('scroll', () => {
-            let current = '';
-            document.querySelectorAll('section').forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (pageYOffset >= sectionTop - sectionHeight / 3) {
-                    current = section.getAttribute('id');
-                }
-            });
+        // Remove random backgrounds; keep Music tab activation from Home carousel
+        document.addEventListener('DOMContentLoaded', () => {
+            const goMusic = document.getElementById('goMusicTab');
+            if (goMusic) {
+                goMusic.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const triggerEl = document.querySelector('#music-tab');
+                    if (triggerEl && window.bootstrap && typeof bootstrap.Tab === 'function') {
+                        const tab = new bootstrap.Tab(triggerEl);
+                        tab.show();
+                    }
+                });
+            }
 
-            document.querySelectorAll('nav ul li a').forEach(li => {
-                li.classList.remove('active');
-                if (li.getAttribute('href').slice(1) === current) {
-                    li.classList.add('active');
-                }
+            // Global image fallback: if an image fails to load, use a Bootstrap image
+            const fallbackSrc = 'https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png';
+            document.querySelectorAll('img').forEach((img) => {
+                img.addEventListener('error', () => {
+                    if (img.src !== fallbackSrc) {
+                        img.src = fallbackSrc;
+                    }
+                });
             });
         });
 
         // Canvas setup
         window.onload = function () {
             const canvas = document.getElementById('sphereCanvas');
-            const container = document.querySelector('.container');
-            const maxSize = Math.min(container.clientWidth - 40, 350); // 40px for padding
+            if (!canvas) {
+                console.warn('sphereCanvas not found; skipping 3D eye initialization');
+                return;
+            }
+            const container = canvas.parentElement || document.querySelector('.container');
+            const containerWidth = container ? container.clientWidth : window.innerWidth;
+            const maxSize = Math.min(containerWidth - 40, 350); // 40px for padding
             canvas.width = maxSize;
             canvas.height = maxSize;
 
@@ -1082,10 +1275,6 @@
             });
         };
     </script>
-
-</body>
-
-</html>
 
 </body>
 
