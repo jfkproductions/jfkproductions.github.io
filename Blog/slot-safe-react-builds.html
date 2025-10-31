@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Stop Hardcoding URLs in React Builds: Slot‑Safe, CDN‑Safe Patterns</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #111; margin: 0; padding: 2rem; }
+    main { max-width: 980px; margin: 0 auto; }
+    h1, h2, h3 { line-height: 1.25; }
+    code, pre { font-family: SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+    pre { background: #f6f8fa; border: 1px solid #e1e4e8; border-radius: 6px; padding: 12px 16px; overflow: auto; }
+    .callout { border-left: 4px solid #0366d6; background: #f0f7ff; padding: 12px 16px; margin: 16px 0; }
+    .bad { background: #fff5f5; border-left-color: #e5534b; }
+    .good { background: #f5fff8; border-left-color: #2f9e44; }
+    ul { margin: 0 0 1rem 1.25rem; }
+    li { margin: .25rem 0; }
+    hr { border: none; border-top: 1px solid #e1e4e8; margin: 2rem 0; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .refs small { color: #555; display: block; margin-top: 2px; }
+  </style>
+</head>
+<body>
+<main>
+
+<h1>Stop Hardcoding URLs in React Builds: Slot‑Safe, CDN‑Safe Patterns</h1>
+
+<p>
+React production builds often embed <em>absolute URLs</em> into <code>asset-manifest.json</code> and JavaScript chunks. This is convenient for CDNs, but risky for environments that change origin at runtime (e.g., Azure App Service <em>deployment slot swaps</em>). This article explains the root cause, why it breaks swaps, how to prevent it in Jenkins and local builds, and broader best practices for CI (Jenkins, GitHub Actions) and Azure.
+</p>
+
+<hr />
+
+<h2>Why This Is a Problem</h2>
+<ul>
+  <li><strong>Assets point to the wrong origin after a swap:</strong> If your build hardcodes URLs for staging, swapping to production can leave bundles referencing the staging domain. Assets 404 and service workers may refuse to register due to cross‑origin constraints.</li>
+  <li><strong>Coupled builds:</strong> You must rebuild for every environment change, slowing releases and complicating rollback/slot strategies.</li>
+  <li><strong>Security exposure:</strong> Compiled bundles can unintentionally leak endpoints or tokens if you bake them into JS.</li>
+</ul>
+
+<div class="callout bad">
+  <strong>Symptom:</strong> <code>asset-manifest.json</code> contains fully qualified URLs:
+  <pre><code>{
+  "files": {
+    "main.js": "https://example-staging.com/static/js/main.9b5579c6.js",
+    "static/css/main.75bb81f4.css": "https://example-staging.com/static/css/main.75bb81f4.css",
+    ...
+  }
+}</code></pre>
+</div>
+
+<!-- NEW SECTION: How Relative Paths Look -->
+<div class="callout good">
+  <strong>What It Should Look Like (Relative Paths):</strong>
+  <p>After building with <code>PUBLIC_URL=/</code> (root) or a subpath, the manifest and JS chunks point to the current origin without hardcoded domains.</p>
+
+  <h3>asset-manifest.json (root path)</h3>
+  <pre><code>{
+  "files": {
+    "main.js": "/static/js/main.9b5579c6.js",
+    "static/css/main.75bb81f4.css": "/static/css/main.75bb81f4.css"
+  },
+  "entrypoints": [
+    "/static/js/runtime-main.a1b2c3.js",
+    "/static/js/main.9b5579c6.js"
+  ]
+}</code></pre>
+
+  <h3>asset-manifest.json (subpath deployment)</h3>
+  <pre><code>{
+  "files": {
+    "main.js": "/apps/review-123/static/js/main.9b5579c6.js",
+    "static/css/main.75bb81f4.css": "/apps/review-123/static/css/main.75bb81f4.css"
+  },
+  "entrypoints": [
+    "/apps/review-123/static/js/runtime-main.a1b2c3.js",
+    "/apps/review-123/static/js/main.9b5579c6.js"
+  ]
+}</code></pre>
+
+  <h3>Compiled JavaScript (Webpack runtime)</h3>
+  <p>When <code>PUBLIC_URL</code> is relative, Webpack’s runtime sets <code>__webpack_require__.p</code> (the public path) to the relative base:</p>
+  <pre><code>// Good: root
+__webpack_require__.p = "/";
+
+// Good: subpath
+__webpack_require__.p = "/apps/review-123/";
+
+// Then chunk URLs resolve relative to that base:
+__webpack_require__.u = (chunkId) =&gt; "static/js/" + chunkId + ".a1b2c3.js";
+const url = __webpack_require__.p + __webpack_require__.u(123); // "/static/js/123.a1b2c3.js" or "/apps/review-123/static/js/123.a1b2c3.js"</code></pre>
+</div>
+
+<div class="callout bad">
+  <strong>What Not To Do (Absolute Domains):</strong>
+  <h3>asset-manifest.json (bad)</h3>
+  <pre><code>{
+  "files": {
+    "main.js": "https://example-staging.com/static/js/main.9b5579c6.js",
+    "static/css/main.75bb81f4.css": "https://example-staging.com/static/css/main.75bb81f4.css"
+  },
+  "entrypoints": [
+    "https://example-staging.com/static/js/runtime-main.a1b2c3.js",
+    "https://example-staging.com/static/js/main.9b5579c6.js"
+  ]
+}</code></pre>
+
+  <h3>Compiled JavaScript (bad)</h3>
+  <pre><code>// Bad: hardcoded domain
+__webpack_require__.p = "https://example-staging.com/";
+// Every chunk URL now points to the staging origin, breaking slot swaps.</code></pre>
+</div>
+
+<hr />
+
+<h2>Root Cause (with References)</h2>
+<ul>
+  <li><strong>PUBLIC_URL drives Webpack publicPath:</strong> In Create React App (CRA), <code>PUBLIC_URL</code> sets the HTML base and Webpack’s <code>output.publicPath</code>. When set to an absolute domain, CRA prepends that domain to all asset paths in the build output.
+    <div class="refs">
+      <a href="https://create-react-app.dev/docs/advanced-configuration/#environment-variables">CRA: Advanced configuration (env)</a>
+      <small>PUBLIC_URL is used by the build and templates</small>
+      <br />
+      <a href="https://webpack.js.org/configuration/output/#outputpublicpath">Webpack: output.publicPath</a>
+      <small>Controls the base path for all assets within the application</small>
+    </div>
+  </li>
+  <li><strong>Service worker origin check:</strong> CRA’s service worker registers only when asset origin equals page origin; cross‑origin assets break PWA behavior.
+    <div class="refs">
+      <a href="https://create-react-app.dev/docs/making-a-progressive-web-app/">CRA: Making a PWA</a>
+      <small>Notes on service worker registration and origin</small>
+      <br />
+      <a href="https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerContainer/register">MDN: ServiceWorkerContainer.register()</a>
+      <small>Service worker scope/origin rules</small>
+    </div>
+  </li>
+  <li><strong>Deployment slot swaps change origin:</strong> Azure App Service swaps staging/production content and settings; hardcoded absolute asset URLs won’t follow.
+    <div class="refs">
+      <a href="https://learn.microsoft.com/azure/app-service/deploy-staging-slots?tabs=portal#swap">Azure App Service: Swap deployments</a>
+      <small>How slots and swaps work</small>
+    </div>
+  </li>
+</ul>
+
+<div class="callout">
+  <strong>More Articles on Why This Happens</strong>
+  <ul>
+    <li><a href="https://create-react-app.dev/docs/deployment/#building-for-relative-paths">CRA Deployment: Building for relative paths</a><br /><small>Explains using <code>PUBLIC_URL</code> and the <code>homepage</code> field.</small></li>
+    <li><a href="https://webpack.js.org/guides/public-path/">Webpack Guide: Public Path</a><br /><small>Deep dive into how runtime chunk URLs are formed.</small></li>
+    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base">MDN: &lt;base&gt; element</a><br /><small>How base URLs affect relative links in HTML.</small></li>
+    <li><a href="https://github.com/facebook/create-react-app/blob/main/packages/react-scripts/config/webpack.config.js">CRA webpack.config.js (source)</a><br /><small>Where CRA wires <code>PUBLIC_URL</code> to Webpack <code>publicPath</code>.</small></li>
+  </ul>
+</div>
+
+<hr />
+
+<h2>Prevention in Jenkins (CI)</h2>
+
+<h3>Use <em>relative</em> PUBLIC_URL</h3>
+<p>Set <code>PUBLIC_URL</code> to a relative path during build so assets resolve against the current origin:</p>
+<ul>
+  <li>Root of site: <code>/</code></li>
+  <li>Subpath deployment (e.g., review app under <code>/apps/review-123</code>): <code>/apps/review-123</code></li>
+</ul>
+
+<pre><code>// Jenkins pipeline (Groovy)
+stage('Build') {
+  sh 'rm -rf build'
+  // Slot‑safe build
+  sh 'PUBLIC_URL=/ yarn build'
+}</code></pre>
+
+<h3>Optional: Post‑build guard</h3>
+<p>Fail the pipeline if <code>asset-manifest.json</code> contains absolute URLs:</p>
+<pre><code>// Node script: verify-manifest.js
+const fs = require('fs');
+const manifest = JSON.parse(fs.readFileSync('build/asset-manifest.json', 'utf8'));
+const files = Object.values(manifest.files || {});
+const bad = files.filter(u =&gt; /^https?:\/\//.test(u));
+if (bad.length) {
+  console.error('Absolute URLs detected in asset-manifest:', bad.slice(0, 5));
+  process.exit(1);
+}</code></pre>
+
+<p>Run after build:</p>
+<pre><code>// Jenkins
+sh 'node verify-manifest.js'</code></pre>
+
+<h3>Handle secrets correctly</h3>
+<ul>
+  <li><strong>Never bake secrets into JS:</strong> Use Jenkins <em>Credentials</em> and inject at runtime/server‐side only.
+    <div class="refs">
+      <a href="https://www.jenkins.io/doc/book/pipeline/jenkinsfile/#using-credentials">Jenkins Pipeline: Using credentials</a>
+      <small>withCredentials, secret handling</small>
+    </div>
+  </li>
+  <li><strong>Runtime config instead of build‑time env:</strong> Ship a small JSON (e.g., <code>/config/app-config.json</code>) that’s served by the app and updated per environment.</li>
+</ul>
+
+<hr />
+
+<h2>Prevention in Local/Standard React Builds</h2>
+
+<h3>Build with relative PUBLIC_URL</h3>
+<pre><code>// Windows
+set PUBLIC_URL=/ &amp;&amp; yarn build
+
+// macOS/Linux
+PUBLIC_URL=/ yarn build</code></pre>
+
+<h3>Router base path</h3>
+<p>If deploying under a subpath, align the router’s base:</p>
+<pre><code>// React Router v6
+&lt;BrowserRouter basename={process.env.PUBLIC_URL || '/'}&gt;...&lt;/BrowserRouter&gt;</code></pre>
+<div class="refs">
+  <a href="https://reactrouter.com/en/main/router-components/browser-router">React Router: BrowserRouter</a>
+</div>
+
+<h3>Service worker considerations</h3>
+<ul>
+  <li>Keep <code>PUBLIC_URL</code> same‑origin with the page to allow SW registration.</li>
+  <li>Disable SW if your asset hosting is cross‑origin and you don’t plan to handle advanced PWA plumbing.</li>
+</ul>
+
+<hr />
+
+<h2>Runtime Configuration Patterns (Keep Env Out of JS)</h2>
+
+<h3>Pattern A: Fetch a JSON at startup</h3>
+<pre><code>// config.json (served by your app)
+{
+  "API_BASE_URL": "https://api.example.com",
+  "ANALYTICS_ID": 123456
+}</code></pre>
+
+<pre><code>// config-loader.ts
+export async function loadConfig() {
+  const res = await fetch('/config/config.json'); // relative to current origin
+  return res.json();
+}</code></pre>
+
+<h3>Pattern B: Server‑injected globals</h3>
+<pre><code>&lt;!-- index.html --&gt;
+&lt;script&gt;
+  window.__APP_CONFIG__ = { API_BASE_URL: 'https://api.example.com' };
+&lt;/script&gt;</code></pre>
+
+<pre><code>// usage
+const apiBase = window.__APP_CONFIG__?.API_BASE_URL;</code></pre>
+
+<h3>Why this is safer</h3>
+<ul>
+  <li><strong>Slot‑safe:</strong> Config follows the active slot/origin.</li>
+  <li><strong>No rebuilds:</strong> You can update config without recompiling.</li>
+  <li><strong>Secret discipline:</strong> Front‑end only receives non‑secret values; real secrets stay server‑side.
+    <div class="refs">
+      <a href="https://owasp.org/Top10/A02_2021-Cryptographic_Failures/">OWASP Top 10: Sensitive data exposure</a>
+    </div>
+  </li>
+</ul>
+
+<hr />
+
+<h2>Best Practices by Platform</h2>
+
+<h3>Jenkins</h3>
+<ul>
+  <li>Set <code>PUBLIC_URL</code> to <strong>relative</strong> paths in build stages.</li>
+  <li>Use <strong>Credentials</strong> for secrets; pass them to back‑end or a secure config endpoint, not to the client bundle.</li>
+  <li>Add a <em>post‑build guard</em> to fail on absolute asset URLs or detected secrets in artifacts.</li>
+</ul>
+
+<h3>GitHub Actions</h3>
+<ul>
+  <li>Define <code>PUBLIC_URL</code> at the job or step level:</li>
+</ul>
+<pre><code># .github/workflows/build.yml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      PUBLIC_URL: /
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 18 }
+      - run: yarn install --frozen-lockfile
+      - run: yarn build
+      - run: node verify-manifest.js</code></pre>
+<ul>
+  <li>Store secrets in <strong>Actions Secrets</strong>, not source code.
+    <div class="refs">
+      <a href="https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions">GitHub Actions: Using secrets</a>
+    </div>
+  </li>
+</ul>
+
+<h3>Azure</h3>
+<ul>
+  <li>Use <strong>deployment slots</strong> for staging/production; keep builds portable with relative asset paths.</li>
+  <li>Inject environment‑specific config via <strong>App Settings</strong> or static <code>/config/config.json</code> per slot.
+    <div class="refs">
+      <a href="https://learn.microsoft.com/azure/app-service/deploy-staging-slots?tabs=portal">Azure App Service: Deployment slots</a>
+      <br />
+      <a href="https://learn.microsoft.com/azure/app-service/configure-common">Azure App Service: App settings</a>
+      <small>Environment configuration per slot</small>
+    </div>
+  </li>
+</ul>
+
+<hr />
+
+<h2>Scenarios: Absolute vs Relative URLs</h2>
+
+<h3>Prefer Absolute URLs When…</h3>
+<ul>
+  <li>You host assets on a fixed CDN domain that never changes across environments.</li>
+  <li>You’ve addressed PWA/service worker constraints (same‑origin or custom SW strategy).</li>
+  <li>Your routing and infra never rely on slot swaps (immutable origins).</li>
+</ul>
+
+<h3>Prefer Relative URLs When…</h3>
+<ul>
+  <li>You use Azure App Service swaps or rotate environments where the origin changes.</li>
+  <li>You want a single build artifact to run across QA/Staging/Production without rebuild.</li>
+  <li>You want SW registration to “just work” without cross‑origin asset handling.</li>
+</ul>
+
+<hr />
+
+<h2>Verification Checklist</h2>
+<ul>
+  <li>Build with <code>PUBLIC_URL=/</code> (or the correct subpath).</li>
+  <li>Inspect <code>build/asset-manifest.json</code>: ensure no <code>http(s)://</code> entries.</li>
+  <li>Open <code>build/index.html</code> and confirm assets use relative paths.</li>
+  <li>Deploy to a staging slot, then swap: assets load from the current origin.</li>
+  <li>Confirm service worker registration (if enabled) on production origin.</li>
+</ul>
+
+<hr />
+
+<h2>Key Takeaways</h2>
+<ul>
+  <li><strong>PUBLIC_URL controls asset base paths.</strong> Keep it relative unless you truly need a fixed CDN domain.</li>
+  <li><strong>Runtime config beats build‑time envs</strong> for portability and safety.</li>
+  <li><strong>CI guards</strong> catch regressions (absolute URLs, secrets) before deploy.</li>
+  <li><strong>Secrets never belong in client bundles.</strong> Keep them server‑side.</li>
+</ul>
+
+</main>
+</body>
+</html>
