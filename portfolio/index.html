@@ -6,6 +6,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
   <title>Kraai Du Toit</title>
   <link rel="icon" type="image/x-icon" href="2d9e8bb0a1b55230dc41.ico" />
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0a1422">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Kraai Du Toit">
   <script>
     (function () {
       function isMobile() {
@@ -192,6 +198,11 @@
       window.addEventListener('load', function () { setTimeout(trigger, 1800); });
       setTimeout(trigger, 4500);
     })();
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); });
+    }
   </script>
 </body>
 

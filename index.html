@@ -13,7 +13,7 @@
     content="AI Engineer, Solutions Architect, Generative AI, Computer Vision, RAG, Digital Twins, Azure AI Engineer, AI-102, Azure OpenAI, Python, FastAPI, React, Netherlands, Kraai Du Toit, Johannes Du Toit">
   <meta name="author" content="Johannes (Kraai) Du Toit">
   <meta name="robots" content="index, follow">
-  <meta name="theme-color" content="#0b1626">
+  <meta name="theme-color" content="#0a1422">
   <link rel="canonical" href="https://jfkproductions.github.io/">
 
   <!-- ============ Open Graph / social ============ -->
@@ -31,7 +31,12 @@
   <meta name="twitter:image" content="https://jfkproductions.github.io/assets/images/photos/portrait-hero.jpg">
 
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
-  <link rel="apple-touch-icon" href="assets/images/favicon.png">
+  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Kraai Du Toit">
 
   <!-- ============ Structured data (Person) ============ -->
   <script type="application/ld+json">
@@ -53,6 +58,7 @@
       "https://github.com/jfkproductions",
       "https://www.credly.com/users/johannes-du-toit",
       "https://www.imdb.com/name/nm11530589/",
+      "https://www.youtube.com/@AIToolsPortal",
       "https://www.youtube.com/@kraaidutoit6657",
       "https://aitoolsportal.ai/"
     ]
@@ -75,9 +81,10 @@
       var params = new URLSearchParams(window.location.search);
       var noRedirect = params.get('redirect') === 'false' || (location.hash && location.hash.toLowerCase().indexOf('noredirect') > -1);
       var fromPortfolio = /\/portfolio\/index\.html$/i.test(document.referrer);
+      var isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
       var prefersClassic = false;
       try { prefersClassic = localStorage.getItem('jfk_view_pref') === 'classic'; } catch (e) { }
-      if (!isMobile() && !isBot && !onPortfolio && !noRedirect && !fromPortfolio && !prefersClassic) {
+      if (!isMobile() && !isBot && !onPortfolio && !noRedirect && !fromPortfolio && !prefersClassic && !isStandalone) {
         window.location.replace('portfolio/index.html');
       }
     })();
@@ -267,6 +274,35 @@
     details.earlier summary { cursor: pointer; font-weight: 600; color: var(--text); }
     details.earlier ul { margin: 12px 0 0; color: var(--muted); font-size: .9rem; }
 
+    /* ---------- Collapsible timeline ---------- */
+    details.tl-item > summary { cursor: pointer; list-style: none; outline: none; padding-right: 24px; }
+    details.tl-item > summary::-webkit-details-marker { display: none; }
+    details.tl-item > summary::after { content: "\f078"; font-family: "Font Awesome 6 Free"; font-weight: 900; font-size: .72rem; color: var(--accent); position: absolute; right: 0; top: 6px; transition: transform .25s; }
+    details.tl-item[open] > summary::after { transform: rotate(180deg); }
+    details.tl-item > summary:hover h3 { color: var(--accent-2); }
+    details.tl-item ul { margin-top: 12px; }
+
+    /* ---------- Accordion (certs) ---------- */
+    .acc { border: 1px solid var(--border); border-radius: 12px; background: var(--surface); margin-bottom: 12px; }
+    .acc > summary { cursor: pointer; list-style: none; outline: none; padding: 15px 18px; font-weight: 600; font-family: 'Space Grotesk', sans-serif; display: flex; align-items: center; gap: 12px; }
+    .acc > summary::-webkit-details-marker { display: none; }
+    .acc > summary .acc-ico { color: var(--accent); width: 18px; text-align: center; }
+    .acc > summary .acc-count { margin-left: auto; color: var(--faint); font-weight: 500; font-size: .82rem; }
+    .acc > summary::after { content: "\f078"; font-family: "Font Awesome 6 Free"; font-weight: 900; font-size: .78rem; color: var(--accent); transition: transform .25s; }
+    .acc[open] > summary::after { transform: rotate(180deg); }
+    .acc[open] > summary { border-bottom: 1px solid var(--border); }
+    .acc .acc-body { padding: 6px 18px 12px; }
+    .cert-row { display: flex; justify-content: space-between; gap: 14px; padding: 9px 0; border-top: 1px solid var(--border); }
+    .cert-row:first-child { border-top: 0; }
+    .cert-row .cn { color: var(--text); font-size: .9rem; }
+    .cert-row .cm { color: var(--faint); font-size: .8rem; white-space: nowrap; }
+    .edu-card { display: flex; gap: 16px; background: linear-gradient(135deg, var(--surface-2), var(--surface)); border: 1px solid rgba(255,122,54,.3); border-radius: var(--radius); padding: 20px 22px; margin-bottom: 26px; }
+    .edu-card .ico { font-size: 1.9rem; color: var(--gold); }
+    .edu-card h3 { margin: 0 0 2px; font-size: 1.08rem; }
+    .edu-card .em { color: var(--accent-2); font-weight: 600; font-size: .9rem; }
+    .edu-card .ed { color: var(--muted); font-size: .85rem; margin: 8px 0 0; line-height: 1.6; }
+    @media (max-width: 540px) { .cert-row { flex-direction: column; gap: 2px; } .cert-row .cm { white-space: normal; } .edu-card { flex-direction: column; gap: 10px; } }
+
     /* ---------- Certs ---------- */
     .cert-feature { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 26px; }
     .cert-big { display: flex; gap: 16px; align-items: center; background: linear-gradient(135deg, var(--surface-2), var(--surface)); border: 1px solid rgba(255, 122, 54, .3); border-radius: var(--radius); padding: 20px; }
@@ -282,6 +318,11 @@
     .gallery .cap { position: absolute; left: 0; right: 0; bottom: 0; font-size: .72rem; padding: 14px 8px 6px; background: linear-gradient(transparent, rgba(0,0,0,.8)); color: #fff; }
     .embeds { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
     .embeds iframe { border-radius: 12px; border: 0; width: 100%; }
+    .vgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .vid { position: relative; aspect-ratio: 16/9; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); background: #000; }
+    .vid iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    @media (max-width: 900px) { .vgrid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 540px) { .vgrid { grid-template-columns: 1fr; } }
 
     /* ---------- AR ---------- */
     .ar-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
@@ -293,6 +334,34 @@
     .ar-step p { margin: 0 0 16px; color: var(--muted); font-size: .92rem; }
     .ar-note { text-align: center; color: var(--faint); font-size: .85rem; margin-top: 20px; }
     @media (max-width: 540px) { .ar-grid { grid-template-columns: 1fr; } }
+
+    /* ---------- Visual interactive timeline ---------- */
+    .tlx-scroll { overflow-x: auto; overflow-y: hidden; padding: 8px 0 18px; -webkit-overflow-scrolling: touch; }
+    .tlx-scroll::-webkit-scrollbar { height: 9px; }
+    .tlx-scroll::-webkit-scrollbar-track { background: var(--surface); border-radius: 5px; }
+    .tlx-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
+    .tlx-scroll::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+    .tlx-track { position: relative; display: flex; align-items: center; gap: 16px; min-width: max-content; padding: 0 22px; height: 330px; }
+    .tlx-track::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); height: 3px; background: linear-gradient(90deg, var(--accent), rgba(255,122,54,.25)); border-radius: 3px; }
+    .tlx-year { position: relative; z-index: 3; flex: 0 0 auto; align-self: center; }
+    .tlx-year span { display: inline-block; background: var(--accent); color: #1a0f06; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: .8rem; padding: 5px 12px; border-radius: 20px; box-shadow: 0 4px 12px rgba(255,122,54,.35); }
+    .tlx-item { position: relative; flex: 0 0 172px; width: 172px; height: 100%; text-decoration: none; display: block; }
+    .tlx-dot { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 15px; height: 15px; border-radius: 50%; background: var(--bg); border: 3px solid var(--accent); z-index: 2; transition: .2s; }
+    .tlx-item:hover .tlx-dot, .tlx-item:focus-visible .tlx-dot { background: var(--accent); box-shadow: 0 0 0 6px rgba(255,122,54,.18); }
+    .tlx-card { position: absolute; left: 50%; transform: translateX(-50%); width: 164px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; transition: transform .2s, border-color .2s, box-shadow .2s; }
+    .tlx-item.up .tlx-card { bottom: calc(50% + 28px); }
+    .tlx-item.down .tlx-card { top: calc(50% + 28px); }
+    .tlx-card::after { content: ""; position: absolute; left: 50%; transform: translateX(-50%); width: 2px; height: 20px; background: var(--border); }
+    .tlx-item.up .tlx-card::after { top: 100%; }
+    .tlx-item.down .tlx-card::after { bottom: 100%; }
+    .tlx-item:hover .tlx-card, .tlx-item:focus-visible .tlx-card { border-color: var(--accent); box-shadow: var(--shadow); }
+    .tlx-item.up:hover .tlx-card { transform: translateX(-50%) translateY(-3px); }
+    .tlx-item.down:hover .tlx-card { transform: translateX(-50%) translateY(3px); }
+    .tlx-date { color: var(--accent); font-weight: 700; font-size: .74rem; font-family: 'Space Grotesk', sans-serif; letter-spacing: .3px; }
+    .tlx-name { color: var(--text); font-size: .83rem; font-weight: 600; line-height: 1.25; margin: 3px 0; }
+    .tlx-issuer { color: var(--faint); font-size: .72rem; display: flex; align-items: center; gap: 5px; }
+    .tlx-badge { position: absolute; top: 8px; right: 9px; color: var(--gold); font-size: .72rem; }
+    .tlx-hint { color: var(--faint); font-size: .82rem; margin-top: 8px; display: flex; align-items: center; gap: 7px; }
 
     /* ---------- Contact ---------- */
     .contact { text-align: center; background:
@@ -350,11 +419,10 @@
         <a class="navlink" href="#projects">Projects</a>
         <a class="navlink" href="#ar">AR</a>
         <a class="navlink" href="#certs">Certifications</a>
+        <a class="navlink" href="#timeline">Timeline</a>
         <a class="navlink" href="#stage">Stage</a>
         <div class="nav-cta">
-          <a class="btn btn-ghost" href="portfolio/index.html"><i class="fas fa-cube"></i> 3D Portfolio</a>
-          <a class="btn btn-primary" href="assets/Kraai-Du-Toit-AI-Engineer-CV.pdf" target="_blank" rel="noopener"><i class="fas fa-download"></i> CV</a>
-        </div>
+          <a class="btn btn-ghost" href="portfolio/index.html"><i class="fas fa-cube"></i> 3D Portfolio</a>        </div>
       </nav>
       <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
@@ -370,9 +438,7 @@
           <h1>Hi, I'm <span class="grad">Kraai Du Toit</span> — I build applied AI that ships.</h1>
           <p class="hero-lead">I turn business problems into <strong>production-ready AI</strong>: generative AI, computer vision, RAG and digital twins — backed by 20+ years of software engineering and solution architecture across Azure and AWS.</p>
           <div class="hero-cta">
-            <a class="btn btn-primary" href="portfolio/index.html"><i class="fas fa-cube"></i> Explore the 3D Portfolio</a>
-            <a class="btn btn-ghost" href="assets/Kraai-Du-Toit-AI-Engineer-CV.pdf" target="_blank" rel="noopener"><i class="fas fa-download"></i> Download CV</a>
-            <a class="btn btn-ghost" href="https://www.linkedin.com/in/johannes-f-kraai-du-toit-44962b37/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <a class="btn btn-primary" href="portfolio/index.html"><i class="fas fa-cube"></i> Explore the 3D Portfolio</a>            <a class="btn btn-ghost" href="https://www.linkedin.com/in/johannes-f-kraai-du-toit-44962b37/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> LinkedIn</a>
           </div>
           <div class="hero-meta">
             <span><i class="fas fa-location-dot"></i> Netherlands</span>
@@ -482,52 +548,63 @@
         <div class="section-head reveal">
           <p class="eyebrow">Career</p>
           <h2>Experience</h2>
-          <p>Two decades from developer to architect — now focused on shipping AI.</p>
+          <p>Two decades from developer to architect — now focused on shipping AI. <span style="color:var(--faint)">Tap a role to expand.</span></p>
         </div>
         <div class="timeline reveal">
-          <div class="tl-item now">
-            <h3>Cyclomedia <span class="tl-badge">Now</span></h3>
-            <div class="tl-role">AI Engineer (Full-Stack)</div>
-            <div class="tl-meta">Aug 2025 – Present · Netherlands</div>
+          <details class="tl-item now">
+            <summary>
+              <h3>Cyclomedia <span class="tl-badge">Now</span></h3>
+              <div class="tl-role">AI Engineer (Full-Stack)</div>
+              <div class="tl-meta">Aug 2025 – Present · Netherlands</div>
+            </summary>
             <ul>
               <li>Lead AI-powered modernization of the operations portal using AI development tools (Claude, Claude Code), accelerating refactors that previously took weeks.</li>
               <li>Build AI features end-to-end: C# (Azure Functions, GraphQL APIs, Azure T-SQL) and Python (FastAPI, FastMCP), React/TypeScript front-ends, Azure AI Services + Azure OpenAI for inference.</li>
               <li>Upskill engineering staff on practical AI — coding assistants, prompt patterns and agentic workflows.</li>
               <li>Translate business problems into AI-shaped solutions; author architecture diagrams and maintain CI/CD pipelines.</li>
             </ul>
-          </div>
-          <div class="tl-item">
-            <h3>Lionsville B.V.</h3>
-            <div class="tl-role">AI Developer / Full-Stack Engineer</div>
-            <div class="tl-meta">Apr 2023 – Aug 2025 · The Hague, Netherlands</div>
+          </details>
+          <details class="tl-item">
+            <summary>
+              <h3>Lionsville B.V.</h3>
+              <div class="tl-role">AI Developer / Full-Stack Engineer</div>
+              <div class="tl-meta">Apr 2023 – Aug 2025 · The Hague, Netherlands</div>
+            </summary>
             <ul>
               <li>Built digital-twin applications with FastAPI backends and React + three.js front-ends; live telemetry via Azure Digital Twin, IoT Hub and Event Grid, loading CAD models in the browser.</li>
               <li>Delivered AI proof-of-concepts: RAG models with Neo4j + React for retail, and computer-vision cow detection with Python + YOLO for agriculture.</li>
               <li>Containerised PHP + React workloads on AWS ECS Fargate (S3, API Management, full VPC); automated delivery with Terraform + GitLab CI/CD.</li>
               <li>Authored architecture artifacts (C4 diagrams, SLAs) and produced an AI promotional video as a product PoC.</li>
             </ul>
-          </div>
-          <div class="tl-item">
-            <h3>CGI</h3>
-            <div class="tl-role">Software Architect</div>
-            <div class="tl-meta">Oct 2021 – Apr 2023 · Rotterdam, Netherlands</div>
+          </details>
+          <details class="tl-item">
+            <summary>
+              <h3>CGI</h3>
+              <div class="tl-role">Software Architect</div>
+              <div class="tl-meta">Oct 2021 – Apr 2023 · Rotterdam, Netherlands</div>
+            </summary>
             <ul>
               <li>Built monitoring &amp; observability integrations in C# (Azure Functions) across Azure DevOps, PagerDuty and Dynatrace.</li>
               <li>Delivered IT4IT tooling with Power Apps + Power Automate; provided architecture guidance for cross-team adoption.</li>
             </ul>
-          </div>
-          <div class="tl-item">
-            <h3>Telesure Investment Holdings (TIH)</h3>
-            <div class="tl-role">Solutions Architect → Developer</div>
-            <div class="tl-meta">2016 – 2021 · South Africa</div>
+          </details>
+          <details class="tl-item">
+            <summary>
+              <h3>Telesure Investment Holdings (TIH)</h3>
+              <div class="tl-role">Solutions Architect → Developer</div>
+              <div class="tl-meta">2016 – 2021 · South Africa</div>
+            </summary>
             <ul>
               <li>Designed microservice architecture using Azure Functions (C#) on Docker — Rancher on-prem and Azure Containers in the cloud — with RabbitMQ and MSSQL.</li>
               <li>Applied TOGAF (ADM/BDAT), partnering with analysts and developers to produce PoCs and architecture designs; drove CI/CD on Azure DevOps.</li>
               <li>As Developer: C#, VB.NET and Angular front-ends, T-SQL/DB2 back-ends, ESB-integrated APIs.</li>
             </ul>
-          </div>
-          <details class="earlier">
-            <summary>Earlier roles (2003 – 2016)</summary>
+          </details>
+          <details class="tl-item">
+            <summary>
+              <h3>Earlier roles</h3>
+              <div class="tl-meta">2003 – 2016 · South Africa</div>
+            </summary>
             <ul>
               <li><strong>Web Developer · HR-Focus Holdings</strong> (2008–2016) — web &amp; Windows payroll/HR software for clients incl. African Bank, Edcon, Allan Gray.</li>
               <li><strong>Database Developer · MBD Attorneys</strong> (2007–2008) — financial systems.</li>
@@ -549,12 +626,22 @@
           <p>Products I'm building, open-source experiments, and free tools I've shipped.</p>
         </div>
 
-        <div class="grid cols-3 reveal" style="margin-bottom:30px">
+        <div class="grid reveal" style="margin-bottom:30px;grid-template-columns:repeat(auto-fit,minmax(232px,1fr))">
+          <div class="card">
+            <span class="tag">Live app · Local LLM</span>
+            <h3>Chronica Diary</h3>
+            <p>A voice-first journaling app — speak freely and it transcribes your thoughts talk-to-text using an on-device local LLM. Live on Windows &amp; Android.</p>
+            <a class="card-link" href="https://apps.microsoft.com/detail/9nngvf0qsgp9" target="_blank" rel="noopener"><i class="fab fa-windows"></i> Microsoft Store</a>
+            &nbsp;·&nbsp;
+            <a class="card-link" href="https://play.google.com/store/apps/details?id=com.jfkproductions.chronicadiary.twa" target="_blank" rel="noopener"><i class="fab fa-google-play"></i> Google Play</a>
+          </div>
           <div class="card">
             <span class="tag">Product</span>
             <h3>AI Tools Portal</h3>
             <p>A curated gateway to the best AI tools, GitHub projects and tutorials — my own AI product.</p>
             <a class="card-link" href="https://aitoolsportal.ai/" target="_blank" rel="noopener">Visit site <i class="fas fa-arrow-right"></i></a>
+            &nbsp;·&nbsp;
+            <a class="card-link" href="https://www.youtube.com/@AIToolsPortal" target="_blank" rel="noopener"><i class="fab fa-youtube"></i> YouTube</a>
           </div>
           <div class="card">
             <span class="tag">Product</span>
@@ -630,35 +717,219 @@
       <div class="wrap">
         <div class="section-head reveal">
           <p class="eyebrow">Credentials</p>
-          <h2>Certifications</h2>
-          <p>16 active Microsoft certifications, plus cloud, architecture and data credentials. <a href="https://www.credly.com/users/johannes-du-toit" target="_blank" rel="noopener">Verify on Credly →</a></p>
+          <h2>Certifications &amp; education</h2>
+          <p>50+ certifications, courses and qualifications across AI, cloud, architecture and data — including 16 Microsoft certifications. <a href="https://www.credly.com/users/johannes-du-toit" target="_blank" rel="noopener">Verify on Credly →</a> &nbsp;<span style="color:var(--faint)">Tap a group to expand.</span></p>
         </div>
         <div class="cert-feature reveal">
           <div class="cert-big">
             <i class="fas fa-robot ico"></i>
-            <div><h3>Azure AI Engineer Associate (AI-102)</h3><span>Microsoft · 2025</span></div>
+            <div><h3>Azure AI Engineer Associate (AI-102)</h3><span>Microsoft · Mar 2025</span></div>
           </div>
           <div class="cert-big">
-            <i class="fas fa-brain ico"></i>
-            <div><h3>Azure AI Fundamentals (AI-900)</h3><span>Microsoft · 2024</span></div>
+            <i class="fas fa-wand-magic-sparkles ico"></i>
+            <div><h3>AI Fluency: Framework &amp; Foundations</h3><span>Anthropic · May 2026</span></div>
           </div>
         </div>
-        <div class="grid cols-3 reveal">
-          <div class="card">
-            <h3 style="font-size:.95rem"><i class="fab fa-microsoft" style="color:var(--accent)"></i> Microsoft</h3>
-            <p style="font-size:.86rem;line-height:1.8">Azure Solutions Architect Expert · DevOps Engineer Expert · Azure Developer Associate · Azure Database Administrator · Azure Administrator · MCSD Web Development</p>
+
+        <div class="edu-card reveal">
+          <i class="fas fa-graduation-cap ico"></i>
+          <div>
+            <h3>National Diploma: Computer Systems (Information Technology)</h3>
+            <div class="em">Technikon Pretoria · 1998 – 2003</div>
+            <p class="ed">Coursework: C++, Java, PHP &amp; MySQL, Web Development, Operating Systems, Software Analysis, Networking, Digital Process Control, Digital Systems, Turbo Assembler, PIC Assembler (MCS-51), Database Development, Electronics &amp; Electrical Engineering.</p>
           </div>
-          <div class="card">
-            <h3 style="font-size:.95rem"><i class="fas fa-cloud" style="color:var(--accent)"></i> Cloud &amp; Architecture</h3>
-            <p style="font-size:.86rem;line-height:1.8">AWS Solutions Architect Associate · AWS Cloud Practitioner · TOGAF 9.2 · Terraform Associate · ITIL Foundation</p>
-          </div>
-          <div class="card">
-            <h3 style="font-size:.95rem"><i class="fas fa-database" style="color:var(--accent)"></i> Data &amp; Specialist</h3>
-            <p style="font-size:.86rem;line-height:1.8">Neo4j Professional · Bentley Digital Twin Developer · CompTIA Project+ · Diploma in Computer Engineering (2004)</p>
-          </div>
+        </div>
+
+        <div class="reveal">
+          <details class="acc">
+            <summary><i class="fab fa-microsoft acc-ico"></i> Microsoft <span class="acc-count">16 certifications</span></summary>
+            <div class="acc-body">
+              <div class="cert-row"><span class="cn">Azure AI Engineer Associate (AI-102)</span><span class="cm">Mar 2025</span></div>
+              <div class="cert-row"><span class="cn">Azure AI Fundamentals (AI-900)</span><span class="cm">Jun 2024</span></div>
+              <div class="cert-row"><span class="cn">Azure Solutions Architect Expert</span><span class="cm">Aug 2020</span></div>
+              <div class="cert-row"><span class="cn">DevOps Engineer Expert</span><span class="cm">Mar 2021</span></div>
+              <div class="cert-row"><span class="cn">Azure Developer Associate</span><span class="cm">Jan 2020</span></div>
+              <div class="cert-row"><span class="cn">Azure Database Administrator Associate</span><span class="cm">Mar 2022</span></div>
+              <div class="cert-row"><span class="cn">Azure Administrator Associate</span><span class="cm">Jun 2021</span></div>
+              <div class="cert-row"><span class="cn">Azure Architect Design (AZ-301)</span><span class="cm">Aug 2020</span></div>
+              <div class="cert-row"><span class="cn">Azure Architect Technologies (AZ-300)</span><span class="cm">May 2020</span></div>
+              <div class="cert-row"><span class="cn">Security, Compliance &amp; Identity Fundamentals</span><span class="cm">Jul 2022</span></div>
+              <div class="cert-row"><span class="cn">Power Platform Fundamentals</span><span class="cm">May 2022</span></div>
+              <div class="cert-row"><span class="cn">MCSD: App Builder</span><span class="cm">2019</span></div>
+              <div class="cert-row"><span class="cn">MCSA: Web Applications</span><span class="cm">Nov 2016</span></div>
+              <div class="cert-row"><span class="cn">70-480: HTML5, JavaScript &amp; CSS3</span><span class="cm">Jan 2016</span></div>
+              <div class="cert-row"><span class="cn">.NET 4 Framework — Web Applications</span><span class="cm">Apr 2013</span></div>
+              <div class="cert-row"><span class="cn">MCP: SQL Server 2008 R2</span><span class="cm">Feb 2012</span></div>
+            </div>
+          </details>
+
+          <details class="acc">
+            <summary><i class="fas fa-robot acc-ico"></i> AI — Anthropic <span class="acc-count">5 certificates</span></summary>
+            <div class="acc-body">
+              <div class="cert-row"><span class="cn">AI Fluency: Framework &amp; Foundations</span><span class="cm">May 2026</span></div>
+              <div class="cert-row"><span class="cn">Claude Code in Action</span><span class="cm">Apr 2026</span></div>
+              <div class="cert-row"><span class="cn">Introduction to Claude Cowork</span><span class="cm">Apr 2026</span></div>
+              <div class="cert-row"><span class="cn">Claude Code 101</span><span class="cm">Apr 2026</span></div>
+              <div class="cert-row"><span class="cn">Claude 101</span><span class="cm">Apr 2026</span></div>
+            </div>
+          </details>
+
+          <details class="acc">
+            <summary><i class="fab fa-aws acc-ico"></i> Amazon Web Services <span class="acc-count">2 certifications</span></summary>
+            <div class="acc-body">
+              <div class="cert-row"><span class="cn">AWS Certified Solutions Architect – Associate</span><span class="cm">Jul 2023</span></div>
+              <div class="cert-row"><span class="cn">AWS Certified Cloud Practitioner</span><span class="cm">Nov 2021</span></div>
+            </div>
+          </details>
+
+          <details class="acc">
+            <summary><i class="fas fa-diagram-project acc-ico"></i> Neo4j &amp; graph <span class="acc-count">6 certificates</span></summary>
+            <div class="acc-body">
+              <div class="cert-row"><span class="cn">Neo4j Certified Professional</span><span class="cm">Jun 2024</span></div>
+              <div class="cert-row"><span class="cn">Build a Neo4j-backed Chatbot using Python</span><span class="cm">Jul 2024</span></div>
+              <div class="cert-row"><span class="cn">Graph Data Modeling Fundamentals</span><span class="cm">May 2024</span></div>
+              <div class="cert-row"><span class="cn">Importing CSV Data into Neo4j</span><span class="cm">May 2024</span></div>
+              <div class="cert-row"><span class="cn">Cypher Fundamentals</span><span class="cm">Apr 2024</span></div>
+              <div class="cert-row"><span class="cn">Neo4j Fundamentals</span><span class="cm">Apr 2024</span></div>
+            </div>
+          </details>
+
+          <details class="acc">
+            <summary><i class="fas fa-sitemap acc-ico"></i> Architecture, Agile &amp; DevOps <span class="acc-count">6 credentials</span></summary>
+            <div class="acc-body">
+              <div class="cert-row"><span class="cn">TOGAF Certification Program</span><span class="cm">Nov 2021</span></div>
+              <div class="cert-row"><span class="cn">Certified SAFe® 5 Architect</span><span class="cm">Jan 2023</span></div>
+              <div class="cert-row"><span class="cn">Bentley Accredited Developer: iTwin Platform – Associate</span><span class="cm">Jan 2025</span></div>
+              <div class="cert-row"><span class="cn">ITIL Foundation</span><span class="cm">Oct 2017</span></div>
+              <div class="cert-row"><span class="cn">CompTIA Project+</span><span class="cm">Sep 2012</span></div>
+              <div class="cert-row"><span class="cn">GitLab CI Fundamentals</span><span class="cm">Apr 2024</span></div>
+            </div>
+          </details>
+
+          <details class="acc">
+            <summary><i class="fas fa-book-open acc-ico"></i> Courses — LinkedIn Learning &amp; edX <span class="acc-count">5 courses</span></summary>
+            <div class="acc-body">
+              <div class="cert-row"><span class="cn">DEV315x: Advanced Angular (edX)</span><span class="cm">Sep 2018</span></div>
+              <div class="cert-row"><span class="cn">Microservices: Design Patterns</span><span class="cm">May 2021</span></div>
+              <div class="cert-row"><span class="cn">Prepare for AZ-104 (Azure Administrator)</span><span class="cm">Jun 2021</span></div>
+              <div class="cert-row"><span class="cn">Prepare for AZ-400 (DevOps Solutions)</span><span class="cm">Feb 2021</span></div>
+              <div class="cert-row"><span class="cn">AWS SAA-C02 Cert Prep: Cloud Services Overview</span><span class="cm">May 2022</span></div>
+            </div>
+          </details>
+
+          <details class="acc">
+            <summary><i class="fas fa-graduation-cap acc-ico"></i> Education &amp; training <span class="acc-count">formal study</span></summary>
+            <div class="acc-body">
+              <div class="cert-row"><span class="cn">National Diploma: Computer Systems (IT) — Technikon Pretoria</span><span class="cm">1998–2003</span></div>
+              <div class="cert-row"><span class="cn">MCTS: Web Developer</span><span class="cm">2013</span></div>
+              <div class="cert-row"><span class="cn">Web Master Course (CIW, JavaScript, PHP, Java SE 6, WebSphere…) — e-Careers</span><span class="cm">2012–2013</span></div>
+              <div class="cert-row"><span class="cn">Entrepreneur Bootcamp — Small Business Management</span><span class="cm">2013</span></div>
+              <div class="cert-row"><span class="cn">MCTS: Database Developer</span><span class="cm">2011</span></div>
+              <div class="cert-row"><span class="cn">Photoshop CS5 — Dynamix Training</span><span class="cm">2011</span></div>
+              <div class="cert-row"><span class="cn">3ds Max 7 &amp; Combustion (3D Animation) — Open Window</span><span class="cm">2006</span></div>
+              <div class="cert-row"><span class="cn">Maya 6.5 (3D Visual Effects) — Open Window</span><span class="cm">2005–2006</span></div>
+              <div class="cert-row"><span class="cn">VB6 Certificate — Technikon Pretoria</span><span class="cm">2001</span></div>
+            </div>
+          </details>
         </div>
       </div>
     </section>
+
+    <!-- ================= INTERACTIVE TIMELINE ================= -->
+    <section id="timeline" class="scroll-anchor">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">My journey</p>
+          <h2>Interactive timeline</h2>
+          <p>Two decades of certifications and milestones — newest first. <span style="color:var(--faint)">Scroll sideways; click any point to verify the credential.</span></p>
+        </div>
+        <div class="tlx-scroll reveal">
+          <div class="tlx-track" id="tlxTrack"></div>
+        </div>
+        <p class="tlx-hint"><i class="fas fa-hand-pointer"></i> Drag or scroll horizontally — points above and below the line are clickable.</p>
+      </div>
+    </section>
+    <script>
+      (function () {
+        var track = document.getElementById('tlxTrack');
+        if (!track) return;
+        var CREDLY = 'https://www.credly.com/users/johannes-du-toit';
+        var LI = 'https://www.linkedin.com/in/johannes-f-kraai-du-toit-44962b37/';
+        var ANT = 'https://www.anthropic.com';
+        var MS = 'fab fa-microsoft', AWS = 'fab fa-aws', NEO = 'fas fa-diagram-project', ARC = 'fas fa-sitemap',
+            ANTI = 'fas fa-robot', EDU = 'fas fa-graduation-cap', CRS = 'fas fa-book-open', GL = 'fab fa-gitlab',
+            CUBE = 'fas fa-cube', PPL = 'fas fa-people-group', GEAR = 'fas fa-gears', TOOL = 'fas fa-screwdriver-wrench',
+            LIN = 'fab fa-linkedin', BIZ = 'fas fa-briefcase', ART = 'fas fa-palette', VFX = 'fas fa-clapperboard', CODE = 'fas fa-code';
+        // newest first
+        var data = [
+          { d: '2026-05', t: 'AI Fluency: Framework & Foundations', i: 'Anthropic', ic: ANTI, u: ANT },
+          { d: '2026-04', t: 'Claude Code in Action', i: 'Anthropic', ic: ANTI, u: ANT },
+          { d: '2026-04', t: 'Introduction to Claude Cowork', i: 'Anthropic', ic: ANTI, u: ANT },
+          { d: '2026-04', t: 'Claude Code 101', i: 'Anthropic', ic: ANTI, u: ANT },
+          { d: '2026-04', t: 'Claude 101', i: 'Anthropic', ic: ANTI, u: ANT },
+          { d: '2025-03', t: 'Azure AI Engineer Associate (AI-102)', i: 'Microsoft', ic: MS, u: CREDLY, b: true },
+          { d: '2025-01', t: 'Bentley iTwin Platform – Associate', i: 'Bentley', ic: CUBE, u: CREDLY, b: true },
+          { d: '2024-07', t: 'Neo4j-backed Chatbot with Python', i: 'Neo4j', ic: NEO, u: CREDLY, b: true },
+          { d: '2024-06', t: 'Neo4j Certified Professional', i: 'Neo4j', ic: NEO, u: CREDLY, b: true },
+          { d: '2024-06', t: 'Azure AI Fundamentals (AI-900)', i: 'Microsoft', ic: MS, u: CREDLY, b: true },
+          { d: '2024-05', t: 'Importing CSV Data into Neo4j', i: 'Neo4j', ic: NEO, u: CREDLY, b: true },
+          { d: '2024-05', t: 'Graph Data Modeling Fundamentals', i: 'Neo4j', ic: NEO, u: CREDLY, b: true },
+          { d: '2024-04', t: 'Cypher Fundamentals', i: 'Neo4j', ic: NEO, u: CREDLY, b: true },
+          { d: '2024-04', t: 'Neo4j Fundamentals', i: 'Neo4j', ic: NEO, u: CREDLY, b: true },
+          { d: '2024-04', t: 'GitLab CI Fundamentals', i: 'GitLab', ic: GL, u: LI },
+          { d: '2023-07', t: 'AWS Solutions Architect – Associate', i: 'AWS', ic: AWS, u: CREDLY, b: true },
+          { d: '2023-01', t: 'Certified SAFe 5 Architect', i: 'Scaled Agile', ic: PPL, u: CREDLY, b: true },
+          { d: '2022-07', t: 'Security, Compliance & Identity Fund.', i: 'Microsoft', ic: MS, u: CREDLY, b: true },
+          { d: '2022-05', t: 'Power Platform Fundamentals', i: 'Microsoft', ic: MS, u: CREDLY, b: true },
+          { d: '2022-05', t: 'AWS SAA-C02 Cert Prep', i: 'LinkedIn Learning', ic: LIN, u: LI },
+          { d: '2022-03', t: 'Azure Database Administrator', i: 'Microsoft', ic: MS, u: CREDLY, b: true },
+          { d: '2021-11', t: 'AWS Cloud Practitioner', i: 'AWS', ic: AWS, u: CREDLY, b: true },
+          { d: '2021-11', t: 'TOGAF Certification Program', i: 'The Open Group', ic: ARC, u: CREDLY, b: true },
+          { d: '2021-06', t: 'Azure Administrator Associate', i: 'Microsoft', ic: MS, u: CREDLY, b: true },
+          { d: '2021-06', t: 'Prepare for AZ-104', i: 'LinkedIn Learning', ic: LIN, u: LI },
+          { d: '2021-05', t: 'Microservices: Design Patterns', i: 'LinkedIn Learning', ic: LIN, u: LI },
+          { d: '2021-03', t: 'DevOps Engineer Expert', i: 'Microsoft', ic: MS, u: CREDLY, b: true },
+          { d: '2021-02', t: 'Prepare for AZ-400', i: 'LinkedIn Learning', ic: LIN, u: LI },
+          { d: '2020-08', t: 'Azure Solutions Architect Expert', i: 'Microsoft', ic: MS, u: CREDLY, b: true },
+          { d: '2020-08', t: 'Azure Architect Design (AZ-301)', i: 'Microsoft', ic: MS, u: CREDLY, b: true },
+          { d: '2020-05', t: 'Azure Architect Technologies (AZ-300)', i: 'Microsoft', ic: MS, u: CREDLY, b: true },
+          { d: '2020-01', t: 'Azure Developer Associate', i: 'Microsoft', ic: MS, u: CREDLY, b: true },
+          { d: '2019-02', t: 'MCSD: App Builder', i: 'Microsoft', ic: MS, u: CREDLY, b: true },
+          { d: '2018-09', t: 'DEV315x: Advanced Angular', i: 'edX', ic: CRS, u: LI },
+          { d: '2017-10', t: 'ITIL Foundation', i: 'ITIL', ic: GEAR, u: LI },
+          { d: '2016-11', t: 'MCSA: Web Applications', i: 'Microsoft', ic: MS, u: CREDLY, b: true },
+          { d: '2016-01', t: '70-480: HTML5, JS & CSS3', i: 'Microsoft', ic: MS, u: CREDLY, b: true },
+          { d: '2013', t: 'MCTS: Web Developer', i: 'Microsoft', ic: MS, u: LI },
+          { d: '2013', t: 'Web Master Course (CIW, JS, PHP, Java SE 6…)', i: 'e-Careers', ic: CRS, u: 'https://www.e-careers.com' },
+          { d: '2013', t: 'Entrepreneur Bootcamp — Small Business', i: 'EA Bootcamp', ic: BIZ, u: LI },
+          { d: '2013-04', t: '.NET 4 — Web Applications', i: 'Microsoft', ic: MS, u: CREDLY, b: true },
+          { d: '2012-09', t: 'CompTIA Project+', i: 'CompTIA', ic: TOOL, u: CREDLY, b: true },
+          { d: '2012-02', t: 'MCP: SQL Server 2008 R2', i: 'Microsoft', ic: MS, u: CREDLY, b: true },
+          { d: '2011', t: 'MCTS: Database Developer', i: 'Microsoft', ic: MS, u: LI },
+          { d: '2011', t: 'Photoshop CS5', i: 'Dynamix Training', ic: ART, u: LI },
+          { d: '2006', t: '3ds Max 7 & Combustion (3D Animation)', i: 'Open Window', ic: VFX, u: LI },
+          { d: '2005', t: 'Maya 6.5 (3D Visual Effects)', i: 'Open Window', ic: VFX, u: LI },
+          { d: '2003-12', t: 'National Diploma: Computer Systems (IT)', i: 'Technikon Pretoria', ic: EDU, u: LI },
+          { d: '2001', t: 'VB6 Certificate', i: 'Technikon Pretoria', ic: CODE, u: LI }
+        ];
+        var M = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+        function mon(d) { var p = d.split('-'); return p[1] ? M[+p[1] - 1] + ' ' + p[0] : p[0]; }
+        var html = '', lastY = null, pin = 0;
+        data.forEach(function (it) {
+          var y = it.d.slice(0, 4);
+          if (y !== lastY) { html += '<div class="tlx-year"><span>' + y + '</span></div>'; lastY = y; }
+          var dir = (pin % 2 === 0) ? 'up' : 'down'; pin++;
+          html += '<a class="tlx-item ' + dir + '" href="' + it.u + '" target="_blank" rel="noopener" aria-label="' + esc(it.t) + ' — ' + esc(it.i) + '">' +
+            (it.b ? '<i class="fas fa-certificate tlx-badge" title="Verifiable badge"></i>' : '') +
+            '<div class="tlx-card"><div class="tlx-date">' + mon(it.d) + '</div>' +
+            '<div class="tlx-name">' + esc(it.t) + '</div>' +
+            '<div class="tlx-issuer"><i class="' + it.ic + '"></i> ' + esc(it.i) + '</div></div>' +
+            '<span class="tlx-dot"></span></a>';
+        });
+        track.innerHTML = html;
+      })();
+    </script>
 
     <!-- ================= STAGE: MUSIC & COMEDY ================= -->
     <section id="stage" class="scroll-anchor">
@@ -666,7 +937,7 @@
         <div class="section-head reveal">
           <p class="eyebrow">The human side</p>
           <h2>Stage — music &amp; comedy</h2>
-          <p>I won the 2018 "Grab the Mic" open-mic competition and toured with <strong>Trevor Noah</strong> on Nationwild. My work has featured on Comedy Central, kykNET, Vuse Amp and Jacaranda FM — and I release music as "Kraai".</p>
+          <p>I won the 2018 "Grab the Mic" open-mic competition and toured with <strong>Trevor Noah</strong> on Nationwild, and was a <strong>2023 Comedy Talent Award finalist</strong> (1 of 6 — Utrecht, NL). My work has featured on Comedy Central, kykNET, Vuse Amp, Jacaranda FM and the SAcomedian podcast — and I release music as "Kraai".</p>
         </div>
 
         <div class="gallery reveal">
@@ -690,10 +961,26 @@
           <a class="card" href="https://distrokid.com/hyperfollow/kraai/snaakse-gevoelens" target="_blank" rel="noopener"><span class="tag">Single</span><h3>Snaakse Gevoelens</h3><p>Listen on your favourite platform.</p></a>
         </div>
 
+        <h3 style="font-size:1.2rem;margin:34px 0 4px"><i class="fas fa-clapperboard" style="color:var(--accent)"></i> Latest creative film &amp; video</h3>
+        <p style="color:var(--faint);font-size:.88rem;margin:0 0 16px">Recent film, music-video and creative work. <a href="https://www.youtube.com/@kraaidutoit6657" target="_blank" rel="noopener">See all on YouTube →</a></p>
+        <div class="vgrid reveal" id="filmGrid"></div>
+        <script>
+          (function () {
+            var ids = ['n9_TzSdQ3h0', '7rIaEijm3EY', 'ka-jZBx8Uv8', '9c9gw_RQ4bk', 'Sq5dNwrCxSE', 'mcZ58i0RGoc', 'fiBt9ozFwVk', '5yaoEm8zUG8', 'xzrGaX0tBFc', 'JbEsmjwgDV4', 'cYbySddKRqI', 'dfyaguiThHM', 'JRLNWxu_k5c', 'uY6H-U4mULM', 'FPVb-WNU2NE', 'l4C2pjSxRvs', 'iWuAn5TH8a8', 'ylfXLdGR9JY', 'vsjFTDONa-0', 'q6YANJrBKB4', '2HQLHZePuPw', 'HbIA-l_LuLY', 'cXEowOKmCMc'];
+            var g = document.getElementById('filmGrid');
+            if (!g) return;
+            g.innerHTML = ids.map(function (id) {
+              return '<div class="vid"><iframe loading="lazy" src="https://www.youtube.com/embed/' + id + '" title="Creative film &amp; video by Kraai Du Toit" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>';
+            }).join('');
+          })();
+        </script>
+
         <div class="hero-cta" style="margin-top:24px">
           <a class="btn btn-ghost" href="https://www.imdb.com/name/nm11530589/" target="_blank" rel="noopener"><i class="fab fa-imdb"></i> IMDb</a>
           <a class="btn btn-ghost" href="https://www.youtube.com/@kraaidutoit6657" target="_blank" rel="noopener"><i class="fab fa-youtube"></i> YouTube</a>
           <a class="btn btn-ghost" href="https://open.spotify.com/artist/3DwWrzCxBOv47oIMpRwJCU" target="_blank" rel="noopener"><i class="fab fa-spotify"></i> Spotify</a>
+          <a class="btn btn-ghost" href="https://podcasts.apple.com/us/podcast/sacomedian/id1441338684" target="_blank" rel="noopener"><i class="fas fa-podcast"></i> Podcast interview</a>
+          <a class="btn btn-ghost" href="https://www.youtube.com/@sacomedianmagazine5736" target="_blank" rel="noopener"><i class="fab fa-youtube"></i> SA Comedian Mag</a>
         </div>
       </div>
     </section>
@@ -703,9 +990,11 @@
       <div class="wrap">
         <div class="section-head reveal">
           <p class="eyebrow">More</p>
-          <h2>Writing, games &amp; training</h2>
+          <h2>Videos, writing, games &amp; training</h2>
         </div>
         <div class="grid cols-3 reveal">
+          <a class="card" href="https://www.youtube.com/@AIToolsPortal" target="_blank" rel="noopener"><span class="tag"><i class="fab fa-youtube"></i> Coding</span><h3>AI Tools Portal — YouTube</h3><p>AI tools, tutorials &amp; coding walkthroughs.</p></a>
+          <a class="card" href="https://www.youtube.com/@kraaidutoit6657" target="_blank" rel="noopener"><span class="tag"><i class="fab fa-youtube"></i> Comedy &amp; music</span><h3>Kraai — YouTube</h3><p>Stand-up clips &amp; music videos.</p></a>
           <a class="card" href="Blog/slot-safe-react-builds.html" target="_blank"><span class="tag">Blog</span><h3>Slot-safe React builds</h3><p>Patterns for safer component composition.</p></a>
           <a class="card" href="Blog/definitive-guide-sql-compiled.html" target="_blank"><span class="tag">Blog</span><h3>The definitive guide to SQL</h3><p>A compiled, practical SQL reference.</p></a>
           <a class="card" href="Games/Balloon Shooter.html" target="_blank"><span class="tag">Game</span><h3>Balloon Shooter</h3><p>A browser arcade game.</p></a>
@@ -723,9 +1012,7 @@
         <h2>Open to AI Engineer, AI Developer &amp; AI Solutions Architect roles</h2>
         <p>Building something with applied AI, or hiring for it? I'd love to hear from you.</p>
         <div class="contact-btns">
-          <a class="btn btn-primary" href="https://www.linkedin.com/in/johannes-f-kraai-du-toit-44962b37/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> Connect on LinkedIn</a>
-          <a class="btn btn-ghost" href="assets/Kraai-Du-Toit-AI-Engineer-CV.pdf" target="_blank" rel="noopener"><i class="fas fa-download"></i> Download CV</a>
-          <a class="btn btn-ghost" href="https://github.com/jfkproductions" target="_blank" rel="noopener"><i class="fab fa-github"></i> GitHub</a>
+          <a class="btn btn-primary" href="https://www.linkedin.com/in/johannes-f-kraai-du-toit-44962b37/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> Connect on LinkedIn</a>          <a class="btn btn-ghost" href="https://github.com/jfkproductions" target="_blank" rel="noopener"><i class="fab fa-github"></i> GitHub</a>
           <a class="btn btn-ghost" href="https://www.credly.com/users/johannes-du-toit" target="_blank" rel="noopener"><i class="fas fa-certificate"></i> Credly</a>
           <a class="btn btn-ghost" href="portfolio/index.html"><i class="fas fa-cube"></i> 3D Portfolio</a>
         </div>
@@ -767,6 +1054,13 @@
       spy.forEach(function (s) { if (y >= s.offsetTop) cur = s.id; });
       navA.forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
     }, { passive: true });
+
+    // PWA: register service worker (enables install + offline)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function () {});
+      });
+    }
   </script>
 </body>
 

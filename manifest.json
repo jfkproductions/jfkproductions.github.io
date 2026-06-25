@@ -1,0 +1,20 @@
+{
+  "id": "/",
+  "name": "Kraai Du Toit — AI Engineer & Solutions Architect",
+  "short_name": "Kraai Du Toit",
+  "description": "AI Engineer & Solutions Architect — generative AI, computer vision, RAG and digital twins. Portfolio, projects, certifications and creative work.",
+  "start_url": "/?redirect=false",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a1422",
+  "theme_color": "#0a1422",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["portfolio", "business", "productivity"],
+  "icons": [
+    { "src": "/assets/images/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/images/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/images/icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
