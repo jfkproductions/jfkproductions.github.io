@@ -1,0 +1,5 @@
+# Local Claude Code tooling / preview config
+.claude/
+
+# Local backup of the pre-redesign page (kept locally, not published)
+index-old.html

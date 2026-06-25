@@ -22,6 +22,76 @@
   </script>
   <script defer="defer" src="bundle.8f1878c4843e6a98e73e.js"></script>
   <link href="main.css" rel="stylesheet">
+  <style id="jfk-entry-style">
+    /* ---- Entry choice overlay (matches the 3D room mood) ---- */
+    #jfk-entry {
+      position: fixed; inset: 0; z-index: 99999;
+      display: none; align-items: center; justify-content: center;
+      padding: 24px;
+      background: radial-gradient(120% 120% at 50% 0%, rgba(13, 27, 42, 0.72) 0%, rgba(6, 12, 22, 0.92) 70%);
+      backdrop-filter: blur(7px) saturate(115%);
+      -webkit-backdrop-filter: blur(7px) saturate(115%);
+      opacity: 0; transition: opacity .5s ease;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+    #jfk-entry.show { display: flex; opacity: 1; }
+    #jfk-entry .jfk-card {
+      position: relative; width: min(440px, 92vw);
+      padding: 34px 30px 26px; text-align: center;
+      border-radius: 22px;
+      background: linear-gradient(160deg, rgba(20, 34, 54, 0.92), rgba(10, 18, 30, 0.95));
+      border: 1px solid rgba(255, 138, 61, 0.35);
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+                  0 18px 60px rgba(0, 0, 0, 0.6),
+                  0 0 42px rgba(255, 122, 54, 0.28);
+      transform: translateY(16px) scale(.97);
+      transition: transform .55s cubic-bezier(.2, .9, .25, 1);
+      animation: jfkGlow 3.6s ease-in-out infinite;
+    }
+    #jfk-entry.show .jfk-card { transform: translateY(0) scale(1); }
+    @keyframes jfkGlow {
+      0%, 100% { box-shadow: 0 0 0 1px rgba(255,255,255,.04) inset, 0 18px 60px rgba(0,0,0,.6), 0 0 36px rgba(255,122,54,.22); }
+      50%      { box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset, 0 18px 60px rgba(0,0,0,.6), 0 0 56px rgba(255,122,54,.40); }
+    }
+    #jfk-entry .jfk-logo {
+      width: 116px; height: auto; margin: 0 auto 6px; display: block;
+      filter: drop-shadow(0 4px 14px rgba(255, 122, 54, 0.45));
+      animation: jfkFloat 5s ease-in-out infinite;
+    }
+    @keyframes jfkFloat { 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(-7px);} }
+    #jfk-entry h2 {
+      margin: 4px 0 2px; color: #fff; font-size: 1.5rem; letter-spacing: .5px; font-weight: 700;
+    }
+    #jfk-entry .jfk-sub {
+      margin: 0 0 4px; color: #ff9d5c; font-size: .82rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 1.6px;
+    }
+    #jfk-entry .jfk-lead { margin: 10px 0 22px; color: #c4d0de; font-size: .92rem; line-height: 1.5; }
+    #jfk-entry .jfk-btns { display: flex; flex-direction: column; gap: 12px; }
+    #jfk-entry button.jfk-go {
+      cursor: pointer; border: 0; border-radius: 12px; padding: 14px 18px;
+      font-size: 1rem; font-weight: 700; letter-spacing: .4px;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    #jfk-entry .jfk-primary {
+      color: #1a0f06;
+      background: linear-gradient(135deg, #ffb061, #ff7a36);
+      box-shadow: 0 8px 22px rgba(255, 122, 54, 0.42);
+    }
+    #jfk-entry .jfk-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(255, 122, 54, 0.6); }
+    #jfk-entry .jfk-secondary {
+      color: #eaf1f8; background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+    }
+    #jfk-entry .jfk-secondary:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.12); }
+    #jfk-entry .jfk-remember {
+      display: inline-flex; align-items: center; gap: 8px; justify-content: center;
+      margin-top: 18px; color: #93a4b8; font-size: .82rem; cursor: pointer; user-select: none;
+    }
+    #jfk-entry .jfk-remember input { width: 15px; height: 15px; accent-color: #ff7a36; cursor: pointer; }
+    #jfk-entry .jfk-tip { margin-top: 14px; color: #6f8298; font-size: .72rem; }
+    @media (max-width: 480px) { #jfk-entry h2 { font-size: 1.3rem; } #jfk-entry .jfk-logo { width: 92px; } }
+  </style>
 </head>
 
 <body>
@@ -32,6 +102,21 @@
       laptop computer.<br><br>Thank you! &lt;3</p>
   </div>
   <div class="loadingScreen">Kraai<br>Du<br>Toit</div>
+  <!-- Entry choice overlay: pick the 3D room or the classic CV page -->
+  <div id="jfk-entry" role="dialog" aria-modal="true" aria-labelledby="jfk-entry-title">
+    <div class="jfk-card">
+      <img class="jfk-logo" src="../assets/images/kraai-logo-white.png" alt="Kraai Du Toit raven logo">
+      <p class="jfk-sub">AI Engineer &amp; Solutions Architect</p>
+      <h2 id="jfk-entry-title">Welcome — choose your view</h2>
+      <p class="jfk-lead">Step into the interactive 3D office, or jump straight to the recruiter-friendly CV page.</p>
+      <div class="jfk-btns">
+        <button type="button" class="jfk-go jfk-primary" id="jfk-enter3d">Enter the 3D World</button>
+        <button type="button" class="jfk-go jfk-secondary" id="jfk-classic">View Classic CV Page</button>
+      </div>
+      <label class="jfk-remember"><input type="checkbox" id="jfk-remember"> Remember my choice</label>
+      <p class="jfk-tip">Tip: the 3D room is best on desktop. The classic page works everywhere.</p>
+    </div>
+  </div>
   <div class="banner">
     <span class="banner-link" id="leftMonitor">ABOUT ME</span>
     <span class="banner-link" id="rightMonitor">PROJECTS</span>
@@ -61,6 +146,52 @@
         });
       }
     });
+  </script>
+  <script>
+    // Entry chooser: show a 3D-styled popup so visitors pick the room or the classic CV page.
+    (function () {
+      var LS = null, SS = null;
+      try { LS = window.localStorage; } catch (e) { }
+      try { SS = window.sessionStorage; } catch (e) { }
+      function pref() { try { return LS && LS.getItem('jfk_view_pref'); } catch (e) { return null; } }
+      function seen() { try { return SS && SS.getItem('jfk_view_seen'); } catch (e) { return null; } }
+
+      // If the visitor already chose (lasting preference) or dismissed it this session, skip the popup.
+      if (pref() || seen()) return;
+
+      var overlay = document.getElementById('jfk-entry');
+      if (!overlay) return;
+
+      function remember(val) {
+        try { if (document.getElementById('jfk-remember').checked && LS) LS.setItem('jfk_view_pref', val); } catch (e) { }
+        try { if (SS) SS.setItem('jfk_view_seen', '1'); } catch (e) { }
+      }
+      document.getElementById('jfk-enter3d').addEventListener('click', function () {
+        remember('3d');
+        overlay.classList.remove('show');
+        setTimeout(function () { overlay.style.display = 'none'; }, 500);
+      });
+      document.getElementById('jfk-classic').addEventListener('click', function () {
+        remember('classic');
+        window.location.href = '../index.html?redirect=false';
+      });
+
+      // Reveal the chooser once the loading screen is gone (so the room shows behind it).
+      var loader = document.querySelector('.loadingScreen');
+      var shown = false;
+      function trigger() { if (shown) return; shown = true; overlay.classList.add('show'); }
+      if (loader) {
+        var obs = new MutationObserver(function () {
+          var s = window.getComputedStyle(loader);
+          if (s.display === 'none' || s.opacity === '0' || s.visibility === 'hidden' || !loader.isConnected) trigger();
+        });
+        obs.observe(loader, { attributes: true, attributeFilter: ['style', 'class'] });
+        if (loader.parentNode) obs.observe(loader.parentNode, { childList: true });
+      }
+      // Fallbacks so the chooser always appears even if the loader behaves differently.
+      window.addEventListener('load', function () { setTimeout(trigger, 1800); });
+      setTimeout(trigger, 4500);
+    })();
   </script>
 </body>
 

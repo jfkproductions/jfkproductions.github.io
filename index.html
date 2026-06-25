@@ -1,1484 +1,773 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <base href="/">
-    <title>My Professional Portfolio</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --text-color: #333;
-            --background-color: #ecf0f1;
-            --surface-color: #ffffff;
-            --border-color: #e5e7eb;
-            --muted-color: #6b7280;
-            --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        .arcade-screen {
-            width: 620px;
-            border: 2px solid #0f0;
-            padding: 20px;
-        }
+  <!-- ============ SEO ============ -->
+  <title>Kraai Du Toit — AI Engineer &amp; Solutions Architect | GenAI, Computer Vision &amp; Digital Twins</title>
+  <meta name="description"
+    content="Johannes 'Kraai' Du Toit — AI Engineer &amp; Solutions Architect in the Netherlands. Building production-ready applied AI: generative AI, computer vision, RAG and digital twins. Microsoft Certified Azure AI Engineer (AI-102), 16x Microsoft Certified, Azure + AWS.">
+  <meta name="keywords"
+    content="AI Engineer, Solutions Architect, Generative AI, Computer Vision, RAG, Digital Twins, Azure AI Engineer, AI-102, Azure OpenAI, Python, FastAPI, React, Netherlands, Kraai Du Toit, Johannes Du Toit">
+  <meta name="author" content="Johannes (Kraai) Du Toit">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0b1626">
+  <link rel="canonical" href="https://jfkproductions.github.io/">
 
-        /* Unified table-like layout using divs */
-        .grid-table {
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
-            overflow: hidden;
-        }
+  <!-- ============ Open Graph / social ============ -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Kraai Du Toit — AI Engineer &amp; Solutions Architect">
+  <meta property="og:description"
+    content="Building production-ready applied AI: generative AI, computer vision, RAG and digital twins. Azure AI-102 certified. Also a 3D interactive portfolio.">
+  <meta property="og:url" content="https://jfkproductions.github.io/">
+  <meta property="og:image" content="https://jfkproductions.github.io/assets/images/photos/portrait-hero.jpg">
+  <meta property="og:site_name" content="Kraai Du Toit">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Kraai Du Toit — AI Engineer &amp; Solutions Architect">
+  <meta name="twitter:description"
+    content="Applied AI: generative AI, computer vision, RAG and digital twins. Azure AI-102 certified.">
+  <meta name="twitter:image" content="https://jfkproductions.github.io/assets/images/photos/portrait-hero.jpg">
 
-        .grid-table .table-header,
-        .grid-table .table-row {
-            display: grid;
-            grid-template-columns: var(--cols, 2fr 3fr 1fr);
-            gap: 16px;
-            padding: 12px 16px;
-        }
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="apple-touch-icon" href="assets/images/favicon.png">
 
-        .grid-table .table-header {
-            background: #f8fafc;
-            font-weight: 600;
-        }
+  <!-- ============ Structured data (Person) ============ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Johannes (Kraai) Du Toit",
+    "alternateName": "Kraai Du Toit",
+    "jobTitle": "AI Engineer & Solutions Architect",
+    "description": "AI Engineer and Solutions Architect building generative AI, computer vision, RAG and digital twin applications.",
+    "url": "https://jfkproductions.github.io/",
+    "image": "https://jfkproductions.github.io/assets/images/photos/portrait-hero.jpg",
+    "address": { "@type": "PostalAddress", "addressCountry": "Netherlands" },
+    "worksFor": { "@type": "Organization", "name": "Cyclomedia" },
+    "knowsAbout": ["Generative AI", "Computer Vision", "Retrieval-Augmented Generation", "Digital Twins", "Azure AI", "Solution Architecture", "Python", "FastAPI", "C#", ".NET", "React"],
+    "knowsLanguage": ["English", "Afrikaans", "Dutch"],
+    "sameAs": [
+      "https://www.linkedin.com/in/johannes-f-kraai-du-toit-44962b37/",
+      "https://github.com/jfkproductions",
+      "https://www.credly.com/users/johannes-du-toit",
+      "https://www.imdb.com/name/nm11530589/",
+      "https://www.youtube.com/@kraaidutoit6657",
+      "https://aitoolsportal.ai/"
+    ]
+  }
+  </script>
 
-        .grid-table .table-row {
-            border-top: 1px solid var(--border-color);
-        }
+  <!-- ============ Early redirect: desktop humans -> 3D room, but keep bots & opt-outs on this page ============ -->
+  <script>
+    (function () {
+      function isMobile() {
+        var ua = navigator.userAgent || navigator.vendor || window.opera || '';
+        var mobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+        var coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+        var small = Math.min(screen.width, screen.height) <= 820;
+        return mobileUA || coarse || small;
+      }
+      var ua = navigator.userAgent || '';
+      var isBot = /bot|crawl|spider|slurp|bingpreview|google|baidu|yandex|duckduck|facebookexternalhit|embedly|quora|pinterest|slackbot|whatsapp|telegram|linkedinbot|twitterbot|applebot/i.test(ua);
+      var onPortfolio = /\/portfolio\//i.test(location.pathname);
+      var params = new URLSearchParams(window.location.search);
+      var noRedirect = params.get('redirect') === 'false' || (location.hash && location.hash.toLowerCase().indexOf('noredirect') > -1);
+      var fromPortfolio = /\/portfolio\/index\.html$/i.test(document.referrer);
+      var prefersClassic = false;
+      try { prefersClassic = localStorage.getItem('jfk_view_pref') === 'classic'; } catch (e) { }
+      if (!isMobile() && !isBot && !onPortfolio && !noRedirect && !fromPortfolio && !prefersClassic) {
+        window.location.replace('portfolio/index.html');
+      }
+    })();
+  </script>
 
-        .grid-table.cols-2 { --cols: 3fr 1fr; }
-        .grid-table.cols-3 { --cols: 2fr 3fr 1fr; }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-        .badge {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-        }
+  <style>
+    :root {
+      --bg: #0a1422;
+      --bg-2: #0d1b2d;
+      --surface: #122236;
+      --surface-2: #16283f;
+      --border: #21364f;
+      --text: #e8eff7;
+      --muted: #9bb0c6;
+      --faint: #6e8299;
+      --accent: #ff7a36;
+      --accent-2: #ffb061;
+      --gold: #f5b942;
+      --radius: 16px;
+      --maxw: 1160px;
+      --shadow: 0 18px 50px rgba(0, 0, 0, .45);
+    }
 
-        .thumb {
-            width: 40px;
-            height: 40px;
-            object-fit: cover;
-            border-radius: 6px;
-            box-shadow: var(--card-shadow);
-        }
+    * { box-sizing: border-box; }
 
-        .cta-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #1f2937;
-            background: #eef2ff;
-            border: 1px solid #c7d2fe;
-            padding: 8px 12px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: background 0.2s ease, transform 0.2s ease;
-        }
+    html { scroll-behavior: smooth; }
 
-        .cta-link:hover {
-            background: #e0e7ff;
-            transform: translateY(-1px);
-        }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        .store-badge {
-            height: 24px;
-            width: auto;
-        }
+    h1, h2, h3, .display { font-family: 'Space Grotesk', 'Inter', sans-serif; line-height: 1.15; }
 
-        @media (max-width: 768px) {
-            .grid-table .table-header { display: none; }
-            .grid-table .table-row {
-                grid-template-columns: 1fr;
-            }
-        }
+    a { color: var(--accent-2); text-decoration: none; }
+    a:hover { color: var(--accent); }
 
-        body {
-            font-family: 'Roboto', sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--background-color);
-            margin: 0;
-            padding: 0;
-        }
+    img { max-width: 100%; display: block; }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 22px; }
 
-header {
-    background-color: var(--primary-color);
-    color: #fff;
-    padding: 0.75rem 0;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
+    section { padding: 84px 0; position: relative; }
+    section:nth-of-type(even) { background: var(--bg-2); }
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .eyebrow {
+      color: var(--accent); font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; font-size: .78rem; margin: 0 0 10px;
+    }
+    .section-head { max-width: 720px; margin-bottom: 44px; }
+    .section-head h2 { font-size: clamp(1.7rem, 3.4vw, 2.5rem); margin: 0 0 12px; }
+    .section-head p { color: var(--muted); font-size: 1.04rem; margin: 0; }
+    .scroll-anchor { scroll-margin-top: 90px; }
 
-        nav ul {
-            list-style-type: none;
-            padding: 0;
-            display: flex;
-            justify-content: space-around;
-            margin: 0;
-        }
+    /* ---------- Buttons ---------- */
+    .btn {
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 12px 20px; border-radius: 11px; font-weight: 600; font-size: .95rem;
+      border: 1px solid transparent; cursor: pointer; transition: all .2s ease; white-space: nowrap;
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--accent-2), var(--accent)); color: #1a0f06; box-shadow: 0 8px 22px rgba(255, 122, 54, .35); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(255, 122, 54, .5); color: #1a0f06; }
+    .btn-ghost { background: rgba(255, 255, 255, .04); border-color: var(--border); color: var(--text); }
+    .btn-ghost:hover { transform: translateY(-2px); background: rgba(255, 255, 255, .09); color: var(--text); }
 
-        nav ul li {
-            margin: 0 10px;
-        }
+    /* ---------- Nav ---------- */
+    header.nav {
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(10, 20, 34, .82);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 66px; }
+    .brand { display: flex; align-items: center; gap: 11px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--text); letter-spacing: .5px; }
+    .brand img { width: 34px; height: 34px; object-fit: contain; }
+    .brand span b { color: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: 6px; }
+    .nav-links a.navlink { color: var(--muted); padding: 8px 12px; border-radius: 8px; font-size: .92rem; font-weight: 500; }
+    .nav-links a.navlink:hover, .nav-links a.navlink.active { color: var(--text); background: rgba(255, 255, 255, .06); }
+    .nav-cta { display: flex; align-items: center; gap: 8px; margin-left: 8px; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: 0; cursor: pointer; padding: 8px; }
+    .hamburger span { width: 24px; height: 2px; background: var(--text); transition: .3s; }
 
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
+    /* ---------- Hero ---------- */
+    .hero {
+      padding: 70px 0 72px;
+      background:
+        radial-gradient(900px 500px at 78% -8%, rgba(255, 122, 54, .14), transparent 60%),
+        radial-gradient(700px 500px at 5% 10%, rgba(60, 130, 246, .10), transparent 55%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center; }
+    .hero h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); margin: 0 0 14px; letter-spacing: -.5px; }
+    .hero h1 .grad { background: linear-gradient(120deg, var(--accent-2), var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero-lead { font-size: 1.16rem; color: var(--muted); max-width: 560px; margin: 0 0 26px; }
+    .hero-lead strong { color: var(--text); font-weight: 600; }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 22px; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 18px; color: var(--faint); font-size: .9rem; }
+    .hero-meta span { display: inline-flex; align-items: center; gap: 7px; }
+    .hero-meta i { color: var(--accent); }
 
-        nav ul li a:hover {
-            color: var(--secondary-color);
-        }
+    .hero-photo { position: relative; }
+    .hero-photo .frame {
+      position: relative; border-radius: 22px; overflow: hidden;
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+      aspect-ratio: 4/5; background: var(--surface);
+    }
+    .hero-photo .frame img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-photo .frame::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(8, 16, 28, .55)); }
+    .float-badge {
+      position: absolute; z-index: 2; display: flex; align-items: center; gap: 10px;
+      background: rgba(18, 34, 54, .92); border: 1px solid var(--border);
+      padding: 10px 14px; border-radius: 12px; box-shadow: var(--shadow); backdrop-filter: blur(6px);
+      font-size: .82rem; font-weight: 600;
+    }
+    .float-badge i { color: var(--gold); font-size: 1.1rem; }
+    .float-badge.b1 { top: 18px; left: -18px; }
+    .float-badge.b2 { bottom: 22px; right: -16px; }
+    .hero-raven { position: absolute; right: -8px; top: -26px; width: 120px; opacity: .14; transform: rotate(8deg); pointer-events: none; }
 
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-        }
+    /* ---------- Stats bar ---------- */
+    .stats { background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 30px 0; }
+    .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; text-align: center; }
+    .stat .n { font-family: 'Space Grotesk', sans-serif; font-size: 1.7rem; font-weight: 700; color: var(--text); }
+    .stat .n b { color: var(--accent); }
+    .stat .l { color: var(--muted); font-size: .82rem; }
 
-        .hamburger div {
-            width: 25px;
-            height: 3px;
-            background-color: white;
-            margin: 4px 0;
-            transition: 0.4s;
-        }
+    /* ---------- Cards / grids ---------- */
+    .grid { display: grid; gap: 20px; }
+    .cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .cols-4 { grid-template-columns: repeat(4, 1fr); }
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 22px; transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+      color: var(--text);
+    }
+    .card:hover { transform: translateY(-4px); border-color: rgba(255, 122, 54, .4); box-shadow: var(--shadow); }
+    .card h3 { margin: 0 0 6px; font-size: 1.12rem; }
+    .card p { color: var(--muted); font-size: .92rem; margin: 0 0 14px; }
+    a.card p { margin-bottom: 0; }
+    .card .tag { display: inline-block; font-size: .72rem; font-weight: 600; color: var(--accent); background: rgba(255, 122, 54, .1); border: 1px solid rgba(255, 122, 54, .25); padding: 3px 9px; border-radius: 20px; margin-bottom: 12px; }
+    .card-link { font-weight: 600; font-size: .9rem; display: inline-flex; align-items: center; gap: 6px; }
 
-        .hero {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://picsum.photos/1200/800');
-            background-size: cover;
-            background-position: center;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: #fff;
-            flex-direction: column;
-        }
+    /* ---------- About ---------- */
+    .about-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 44px; align-items: start; }
+    .about-photo img { border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); width: 100%; }
+    .about-photo .cap { color: var(--faint); font-size: .8rem; text-align: center; margin-top: 10px; }
+    .about-body p { color: var(--muted); margin: 0 0 16px; }
+    .about-body strong { color: var(--text); }
+    .build-list { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 10px; }
+    .build-list li { display: flex; gap: 11px; align-items: flex-start; }
+    .build-list i { color: var(--accent); margin-top: 4px; }
 
-        .hero-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+    /* ---------- Skills ---------- */
+    .skill-group { margin-bottom: 22px; }
+    .skill-group h4 { margin: 0 0 12px; font-size: .82rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); font-family: 'Space Grotesk', sans-serif; }
+    .chips { display: flex; flex-wrap: wrap; gap: 9px; }
+    .chip { background: var(--surface); border: 1px solid var(--border); padding: 7px 14px; border-radius: 9px; font-size: .87rem; font-weight: 500; color: var(--text); transition: .2s; }
+    .chip:hover { border-color: rgba(255, 122, 54, .5); transform: translateY(-2px); }
+    .chip.lead { background: rgba(255, 122, 54, .12); border-color: rgba(255, 122, 54, .35); color: var(--accent-2); }
 
-        }
+    /* ---------- Timeline ---------- */
+    .timeline { position: relative; padding-left: 30px; }
+    .timeline::before { content: ""; position: absolute; left: 7px; top: 6px; bottom: 6px; width: 2px; background: linear-gradient(var(--accent), transparent); }
+    .tl-item { position: relative; padding-bottom: 30px; }
+    .tl-item::before { content: ""; position: absolute; left: -30px; top: 5px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 3px solid var(--accent); }
+    .tl-item.now::before { box-shadow: 0 0 0 4px rgba(255, 122, 54, .2); animation: pulse 2.2s infinite; }
+    @keyframes pulse { 0%,100% { box-shadow: 0 0 0 4px rgba(255,122,54,.2); } 50% { box-shadow: 0 0 0 8px rgba(255,122,54,.05); } }
+    .tl-item h3 { margin: 0 0 2px; font-size: 1.15rem; }
+    .tl-role { color: var(--accent-2); font-weight: 600; }
+    .tl-meta { color: var(--faint); font-size: .85rem; margin: 2px 0 10px; }
+    .tl-badge { font-size: .68rem; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; background: var(--accent); color: #1a0f06; padding: 2px 8px; border-radius: 20px; margin-left: 8px; vertical-align: middle; }
+    .tl-item ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: .93rem; }
+    .tl-item ul li { margin-bottom: 5px; }
+    details.earlier { margin-top: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 18px; }
+    details.earlier summary { cursor: pointer; font-weight: 600; color: var(--text); }
+    details.earlier ul { margin: 12px 0 0; color: var(--muted); font-size: .9rem; }
 
-        .hero-content canvas {
-            margin-bottom: 20px;
-        }
+    /* ---------- Certs ---------- */
+    .cert-feature { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 26px; }
+    .cert-big { display: flex; gap: 16px; align-items: center; background: linear-gradient(135deg, var(--surface-2), var(--surface)); border: 1px solid rgba(255, 122, 54, .3); border-radius: var(--radius); padding: 20px; }
+    .cert-big .ico { font-size: 2.2rem; color: var(--gold); }
+    .cert-big h3 { margin: 0; font-size: 1.05rem; }
+    .cert-big span { color: var(--muted); font-size: .85rem; }
 
-        .hero-content h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
+    /* ---------- Stage / gallery ---------- */
+    .gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 26px; }
+    .gallery a { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); aspect-ratio: 1; position: relative; }
+    .gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+    .gallery a:hover img { transform: scale(1.08); }
+    .gallery .cap { position: absolute; left: 0; right: 0; bottom: 0; font-size: .72rem; padding: 14px 8px 6px; background: linear-gradient(transparent, rgba(0,0,0,.8)); color: #fff; }
+    .embeds { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    .embeds iframe { border-radius: 12px; border: 0; width: 100%; }
 
-        .hero-content p {
-            font-size: 1.5rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+    /* ---------- AR ---------- */
+    .ar-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .ar-single { display: flex; justify-content: center; }
+    .ar-single .card { max-width: 430px; width: 100%; }
+    .ar-step { text-align: center; display: flex; flex-direction: column; align-items: center; }
+    .ar-step img { background: #fff; border-radius: 12px; padding: 12px; width: 230px; max-width: 78%; aspect-ratio: 1; object-fit: contain; margin-bottom: 16px; border: 1px solid var(--border); }
+    .ar-step h3 { margin: 0 0 6px; }
+    .ar-step p { margin: 0 0 16px; color: var(--muted); font-size: .92rem; }
+    .ar-note { text-align: center; color: var(--faint); font-size: .85rem; margin-top: 20px; }
+    @media (max-width: 540px) { .ar-grid { grid-template-columns: 1fr; } }
 
-.section {
-    padding: 1rem 0;
-}
+    /* ---------- Contact ---------- */
+    .contact { text-align: center; background:
+        radial-gradient(700px 400px at 50% 0%, rgba(255, 122, 54, .12), transparent 60%), var(--bg-2); }
+    .contact h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin: 0 0 14px; }
+    .contact p { color: var(--muted); max-width: 560px; margin: 0 auto 26px; }
+    .contact-btns { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
 
-.section-title {
-    text-align: center;
-    font-size: 2rem;
-    margin-bottom: 1rem;
-}
+    footer.site { background: var(--bg); border-top: 1px solid var(--border); padding: 30px 0; }
+    .foot-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; color: var(--faint); font-size: .85rem; }
+    .foot-inner .brand img { width: 28px; height: 28px; }
 
-        .profile-pic {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 0 auto 2rem;
-            display: block;
-            border: 5px solid var(--secondary-color);
-        }
+    /* reveal */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.in { opacity: 1; transform: none; }
 
-        .experience-item {
-            background-color: #fff;
-            border-radius: 5px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .experience-item h3 {
-            margin-top: 0;
-        }
-
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .tool-item {
-            background-color: #fff;
-            border-radius: 5px;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .tool-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .tool-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        footer {
-            background-color: var(--primary-color);
-            color: #fff;
-            text-align: center;
-            padding: 1rem 0;
-        }
-
-        /* Ensure content is never hidden behind the sticky header */
-        main { padding-top: 0.75rem; }
-
-        /* Responsive Layout */
-        @media (max-width: 768px) {
-            .hamburger {
-                display: flex;
-            }
-
-            nav ul {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                background-color: var(--primary-color);
-                position: absolute;
-                top: 100%;
-                left: 0;
-                z-index: 1000;
-            }
-
-            nav ul.active {
-                display: flex;
-            }
-
-            nav ul li {
-                margin: 0;
-                text-align: center;
-                padding: 10px 0;
-            }
-
-            .hero-content h1 {
-                font-size: 2rem;
-            }
-
-            .hero-content p {
-                font-size: 1.2rem;
-            }
-
-            .profile-pic {
-                width: 150px;
-                height: 150px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-content h1 {
-                font-size: 1.5rem;
-            }
-
-            .hero-content p {
-                font-size: 1rem;
-            }
-
-            .arcade-screen {
-                width: 100%;
-                padding: 10px;
-                font-size: 1rem;
-            }
-
-            .container {
-                padding: 0 10px;
-            }
-        }
-
-        .canvas-container {
-            margin-right: 20px;
-            /* Space between canvas and text */
-        }
-
-        #sphereCanvas {
-            width: 100px;
-            /* Set the canvas width */
-            height: 100px;
-            /* Set the canvas height */
-            background-image: url('https://pngimg.com/d/terminator_PNG25.png');
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-    </style>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/main.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script>
-      (function () {
-        function isMobile() {
-          const ua = navigator.userAgent || navigator.vendor || window.opera;
-          const mobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
-          const coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-          const small = Math.min(screen.width, screen.height) <= 820;
-          return mobileUA || coarse || small;
-        }
-        // Redirect desktop visitors to the interactive portfolio, unless bypassed
-        var onPortfolio = /\/portfolio\//i.test(location.pathname);
-        var noRedirect = (new URLSearchParams(window.location.search).get('redirect') === 'false')
-          || (window.location.hash && window.location.hash.toLowerCase().includes('noredirect'));
-        var fromPortfolio = /\/portfolio\/index\.html$/i.test(document.referrer);
-        if (!isMobile() && !onPortfolio && !noRedirect && !fromPortfolio) {
-          window.location.href = 'portfolio/index.html';
-        }
-      })();
-    </script>
+    /* ---------- Responsive ---------- */
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-photo { max-width: 380px; margin: 0 auto; }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-photo { max-width: 340px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 22px; }
+      .cols-3, .cols-4 { grid-template-columns: repeat(2, 1fr); }
+      .cert-feature { grid-template-columns: 1fr; }
+      .embeds { grid-template-columns: 1fr; }
+      .gallery { grid-template-columns: repeat(3, 1fr); }
+      .nav-links { display: none; position: absolute; top: 66px; left: 0; right: 0; flex-direction: column; align-items: stretch; background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 12px; gap: 4px; }
+      .nav-links.open { display: flex; }
+      .nav-links .nav-cta { margin: 8px 0 0; flex-direction: column; }
+      .nav-links .nav-cta .btn { width: 100%; justify-content: center; }
+      .hamburger { display: flex; }
+    }
+    @media (max-width: 540px) {
+      .cols-2, .cols-3, .cols-4 { grid-template-columns: 1fr; }
+      .gallery { grid-template-columns: repeat(2, 1fr); }
+      section { padding: 60px 0; }
+    }
+  </style>
 </head>
 
 <body>
-    <header>
-        <nav class="container">
-            <div class="hamburger" id="hamburger">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-            <ul class="nav nav-pills nav-fill gap-2 p-1 small bg-primary rounded-5 shadow-sm" id="pillNav" role="tablist"
-                style="--bs-nav-link-color: var(--bs-white); --bs-nav-pills-link-active-color: var(--bs-primary); --bs-nav-pills-link-active-bg: var(--bs-white);">
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link rounded-5" href="index.html">Default</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link rounded-5" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="false">Home</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active rounded-5" id="about-tab" data-bs-toggle="tab" data-bs-target="#about" type="button" role="tab" aria-controls="about" aria-selected="true">About</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link rounded-5" id="experience-tab" data-bs-toggle="tab" data-bs-target="#experience" type="button" role="tab" aria-controls="experience" aria-selected="false">Experience</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link rounded-5" id="qualifications-tab" data-bs-toggle="tab" data-bs-target="#qualifications" type="button" role="tab" aria-controls="qualifications" aria-selected="false">Qualifications</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link rounded-5" id="tools-tab" data-bs-toggle="tab" data-bs-target="#tools" type="button" role="tab" aria-controls="tools" aria-selected="false">Technologies</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link rounded-5" id="github-repos-tab" data-bs-toggle="tab" data-bs-target="#github-repos" type="button" role="tab" aria-controls="github-repos" aria-selected="false">GitHub Repositories</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link rounded-5" id="toolsets-tab" data-bs-toggle="tab" data-bs-target="#toolsets" type="button" role="tab" aria-controls="toolsets" aria-selected="false">Applications</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link rounded-5" id="blog-tab" data-bs-toggle="tab" data-bs-target="#blog" type="button" role="tab" aria-controls="blog" aria-selected="false">Blog</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link rounded-5" id="games-tab" data-bs-toggle="tab" data-bs-target="#games" type="button" role="tab" aria-controls="games" aria-selected="false">Arcade Video Games</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link rounded-5" id="music-tab" data-bs-toggle="tab" data-bs-target="#music" type="button" role="tab" aria-controls="music" aria-selected="false">Music &amp; Comedy</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link rounded-5" id="video-tab" data-bs-toggle="tab" data-bs-target="#video" type="button" role="tab" aria-controls="video" aria-selected="false">Video</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link rounded-5" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link rounded-5" id="Training-tab" data-bs-toggle="tab" data-bs-target="#Training" type="button" role="tab" aria-controls="Training" aria-selected="false">Training</button>
-                </li>
+
+  <!-- ================= NAV ================= -->
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top">
+        <img src="assets/images/kraai-logo-white.png" alt="Kraai Du Toit raven logo">
+        <span>KRAAI <b>DU TOIT</b></span>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a class="navlink" href="#about">About</a>
+        <a class="navlink" href="#skills">Skills</a>
+        <a class="navlink" href="#experience">Experience</a>
+        <a class="navlink" href="#projects">Projects</a>
+        <a class="navlink" href="#ar">AR</a>
+        <a class="navlink" href="#certs">Certifications</a>
+        <a class="navlink" href="#stage">Stage</a>
+        <div class="nav-cta">
+          <a class="btn btn-ghost" href="portfolio/index.html"><i class="fas fa-cube"></i> 3D Portfolio</a>
+          <a class="btn btn-primary" href="assets/Kraai-Du-Toit-AI-Engineer-CV.pdf" target="_blank" rel="noopener"><i class="fas fa-download"></i> CV</a>
+        </div>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ================= HERO ================= -->
+    <section class="hero" style="padding-top:56px">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="eyebrow">AI Engineer &amp; Solutions Architect</p>
+          <h1>Hi, I'm <span class="grad">Kraai Du Toit</span> — I build applied AI that ships.</h1>
+          <p class="hero-lead">I turn business problems into <strong>production-ready AI</strong>: generative AI, computer vision, RAG and digital twins — backed by 20+ years of software engineering and solution architecture across Azure and AWS.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="portfolio/index.html"><i class="fas fa-cube"></i> Explore the 3D Portfolio</a>
+            <a class="btn btn-ghost" href="assets/Kraai-Du-Toit-AI-Engineer-CV.pdf" target="_blank" rel="noopener"><i class="fas fa-download"></i> Download CV</a>
+            <a class="btn btn-ghost" href="https://www.linkedin.com/in/johannes-f-kraai-du-toit-44962b37/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> LinkedIn</a>
+          </div>
+          <div class="hero-meta">
+            <span><i class="fas fa-location-dot"></i> Netherlands</span>
+            <span><i class="fas fa-certificate"></i> Azure AI Engineer (AI-102)</span>
+            <span><i class="fas fa-circle-check"></i> Open to AI roles</span>
+          </div>
+        </div>
+        <div class="hero-photo">
+          <img class="hero-raven" src="assets/images/kraai-logo-white.png" alt="">
+          <div class="frame"><img src="assets/images/photos/portrait-hero.jpg" alt="Kraai Du Toit, AI Engineer and Solutions Architect"></div>
+          <div class="float-badge b1"><i class="fas fa-award"></i> 16× Microsoft Certified</div>
+          <div class="float-badge b2"><i class="fas fa-brain"></i> GenAI · CV · RAG</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= STATS ================= -->
+    <div class="stats">
+      <div class="wrap stats-grid">
+        <div class="stat"><div class="n"><b>20</b>+</div><div class="l">Years in software</div></div>
+        <div class="stat"><div class="n"><b>16</b>×</div><div class="l">Microsoft Certified</div></div>
+        <div class="stat"><div class="n">AI-<b>102</b></div><div class="l">Azure AI Engineer</div></div>
+        <div class="stat"><div class="n">Azure<b>+</b>AWS</div><div class="l">Cloud architect</div></div>
+        <div class="stat"><div class="n"><b>256</b></div><div class="l">MS Learn modules</div></div>
+      </div>
+    </div>
+
+    <!-- ================= ABOUT ================= -->
+    <section id="about" class="scroll-anchor">
+      <div class="wrap">
+        <div class="about-grid reveal">
+          <div class="about-photo">
+            <img src="assets/images/photos/portrait-about.jpg" alt="Kraai Du Toit portrait">
+            <div class="cap">Johannes "Kraai" Du Toit · The Hague, Netherlands</div>
+          </div>
+          <div class="about-body">
+            <p class="eyebrow">About me</p>
+            <h2 style="margin:0 0 16px;font-size:clamp(1.6rem,3vw,2.2rem)">Engineer by craft, architect by experience, storyteller at heart.</h2>
+            <p>I'm an <strong>AI Engineer and Solutions Architect</strong> based in the Netherlands, originally from South Africa. I focus on building applied AI — <strong>generative AI, computer vision, NLP, retrieval-augmented generation (RAG)</strong> and digital-twin experiences — and making sure they're production-ready, secure and scalable, not just notebook prototypes.</p>
+            <p>At <strong>Cyclomedia</strong> I work on the AI side of full-stack delivery, combining 20+ years of engineering and architecture with the Azure AI Engineer skillset. My cloud background (Azure Solutions Architect Expert, AWS, Terraform, TOGAF) is the foundation that keeps what I build deployable and reliable.</p>
+            <p>Beyond tech, I've performed stand-up comedy alongside <strong>Trevor Noah</strong> and released music as "Kraai" — experiences that taught me storytelling, presence and the value of connecting with an audience. I bring that same creativity to engineering.</p>
+            <p style="color:var(--faint);font-size:.9rem"><i class="fas fa-language"></i> English · Afrikaans · Dutch (A1)</p>
+            <ul class="build-list">
+              <li><i class="fas fa-arrow-up-right-from-square"></i> <span><strong>AI Tools Portal</strong> — a curated gateway to the best AI tools &amp; tutorials · <a href="https://aitoolsportal.ai/" target="_blank" rel="noopener">aitoolsportal.ai</a></span></li>
+              <li><i class="fas fa-arrow-up-right-from-square"></i> <span><strong>Mental Priming</strong> — focus &amp; habit experiments · <a href="https://mentalpriming.com/" target="_blank" rel="noopener">mentalpriming.com</a></span></li>
+              <li><i class="fas fa-cube"></i> <span><strong>3D Portfolio</strong> — an interactive office you can walk through · <a href="portfolio/index.html">open the 3D world</a></span></li>
             </ul>
-        </nav>
-    </header>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <main>
-
-        <div class="tab-content" id="tabContent">
-
-        <section id="home" class="section tab-pane fade" role="tabpanel" aria-labelledby="home-tab">
-            <div class="container">
-                <h2 class="section-title">Welcome</h2>
-                <div id="homeCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="AI Tools"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="1" aria-label="Mental Priming"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="2" aria-label="Music"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="3" aria-label="IMDb"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="4" aria-label="Different Tongues"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="5" aria-label="Verlore in die geraas"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="6" aria-label="Snaakse Gevoelens"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="7" aria-label="Die Kraai Nes"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="8" aria-label="My Doellose Lewe"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="9" aria-label="In die Mistige Woud"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="10" aria-label="Spotify Comedy"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="11" aria-label="YouTube 1"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="12" aria-label="YouTube 2"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="13" aria-label="YouTube 3"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="14" aria-label="YouTube 4"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="15" aria-label="YouTube 5"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="16" aria-label="YouTube 6"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="17" aria-label="YouTube 7"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="18" aria-label="YouTube 8"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="19" aria-label="YouTube 9"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="20" aria-label="YouTube 10"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="21" aria-label="YouTube 11"></button>
-                        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="22" aria-label="YouTube 12"></button>
-                    </div>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <a href="https://aitoolsportal.ai/" target="_blank">
-                                <img src="https://www.shutterstock.com/image-vector/artificial-intelligence-ai-logo-futuristic-600nw-2594719979.jpg" class="d-block w-100" alt="AI Tools Portal" onerror="this.onerror=null;this.src='https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png';">
-                                <div class="carousel-caption">
-                                    <h5>AI Tools Portal</h5>
-                                    <p>Welcome to AI Tools Portal — your curated gateway to the best AI tools, GitHub projects, and tutorials.</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="carousel-item">
-                            <a href="https://mentalpriming.com/" target="_blank">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf2NVCsCn9bLFic3HDigBtqJt5Wo7XNV0kiw&s" class="d-block w-100" alt="Mental Priming" onerror="this.onerror=null;this.src='https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png';">
-                                <div class="carousel-caption">
-                                    <h5>Mental Priming</h5>
-                                    <p>Focus, habit, and priming exercises to improve daily performance.</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="carousel-item">
-                            <a href="#music" id="goMusicTab" data-bs-toggle="tab">
-                                <img src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--0A0B2D95-2CA1-46C4-8B80A0A079C631FD--0--5325783--cover.png?fm=jpg&q=75&w=800&s=1493498e5baab78d4ce29adbeabe8165" class="d-block w-100" alt="Music" onerror="this.onerror=null;this.src='https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png';">
-                                <div class="carousel-caption">
-                                    <h5>Music</h5>
-                                    <p>Explore my music — click to open the Music tab.</p>
-                                </div>
-                            </a>
-                        </div>
-                        <!-- IMDb slide -->
-                        <div class="carousel-item">
-                            <a href="https://www.imdb.com/name/nm11530589/?ref_=ttfc_fc_wr4" target="_blank">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTB-Af_WGFXnwNgQ810Lbw57aAmrftIndZBOw&s" class="d-block w-100" alt="IMDb - Kraai Du Toit" onerror="this.onerror=null;this.src='https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png';">
-                                <div class="carousel-caption">
-                                    <h5>IMDb</h5>
-                                    <p>View IMDb profile and credits.</p>
-                                </div>
-                            </a>
-                        </div>
-                        <!-- Album slides from Music section -->
-                        <div class="carousel-item">
-                            <a href="https://distrokid.com/hyperfollow/kraai/different-tongues" target="_blank">
-                                <img src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--0A0B2D95-2CA1-46C4-8B80A0A079C631FD--0--5325783--cover.png?fm=jpg&q=75&w=800&s=1493498e5baab78d4ce29adbeabe8165" class="d-block w-100" alt="Different Tongues" onerror="this.onerror=null;this.src='https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png';">
-                                <div class="carousel-caption">
-                                    <h5>Different Tongues</h5>
-                                    <p>Listen on your favorite platform.</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="carousel-item">
-                            <a href="https://distrokid.com/hyperfollow/kraai/verlore-in-die-geraas" target="_blank">
-                                <img src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--B2876537-EBC6-4B3D-9E85F70C97042EA1--0--730425--CDCover.jpeg?fm=jpg&q=75&w=800&s=495d4b5db6ff5798946bf6a9b60a6fad" class="d-block w-100" alt="Verlore in die geraas" onerror="this.onerror=null;this.src='https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png';">
-                                <div class="carousel-caption">
-                                    <h5>Verlore in die geraas</h5>
-                                    <p>Listen on your favorite platform.</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="carousel-item">
-                            <a href="https://distrokid.com/hyperfollow/kraai/snaakse-gevoelens" target="_blank">
-                                <img src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--6FC9EA82-749D-4EDA-A7021A4BCF43883A--0--11919856--cdcover2b.png?fm=jpg&q=75&w=800&s=aca6825560955f0454448b3530836f71" class="d-block w-100" alt="Snaakse Gevoelens" onerror="this.onerror=null;this.src='https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png';">
-                                <div class="carousel-caption">
-                                    <h5>Snaakse Gevoelens</h5>
-                                    <p>Listen on your favorite platform.</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="carousel-item">
-                            <a href="https://distrokid.com/hyperfollow/diekraaines/die-kraaines" target="_blank">
-                                <img src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--63B1B28F-D738-4D3D-9D42A3025F075E0F--0--12461798--DieKraaiNescover.png?fm=jpg&q=75&w=800&s=b59212fc8c1e89f536996b51d5a7fd9f" class="d-block w-100" alt="Die Kraai Nes" onerror="this.onerror=null;this.src='https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png';">
-                                <div class="carousel-caption">
-                                    <h5>Die Kraai Nes</h5>
-                                    <p>Listen on your favorite platform.</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="carousel-item">
-                            <a href="https://distrokid.com/hyperfollow/diekraaines/my-doellose-lewe" target="_blank">
-                                <img src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--91022B46-4B91-4249-BE18BC6A019EA331--0--17876571--BlackandGoldVintageCDAlbumCoversmaller.png?fm=jpg&q=75&w=800&s=a733858595f0d8c81c30486e8ae32b9f" class="d-block w-100" alt="My Doellose Lewe" onerror="this.onerror=null;this.src='https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png';">
-                                <div class="carousel-caption">
-                                    <h5>My Doellose Lewe</h5>
-                                    <p>Listen on your favorite platform.</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="carousel-item">
-                            <a href="https://distrokid.com/hyperfollow/kraai/die-mistige-woud" target="_blank">
-                                <img src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--37E7FDB0-AD17-4DC4-82D41B4DDEAF939C--0--535596--CDcover.jpeg?fm=jpg&q=75&w=800&s=31ac32578f601089bd69d706e2a08cba" class="d-block w-100" alt="In die Mistige Woud" onerror="this.onerror=null;this.src='https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png';">
-                                <div class="carousel-caption">
-                                    <h5>In die Mistige Woud</h5>
-                                    <p>Listen on your favorite platform.</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="carousel-item">
-                            <a href="https://open.spotify.com/embed/artist/3DwWrzCxBOv47oIMpRwJCU?utm_source=generator" target="_blank">
-                                <img src="https://i.scdn.co/image/ab67616d0000b27391f671faabb17ceb7f09ee3c" class="d-block w-100" alt="Spotify Comedy" onerror="this.onerror=null;this.src='https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png';">
-                                <div class="carousel-caption">
-                                    <h5>Spotify Comedy</h5>
-                                    <p>Open on Spotify.</p>
-                                </div>
-                            </a>
-                        </div>
-                        <!-- YouTube video slides -->
-                        <div class="carousel-item">
-                            <div class="ratio ratio-16x9">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/9c9gw_RQ4bk?si=NAusP4bdPYq2JaBe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="ratio ratio-16x9">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/Sq5dNwrCxSE?si=AWcQBs5wMzy-A7TQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="ratio ratio-16x9">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/5yaoEm8zUG8?si=QD1x4TTXsJcwBGjm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="ratio ratio-16x9">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/mcZ58i0RGoc?si=plZi2agQaSxS_TUX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="ratio ratio-16x9">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/h0F-BYel9WY?si=UWOODAZigDoYYUbX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="ratio ratio-16x9">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/l1xnEriQyrw?si=3a5akC67uhkNGI1r" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="ratio ratio-16x9">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/HbIA-l_LuLY?si=zYtTfC4j2OHFlTOH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="ratio ratio-16x9">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/uY6H-U4mULM?si=VwU16aCLEemCmEw8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="ratio ratio-16x9">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/FPVb-WNU2NE?si=fnHI-tA4ULnPWtu-" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="ratio ratio-16x9">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/l4C2pjSxRvs?si=tPG51E1wRPEwDL_T" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="ratio ratio-16x9">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/RYx4HcLhaMM?si=3IwNsNuHmUdgLy5m" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="ratio ratio-16x9">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/ylfXLdGR9JY?si=lLGif6Sp3dIr-Y3Z" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
+    <!-- ================= SKILLS ================= -->
+    <section id="skills" class="scroll-anchor">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">What I work with</p>
+          <h2>Skills &amp; technologies</h2>
+          <p>AI leads, engineering delivers, architecture and cloud keep it production-ready.</p>
+        </div>
+        <div class="reveal">
+          <div class="skill-group">
+            <h4>AI &amp; Machine Learning</h4>
+            <div class="chips">
+              <span class="chip lead">Azure AI Services</span><span class="chip lead">Azure OpenAI</span><span class="chip lead">Generative AI</span>
+              <span class="chip lead">LLMs</span><span class="chip lead">RAG</span><span class="chip lead">Prompt Engineering</span>
+              <span class="chip lead">Computer Vision</span><span class="chip lead">YOLO</span><span class="chip lead">NLP</span>
+              <span class="chip lead">Custom Vision</span><span class="chip lead">Vector Databases</span>
             </div>
-        </section>
-
-        <section id="about" class="section tab-pane fade show active" role="tabpanel" aria-labelledby="about-tab">
-            <div class="container">
-                <h2 class="section-title">About Me</h2>
-                <img src="https://media.licdn.com/dms/image/C5603AQH0-eZuljeq5w/profile-displayphoto-shrink_200_200/0/1516767430245?e=2147483647&v=beta&t=TlWT5RBTLpbwsK7ykHaGfoHmTxzyF-ZczTADpx2I6KM"
-                    alt="Professional headshot" class="profile-pic" width="200" height="200">
-                <p>Hello! I'm Kraai Du Toit, born in May 1979 in South Africa, now living in the Netherlands since 2021.
-                    I'm a Solutions Architect with extensive experience in the Insurance and Financial industries. My
-                    expertise lies in Microservices Architecture and making solutions cloud-ready and
-                    vendor-independent. I have a strong technical background with hands-on programming experience in C#,
-                    HTML, Front-end web development , and SQL, and I am well-versed in cloud-based development and
-                    deployment practices.</p>
-
-                <p> In my spare time I also like playing around with different technology stacks. <b>NOTE If you are on laptop/pc:</b>Visit the 3D interactive Portfolio
-                    
-                    <a href="https://jfkproductions.github.io/portfolio/index.html"><img src="data:image/png;base64,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"><br> here </a> <br>
-                    if you want to experience <b>augmented reality (AR)</b>augmented reality (AR) scan this QR Code: <br>
-                    <img src="https://jfkproductions.com/wp-content/uploads/2024/12/ar.png" width="150">
-                </p>
-                <p>Beyond my technical expertise, I've had the unique experience of performing stand-up comedy alongside
-                    Trevor Noah, an adventure that taught me the power of storytelling and humor. You can learn more
-                    about this chapter of my life on my <a href="https://www.imdb.com/name/nm11530589/?ref_=ttfc_fc_wr4"
-                        target="_blank">IMDB page</a>.</p>
-                <p>In 2018, I won the Grab the Mic open mic competition and was selected to perform with Trevor Noah on
-                    the Nationwild tour. My work has been featured on television channels like Comedy Central, Kyknet,
-                    and Vuse Amp, as well as on radio stations such as Jacaranda FM. I also write and direct comedy for
-                    radio and starred in the Telkom Free Me Radio advert.</p>
-                <p>I’m passionate about staying at the forefront of AI, particularly in Retrieval-Augmented Generation
-                    (RAG) AI, and continuously seek out new learning opportunities. Fluent in English and Afrikaans, I’m
-                    currently expanding my language skills in Dutch at an A1 level. Whether in technology or on stage, I
-                    bring creativity, enthusiasm, and dedication to everything I do.</p>
+          </div>
+          <div class="skill-group">
+            <h4>Engineering</h4>
+            <div class="chips">
+              <span class="chip">Python</span><span class="chip">FastAPI</span><span class="chip">FastMCP</span><span class="chip">C#</span>
+              <span class="chip">.NET</span><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">Node.js</span>
+              <span class="chip">three.js</span><span class="chip">GraphQL</span><span class="chip">SQL</span>
             </div>
-        </section>
-
-
-        <section id="experience" class="section tab-pane fade" role="tabpanel" aria-labelledby="experience-tab">
-            <div class="container">
-                <h2 class="section-title">Work Experience</h2>
-                <div class="experience-item">
-                    <h3>Solutions Architect/ AI engineer</h3>
-                    <p>Lionsville B.V. · Full-time</p>
-                    <p>Apr 2023 - Present · </p>
-                    <p>The Hague, South Holland, Netherlands · Hybrid</p>
-                    <ul>
-                        <li>Design and developed Digital Twin application for offshore logistics Company , 
-                            developed in React for frontend and Python as an api layer  , using Azure digital twin. </li>
-                            Loading cad files using Three.js and interacting with IOT data, showing real time data ingestion.</li>
-                        <li>Delivered AI Proof of Concepts (POCs) for retail industry with RAG AI models, Neo4j, and
-                            React.</li>
-                        <li>Created AI Vision POCs for the farming industry, detecting cows using Python and YOLO.</li>
-                        <li>Created AI Promotional video as Proof of Concept for future products (see video below)</li>
-                        <li>Skills: Azure DevOps · Azure · Neo4j · React.js · Terraform · Gitlab · Amazon Web Services
-                            (AWS) · Bitbucket</li>
-                        <li>Architecture Designs C4. Containerized PHP and React applications on AWS using ECS Fargate,
-                            S3, API Management, and full VPC setup.</li>
-                        <li>Automated deployment pipelines using Terraform and GitLab.</li>
-                        <li>Transformed Bitbucket from on-premise to Bitbucket Cloud.</li>
-                        <li>Designed and implemented Azure API Management solutions using Terraform.</li>
-
-                    </ul>
-                </div>
-
-                <div class="experience-item">
-                    <h3>Software Architect</h3>
-                    <p>CGI</p>
-                    <p>Oct 2021 - Apr 2023 · 1 yr 7 mos</p>
-                    <p>Rotterdam, South Holland, Netherlands</p>
-                    <ul>
-                        <li>Skills: Azure devops, Powershell, Power Automate</li>
-                        <li>Developed Azure Functions in C# and Powershell to integrate Azure DevOps with PagerDuty and
-                            Dynatrace.</li>
-                        <li>Used Azure Power Apps to support IT4IT projects, integrating them with Power Automate
-                            (Flow).</li>
-                    </ul>
-                </div>
-
-                <div class="experience-item">
-                    <h3>Solutions Architect</h3>
-                    <p>Telesure Investment Holdings (TIH) · Full-time</p>
-                    <p>Jan 2020 - Apr 2023 · 3 yrs 4 mos</p>
-                    <p>South Africa</p>
-                    <ul>
-                        <li>Skills: .NET Core</li>
-                        <li>Working on Microservice architecture using Azure Functions (C#), RabbitMQ, and MSSQL
-                            containers locally on Rancher, and in the cloud on Azure Containers.</li>
-                        <li>Using Azure DevOps for continuous deployment and integration.</li>
-                        <li>Applied TOGAF (BDAT) from the ADM framework, collaborating with business analysts, SQL
-                            developers, and C# developers to create POCs and architecture designs.</li>
-                    </ul>
-                </div>
-
-                <div class="experience-item">
-                    <h3>Developer</h3>
-                    <p>Telesure Investment Holdings (TIH)</p>
-                    <p>Jul 2016 - Jan 2020 · 3 yrs 7 mos</p>
-                    <ul>
-                        <li>Skills: .NET Core</li>
-                        <li>Developed applications using C#, VB.NET, and Angular 6.</li>
-                        <li>Worked extensively with T-SQL, DB2, and SharePoint development for enterprise solutions.
-                        </li>
-                        <li>Built backend APIs and integrated them with the ESB (Enterprise Service Bus) layer for
-                            seamless communication between systems.</li>
-                        <li>Designed and developed front-end web applications for user-facing functionality.</li>
-                    </ul>
-                </div>
-
-                <div class="experience-item">
-                    <h3>Web Developer</h3>
-                    <p>HR-Focus Holdings (Pty) Ltd</p>
-                    <p>Jun 2008 - Jun 2016 · 8 yrs 1 mo</p>
-                    <p>Sandton</p>
-                    <ul>
-                        <li>Working in .net.</li>
-                        <li>Writing and maintaining web and windows applications.</li>
-                        <li>Successfully written and maintained Web Payroll at African Bank: <a
-                                href="https://www.africanbank.co.za">https://www.africanbank.co.za</a></li>
-                        <li>Developing web-based Payroll and HR Software for Clients.</li>
-                        <li>African Bank: <a href="https://www.africanbank.co.za">https://www.africanbank.co.za</a>
-                            Financial Institution</li>
-                        <li>Edcon: <a href="http://www.edcon.co.za">http://www.edcon.co.za</a> The leading clothing,
-                            footwear and textiles retailing group</li>
-                        <li>Alan Gray: <a href="http://www.allangray.co.za">http://www.allangray.co.za</a> Financial
-                            Institution</li>
-                    </ul>
-                </div>
-                <div class="experience-item">
-                    <h3>Database Developer</h3>
-                    <p>MBD Attorneys</p>
-                    <p>Oct 2007 - May 2008 · 8 mos</p>
-                    <p>Johannesburg Area, South Africa</p>
-                    <ul>
-                        <li>Database developer working on financial systems</li>
-                    </ul>
-                </div>
-                <div class="experience-item">
-                    <h3>Analyst Programmer</h3>
-                    <p>Cornastone Consulting – Department of Water affairs</p>
-                    <p>Sep 2006 - Sep 2007 · 1 yr 1 mo</p>
-                    <p>Pretoria Area, South Africa</p>
-                    <ul>
-                        <li>Work as an Analyst Programmer, working at the department of water affairs.</li>
-                        <li>Working on Engineering software, that involve the planning and distribution of water across
-                            the country based on statistical information.</li>
-                    </ul>
-                </div>
-                <div class="experience-item">
-                    <h3>Delphi Programmer / Interface Manager</h3>
-                    <p>HR-Focus Holdings (Pty) Ltd</p>
-                    <p>Jul 2003 - Aug 2006 · 3 yrs 2 mos</p>
-                    <p>Sandton and based at Client Edcon</p>
-                    <ul>
-                        <li>Worked and maintained the Delphi Applications at the main office including the install
-                            packages, HR-focus main software, Custom Capture, Casuals system and Various interfaces.
-                        </li>
-                        <li>Later was located to Edcon and promoted to Interface manager, where I was in charge of all
-                            interfaces at client Edcon: <a href="http://www.edcon.co.za">http://www.edcon.co.za</a>, the
-                            largest textile retail group in Southern Africa.</li>
-                        <li>I had a team of 2 developers under me, and was in charge of maintaining various interfaces
-                            from various 3rd party vendors mostly financial eg, Standard Bank, Nedbank, Discovery and
-                            many more.</li>
-                    </ul>
-                </div>
-                <div class="experience-item">
-                    <h3>Application Developer</h3>
-                    <p>ATM Solutions</p>
-                    <p>Aug 2003 - Jan 2005 · 1 yr 6 mos</p>
-                    <p>Sandton</p>
-                    <ul>
-                        <li>Writing Postilion office plugins</li>
-                        <li>Writing the backoffice system called backoffice manager to reconcile all the transactions
-                            from the financial institutions involved.</li>
-                        <li>Applications involving ATM related balancing and reconciling</li>
-                    </ul>
-                </div>
-                <div class="experience-item">
-                    <h3>Web Developer</h3>
-                    <p>Techikon Pretoria</p>
-                    <p>Nov 2001 - Jun 2002 · 8 mos</p>
-                    <p>Pretoria Area, South Africa</p>
-                </div>
+          </div>
+          <div class="skill-group">
+            <h4>Architecture</h4>
+            <div class="chips">
+              <span class="chip">Solution Architecture</span><span class="chip">Microservices</span><span class="chip">TOGAF 9.2</span>
+              <span class="chip">API Design</span><span class="chip">C4 Model</span><span class="chip">System Design</span>
             </div>
-        </section>
-
-        <section id="tools" class="section tab-pane fade" role="tabpanel" aria-labelledby="tools-tab">
-            <div class="container">
-                <h2 class="section-title">Technologies</h2>
-                <div class="tools-grid">
-                    <div class="tool-item">
-                        <i class="fab fa-html5 tool-icon"></i>
-                        <h3>HTML5</h3>
-                    </div>
-                    <div class="tool-item">
-                        <i class="fab fa-css3-alt tool-icon"></i>
-                        <h3>CSS3</h3>
-                    </div>
-                    <div class="tool-item">
-                        <i class="fab fa-js-square tool-icon"></i>
-                        <h3>JavaScript</h3>
-                    </div>
-                    <div class="tool-item">
-                        <i class="fab fa-react tool-icon"></i>
-                        <h3>React</h3>
-                    </div>
-                    <div class="tool-item">
-                        <i class="fab fa-node-js tool-icon"></i>
-                        <h3>Node.js</h3>
-                    </div>
-                    <div class="tool-item">
-                        <i class="fab fa-git-alt tool-icon"></i>
-                        <h3>Git</h3>
-                    </div>
-                    <div class="tool-item">
-                        <i class="fab fa-azure-alt tool-icon"></i>
-                        <h3>Azure</h3>
-                    </div>
-                    <div class="tool-item">
-                        <i class="fab fa-aws-alt tool-icon"></i>
-                        <h3>AWS</h3>
-                    </div>
-                    <div class="tool-item">
-                        <i class="fab fa-csharp-alt tool-icon"></i>
-                        <h3>C#</h3>
-                    </div>
-                    <div class="tool-item">
-                        <i class="fab fa-python-alt tool-icon"></i>
-                        <h3>Python</h3>
-                    </div>
-                    <div class="tool-item">
-                        <i class="fab fa-python-alt tool-icon"></i>
-                        <h3>Terraform</h3>
-                    </div>
-                    <div class="tool-item">
-                        <i class="fab fa-python-alt tool-icon"></i>
-                        <h3>SQL</h3>
-                    </div>
-                </div>
+          </div>
+          <div class="skill-group">
+            <h4>Cloud &amp; DevOps</h4>
+            <div class="chips">
+              <span class="chip">Microsoft Azure</span><span class="chip">AWS</span><span class="chip">Azure Functions</span>
+              <span class="chip">Azure IoT Hub</span><span class="chip">Event Grid</span><span class="chip">Terraform</span>
+              <span class="chip">Docker</span><span class="chip">Kubernetes (AKS)</span><span class="chip">CI/CD</span>
             </div>
-        </section>
-
-        <section id="qualifications" class="section tab-pane fade" role="tabpanel" aria-labelledby="qualifications-tab">
-            <div class="container">
-                <h2 class="section-title">Qualifications</h2>
-                <div class="experience-item">
-                    <h3>Diploma computer engineering</h3>
-                    <p>University of Technology | Graduated: 2004</p>
-                    <ul>
-                        <li>Specialized in Web Technologies and Software Engineering</li>
-
-                    </ul>
-                </div>
-
-                <div class="experience-item">
-                    <h3>Certifications</h3>
-                    <ul>
-                        <li>Azure AI Engineer (AI-102) </li>
-                        <li>Azure AI fundamentals (AI-900) </li>
-                        <li>Bentey systems Digital Twin developer </li>
-                        <li>AWS Certified solutions architecth Associate</li>
-                        <li>MCSD Web development</li>
-                        <li>Azure solutions architect </li>
-                        <li>Azure Developer </li>
-                        <li>Azure Devops engineer </li>
-                        <li>Azure databases </li>
-                        <li>Togaf </li>
-                        <li>Azure Administrator </li>
-                        <li>Terraform Associate </li>
-                        <li>Neo4j profetional </li>
-                    </ul>
-                </div>
+          </div>
+          <div class="skill-group">
+            <h4>Data</h4>
+            <div class="chips">
+              <span class="chip">Neo4j</span><span class="chip">Redis</span><span class="chip">SQL Server</span><span class="chip">Azure T-SQL</span>
             </div>
-        </section>
-        <section id="github-repos" class="section tab-pane fade" role="tabpanel" aria-labelledby="github-repos-tab">
-            <div class="container">
-                <h2 class="section-title">GitHub Repositories</h2>
-                <div class="grid-table cols-3">
-                    <div class="table-header">
-                        <div>Repository</div>
-                        <div>Summary</div>
-                        <div>Open</div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fab fa-github"></i> AWS Session Manager</div>
-                        <div>Access and manage EC2 via SSM; CLI and docs.</div>
-                        <div><a class="cta-link" href="https://github.com/jfkproductions/AWS-Session-manager" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fab fa-github"></i> C4 Diagram RAG</div>
-                        <div>Generate C4 architecture diagrams with RAG techniques.</div>
-                        <div><a class="cta-link" href="https://github.com/jfkproductions/c4DiagramRag" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fab fa-github"></i> Chat with Max</div>
-                        <div>Conversational AI demo and tooling.</div>
-                        <div><a class="cta-link" href="https://github.com/jfkproductions/ChatwithMax" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fab fa-github"></i> Yolo Cow Camera monitoring</div>
-                        <div>Camera monitoring with YOLO detection.</div>
-                        <div><a class="cta-link" href="https://github.com/jfkproductions/YoloCowCammonitoring" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fab fa-github"></i> Yolo Live Cow detection</div>
-                        <div>Real-time object detection for livestock.</div>
-                        <div><a class="cta-link" href="https://github.com/jfkproductions/YoloLiveCowDetection" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fab fa-github"></i> CV2 Facial Recognition</div>
-                        <div>OpenCV-based face recognition experiments.</div>
-                        <div><a class="cta-link" href="https://github.com/jfkproductions/CV2_FacialRecognition" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fab fa-github"></i> Web cam Face Detection</div>
-                        <div>Webcam integration and face detection samples.</div>
-                        <div><a class="cta-link" href="https://github.com/jfkproductions/WebcamFaceDetection" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fab fa-github"></i> Microservice Builder</div>
-                        <div>Templates and scaffolding for microservices.</div>
-                        <div><a class="cta-link" href="https://github.com/jfkproductions/MicorserviceBuilder" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                </div>
-            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        </section>
-        <section id="toolsets" class="section tab-pane fade" role="tabpanel" aria-labelledby="toolsets-tab">
-            <div class="container">
-                <h2 class="section-title">Applications</h2>
-                <div class="grid-table cols-3">
-                    <div class="table-header">
-                        <div>Application</div>
-                        <div>Summary</div>
-                        <div>Open</div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fas fa-toolbox"></i> IT Toolbelt</div>
-                        <div>Shortcuts for common sysadmin/devops tasks.</div>
-                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/toolbelt.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fas fa-cogs"></i> Simple C4</div>
-                        <div>Create C4 diagrams quickly for architecture docs.</div>
-                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/Simplec4.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fas fa-tasks"></i> Task Builder</div>
-                        <div>Generate task plans and structured workflows.</div>
-                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/Task Builder.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fas fa-users"></i> Stakeholder Diagram Generator</div>
-                        <div>Map stakeholders and their relationships.</div>
-                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/Stakeholder Diagram Generator.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fas fa-chart-bar"></i> Business Model Canvas</div>
-                        <div>Interactive business model canvas builder.</div>
-                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/Bussines model canvas 3.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fas fa-exclamation-triangle"></i> Disruption Risk Assessment</div>
-                        <div>Frame and assess disruption risks.</div>
-                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/Disruption Risk Assessment.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fas fa-lightbulb"></i> Innovation Project Scorecard</div>
-                        <div>Score innovation projects across criteria.</div>
-                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/Innovation Project Scorecard.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fas fa-hand-holding-usd"></i> Value Proposition Canvas</div>
-                        <div>Craft and refine value propositions.</div>
-                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/Value Proposition Canvas.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fas fa-money-bill-wave"></i> Budget Builder</div>
-                        <div>Estimate and plan project budgets.</div>
-                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/Budget Builder.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fas fa-sitemap"></i> Mindmap Creator</div>
-                        <div>Create mind maps quickly.</div>
-                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/Mindmap Tool.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fas fa-cogs"></i> Image Converter</div>
-                        <div>Convert images between formats.</div>
-                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/Mindmap Tool.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fas fa-database"></i> Database Schema Visualization</div>
-                        <div>Visualize and inspect database schemas.</div>
-                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/DB schema visualizer.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fas fa-qrcode"></i> QR Code Generator</div>
-                        <div>Generate QR codes for links and text.</div>
-                        <div><a class="cta-link" href="https://jfkproductions.github.io/Tools/QR Code Generator.html" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge">Mental Priming (Site)</div>
-                        <div>Focus, habit and priming exercises.</div>
-                        <div><a class="cta-link" href="https://mentalpriming.com/" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge">Mental Priming (Google Play)</div>
-                        <div>Android app available on Google Play.</div>
-                        <div><a class="cta-link" href="https://play.google.com/store/apps/details?id=com.kraai.mentalpriming&referrer=utm_source%3Dsite%26utm_medium%3Dbadge%26utm_campaign%3Dhomepage" target="_blank"><img class="store-badge" src="https://fireship.io/lessons/pwa-to-play-store/img/googleplay-badge.png" alt="Get it on Google Play"></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge">AI Tools Portal</div>
-                        <div>Curated directory of AI tools.</div>
-                        <div><a class="cta-link" href="https://aitoolsportal.ai/" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                </div>
+    <!-- ================= EXPERIENCE ================= -->
+    <section id="experience" class="scroll-anchor">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Career</p>
+          <h2>Experience</h2>
+          <p>Two decades from developer to architect — now focused on shipping AI.</p>
+        </div>
+        <div class="timeline reveal">
+          <div class="tl-item now">
+            <h3>Cyclomedia <span class="tl-badge">Now</span></h3>
+            <div class="tl-role">AI Engineer (Full-Stack)</div>
+            <div class="tl-meta">Aug 2025 – Present · Netherlands</div>
+            <ul>
+              <li>Lead AI-powered modernization of the operations portal using AI development tools (Claude, Claude Code), accelerating refactors that previously took weeks.</li>
+              <li>Build AI features end-to-end: C# (Azure Functions, GraphQL APIs, Azure T-SQL) and Python (FastAPI, FastMCP), React/TypeScript front-ends, Azure AI Services + Azure OpenAI for inference.</li>
+              <li>Upskill engineering staff on practical AI — coding assistants, prompt patterns and agentic workflows.</li>
+              <li>Translate business problems into AI-shaped solutions; author architecture diagrams and maintain CI/CD pipelines.</li>
+            </ul>
+          </div>
+          <div class="tl-item">
+            <h3>Lionsville B.V.</h3>
+            <div class="tl-role">AI Developer / Full-Stack Engineer</div>
+            <div class="tl-meta">Apr 2023 – Aug 2025 · The Hague, Netherlands</div>
+            <ul>
+              <li>Built digital-twin applications with FastAPI backends and React + three.js front-ends; live telemetry via Azure Digital Twin, IoT Hub and Event Grid, loading CAD models in the browser.</li>
+              <li>Delivered AI proof-of-concepts: RAG models with Neo4j + React for retail, and computer-vision cow detection with Python + YOLO for agriculture.</li>
+              <li>Containerised PHP + React workloads on AWS ECS Fargate (S3, API Management, full VPC); automated delivery with Terraform + GitLab CI/CD.</li>
+              <li>Authored architecture artifacts (C4 diagrams, SLAs) and produced an AI promotional video as a product PoC.</li>
+            </ul>
+          </div>
+          <div class="tl-item">
+            <h3>CGI</h3>
+            <div class="tl-role">Software Architect</div>
+            <div class="tl-meta">Oct 2021 – Apr 2023 · Rotterdam, Netherlands</div>
+            <ul>
+              <li>Built monitoring &amp; observability integrations in C# (Azure Functions) across Azure DevOps, PagerDuty and Dynatrace.</li>
+              <li>Delivered IT4IT tooling with Power Apps + Power Automate; provided architecture guidance for cross-team adoption.</li>
+            </ul>
+          </div>
+          <div class="tl-item">
+            <h3>Telesure Investment Holdings (TIH)</h3>
+            <div class="tl-role">Solutions Architect → Developer</div>
+            <div class="tl-meta">2016 – 2021 · South Africa</div>
+            <ul>
+              <li>Designed microservice architecture using Azure Functions (C#) on Docker — Rancher on-prem and Azure Containers in the cloud — with RabbitMQ and MSSQL.</li>
+              <li>Applied TOGAF (ADM/BDAT), partnering with analysts and developers to produce PoCs and architecture designs; drove CI/CD on Azure DevOps.</li>
+              <li>As Developer: C#, VB.NET and Angular front-ends, T-SQL/DB2 back-ends, ESB-integrated APIs.</li>
+            </ul>
+          </div>
+          <details class="earlier">
+            <summary>Earlier roles (2003 – 2016)</summary>
+            <ul>
+              <li><strong>Web Developer · HR-Focus Holdings</strong> (2008–2016) — web &amp; Windows payroll/HR software for clients incl. African Bank, Edcon, Allan Gray.</li>
+              <li><strong>Database Developer · MBD Attorneys</strong> (2007–2008) — financial systems.</li>
+              <li><strong>Analyst Programmer · Cornastone / Dept. of Water Affairs</strong> (2006–2007) — water-distribution planning software.</li>
+              <li><strong>Delphi Programmer / Interface Manager · HR-Focus (at Edcon)</strong> (2003–2006) — led a team managing 3rd-party financial interfaces.</li>
+              <li><strong>Application Developer · ATM Solutions</strong> (2003–2005) — Postilion plugins &amp; back-office reconciliation.</li>
+            </ul>
+          </details>
+        </div>
+      </div>
+    </section>
 
-                <h3 style="text-align:center; margin-top:24px;">Cross‑platform Standalone Tools</h3>
-                <div class="grid-table cols-3">
-                    <div class="table-header">
-                        <div>Tool</div>
-                        <div>Platform</div>
-                        <div>Download</div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge">Priority Matrix Planning</div>
-                        <div>Windows</div>
-                        <div><a class="cta-link" href="https://jfkproductions.com/Software/PriorityMatrix/priority-matrix Setup 1.0.0.exe" target="_blank">Download <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge">Mind Map Creator</div>
-                        <div>Windows</div>
-                        <div><a class="cta-link" href="https://jfkproductions.com/Software/MindMap/mindmap-creator Setup 1.0.0.exe" target="_blank">Download <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge">Mind Map Creator</div>
-                        <div>macOS</div>
-                        <div><a class="cta-link" href="https://jfkproductions.com/Software/MindMap/mindmap-creator-1.0.0.dmg" target="_blank">Download <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge">Mind Map Creator</div>
-                        <div>Ubuntu (amd64)</div>
-                        <div><a class="cta-link" href="https://jfkproductions.com/Software/MindMap/mindmap-creator_1.0.0_amd64.deb" target="_blank">Download <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="blog" class="section tab-pane fade" role="tabpanel" aria-labelledby="blog-tab">
-            <div class="container">
-                <h2 class="section-title">Blog</h2>
-                <div class="card-grid">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fas fa-blog"></i> Stop Hardcoding URLs in React Builds</h5>
-                            <p class="card-text">Avoid absolute asset URLs; use relative PUBLIC_URL, CI guard scripts, and runtime config for slot-safe builds.</p>
-                            <a class="btn btn-primary" href="https://jfkproductions.github.io/Blog/slot-safe-react-builds.html" target="_blank">Read</a>
-                        </div>
-                    </div>
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fas fa-database"></i> Definitive Guide to SQL Connection Strings</h5>
-                            <p class="card-text">Pooling, retries, timeouts, TLS; patterns across APIs, Functions, Blazor, and mobile for reliable performance.</p>
-                            <a class="btn btn-primary" href="https://jfkproductions.github.io/Blog/definitive-guide-sql-compiled.html" target="_blank">Read</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="games" class="section tab-pane fade" role="tabpanel" aria-labelledby="games-tab">
-            <div class="container">
-                <h2 class="section-title">Arcade Video Games</h2>
-                <div class="card-grid">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fas fa-gamepad"></i> Balloon Shooter</h5>
-                            <a class="btn btn-success" href="https://jfkproductions.github.io/Games/Balloon Shooter.html" target="_blank">Play</a>
-                        </div>
-                    </div>
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fas fa-gamepad"></i> Tetris</h5>
-                            <a class="btn btn-success" href="https://jfkproductions.github.io/Games/Tetrissim.html" target="_blank">Play</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="music" class="section tab-pane fade" role="tabpanel" aria-labelledby="music-tab">
-            <div class="container">
-                <h2 class="section-title">Music &amp; Comedy</h2>
-                <div class="grid-table cols-3">
-                            <div class="table-header">
-                                <div>Title</div>
-                                <div>Type</div>
-                                <div>Open</div>
-                            </div>
-                            <div class="table-row">
-                                <div class="badge"><img class="thumb" src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--0A0B2D95-2CA1-46C4-8B80A0A079C631FD--0--5325783--cover.png?fm=jpg&q=75&w=800&s=1493498e5baab78d4ce29adbeabe8165" alt="Different Tongues"> Different Tongues</div>
-                                <div>Album</div>
-                                <div><a class="cta-link" href="https://distrokid.com/hyperfollow/kraai/different-tongues" target="_blank">Listen <i class="fas fa-arrow-right"></i></a></div>
-                            </div>
-                            <div class="table-row">
-                                <div class="badge"><img class="thumb" src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--B2876537-EBC6-4B3D-9E85F70C97042EA1--0--730425--CDCover.jpeg?fm=jpg&q=75&w=800&s=495d4b5db6ff5798946bf6a9b60a6fad" alt="Verlore in die geraas"> Verlore in die geraas</div>
-                                <div>Album</div>
-                                <div><a class="cta-link" href="https://distrokid.com/hyperfollow/kraai/verlore-in-die-geraas" target="_blank">Listen <i class="fas fa-arrow-right"></i></a></div>
-                            </div>
-                            <div class="table-row">
-                                <div class="badge"><img class="thumb" src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--6FC9EA82-749D-4EDA-A7021A4BCF43883A--0--11919856--cdcover2b.png?fm=jpg&q=75&w=800&s=aca6825560955f0454448b3530836f71" alt="Snaakse Gevoelens"> Snaakse Gevoelens</div>
-                                <div>Single</div>
-                                <div><a class="cta-link" href="https://distrokid.com/hyperfollow/kraai/snaakse-gevoelens" target="_blank">Listen <i class="fas fa-arrow-right"></i></a></div>
-                            </div>
-                            <div class="table-row">
-                                <div class="badge"><img class="thumb" src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--63B1B28F-D738-4D3D-9D42A3025F075E0F--0--12461798--DieKraaiNescover.png?fm=jpg&q=75&w=800&s=b59212fc8c1e89f536996b51d5a7fd9f" alt="Die Kraai Nes"> Die Kraai Nes</div>
-                                <div>Album</div>
-                                <div><a class="cta-link" href="https://distrokid.com/hyperfollow/diekraaines/die-kraaines" target="_blank">Listen <i class="fas fa-arrow-right"></i></a></div>
-                            </div>
-                            <div class="table-row">
-                                <div class="badge"><img class="thumb" src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--91022B46-4B91-4249-BE18BC6A019EA331--0--17876571--BlackandGoldVintageCDAlbumCoversmaller.png?fm=jpg&q=75&w=800&s=a733858595f0d8c81c30486e8ae32b9f" alt="My Doellose Lewe"> My Doellose Lewe</div>
-                                <div>Album</div>
-                                <div><a class="cta-link" href="https://distrokid.com/hyperfollow/diekraaines/my-doellose-lewe" target="_blank">Listen <i class="fas fa-arrow-right"></i></a></div>
-                            </div>
-                            <div class="table-row">
-                                <div class="badge"><img class="thumb" src="https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F6625296--37E7FDB0-AD17-4DC4-82D41B4DDEAF939C--0--535596--CDcover.jpeg?fm=jpg&q=75&w=800&s=31ac32578f601089bd69d706e2a08cba" alt="In die Mistige Woud"> In die Mistige Woud</div>
-                                <div>Album</div>
-                                <div><a class="cta-link" href="https://distrokid.com/hyperfollow/kraai/die-mistige-woud" target="_blank">Listen <i class="fas fa-arrow-right"></i></a></div>
-                            </div>
-                            <div class="table-row">
-                                <div class="badge"><img class="thumb" src="https://i.scdn.co/image/ab67616d0000b27391f671faabb17ceb7f09ee3c" alt="Spotify"> Spotify Comedy</div>
-                                <div>Comedy</div>
-                                <div><a class="cta-link" href="https://open.spotify.com/embed/artist/3DwWrzCxBOv47oIMpRwJCU?utm_source=generator" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                            </div>
-                        </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="video" class="section tab-pane fade" role="tabpanel" aria-labelledby="video-tab">
-            <div class="container">
-                <h2 class="section-title">Video</h2>
-                <div class="grid-table cols-2">
-                    <div class="table-header">
-                        <div>Title</div>
-                        <div>Open</div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fas fa-video"></i> YouTube Video 1</div>
-                        <div><a class="cta-link" href="https://www.youtube.com/watch?v=HbIA-l_LuLY" target="_blank">Watch <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fas fa-video"></i> YouTube Video 2</div>
-                        <div><a class="cta-link" href="https://www.youtube.com/watch?v=0bK6Lue6a6k" target="_blank">Watch <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fas fa-video"></i> YouTube Video 3</div>
-                        <div><a class="cta-link" href="https://www.youtube.com/watch?v=GaaC2YSeys8" target="_blank">Watch <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="section tab-pane fade" role="tabpanel" aria-labelledby="contact-tab">
-            <div class="container">
-                <h2 class="section-title">Contact</h2>
-                <div class="grid-table cols-2">
-                    <div class="table-header">
-                        <div>Channel</div>
-                        <div>Open</div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fab fa-linkedin"></i> LinkedIn</div>
-                        <div><a class="cta-link" href="https://www.linkedin.com/in/johannes-f-kraai-du-toit-44962b37/" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fab fa-youtube"></i> YouTube</div>
-                        <div><a class="cta-link" href="https://www.youtube.com/@kraaidutoit6657" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="Training" class="section tab-pane fade" role="tabpanel" aria-labelledby="Training-tab">
-            <div class="container">
-                <h2 class="section-title">Training</h2>
-                <div class="grid-table cols-2">
-                    <div class="table-header">
-                        <div>Course</div>
-                        <div>Open</div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fab fa-youtube"></i> YouTube Training</div>
-                        <div><a class="cta-link" href="https://www.youtube.com/channel/UCaf3Y5Wf-x9my_4kZTpuo6Q/videos" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fas fa-graduation-cap"></i> Udemy AZ-900</div>
-                        <div><a class="cta-link" href="https://www.udemy.com/course/az-900-microsoft-azure-fundamentals-full-exam-preparation/?referralCode=DF4A5491150284040AA9" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                    <div class="table-row">
-                        <div class="badge"><i class="fas fa-brain"></i> Udemy Brain Hacks</div>
-                        <div><a class="cta-link" href="https://www.udemy.com/course/brain-hacks-with-and-without-nootropics/?referralCode=3E2DB5F71DB5F81B583F" target="_blank">Open <i class="fas fa-arrow-right"></i></a></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Close tab-content before standalone interactive section -->
+    <!-- ================= PROJECTS ================= -->
+    <section id="projects" class="scroll-anchor">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Selected work</p>
+          <h2>Projects &amp; builds</h2>
+          <p>Products I'm building, open-source experiments, and free tools I've shipped.</p>
         </div>
 
-        <!-- Standalone section, not part of tabs -->
-        <section id="Interactive" class="section">
-            <div class="container">
-                <h2 class="section-title">Interactive Portfolio</h2>
-                <a href="portfolio/index.html" target="_blank" class="interactive-link-btn">
-                    Interactive Portfolio - Work in Progress
-                </a>
-                <p><b><i class="fas fa-desktop"></i> Note: The Interactive Portfolio is currently best viewed on desktop.</b></p>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>© 2024 Kraai Du Toit. All rights reserved.</p>
+        <div class="grid cols-3 reveal" style="margin-bottom:30px">
+          <div class="card">
+            <span class="tag">Product</span>
+            <h3>AI Tools Portal</h3>
+            <p>A curated gateway to the best AI tools, GitHub projects and tutorials — my own AI product.</p>
+            <a class="card-link" href="https://aitoolsportal.ai/" target="_blank" rel="noopener">Visit site <i class="fas fa-arrow-right"></i></a>
+          </div>
+          <div class="card">
+            <span class="tag">Product</span>
+            <h3>Mental Priming</h3>
+            <p>Focus, habit and priming exercises to improve daily performance. Web + Android app.</p>
+            <a class="card-link" href="https://mentalpriming.com/" target="_blank" rel="noopener">Visit site <i class="fas fa-arrow-right"></i></a>
+            &nbsp;·&nbsp;
+            <a class="card-link" href="https://play.google.com/store/apps/details?id=com.kraai.mentalpriming" target="_blank" rel="noopener">Play Store</a>
+          </div>
+          <div class="card">
+            <span class="tag">Experience</span>
+            <h3>3D Interactive Portfolio</h3>
+            <p>Walk through a fully interactive 3D office built with three.js — arcade machine, whiteboard and all.</p>
+            <a class="card-link" href="portfolio/index.html">Enter the 3D world <i class="fas fa-arrow-right"></i></a>
+          </div>
         </div>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Normalize any hardcoded absolute portfolio links to site-relative
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('a[href*="jfkproductions.github.io/portfolio/index.html"]').forEach(function (a) {
-                a.setAttribute('href', 'portfolio/index.html');
-            });
-        });
-    </script>
-    <script>
-        // On mobile, default the active tab to Home
-        document.addEventListener('DOMContentLoaded', () => {
-            const isMobile = window.matchMedia('(max-width: 768px)').matches;
-            if (!isMobile) return;
-            const homeTrigger = document.querySelector('#home-tab');
-            if (homeTrigger && window.bootstrap && typeof bootstrap.Tab === 'function') {
-                const tab = new bootstrap.Tab(homeTrigger);
-                tab.show();
-            }
-        });
-    </script>
-    <script>
-        // Hamburger menu toggle (targets pill nav on mobile)
-        const hamburger = document.getElementById('hamburger');
-        const pillNav = document.getElementById('pillNav');
-        if (hamburger && pillNav) {
-            hamburger.addEventListener('click', () => {
-                pillNav.classList.toggle('active');
-            });
 
-            // Auto-close the mobile menu when a tab/link is selected
-            const closeOnSelect = (e) => {
-                // Allow Bootstrap to switch tabs, then collapse the menu
-                if (window.innerWidth <= 576 && pillNav.classList.contains('active')) {
-                    // Small delay so tab activation doesn't get blocked
-                    setTimeout(() => pillNav.classList.remove('active'), 50);
-                }
-            };
-            pillNav.querySelectorAll('.nav-link').forEach((el) => {
-                el.addEventListener('click', closeOnSelect);
-            });
+        <h3 style="font-size:1.05rem;margin:0 0 14px;color:var(--muted)"><i class="fab fa-github"></i> Open source on GitHub</h3>
+        <div class="grid cols-4 reveal" style="margin-bottom:30px">
+          <a class="card" href="https://github.com/jfkproductions/c4DiagramRag" target="_blank" rel="noopener"><h3>C4 Diagram RAG</h3><p>Generate C4 architecture diagrams with RAG.</p></a>
+          <a class="card" href="https://github.com/jfkproductions/ChatwithMax" target="_blank" rel="noopener"><h3>Chat with Max</h3><p>Conversational AI demo &amp; tooling.</p></a>
+          <a class="card" href="https://github.com/jfkproductions/YoloLiveCowDetection" target="_blank" rel="noopener"><h3>YOLO Cow Detection</h3><p>Real-time livestock object detection.</p></a>
+          <a class="card" href="https://github.com/jfkproductions/YoloCowCammonitoring" target="_blank" rel="noopener"><h3>YOLO Cam Monitoring</h3><p>Camera monitoring with YOLO.</p></a>
+          <a class="card" href="https://github.com/jfkproductions/CV2_FacialRecognition" target="_blank" rel="noopener"><h3>CV2 Face Recognition</h3><p>OpenCV face-recognition experiments.</p></a>
+          <a class="card" href="https://github.com/jfkproductions/WebcamFaceDetection" target="_blank" rel="noopener"><h3>Webcam Face Detection</h3><p>Webcam integration &amp; detection.</p></a>
+          <a class="card" href="https://github.com/jfkproductions/MicorserviceBuilder" target="_blank" rel="noopener"><h3>Microservice Builder</h3><p>Templates &amp; scaffolding for microservices.</p></a>
+          <a class="card" href="https://github.com/jfkproductions/AWS-Session-manager" target="_blank" rel="noopener"><h3>AWS Session Manager</h3><p>Manage EC2 via SSM; CLI &amp; docs.</p></a>
+        </div>
 
-            // Close when clicking outside the menu
-            document.addEventListener('click', (e) => {
-                const clickedInsideMenu = pillNav.contains(e.target) || hamburger.contains(e.target);
-                if (!clickedInsideMenu && pillNav.classList.contains('active')) {
-                    pillNav.classList.remove('active');
-                }
-            });
+        <h3 style="font-size:1.05rem;margin:0 0 14px;color:var(--muted)"><i class="fas fa-screwdriver-wrench"></i> Free browser tools</h3>
+        <div class="grid cols-4 reveal">
+          <a class="card" href="Tools/toolbelt.html" target="_blank"><h3>Toolbelt</h3><p>All tools in one place.</p></a>
+          <a class="card" href="Tools/Simplec4.html" target="_blank"><h3>Simple C4</h3><p>C4 architecture diagrams.</p></a>
+          <a class="card" href="Tools/DB schema visualizer.html" target="_blank"><h3>DB Schema Visualizer</h3><p>Visualise database schemas.</p></a>
+          <a class="card" href="Tools/Value Proposition Canvas.html" target="_blank"><h3>Value Proposition Canvas</h3><p>Map customer value.</p></a>
+          <a class="card" href="Tools/Bussines model canvas 3.html" target="_blank"><h3>Business Model Canvas</h3><p>Plan a business model.</p></a>
+          <a class="card" href="Tools/Mindmap Tool.html" target="_blank"><h3>Mindmap Tool</h3><p>Brainstorm visually.</p></a>
+          <a class="card" href="Tools/Stakeholder Diagram Generator.html" target="_blank"><h3>Stakeholder Diagram</h3><p>Map stakeholders.</p></a>
+          <a class="card" href="Tools/QR Code Generator.html" target="_blank"><h3>QR Code Generator</h3><p>Generate QR codes.</p></a>
+        </div>
 
-            // Close on Escape key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && pillNav.classList.contains('active')) {
-                    pillNav.classList.remove('active');
-                }
-            });
+        <p style="margin-top:22px;color:var(--faint);font-size:.9rem">Desktop apps:
+          <a href="https://jfkproductions.com/Software/PriorityMatrix/priority-matrix Setup 1.0.0.exe">Priority Matrix (Win)</a> ·
+          <a href="https://jfkproductions.com/Software/MindMap/mindmap-creator Setup 1.0.0.exe">Mindmap Creator (Win)</a> ·
+          <a href="https://jfkproductions.com/Software/MindMap/mindmap-creator-1.0.0.dmg">macOS</a> ·
+          <a href="https://jfkproductions.com/Software/MindMap/mindmap-creator_1.0.0_amd64.deb">Linux</a>
+        </p>
+      </div>
+    </section>
 
-            // Reset state when resizing up to desktop widths
-            window.addEventListener('resize', () => {
-                if (window.innerWidth > 576 && pillNav.classList.contains('active')) {
-                    pillNav.classList.remove('active');
-                }
-            });
-        }
-        // Bootstrap handles tab activation; smooth scroll and active-on-scroll removed.
+    <!-- ================= AR EXPERIENCE ================= -->
+    <section id="ar" class="scroll-anchor">
+      <div class="wrap">
+        <div class="section-head reveal" style="text-align:center;margin-left:auto;margin-right:auto">
+          <p class="eyebrow">Try it on your phone</p>
+          <h2>Augmented Reality experience</h2>
+          <p>Scan, allow your camera, and watch it come to life in AR — right in the browser, no app to install.</p>
+        </div>
+        <div class="ar-single reveal">
+          <div class="ar-step card">
+            <img src="assets/images/ar-qrcode.png" alt="QR code that opens the AR experience">
+            <h3>Scan this for the AR Experience</h3>
+            <p>This links to a page on your phone — <strong>accept the camera to continue</strong>.</p>
+            <a class="btn btn-primary" href="https://mywebar.com/p/Project_0_ey8xsnbz1a" target="_blank" rel="noopener"><i class="fas fa-mobile-screen-button"></i> Open AR experience</a>
+          </div>
+        </div>
+        <p class="ar-note"><i class="fas fa-circle-info"></i> Works best on a phone in good light. The camera runs only on your device — nothing is recorded or uploaded.</p>
+      </div>
+    </section>
 
-        // Remove random backgrounds; keep Music tab activation from Home carousel
-        document.addEventListener('DOMContentLoaded', () => {
-            const goMusic = document.getElementById('goMusicTab');
-            if (goMusic) {
-                goMusic.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const triggerEl = document.querySelector('#music-tab');
-                    if (triggerEl && window.bootstrap && typeof bootstrap.Tab === 'function') {
-                        const tab = new bootstrap.Tab(triggerEl);
-                        tab.show();
-                    }
-                });
-            }
+    <!-- ================= CERTIFICATIONS ================= -->
+    <section id="certs" class="scroll-anchor">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Credentials</p>
+          <h2>Certifications</h2>
+          <p>16 active Microsoft certifications, plus cloud, architecture and data credentials. <a href="https://www.credly.com/users/johannes-du-toit" target="_blank" rel="noopener">Verify on Credly →</a></p>
+        </div>
+        <div class="cert-feature reveal">
+          <div class="cert-big">
+            <i class="fas fa-robot ico"></i>
+            <div><h3>Azure AI Engineer Associate (AI-102)</h3><span>Microsoft · 2025</span></div>
+          </div>
+          <div class="cert-big">
+            <i class="fas fa-brain ico"></i>
+            <div><h3>Azure AI Fundamentals (AI-900)</h3><span>Microsoft · 2024</span></div>
+          </div>
+        </div>
+        <div class="grid cols-3 reveal">
+          <div class="card">
+            <h3 style="font-size:.95rem"><i class="fab fa-microsoft" style="color:var(--accent)"></i> Microsoft</h3>
+            <p style="font-size:.86rem;line-height:1.8">Azure Solutions Architect Expert · DevOps Engineer Expert · Azure Developer Associate · Azure Database Administrator · Azure Administrator · MCSD Web Development</p>
+          </div>
+          <div class="card">
+            <h3 style="font-size:.95rem"><i class="fas fa-cloud" style="color:var(--accent)"></i> Cloud &amp; Architecture</h3>
+            <p style="font-size:.86rem;line-height:1.8">AWS Solutions Architect Associate · AWS Cloud Practitioner · TOGAF 9.2 · Terraform Associate · ITIL Foundation</p>
+          </div>
+          <div class="card">
+            <h3 style="font-size:.95rem"><i class="fas fa-database" style="color:var(--accent)"></i> Data &amp; Specialist</h3>
+            <p style="font-size:.86rem;line-height:1.8">Neo4j Professional · Bentley Digital Twin Developer · CompTIA Project+ · Diploma in Computer Engineering (2004)</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            // Global image fallback: if an image fails to load, use a Bootstrap image
-            const fallbackSrc = 'https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png';
-            document.querySelectorAll('img').forEach((img) => {
-                img.addEventListener('error', () => {
-                    if (img.src !== fallbackSrc) {
-                        img.src = fallbackSrc;
-                    }
-                });
-            });
-        });
+    <!-- ================= STAGE: MUSIC & COMEDY ================= -->
+    <section id="stage" class="scroll-anchor">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">The human side</p>
+          <h2>Stage — music &amp; comedy</h2>
+          <p>I won the 2018 "Grab the Mic" open-mic competition and toured with <strong>Trevor Noah</strong> on Nationwild. My work has featured on Comedy Central, kykNET, Vuse Amp and Jacaranda FM — and I release music as "Kraai".</p>
+        </div>
 
-        // Canvas setup
-        window.onload = function () {
-            const canvas = document.getElementById('sphereCanvas');
-            if (!canvas) {
-                console.warn('sphereCanvas not found; skipping 3D eye initialization');
-                return;
-            }
-            const container = canvas.parentElement || document.querySelector('.container');
-            const containerWidth = container ? container.clientWidth : window.innerWidth;
-            const maxSize = Math.min(containerWidth - 40, 350); // 40px for padding
-            canvas.width = maxSize;
-            canvas.height = maxSize;
+        <div class="gallery reveal">
+          <a href="https://www.imdb.com/name/nm11530589/" target="_blank" rel="noopener"><img src="assets/images/photos/comedy-trevor.jpg" alt="Performing with Trevor Noah"><span class="cap">With Trevor Noah</span></a>
+          <a href="https://www.imdb.com/name/nm11530589/" target="_blank" rel="noopener"><img src="assets/images/photos/comedy-parkers.jpg" alt="Stand-up at Parker's Comedy"><span class="cap">Parker's Comedy</span></a>
+          <a href="https://www.imdb.com/name/nm11530589/" target="_blank" rel="noopener"><img src="assets/images/photos/comedy-menlyn.jpg" alt="Live at Menlyn Maine"><span class="cap">Menlyn Maine</span></a>
+          <a href="https://www.imdb.com/name/nm11530589/" target="_blank" rel="noopener"><img src="assets/images/photos/comedy-savana.jpg" alt="On stage"><span class="cap">On stage</span></a>
+        </div>
 
-            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-            renderer.setSize(canvas.width, canvas.height);
+        <div class="embeds reveal" style="margin-bottom:22px">
+          <iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/35ey6qrdev6lmbSVuL7PjX?utm_source=generator" height="352" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Featured album on Spotify"></iframe>
+          <iframe style="border-radius:12px" src="https://open.spotify.com/embed/artist/3DwWrzCxBOv47oIMpRwJCU?utm_source=generator" height="352" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Kraai on Spotify"></iframe>
+        </div>
 
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, canvas.width / canvas.height, 0.1, 1000);
-            camera.position.z = 3;
+        <div class="grid cols-3 reveal">
+          <a class="card" href="https://distrokid.com/hyperfollow/kraai/different-tongues" target="_blank" rel="noopener"><span class="tag">Album</span><h3>Different Tongues</h3><p>Listen on your favourite platform.</p></a>
+          <a class="card" href="https://distrokid.com/hyperfollow/kraai/verlore-in-die-geraas" target="_blank" rel="noopener"><span class="tag">Album</span><h3>Verlore in die geraas</h3><p>Listen on your favourite platform.</p></a>
+          <a class="card" href="https://distrokid.com/hyperfollow/diekraaines/die-kraaines" target="_blank" rel="noopener"><span class="tag">Album</span><h3>Die Kraai Nes</h3><p>Listen on your favourite platform.</p></a>
+          <a class="card" href="https://distrokid.com/hyperfollow/diekraaines/my-doellose-lewe" target="_blank" rel="noopener"><span class="tag">Album</span><h3>My Doellose Lewe</h3><p>Listen on your favourite platform.</p></a>
+          <a class="card" href="https://distrokid.com/hyperfollow/kraai/die-mistige-woud" target="_blank" rel="noopener"><span class="tag">Album</span><h3>In die Mistige Woud</h3><p>Listen on your favourite platform.</p></a>
+          <a class="card" href="https://distrokid.com/hyperfollow/kraai/snaakse-gevoelens" target="_blank" rel="noopener"><span class="tag">Single</span><h3>Snaakse Gevoelens</h3><p>Listen on your favourite platform.</p></a>
+        </div>
 
-            // Create the main sphere (eyeball) - reduce size by 60% and move to the right
-            const eyeGeometry = new THREE.SphereGeometry(0.3, 64, 64);
-            const loader = new THREE.TextureLoader();
-            const eyeTexture = loader.load('https://i.imgur.com/wzXl9GB.jpg'); // Robotic eye texture
-            const eyeMaterial = new THREE.MeshPhongMaterial({
-                map: eyeTexture,
-                specular: 0x333333,
-                shininess: 30,
-            });
-            const eyeball = new THREE.Mesh(eyeGeometry, eyeMaterial);
-            eyeball.position.x = 0.6; // Move the eyeball more to the right
-            scene.add(eyeball);
+        <div class="hero-cta" style="margin-top:24px">
+          <a class="btn btn-ghost" href="https://www.imdb.com/name/nm11530589/" target="_blank" rel="noopener"><i class="fab fa-imdb"></i> IMDb</a>
+          <a class="btn btn-ghost" href="https://www.youtube.com/@kraaidutoit6657" target="_blank" rel="noopener"><i class="fab fa-youtube"></i> YouTube</a>
+          <a class="btn btn-ghost" href="https://open.spotify.com/artist/3DwWrzCxBOv47oIMpRwJCU" target="_blank" rel="noopener"><i class="fab fa-spotify"></i> Spotify</a>
+        </div>
+      </div>
+    </section>
 
-            // Create the iris and pupil group
-            const irisGroup = new THREE.Group();
-            eyeball.add(irisGroup);
+    <!-- ================= MORE: BLOG / GAMES / TRAINING ================= -->
+    <section class="scroll-anchor">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">More</p>
+          <h2>Writing, games &amp; training</h2>
+        </div>
+        <div class="grid cols-3 reveal">
+          <a class="card" href="Blog/slot-safe-react-builds.html" target="_blank"><span class="tag">Blog</span><h3>Slot-safe React builds</h3><p>Patterns for safer component composition.</p></a>
+          <a class="card" href="Blog/definitive-guide-sql-compiled.html" target="_blank"><span class="tag">Blog</span><h3>The definitive guide to SQL</h3><p>A compiled, practical SQL reference.</p></a>
+          <a class="card" href="Games/Balloon Shooter.html" target="_blank"><span class="tag">Game</span><h3>Balloon Shooter</h3><p>A browser arcade game.</p></a>
+          <a class="card" href="Games/Tetrissim.html" target="_blank"><span class="tag">Game</span><h3>Tetris Sim</h3><p>Classic blocks, in your browser.</p></a>
+          <a class="card" href="https://www.udemy.com/course/az-900-microsoft-azure-fundamentals-full-exam-preparation/?referralCode=DF4A5491150284040AA9" target="_blank" rel="noopener"><span class="tag">Course</span><h3>Udemy: AZ-900</h3><p>Azure Fundamentals exam prep.</p></a>
+          <a class="card" href="https://www.udemy.com/course/brain-hacks-with-and-without-nootropics/?referralCode=3E2DB5F71DB5F81B583F" target="_blank" rel="noopener"><span class="tag">Course</span><h3>Udemy: Brain Hacks</h3><p>Focus &amp; performance, with/without nootropics.</p></a>
+        </div>
+      </div>
+    </section>
 
-            // Create the iris - reduce size proportionally
-            const irisGeometry = new THREE.CircleGeometry(0.11, 64);
-            const irisMaterial = new THREE.MeshPhongMaterial({
-                color: 0xff0000,
-                emissive: 0xff0000,
-                emissiveIntensity: 0.5,
-                specular: 0x888888,
-                shininess: 50,
-                side: THREE.DoubleSide
-            });
-            const iris = new THREE.Mesh(irisGeometry, irisMaterial);
-            iris.position.z = 0.29; // Adjust position for smaller eyeball
-            irisGroup.add(iris);
+    <!-- ================= CONTACT ================= -->
+    <section id="contact" class="contact scroll-anchor">
+      <div class="wrap reveal">
+        <p class="eyebrow" style="text-align:center">Let's talk</p>
+        <h2>Open to AI Engineer, AI Developer &amp; AI Solutions Architect roles</h2>
+        <p>Building something with applied AI, or hiring for it? I'd love to hear from you.</p>
+        <div class="contact-btns">
+          <a class="btn btn-primary" href="https://www.linkedin.com/in/johannes-f-kraai-du-toit-44962b37/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> Connect on LinkedIn</a>
+          <a class="btn btn-ghost" href="assets/Kraai-Du-Toit-AI-Engineer-CV.pdf" target="_blank" rel="noopener"><i class="fas fa-download"></i> Download CV</a>
+          <a class="btn btn-ghost" href="https://github.com/jfkproductions" target="_blank" rel="noopener"><i class="fab fa-github"></i> GitHub</a>
+          <a class="btn btn-ghost" href="https://www.credly.com/users/johannes-du-toit" target="_blank" rel="noopener"><i class="fas fa-certificate"></i> Credly</a>
+          <a class="btn btn-ghost" href="portfolio/index.html"><i class="fas fa-cube"></i> 3D Portfolio</a>
+        </div>
+      </div>
+    </section>
+  </main>
 
-            // Create the pupil - reduce size proportionally
-            const pupilGeometry = new THREE.CircleGeometry(0.055, 64);
-            const pupilMaterial = new THREE.MeshPhongMaterial({
-                color: 0x000000,
-                specular: 0x222222,
-                shininess: 30,
-                side: THREE.DoubleSide
-            });
-            const pupil = new THREE.Mesh(pupilGeometry, pupilMaterial);
-            pupil.position.z = 0.3; // Adjust position for smaller eyeball
-            irisGroup.add(pupil);
+  <footer class="site">
+    <div class="wrap foot-inner">
+      <a class="brand" href="#top"><img src="assets/images/kraai-logo-white.png" alt="Kraai Du Toit"> <span>KRAAI <b>DU TOIT</b></span></a>
+      <div>© <span id="yr"></span> Johannes "Kraai" Du Toit · AI Engineer &amp; Solutions Architect</div>
+      <div>Also available as a <a href="portfolio/index.html">3D experience</a></div>
+    </div>
+  </footer>
 
-            // Add subtle highlight - reduce size proportionally
-            const highlightGeometry = new THREE.CircleGeometry(0.018, 32);
-            const highlightMaterial = new THREE.MeshBasicMaterial({
-                color: 0xffffff,
-                side: THREE.DoubleSide,
-                transparent: true,
-                opacity: 0.6
-            });
-            const highlight = new THREE.Mesh(highlightGeometry, highlightMaterial);
-            highlight.position.set(0.055, 0.055, 0.31); // Adjust position for smaller eyeball
-            irisGroup.add(highlight);
+  <script>
+    // Year
+    document.getElementById('yr').textContent = new Date().getFullYear();
 
-            const light = new THREE.PointLight(0xffffff, 0.8, 100);
-            light.position.set(2, 2, 2);
-            scene.add(light);
+    // Mobile nav
+    var ham = document.getElementById('hamburger');
+    var links = document.getElementById('navLinks');
+    ham.addEventListener('click', function () { links.classList.toggle('open'); });
+    links.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () { links.classList.remove('open'); });
+    });
 
-            const ambientLight = new THREE.AmbientLight(0x404040);
-            scene.add(ambientLight);
+    // Reveal on scroll
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
 
-            function onMouseMove(e) {
-                let clientX, clientY;
-                if (e.touches) {
-                    clientX = e.touches[0].clientX;
-                    clientY = e.touches[0].clientY;
-                } else {
-                    clientX = e.clientX;
-                    clientY = e.clientY;
-                }
-
-                const rect = canvas.getBoundingClientRect();
-                const mouseX = ((clientX - rect.left) / rect.width) * 2 - 1;
-                const mouseY = -((clientY - rect.top) / rect.height) * 2 + 1;
-
-                // Calculate the angle to rotate the iris
-                const angleX = mouseX * Math.PI / 6; // Limit rotation to 30 degrees
-                const angleY = -mouseY * Math.PI / 6; // Invert Y-axis rotation
-
-                // Rotate the iris group
-                irisGroup.rotation.y = angleX;
-                irisGroup.rotation.x = angleY;
-            }
-
-            canvas.addEventListener('mousemove', onMouseMove, false);
-            canvas.addEventListener('touchmove', onMouseMove, false);
-
-            function animate() {
-                requestAnimationFrame(animate);
-                renderer.render(scene, camera);
-            }
-            animate();
-
-            // Handle window resizing
-            window.addEventListener('resize', function () {
-                const newMaxSize = Math.min(container.clientWidth - 40, 350);
-                canvas.width = newMaxSize;
-                canvas.height = newMaxSize;
-                renderer.setSize(newMaxSize, newMaxSize);
-                camera.aspect = 1;
-                camera.updateProjectionMatrix();
-            });
-        };
-    </script>
-
+    // Scrollspy
+    var spy = document.querySelectorAll('section[id]');
+    var navA = document.querySelectorAll('.nav-links a.navlink');
+    window.addEventListener('scroll', function () {
+      var y = window.scrollY + 120, cur = '';
+      spy.forEach(function (s) { if (y >= s.offsetTop) cur = s.id; });
+      navA.forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+    }, { passive: true });
+  </script>
 </body>
 
 </html>
