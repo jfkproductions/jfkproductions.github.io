@@ -1,0 +1,1901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plannotator – Tutorial for Dummies</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --surface: #ffffff;
+    --surface2: #f0f1f5;
+    --border: #d8dae2;
+    --accent: #c8a000;
+    --accent2: #0077cc;
+    --accent3: #d63050;
+    --accent4: #7744cc;
+    --accent5: #00995a;
+    --text: #1a1a2e;
+    --muted: #555577;
+    --code-bg: #1e1e2e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* ── SIDEBAR ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0;
+    width: 240px;
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    z-index: 100;
+    overflow-y: auto;
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    padding: 28px 24px 24px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, rgba(200,160,0,0.06), transparent);
+  }
+
+  .nav-logo span { color: var(--accent2); }
+  .nav-logo small {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-top: 4px;
+    text-transform: uppercase;
+  }
+
+  nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 24px;
+    text-decoration: none;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    border-left: 3px solid transparent;
+    transition: all 0.18s;
+  }
+
+  nav a .nav-icon { font-size: 13px; opacity: 0.7; }
+  nav a:hover, nav a.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: rgba(240,224,64,0.04);
+  }
+
+  nav a.agent-link:hover, nav a.agent-link.active {
+    color: var(--accent2);
+    border-left-color: var(--accent2);
+    background: rgba(64,224,240,0.04);
+  }
+
+  .nav-section {
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    color: var(--accent3);
+    padding: 18px 24px 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+
+  /* ── MAIN ── */
+  main {
+    margin-left: 240px;
+    padding: 0 80px 80px;
+    max-width: 1000px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 70px 0 70px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 70px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: 'PLANNOTATOR';
+    position: absolute;
+    top: 20px; right: -20px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 160px;
+    color: rgba(0,0,0,0.03);
+    letter-spacing: 8px;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .hero-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 32px; height: 1px;
+    background: var(--accent2);
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 96px;
+    line-height: 0.88;
+    letter-spacing: 2px;
+    margin-bottom: 28px;
+  }
+
+  .hero h1 .line1 { color: var(--text); }
+  .hero h1 .line2 { color: var(--accent); }
+
+  .hero-desc {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.65;
+    margin-bottom: 36px;
+  }
+
+  /* ── SUPPORT TABLE ── */
+  .support-table-wrap {
+    margin: 0 0 0;
+  }
+
+  .support-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .support-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .support-agent {
+    background: var(--surface);
+    padding: 16px 12px;
+    text-align: center;
+    border-right: 1px solid var(--border);
+    transition: background 0.2s;
+    cursor: default;
+  }
+
+  .support-agent:last-child { border-right: none; }
+  .support-agent:hover { background: #eef0f8; }
+
+  .support-agent .agent-icon { font-size: 22px; margin-bottom: 8px; }
+
+  .support-agent .agent-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    color: var(--text);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  .support-pills { display: flex; flex-direction: column; gap: 4px; align-items: center; }
+
+  .pill {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.5px;
+    padding: 2px 7px;
+    border-radius: 0;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .pill.yes  { background: rgba(0,153,90,0.10); color: #007a45; border: 1px solid rgba(0,153,90,0.3); }
+  .pill.no   { background: rgba(180,180,200,0.15); color: #888899; border: 1px solid rgba(180,180,200,0.4); }
+  .pill.auto { background: rgba(0,119,204,0.10); color: #0066bb; border: 1px solid rgba(0,119,204,0.3); }
+
+  /* ── SECTION ── */
+  section {
+    margin-bottom: 90px;
+    scroll-margin-top: 40px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+    margin-bottom: 40px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    color: var(--border);
+    line-height: 1;
+    letter-spacing: 2px;
+  }
+
+  .section-title-wrap { line-height: 1; }
+
+  .section-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 44px;
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+
+  /* ── AGENT TABS ── */
+  .agent-tabs {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--border);
+    margin-bottom: 0;
+    overflow: hidden;
+  }
+
+  .agent-tab {
+    flex: 1;
+    padding: 14px 10px;
+    background: #eef0f8;
+    border: none;
+    border-right: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.18s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .agent-tab:last-child { border-right: none; }
+  .agent-tab .tab-icon { font-size: 18px; }
+
+  .agent-tab:hover { background: #e2e5f0; color: var(--text); }
+
+  .agent-tab.active {
+    background: var(--surface);
+    color: var(--accent2);
+    border-bottom: 2px solid var(--accent2);
+    font-weight: 600;
+  }
+
+  .agent-panel {
+    display: none;
+    border: 1px solid var(--border);
+    border-top: none;
+    padding: 32px;
+    background: var(--surface);
+    animation: fadeIn 0.2s ease;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  .agent-panel.active { display: block; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  .agent-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .agent-panel-icon { font-size: 32px; }
+
+  .agent-panel-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+    color: var(--text);
+  }
+
+  .agent-panel-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ── STEPS ── */
+  .steps { display: flex; flex-direction: column; gap: 16px; }
+
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 22px 26px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+
+  .step:hover {
+    border-color: var(--accent2);
+    border-left-color: var(--accent2);
+    box-shadow: 0 2px 12px rgba(0,119,204,0.08);
+  }
+
+  .step-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+
+  .step h3 {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .step p { color: var(--muted); font-size: 13.5px; margin-bottom: 10px; }
+
+  /* ── CODE BLOCKS ── */
+  .code-block {
+    background: #1e1e2e;
+    border: 1px solid #33334a;
+    padding: 14px 50px 14px 18px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: #9ecfff;
+    position: relative;
+    overflow-x: auto;
+    margin-top: 10px;
+    line-height: 1.8;
+  }
+
+  .code-block .comment { color: #5a5a7a; }
+  .code-block .cmd { color: #ffd060; }
+  .code-block .flag { color: #ff7090; }
+  .code-block .str { color: #70e0a0; }
+
+  .copy-btn {
+    position: absolute;
+    top: 8px; right: 8px;
+    background: var(--border);
+    border: 1px solid transparent;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    padding: 3px 9px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.18s;
+    text-transform: uppercase;
+  }
+
+  .copy-btn:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+  /* ── CALLOUTS ── */
+  .callout {
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-left: 3px solid;
+    font-size: 13.5px;
+  }
+
+  .callout.tip  { border-color: #c8a000; background: rgba(200,160,0,0.06); }
+  .callout.warn { border-color: var(--accent3); background: rgba(214,48,80,0.05); }
+  .callout.info { border-color: var(--accent2); background: rgba(0,119,204,0.06); }
+
+  .callout strong {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .callout.tip  strong { color: var(--accent); }
+  .callout.warn strong { color: var(--accent3); }
+  .callout.info strong { color: var(--accent2); }
+  .callout p { color: var(--muted); }
+
+  /* ── FLOW ── */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 28px 0;
+    flex-wrap: wrap;
+  }
+
+  .flow-step {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 14px 18px;
+    text-align: center;
+    min-width: 110px;
+  }
+
+  .flow-step .icon { font-size: 20px; margin-bottom: 6px; }
+
+  .flow-step p {
+    font-size: 10px;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.3px;
+  }
+
+  .flow-arrow { color: var(--accent); font-size: 18px; padding: 0 6px; }
+
+  /* ── COMMAND TABLE ── */
+  .cmd-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+
+  .cmd-table th {
+    text-align: left;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--accent3);
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    text-transform: uppercase;
+  }
+
+  .cmd-table td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .cmd-table tr:hover td { background: rgba(255,255,255,0.015); }
+  .cmd-table td:first-child { font-family: 'IBM Plex Mono', monospace; color: var(--accent2); white-space: nowrap; font-size: 12px; }
+  .cmd-table td:last-child { color: var(--muted); }
+
+  /* ── CHEAT SHEET ── */
+  .cheat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .cheat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 22px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+
+  .cheat-card h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+    color: var(--accent);
+  }
+
+  .cheat-card ul { list-style: none; }
+
+  .cheat-card ul li {
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+  }
+
+  .cheat-card ul li:last-child { border: none; }
+  .cheat-card ul li code { font-family: 'IBM Plex Mono', monospace; color: var(--accent2); font-size: 11px; white-space: nowrap; flex-shrink: 0; }
+  .cheat-card ul li span { color: var(--muted); font-size: 11px; }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    padding: 2px 7px;
+    border: 1px solid;
+    text-transform: uppercase;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .badge.new { border-color: var(--accent); color: var(--accent); }
+  .badge.win { border-color: var(--accent2); color: var(--accent2); }
+  .badge.na  { border-color: #444; color: #666; }
+
+  /* ── AGENT COMMAND BLOCK ── */
+  .agent-commands {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .cmd-item {
+    background: #f4f6fb;
+    border: 1px solid var(--border);
+    padding: 12px 14px;
+  }
+
+  .cmd-item .cmd-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent2);
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  .cmd-item .cmd-desc {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 36px 0;
+    margin-top: 40px;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+
+  footer a { color: var(--accent2); text-decoration: none; }
+
+  footer p:last-child { color: #aaa; }
+
+  @media (max-width: 900px) {
+    nav { display: none; }
+    main { margin-left: 0; padding: 28px 20px; }
+    .cheat-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 60px; }
+    .support-grid { grid-template-columns: repeat(3, 1fr); }
+    .agent-commands { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ SIDEBAR ══ -->
+<nav>
+  <div class="nav-logo">
+    PLAN<span>NOTATOR</span>
+    <small>Tutorial for Dummies</small>
+  </div>
+
+  <span class="nav-section">Core Sections</span>
+  <a href="#agents">    <span class="nav-icon">🌐</span> Supported Agents</a>
+  <a href="#install">   <span class="nav-icon">⚙️</span> 01 — Installation</a>
+  <a href="#basic">     <span class="nav-icon">🚀</span> 02 — Basic Use</a>
+  <a href="#advanced">  <span class="nav-icon">⚡</span> 03 — Advanced Use</a>
+  <a href="#cheatsheet"><span class="nav-icon">📋</span> 04 — Cheat Sheet</a>
+  <a href="#hidden"><span class="nav-icon">🔮</span> 05 — Hidden Commands</a>
+
+  <span class="nav-section">Agent Tutorials</span>
+  <a href="#tut-claude"  class="agent-link"><span class="nav-icon">🤖</span> Claude Code</a>
+  <a href="#tut-codex"   class="agent-link"><span class="nav-icon">🔷</span> Codex CLI</a>
+  <a href="#tut-gemini"  class="agent-link"><span class="nav-icon">💎</span> Gemini CLI</a>
+  <a href="#tut-opencode"class="agent-link"><span class="nav-icon">🟣</span> OpenCode</a>
+
+  <span class="nav-section">Deep Dive</span>
+  <a href="#examples"    class="agent-link"><span class="nav-icon">💡</span> Real Examples</a>
+  <a href="#envvars"     class="agent-link"><span class="nav-icon">⚙️</span> Env Variables</a>
+  <a href="#bestpractice"class="agent-link"><span class="nav-icon">🏆</span> Best Practices</a>
+  <a href="#devguide"   class="agent-link"><span class="nav-icon">🔬</span> Dev Guidelines</a>
+
+  <span class="nav-section">Links</span>
+  <a href="https://github.com/backnotprop/plannotator" target="_blank"><span class="nav-icon">↗</span> GitHub Repo</a>
+  <a href="https://plannotator.ai" target="_blank"><span class="nav-icon">↗</span> Official Site</a>
+</nav>
+
+<!-- ══ MAIN ══ -->
+<main>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">AI Coding Agent Extension · Multi-Agent Support</div>
+    <h1>
+      <span class="line1">PLAN</span><br>
+      <span class="line2">NOTATOR</span>
+    </h1>
+    <p class="hero-desc">Visual plan review and annotation for AI coding agents. Mark up plans in your browser, approve or reject changes, and send structured feedback straight back to the agent — works with Claude Code, Codex, Gemini CLI, OpenCode and more.</p>
+
+    <!-- SUPPORT TABLE -->
+    <div class="support-table-wrap">
+      <div class="support-label">Supported Agents</div>
+      <div class="support-grid">
+        <div class="support-agent">
+          <div class="agent-icon">🤖</div>
+          <div class="agent-name">Claude Code</div>
+          <div class="support-pills">
+            <span class="pill auto">Plan ✓ Auto</span>
+            <span class="pill yes">Code Review</span>
+          </div>
+        </div>
+        <div class="support-agent">
+          <div class="agent-icon">🔷</div>
+          <div class="agent-name">Codex CLI</div>
+          <div class="support-pills">
+            <span class="pill no">Plan — N/A</span>
+            <span class="pill yes">Code Review</span>
+          </div>
+        </div>
+        <div class="support-agent">
+          <div class="agent-icon">💎</div>
+          <div class="agent-name">Gemini CLI</div>
+          <div class="support-pills">
+            <span class="pill auto">Plan ✓ Auto</span>
+            <span class="pill yes">Code Review</span>
+          </div>
+        </div>
+        <div class="support-agent">
+          <div class="agent-icon">🟣</div>
+          <div class="agent-name">OpenCode</div>
+          <div class="support-pills">
+            <span class="pill auto">Plan ✓ Auto</span>
+            <span class="pill yes">Code Review</span>
+          </div>
+        </div>
+        <div class="support-agent">
+          <div class="agent-icon">🔧</div>
+          <div class="agent-name">Copilot CLI</div>
+          <div class="support-pills">
+            <span class="pill auto">Plan ✓ Auto</span>
+            <span class="pill yes">Code Review</span>
+          </div>
+        </div>
+        <div class="support-agent">
+          <div class="agent-icon">🥧</div>
+          <div class="agent-name">Pi</div>
+          <div class="support-pills">
+            <span class="pill auto">Plan ✓ Auto</span>
+            <span class="pill yes">Code Review</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION: SUPPORTED AGENTS (tab overview) ══ -->
+  <section id="agents">
+    <div class="section-header">
+      <div class="section-number">00</div>
+      <div class="section-title-wrap">
+        <span class="section-tag" style="color:var(--accent2)">Overview</span>
+        <div class="section-title">Supported Agents</div>
+      </div>
+    </div>
+
+    <p style="color:var(--muted); margin-bottom:28px; font-size:14px">Plannotator integrates with 6 AI coding agents. Click a tab to see its specific install and command details.</p>
+
+    <div class="agent-tabs">
+      <button class="agent-tab active" onclick="switchTab('claude', this)">
+        <span class="tab-icon">🤖</span>Claude Code
+      </button>
+      <button class="agent-tab" onclick="switchTab('codex', this)">
+        <span class="tab-icon">🔷</span>Codex CLI
+      </button>
+      <button class="agent-tab" onclick="switchTab('gemini', this)">
+        <span class="tab-icon">💎</span>Gemini CLI
+      </button>
+      <button class="agent-tab" onclick="switchTab('opencode', this)">
+        <span class="tab-icon">🟣</span>OpenCode
+      </button>
+      <button class="agent-tab" onclick="switchTab('copilot', this)">
+        <span class="tab-icon">🔧</span>Copilot CLI
+      </button>
+      <button class="agent-tab" onclick="switchTab('pi', this)">
+        <span class="tab-icon">🥧</span>Pi
+      </button>
+    </div>
+
+    <!-- Claude Code -->
+    <div class="agent-panel active" id="panel-claude">
+      <div class="agent-panel-header">
+        <div class="agent-panel-icon">🤖</div>
+        <div>
+          <div class="agent-panel-title">Claude Code</div>
+          <div class="agent-panel-sub">Full support · Plan mode auto · Code review · PR review</div>
+        </div>
+      </div>
+      <div class="step" style="margin-bottom:12px">
+        <div class="step-num">Install</div>
+        <h3>Add the plugin inside Claude Code</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment"># 1. Install plannotator binary (PowerShell)</span>
+<span class="cmd">irm https://plannotator.ai/install.ps1 | iex</span>
+
+<span class="comment"># 2. Inside Claude Code session</span>
+<span class="cmd">/plugin marketplace add backnotprop/plannotator</span></div>
+      </div>
+      <div class="agent-commands">
+        <div class="cmd-item"><div class="cmd-label">/plannotator-review</div><div class="cmd-desc">Visual review of current git diff</div></div>
+        <div class="cmd-item"><div class="cmd-label">/plannotator-review &lt;pr-url&gt;</div><div class="cmd-desc">Review a GitHub Pull Request</div></div>
+        <div class="cmd-item"><div class="cmd-label">/plannotator-annotate &lt;file&gt;</div><div class="cmd-desc">Annotate any markdown file</div></div>
+        <div class="cmd-item"><div class="cmd-label">/plannotator-last</div><div class="cmd-desc">Annotate Claude's last response</div></div>
+      </div>
+      <div class="callout tip" style="margin-top:16px"><strong>Plan Mode</strong><p>Activates automatically when Claude Code enters plan mode — no extra command needed.</p></div>
+    </div>
+
+    <!-- Codex -->
+    <div class="agent-panel" id="panel-codex">
+      <div class="agent-panel-header">
+        <div class="agent-panel-icon">🔷</div>
+        <div>
+          <div class="agent-panel-title">Codex CLI</div>
+          <div class="agent-panel-sub">Code review only · Plan mode not yet supported · Uses ! prefix</div>
+        </div>
+      </div>
+      <div class="step" style="margin-bottom:12px">
+        <div class="step-num">Install</div>
+        <h3>Install the plannotator binary (same as all agents)</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment"># Windows PowerShell</span>
+<span class="cmd">irm https://plannotator.ai/install.ps1 | iex</span></div>
+      </div>
+      <div class="agent-commands">
+        <div class="cmd-item"><div class="cmd-label">!plannotator review</div><div class="cmd-desc">Visual review of current git diff</div></div>
+        <div class="cmd-item"><div class="cmd-label">!plannotator review &lt;pr-url&gt;</div><div class="cmd-desc">Review a GitHub Pull Request</div></div>
+        <div class="cmd-item"><div class="cmd-label">!plannotator annotate &lt;file&gt;</div><div class="cmd-desc">Annotate any markdown file</div></div>
+        <div class="cmd-item"><div class="cmd-label">!plannotator last</div><div class="cmd-desc">Annotate the last agent message</div></div>
+      </div>
+      <div class="callout warn" style="margin-top:16px"><strong>⚠ Plan Mode</strong><p>Plan mode is <strong>not yet supported</strong> in Codex. Only review and annotate commands are available.</p></div>
+    </div>
+
+    <!-- Gemini -->
+    <div class="agent-panel" id="panel-gemini">
+      <div class="agent-panel-header">
+        <div class="agent-panel-icon">💎</div>
+        <div>
+          <div class="agent-panel-title">Gemini CLI</div>
+          <div class="agent-panel-sub">Full support · Plan mode auto · Requires Gemini CLI 0.36.0+</div>
+        </div>
+      </div>
+      <div class="step" style="margin-bottom:12px">
+        <div class="step-num">Install</div>
+        <h3>Install the binary — Gemini auto-detected</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment"># Installer auto-detects Gemini CLI (~/.gemini)</span>
+<span class="cmd">irm https://plannotator.ai/install.ps1 | iex</span></div>
+      </div>
+      <div class="agent-commands">
+        <div class="cmd-item"><div class="cmd-label">/plan</div><div class="cmd-desc">Enter plan mode — plans open in browser automatically</div></div>
+        <div class="cmd-item"><div class="cmd-label">/plannotator-review</div><div class="cmd-desc">Code review for current changes</div></div>
+        <div class="cmd-item"><div class="cmd-label">/plannotator-review &lt;pr-url&gt;</div><div class="cmd-desc">Review a GitHub Pull Request</div></div>
+        <div class="cmd-item"><div class="cmd-label">/plannotator-annotate &lt;file&gt;</div><div class="cmd-desc">Annotate a markdown file</div></div>
+      </div>
+      <div class="callout info" style="margin-top:16px"><strong>Requirement</strong><p>Requires Gemini CLI version 0.36.0 or later. Run <code>gemini --version</code> to check.</p></div>
+    </div>
+
+    <!-- OpenCode -->
+    <div class="agent-panel" id="panel-opencode">
+      <div class="agent-panel-header">
+        <div class="agent-panel-icon">🟣</div>
+        <div>
+          <div class="agent-panel-title">OpenCode</div>
+          <div class="agent-panel-sub">Full support · Plan mode auto · Plugin via opencode.json</div>
+        </div>
+      </div>
+      <div class="step" style="margin-bottom:12px">
+        <div class="step-num">Install</div>
+        <h3>Add to opencode.json, then run install script</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment">// Add to your opencode.json</span>
+<span class="str">{
+  "plugin": ["@plannotator/opencode@latest"]
+}</span>
+
+<span class="comment"># Then run install script (clears plugin cache too)</span>
+<span class="cmd">irm https://plannotator.ai/install.ps1 | iex</span></div>
+      </div>
+      <div class="agent-commands">
+        <div class="cmd-item"><div class="cmd-label">/plannotator-review</div><div class="cmd-desc">Visual review of current changes</div></div>
+        <div class="cmd-item"><div class="cmd-label">/plannotator-review &lt;pr-url&gt;</div><div class="cmd-desc">Review a GitHub Pull Request</div></div>
+        <div class="cmd-item"><div class="cmd-label">Plan Mode</div><div class="cmd-desc">Auto-activates — no command needed</div></div>
+        <div class="cmd-item"><div class="cmd-label">Restart OpenCode</div><div class="cmd-desc">Required after install or plugin cache clear</div></div>
+      </div>
+      <div class="callout tip" style="margin-top:16px"><strong>After Install</strong><p>Always restart OpenCode after adding the plugin or running the install script to clear cached plugin versions.</p></div>
+    </div>
+
+    <!-- Copilot -->
+    <div class="agent-panel" id="panel-copilot">
+      <div class="agent-panel-header">
+        <div class="agent-panel-icon">🔧</div>
+        <div>
+          <div class="agent-panel-title">Copilot CLI</div>
+          <div class="agent-panel-sub">Full support · Plan mode via Shift+Tab · Two plugins required</div>
+        </div>
+      </div>
+      <div class="step" style="margin-bottom:12px">
+        <div class="step-num">Install</div>
+        <h3>Install binary, then add two plugins in Copilot CLI</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="cmd">irm https://plannotator.ai/install.ps1 | iex</span>
+
+<span class="comment"># Inside Copilot CLI session</span>
+<span class="cmd">/plugin marketplace add backnotprop/plannotator</span>
+<span class="cmd">/plugin install plannotator-copilot@plannotator</span></div>
+      </div>
+      <div class="callout tip" style="margin-top:16px"><strong>Plan Mode</strong><p>Use <strong>Shift+Tab</strong> inside Copilot CLI to enter plan mode. Plannotator activates automatically.</p></div>
+    </div>
+
+    <!-- Pi -->
+    <div class="agent-panel" id="panel-pi">
+      <div class="agent-panel-header">
+        <div class="agent-panel-icon">🥧</div>
+        <div>
+          <div class="agent-panel-title">Pi</div>
+          <div class="agent-panel-sub">Full support · Plan mode via --plan flag or /plannotator toggle</div>
+        </div>
+      </div>
+      <div class="step" style="margin-bottom:12px">
+        <div class="step-num">Install</div>
+        <h3>Install via Pi's own package manager</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="cmd">pi install npm:@plannotator/pi-extension</span></div>
+      </div>
+      <div class="agent-commands">
+        <div class="cmd-item"><div class="cmd-label">pi --plan</div><div class="cmd-desc">Start Pi in plan mode</div></div>
+        <div class="cmd-item"><div class="cmd-label">/plannotator</div><div class="cmd-desc">Toggle plan mode during a session</div></div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══ SECTION 1: INSTALLATION ══ -->
+  <section id="install">
+    <div class="section-header">
+      <div class="section-number">01</div>
+      <div class="section-title-wrap">
+        <span class="section-tag" style="color:var(--accent)">Getting Started</span>
+        <div class="section-title">Installation</div>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <strong>Before you start</strong>
+      <p>Plannotator works with AI coding agent CLIs — not the Claude.ai browser chat. Make sure you have <strong>Node.js</strong> installed, and the CLI tool for whichever agent you use.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">Step 01 — Install Bun (required)</div>
+        <h3>Install the Bun runtime <span class="badge win">Windows</span></h3>
+        <p>Plannotator requires Bun as its package manager. Run in PowerShell, then restart your terminal:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="cmd">powershell -c "irm bun.sh/install.ps1 | iex"</span></div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Step 02 — Install Plannotator binary</div>
+        <h3>Install the plannotator command <span class="badge win">Windows</span></h3>
+        <p>This installs the <code>plannotator</code> system command used by all supported agents:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="cmd">irm https://plannotator.ai/install.ps1 | iex</span></div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Step 03 — Install your agent CLI</div>
+        <h3>Pick your agent and install it</h3>
+        <p>Install whichever agent(s) you want to use with Plannotator:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment"># Claude Code</span>
+<span class="cmd">npm install -g @anthropic-ai/claude-code</span>
+
+<span class="comment"># Codex CLI</span>
+<span class="cmd">npm install -g @openai/codex</span>
+
+<span class="comment"># Gemini CLI (requires Gemini CLI 0.36.0+)</span>
+<span class="cmd">npm install -g @google/gemini-cli</span></div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Step 04 — Register the plugin</div>
+        <h3>Add Plannotator to your agent</h3>
+        <p>See the <strong>Supported Agents</strong> section above or jump to the specific agent tutorial below for exact registration steps — each agent is slightly different.</p>
+      </div>
+    </div>
+
+    <div class="callout tip" style="margin-top:20px">
+      <strong>✓ Verify Installation</strong>
+      <p>Run <code>plannotator --version</code> in a terminal. If you see a version number, the binary is installed correctly.</p>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 2: BASIC USE ══ -->
+  <section id="basic">
+    <div class="section-header">
+      <div class="section-number">02</div>
+      <div class="section-title-wrap">
+        <span class="section-tag" style="color:var(--accent2)">Everyday Use</span>
+        <div class="section-title">Basic Use</div>
+      </div>
+    </div>
+
+    <p style="margin-bottom:28px; color:var(--muted); font-size:14px">The core feature is <strong style="color:var(--text)">Plan Review</strong> — it activates automatically when your agent enters plan mode.</p>
+
+    <div class="flow">
+      <div class="flow-step"><div class="icon">💬</div><p>Ask agent<br>to plan</p></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="icon">🌐</div><p>Browser<br>opens</p></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="icon">✏️</div><p>Annotate<br>the plan</p></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="icon">✅</div><p>Approve or<br>send feedback</p></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="icon">🤖</div><p>Agent<br>proceeds</p></div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">How To — Trigger Plan Mode</div>
+        <h3>Start your agent in a project folder</h3>
+        <p>Navigate to your project and launch the agent, then ask it to plan something:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="cmd">cd C:\MyProject</span>
+<span class="cmd">claude</span>
+<span class="comment"># Then type:</span>
+<span class="cmd">Plan how you would refactor the authentication module</span></div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">How To — Annotate a Plan</div>
+        <h3>Use the visual browser UI</h3>
+        <p>When plan mode activates, your browser opens automatically. You can:</p>
+        <ul style="margin-top:8px; padding-left:20px; color:var(--muted); font-size:13px; line-height:2.2">
+          <li>🟡 <strong style="color:var(--text)">Highlight sections</strong> to add comments</li>
+          <li>🔴 <strong style="color:var(--text)">Delete</strong> parts of the plan you don't want</li>
+          <li>🟢 <strong style="color:var(--text)">Insert</strong> new instructions or steps</li>
+          <li>🔵 <strong style="color:var(--text)">Replace</strong> sections with your own wording</li>
+        </ul>
+      </div>
+
+      <div class="step">
+        <div class="step-num">How To — Approve or Reject</div>
+        <h3>Send your decision back to the agent</h3>
+        <ul style="margin-top:8px; padding-left:20px; color:var(--muted); font-size:13px; line-height:2.2">
+          <li>✅ <strong style="color:var(--text)">Approve</strong> — agent proceeds with implementation immediately</li>
+          <li>🔄 <strong style="color:var(--text)">Request Changes</strong> — annotations sent back as structured feedback, agent revises the plan</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 3: ADVANCED USE ══ -->
+  <section id="advanced">
+    <div class="section-header">
+      <div class="section-number">03</div>
+      <div class="section-title-wrap">
+        <span class="section-tag" style="color:var(--accent3)">Power User</span>
+        <div class="section-title">Advanced Use</div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">Advanced — Code Review</div>
+        <h3>Review git diffs visually <span class="badge new">NEW</span></h3>
+        <p>Open a visual diff of your current uncommitted changes, or review a PR:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment"># Claude Code / Gemini CLI / OpenCode</span>
+<span class="cmd">/plannotator-review</span>
+<span class="cmd">/plannotator-review https://github.com/org/repo/pull/123</span>
+
+<span class="comment"># Codex CLI (uses ! prefix)</span>
+<span class="cmd">!plannotator review</span>
+<span class="cmd">!plannotator review https://github.com/org/repo/pull/123</span></div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Advanced — Annotate Any File</div>
+        <h3>Annotate any markdown file and send feedback back</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment"># Claude Code / Gemini / OpenCode</span>
+<span class="cmd">/plannotator-annotate docs/architecture.md</span>
+
+<span class="comment"># Codex</span>
+<span class="cmd">!plannotator annotate docs/architecture.md</span></div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Advanced — Team Sharing</div>
+        <h3>Share plans with colleagues</h3>
+        <ul style="margin-top:8px; padding-left:20px; color:var(--muted); font-size:13px; line-height:2.2">
+          <li>📎 <strong style="color:var(--text)">Small plans</strong> — encoded entirely in the URL, nothing stored on any server</li>
+          <li>🔐 <strong style="color:var(--text)">Large plans</strong> — AES-256-GCM encrypted before upload, auto-deletes after 7 days</li>
+        </ul>
+        <div class="callout tip" style="margin-top:14px">
+          <strong>Team Workflow</strong>
+          <p>Share URL with colleague → they annotate it → you import their feedback → send back to the agent.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Advanced — Pin a Specific Version</div>
+        <h3>Lock to a specific version for stability</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment"># Windows PowerShell</span>
+<span class="cmd">& ([scriptblock]::Create((irm https://plannotator.ai/install.ps1))) <span class="flag">-Version v0.17.10</span></span></div>
+        <p style="margin-top:10px; font-size:13px">Every release ships with SHA256 checksum + SLSA provenance (v0.17.2+).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 4: CHEAT SHEET ══ -->
+  <section id="cheatsheet">
+    <div class="section-header">
+      <div class="section-number">04</div>
+      <div class="section-title-wrap">
+        <span class="section-tag" style="color:var(--accent)">Quick Reference</span>
+        <div class="section-title">Cheat Sheet</div>
+      </div>
+    </div>
+
+    <div class="cheat-grid">
+      <div class="cheat-card">
+        <h4>🛠 Install Commands</h4>
+        <ul>
+          <li><code>irm bun.sh/install.ps1 | iex</code><span>Install Bun runtime</span></li>
+          <li><code>irm plannotator.ai/install.ps1 | iex</code><span>Install plannotator binary</span></li>
+          <li><code>npm i -g @anthropic-ai/claude-code</code><span>Install Claude Code</span></li>
+          <li><code>npm i -g @openai/codex</code><span>Install Codex CLI</span></li>
+          <li><code>plannotator --version</code><span>Verify install</span></li>
+        </ul>
+      </div>
+
+      <div class="cheat-card">
+        <h4>⚡ Claude Code Commands</h4>
+        <ul>
+          <li><code>/plugin marketplace add backnotprop/plannotator</code><span>Register plugin</span></li>
+          <li><code>/plannotator-review</code><span>Review current diff</span></li>
+          <li><code>/plannotator-review &lt;url&gt;</code><span>Review a PR</span></li>
+          <li><code>/plannotator-annotate &lt;file&gt;</code><span>Annotate a file</span></li>
+          <li><code>/plannotator-last</code><span>Annotate last message</span></li>
+          <li><code>/plannotator-archive</code><span>🔮 Browse all past decisions</span></li>
+        </ul>
+      </div>
+
+      <div class="cheat-card">
+        <h4>🔷 Codex CLI Commands</h4>
+        <ul>
+          <li><code>!plannotator review</code><span>Review current diff</span></li>
+          <li><code>!plannotator review &lt;url&gt;</code><span>Review a PR</span></li>
+          <li><code>!plannotator annotate &lt;file&gt;</code><span>Annotate a file</span></li>
+          <li><code>!plannotator last</code><span>Annotate last message</span></li>
+        </ul>
+      </div>
+
+      <div class="cheat-card">
+        <h4>💎 Gemini / 🟣 OpenCode</h4>
+        <ul>
+          <li><code>/plan</code><span>Gemini: enter plan mode</span></li>
+          <li><code>/plannotator-review</code><span>Code review (both)</span></li>
+          <li><code>/plannotator-annotate &lt;file&gt;</code><span>Annotate file (both)</span></li>
+          <li><code>pi install npm:@plannotator/pi-extension</code><span>Pi install</span></li>
+          <li><code>/plannotator</code><span>Pi: toggle plan mode</span></li>
+        </ul>
+      </div>
+
+      <div class="cheat-card">
+        <h4>🎯 Plan Review Actions</h4>
+        <ul>
+          <li><code>Approve</code><span>Agent proceeds with implementation</span></li>
+          <li><code>Request Changes</code><span>Send annotations as feedback</span></li>
+          <li><code>Highlight → Comment</code><span>Add note to a section</span></li>
+          <li><code>Select → Delete</code><span>Remove a plan section</span></li>
+          <li><code>Select → Replace</code><span>Rewrite a section</span></li>
+          <li><code>Select → Insert</code><span>Add a new step</span></li>
+        </ul>
+      </div>
+
+      <div class="cheat-card">
+        <h4>🔧 Advanced</h4>
+        <ul>
+          <li><code>-Version vX.Y.Z</code><span>Pin a specific version</span></li>
+          <li><code>bun install</code><span>Install deps from source</span></li>
+          <li><code>bun run build:review</code><span>Build review app first</span></li>
+          <li><code>bun run build</code><span>Build everything</span></li>
+          <li><code>plannotator --version</code><span>Check current version</span></li>
+        </ul>
+      </div>
+
+      <div class="cheat-card" style="border-top:3px solid var(--accent3)">
+        <h4 style="color:var(--accent3)">🔮 Hidden CLI Commands</h4>
+        <ul>
+          <li><code>plannotator sessions</code><span>List active server sessions</span></li>
+          <li><code>plannotator sessions --open N</code><span>Reopen closed browser session</span></li>
+          <li><code>plannotator sessions --clean</code><span>Remove stale session files</span></li>
+          <li><code>plannotator archive</code><span>Browse saved plan decisions</span></li>
+          <li><code>plannotator improve-context</code><span>Invoke custom context hook</span></li>
+          <li><code>plannotator copilot-plan</code><span>Copilot CLI plan interception</span></li>
+          <li><code>plannotator copilot-last</code><span>Copilot CLI last message</span></li>
+          <li><code>plannotator --help</code><span>Full hidden command list</span></li>
+        </ul>
+      </div>
+
+      <div class="cheat-card" style="border-top:3px solid var(--accent4)">
+        <h4 style="color:var(--accent4)">🏴 Hidden Flags</h4>
+        <ul>
+          <li><code>--browser "Firefox"</code><span>Override browser globally</span></li>
+          <li><code>--no-jina</code><span>Disable Jina Reader for URLs</span></li>
+          <li><code>--no-local</code><span>Skip local checkout for PR review</span></li>
+          <li><code>--local</code><span>Force local checkout (PR review)</span></li>
+        </ul>
+      </div>
+
+      <div class="cheat-card" style="border-top:3px solid var(--accent3); background:rgba(214,48,80,0.03)">
+        <h4 style="color:var(--accent3)">⛔ Rejected / Never Do This</h4>
+        <ul>
+          <li><code>npm install</code><span>❌ Will fail — repo requires Bun (<code>workspace:*</code> protocol)</span></li>
+          <li><code>bun run build</code> (first)<span>❌ Silently copies stale HTML — always <code>build:review</code> first</span></li>
+          <li><code>plannotator</code> (no args, non-interactive)<span>❌ Reserved for hook JSON on stdin; use <code>review</code> / <code>annotate</code></span></li>
+          <li><code>/plannotator-review</code> in Codex<span>❌ Use <code>!</code> prefix in Codex, not <code>/</code></span></li>
+          <li><code>/plan</code> in Codex<span>❌ Plan mode not supported in Codex yet</span></li>
+          <li><code>Adding JWT/API keys to annotations</code><span>❌ Annotations are stored in plaintext on disk</span></li>
+          <li><code>Sharing plans with secrets</code><span>❌ Large plans go to share service — encrypt client-side first</span></li>
+          <li><code>PLANNOTATOR_PORT=80 / 443</code><span>❌ Requires root; use 9xxx range instead</span></li>
+        </ul>
+      </div>
+
+      <div class="cheat-card" style="grid-column: span 2;">
+        <h4>🚦 Troubleshooting</h4>
+        <table class="cmd-table" style="margin-top:0">
+          <thead><tr><th>Problem</th><th>Fix</th></tr></thead>
+          <tbody>
+            <tr><td>npm error EUNSUPPORTEDPROTOCOL</td><td>Use <code>bun install</code> not <code>npm install</code> — this repo requires Bun</td></tr>
+            <tr><td>claude: command not found</td><td>Run <code>npm install -g @anthropic-ai/claude-code</code> then restart terminal</td></tr>
+            <tr><td>Browser doesn't open automatically</td><td>Restart your agent CLI after plugin install; check plannotator is in PATH</td></tr>
+            <tr><td>build:hook fails with cp error</td><td>Run <code>bun run build:review</code> first, then <code>bun run build</code></td></tr>
+            <tr><td>Plugin not found in marketplace</td><td>Must be inside a Claude Code / Copilot CLI session — not Claude.ai browser chat</td></tr>
+            <tr><td>Gemini plan mode not triggering</td><td>Requires Gemini CLI 0.36.0 or later — run <code>gemini --version</code> to check</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SECTION: HIDDEN COMMANDS (NEW) ══ -->
+  <section id="hidden">
+    <div class="section-header">
+      <div class="section-number">05</div>
+      <div class="section-title-wrap">
+        <span class="section-tag" style="color:var(--accent3)">Undocumented</span>
+        <div class="section-title">Hidden Commands &amp; Flags</div>
+      </div>
+    </div>
+
+    <div class="callout warn"><strong>Power User Zone</strong><p>These commands exist in the <code>plannotator</code> binary source code but don't appear in the main README. Discovered by inspecting <code>apps/hook/server/index.ts</code>. All verified working in v0.17.10+.</p></div>
+
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-num">Hidden #01 — Session Management</div>
+        <h3>List, reopen, and clean active Plannotator server sessions <span class="badge new">HIDDEN</span></h3>
+        <p>Closed your browser by accident mid-review? You can reopen it — the server is still running.</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment"># List all active Plannotator server sessions</span>
+<span class="cmd">plannotator sessions</span>
+
+<span class="comment"># Reopen session #2 (from the list above) in the browser</span>
+<span class="cmd">plannotator sessions --open 2</span>
+
+<span class="comment"># Clean up stale session files (zombie servers)</span>
+<span class="cmd">plannotator sessions --clean</span></div>
+        <div class="callout tip" style="margin-top:12px"><strong>Life Saver</strong><p>If your browser crashes or you accidentally close a plan review tab, run <code>plannotator sessions --open 1</code> to get it back without losing your annotations.</p></div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Hidden #02 — The /plannotator-archive Command</div>
+        <h3>Browse every plan decision you've ever made <span class="badge new">HIDDEN</span></h3>
+        <p>Not just in the sidebar — there's a dedicated slash command that opens a full-screen read-only archive browser:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment"># Claude Code / Gemini / OpenCode</span>
+<span class="cmd">/plannotator-archive</span>
+
+<span class="comment"># Direct CLI invocation</span>
+<span class="cmd">plannotator archive</span></div>
+        <p style="margin-top:10px">Browse all saved decisions from <code>~/.plannotator/plans/</code> with approved/denied status badges. Use for audit trails, retrospectives, or seeing "when did we decide to use JWT?"</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Hidden #03 — Browser Override Flag</div>
+        <h3>Force a specific browser per-invocation <span class="badge new">HIDDEN</span></h3>
+        <p>Don't want Chrome to open? Override with a global flag — works on every subcommand:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment"># macOS / Linux / Windows</span>
+<span class="cmd">plannotator review <span class="flag">--browser "Firefox"</span></span>
+<span class="cmd">plannotator annotate README.md <span class="flag">--browser "Safari"</span></span>
+
+<span class="comment"># Or set the env var globally</span>
+<span class="cmd">export PLANNOTATOR_BROWSER="Firefox"</span></div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Hidden #04 — PR Review Mode Flags</div>
+        <h3>Control how PR reviews are fetched <span class="badge new">HIDDEN</span></h3>
+        <p>When reviewing a PR, Plannotator creates a local checkout by default for full file access. You can disable this for quicker remote-only reviews:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment"># Default: create local worktree checkout (full file context)</span>
+<span class="cmd">plannotator review https://github.com/org/repo/pull/42</span>
+
+<span class="comment"># Skip local checkout — remote diff only (faster, less context)</span>
+<span class="cmd">plannotator review https://github.com/org/repo/pull/42 <span class="flag">--no-local</span></span></div>
+        <div class="callout info" style="margin-top:10px"><strong>Why It Matters</strong><p>Local checkouts use a git worktree under <code>/tmp/plannotator-pr-*</code> so you can navigate the full file tree while annotating. Use <code>--no-local</code> on massive PRs where the checkout is slow.</p></div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Hidden #05 — Jina Reader Disable</div>
+        <h3>Turn off URL fetching via Jina on a per-command basis <span class="badge new">HIDDEN</span></h3>
+        <p>When annotating a URL, Plannotator uses Jina Reader by default. Disable per-invocation:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment"># Use native fetch + Turndown instead of Jina</span>
+<span class="cmd">plannotator annotate https://example.com/article <span class="flag">--no-jina</span></span></div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Hidden #06 — Plan Mode Improve-Context Hook</div>
+        <h3>Inject extra context automatically when the agent enters plan mode <span class="badge new">SECRET</span></h3>
+        <p>This is the most hidden feature: drop a script into <code>~/.plannotator/hooks/</code> and it will be executed before every plan is shown, letting you inject additional context automatically:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment"># ~/.plannotator/hooks/improve.sh</span>
+<span class="str">#!/bin/bash
+# Returns JSON with additionalContext for the plan review</span>
+<span class="cmd">echo '{"additionalContext": "Remember: all new code must include tests."}'</span>
+
+<span class="comment"># Plannotator automatically invokes this via:</span>
+<span class="cmd">plannotator improve-context</span></div>
+        <div class="callout tip" style="margin-top:10px"><strong>Use Case</strong><p>Inject project-specific rules, security reminders, or coding standards into every plan review without modifying CLAUDE.md.</p></div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Hidden #07 — Copilot CLI Subcommands</div>
+        <h3>Dedicated Copilot CLI interception hooks <span class="badge new">HIDDEN</span></h3>
+        <p>Copilot CLI uses different subcommands under the hood:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment"># Intercept exit_plan_mode from Copilot CLI session state</span>
+<span class="cmd">plannotator copilot-plan</span>
+
+<span class="comment"># Annotate the last assistant message from a Copilot session</span>
+<span class="cmd">plannotator copilot-last</span></div>
+        <p style="margin-top:10px; font-size:12px">These are triggered automatically by Copilot CLI's <code>preToolUse</code> hook — you won't usually call them directly.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Hidden #08 — Help &amp; Debug</div>
+        <h3>Show the full hidden command list at any time</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="cmd">plannotator --help</span>
+
+<span class="comment"># Lists all 8 modes including the hidden ones:</span>
+<span class="comment"># plannotator [--browser <n>]</span>
+<span class="comment"># plannotator review [PR_URL]</span>
+<span class="comment"># plannotator annotate <file | url | folder>  [--no-jina]</span>
+<span class="comment"># plannotator last</span>
+<span class="comment"># plannotator archive</span>
+<span class="comment"># plannotator sessions [--open N] [--clean]</span>
+<span class="comment"># plannotator improve-context</span></div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Hidden #09 — Power User Tips</div>
+        <h3>Things most people don't know</h3>
+        <ul style="margin-top:8px; padding-left:20px; color:var(--muted); font-size:13px; line-height:2.4">
+          <li>🔑 <strong style="color:var(--text)">Plans auto-save before you see them</strong> — even if you crash the browser mid-review, <code>~/.plannotator/history/{project}/{slug}/</code> has every version</li>
+          <li>🔄 <strong style="color:var(--text)">Deduplication is built in</strong> — if Claude resubmits an identical plan, no new file is saved (content hash match)</li>
+          <li>🏷️ <strong style="color:var(--text)">Slug format</strong>: <code>{sanitized-heading}-YYYY-MM-DD</code> — same heading on same day = same plan being iterated on</li>
+          <li>🆔 <strong style="color:var(--text)">Auto-resume drafts</strong> — annotation drafts are saved to disk via <code>/api/draft</code> and survive server crashes</li>
+          <li>📷 <strong style="color:var(--text)">Drag &amp; drop images</strong> — you can attach images to any annotation, stored in <code>ImageAttachment</code> objects with human-readable names</li>
+          <li>🎯 <strong style="color:var(--text)">External API</strong> — ESLint, linters, or CI tools can inject annotations via <code>POST /api/external-annotations</code> while a review is live</li>
+          <li>🔗 <strong style="color:var(--text)">VS Code integration</strong> — click <code>/api/plan/vscode-diff</code> to open a plan diff directly in VS Code instead of browser</li>
+          <li>🛡️ <strong style="color:var(--text)">SLSA verified</strong> — every binary has SHA256 + SLSA provenance (v0.17.2+); verify with <code>--verify-attestation</code></li>
+          <li>📝 <strong style="color:var(--text)">Obsidian auto-save</strong> — plans can be auto-saved to an Obsidian vault with YAML frontmatter; detect vaults via <code>/api/obsidian/vaults</code></li>
+        </ul>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Hidden #10 — Commands I'd Add That Don't Exist Yet</div>
+        <h3>Feature wishlist — not shipped, but you could fork and add these</h3>
+        <ul style="margin-top:8px; padding-left:20px; color:var(--muted); font-size:13px; line-height:2.4">
+          <li>🔍 <code>/plannotator-search</code> — search archive by heading or date range (<code>plannotator archive --search "auth"</code>)</li>
+          <li>📊 <code>/plannotator-stats</code> — how many plans approved/denied, common annotation patterns, reviewer metrics</li>
+          <li>🔄 <code>/plannotator-compare</code> — diff two archived plans side-by-side to see how design evolved</li>
+          <li>📤 <code>/plannotator-export</code> — bulk export archive as a single markdown file for stakeholder reports</li>
+          <li>🔔 <code>/plannotator-watch</code> — Slack/Teams notification when a plan needs review (team workflow)</li>
+          <li>💡 <code>/plannotator-replay</code> — replay your annotation session to show a colleague exactly how you reviewed it</li>
+          <li>📝 <code>/plannotator-template &lt;name&gt;</code> — save frequently-used annotation sets as templates</li>
+          <li>📢 Submit these via PR at <a href="https://github.com/backnotprop/plannotator" target="_blank" style="color:var(--accent2)">github.com/backnotprop/plannotator</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ AGENT TUTORIAL SECTIONS ══ -->
+
+  <!-- Claude Code Tutorial -->
+  <section id="tut-claude">
+    <div class="section-header">
+      <div class="section-number" style="font-size:36px">🤖</div>
+      <div class="section-title-wrap">
+        <span class="section-tag" style="color:var(--accent2)">Agent Tutorial</span>
+        <div class="section-title">Claude Code</div>
+      </div>
+    </div>
+    <div class="callout info"><strong>Full Support</strong><p>Claude Code has the deepest Plannotator integration — automatic plan interception, visual review, annotations, and team sharing all work out of the box.</p></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">Step 1</div>
+        <h3>Install Claude Code and the plannotator binary</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="cmd">npm install -g @anthropic-ai/claude-code</span>
+<span class="cmd">irm https://plannotator.ai/install.ps1 | iex</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">Step 2</div>
+        <h3>Launch Claude Code and register the plugin</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="cmd">claude</span>
+<span class="comment"># Inside the session:</span>
+<span class="cmd">/plugin marketplace add backnotprop/plannotator</span></div>
+        <p>Restart Claude Code after the plugin installs.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">Step 3</div>
+        <h3>Use it — ask Claude to plan something</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="cmd">Plan how you would add OAuth login to this app</span></div>
+        <p>Your browser will open automatically with the visual plan UI.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Codex CLI Tutorial -->
+  <section id="tut-codex">
+    <div class="section-header">
+      <div class="section-number" style="font-size:36px">🔷</div>
+      <div class="section-title-wrap">
+        <span class="section-tag" style="color:var(--accent2)">Agent Tutorial</span>
+        <div class="section-title">Codex CLI</div>
+      </div>
+    </div>
+    <div class="callout warn"><strong>⚠ Limited Support</strong><p>Codex supports code review and annotation commands, but <strong>plan mode is not yet available</strong>. Commands use <code>!</code> prefix instead of <code>/</code>.</p></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">Step 1</div>
+        <h3>Install Codex CLI and the plannotator binary</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="cmd">npm install -g @openai/codex</span>
+<span class="cmd">irm https://plannotator.ai/install.ps1 | iex</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">Step 2</div>
+        <h3>Launch Codex and use plannotator commands</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="cmd">codex</span>
+<span class="comment"># Inside the session — note the ! prefix:</span>
+<span class="cmd">!plannotator review</span>
+<span class="cmd">!plannotator review https://github.com/org/repo/pull/42</span>
+<span class="cmd">!plannotator annotate README.md</span>
+<span class="cmd">!plannotator last</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gemini CLI Tutorial -->
+  <section id="tut-gemini">
+    <div class="section-header">
+      <div class="section-number" style="font-size:36px">💎</div>
+      <div class="section-title-wrap">
+        <span class="section-tag" style="color:var(--accent2)">Agent Tutorial</span>
+        <div class="section-title">Gemini CLI</div>
+      </div>
+    </div>
+    <div class="callout info"><strong>Full Support</strong><p>Gemini CLI gets full plan mode + code review support. The installer auto-detects Gemini by checking for <code>~/.gemini</code>. Requires Gemini CLI 0.36.0+.</p></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">Step 1</div>
+        <h3>Install Gemini CLI and run the plannotator installer</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="cmd">npm install -g @google/gemini-cli</span>
+<span class="comment"># Installer auto-detects Gemini and configures hooks</span>
+<span class="cmd">irm https://plannotator.ai/install.ps1 | iex</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">Step 2</div>
+        <h3>Use Plannotator inside Gemini CLI</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="cmd">gemini</span>
+<span class="comment"># Enter plan mode — browser opens automatically</span>
+<span class="cmd">/plan</span>
+
+<span class="comment"># Code review commands</span>
+<span class="cmd">/plannotator-review</span>
+<span class="cmd">/plannotator-review https://github.com/org/repo/pull/42</span>
+<span class="cmd">/plannotator-annotate docs/design.md</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OpenCode Tutorial -->
+  <section id="tut-opencode">
+    <div class="section-header">
+      <div class="section-number" style="font-size:36px">🟣</div>
+      <div class="section-title-wrap">
+        <span class="section-tag" style="color:var(--accent2)">Agent Tutorial</span>
+        <div class="section-title">OpenCode</div>
+      </div>
+    </div>
+    <div class="callout info"><strong>Full Support</strong><p>OpenCode uses a JSON config file for plugins. After adding the plugin entry and running the installer, restart OpenCode to activate.</p></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">Step 1</div>
+        <h3>Add plannotator to your opencode.json config</h3>
+        <p>Find or create <code>opencode.json</code> in your project root:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="str">{
+  "plugin": ["@plannotator/opencode@latest"]
+}</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">Step 2</div>
+        <h3>Run the installer to download binary and clear plugin cache</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="cmd">irm https://plannotator.ai/install.ps1 | iex</span></div>
+        <p>Restart OpenCode after this step.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">Step 3</div>
+        <h3>Use plannotator inside OpenCode</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment"># Plan mode activates automatically</span>
+<span class="comment"># For code review:</span>
+<span class="cmd">/plannotator-review</span>
+<span class="cmd">/plannotator-review https://github.com/org/repo/pull/42</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SECTION: REAL-WORLD EXAMPLES ══ -->
+  <section id="examples">
+    <div class="section-header">
+      <div class="section-number">06</div>
+      <div class="section-title-wrap">
+        <span class="section-tag" style="color:var(--accent2)">Practical Use</span>
+        <div class="section-title">Real-World Examples</div>
+      </div>
+    </div>
+    <p style="color:var(--muted); margin-bottom:28px; font-size:14px">These are real prompts and workflows you can copy directly into your agent session.</p>
+
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-num">Example 01 — Refactor Planning</div>
+        <h3>Ask Claude to plan a code refactor, then annotate it</h3>
+        <p>Start a Claude Code session in your project folder, then ask:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="cmd">Plan how you would refactor the authentication module to use JWT tokens instead of sessions. Show each file you will change and why.</span></div>
+        <p style="margin-top:12px">When the browser opens, you can:</p>
+        <ul style="margin-top:8px; padding-left:20px; color:var(--muted); font-size:13px; line-height:2.2">
+          <li>🟡 Highlight the JWT section and add a comment: <em>"Use RS256 not HS256 for production"</em></li>
+          <li>🔴 Delete any steps touching files you don't want changed</li>
+          <li>✅ Approve — Claude proceeds with your feedback baked in</li>
+        </ul>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Example 02 — New Feature Planning</div>
+        <h3>Plan a new feature before any code is written</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="cmd">Plan the implementation of a dark mode toggle for this React app. Include which components need changes, what CSS variables to add, and how to persist the preference.</span></div>
+        <div class="callout tip" style="margin-top:14px"><strong>Pro Tip</strong><p>Use <strong>Request Changes</strong> to send back: <em>"Also add a system preference detection on first load"</em> — Claude will revise the plan and resubmit for another round of review.</p></div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Example 03 — PR Review with Annotations</div>
+        <h3>Review an open GitHub Pull Request visually</h3>
+        <p>Inside Claude Code, run:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="cmd">/plannotator-review https://github.com/your-org/your-repo/pull/47</span></div>
+        <p style="margin-top:12px">In the browser, annotate specific lines of the diff. Then click <strong>Send Feedback</strong> — your annotations are sent back to Claude as structured context so it can explain or fix the code inline.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Example 04 — Annotate a Design Doc</div>
+        <h3>Mark up an architecture markdown file</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="cmd">/plannotator-annotate docs/architecture.md</span></div>
+        <p style="margin-top:12px">Great for reviewing AI-generated design docs, sprint plans, or README files before accepting them. Your annotations become feedback Claude acts on immediately.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Example 05 — Team Collaboration Workflow</div>
+        <h3>Share a plan with a colleague for their review</h3>
+        <ol style="margin-top:8px; padding-left:20px; color:var(--muted); font-size:13px; line-height:2.4">
+          <li>Claude presents a plan → Plannotator opens in your browser</li>
+          <li>Click the <strong>Share</strong> button — copies a URL to clipboard</li>
+          <li>Send the URL to your colleague (Slack, Teams, email)</li>
+          <li>They open the URL, add their own annotations, click <strong>Export Link</strong></li>
+          <li>You import their annotated link → all feedback merged</li>
+          <li>Click <strong>Send to Agent</strong> — combined feedback goes back to Claude</li>
+        </ol>
+        <div class="callout info" style="margin-top:14px"><strong>Privacy</strong><p>Large plans are AES-256-GCM encrypted before upload. The server never sees the content — only you and whoever has the URL can read it.</p></div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Example 06 — Remote / SSH Session</div>
+        <h3>Using Plannotator over SSH or in a devcontainer</h3>
+        <p>Set these environment variables before launching your agent:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment"># Force remote mode (SSH / devcontainer)</span>
+<span class="cmd">export PLANNOTATOR_REMOTE=1</span>
+<span class="cmd">export PLANNOTATOR_PORT=9999</span>
+<span class="comment"># Then forward the port in your SSH config:</span>
+<span class="cmd">ssh -L 9999:localhost:9999 user@myserver</span>
+<span class="comment"># Now open http://localhost:9999 in your local browser</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ SECTION: ENV VARIABLES ══ -->
+  <section id="envvars">
+    <div class="section-header">
+      <div class="section-number">07</div>
+      <div class="section-title-wrap">
+        <span class="section-tag" style="color:var(--accent3)">Configuration</span>
+        <div class="section-title">Environment Variables</div>
+      </div>
+    </div>
+    <p style="color:var(--muted); margin-bottom:28px; font-size:14px">These variables let you customise Plannotator's behaviour without changing any code. Set them in your shell profile or <code>.env</code> file.</p>
+
+    <table class="cmd-table" style="background:var(--surface); border:1px solid var(--border)">
+      <thead>
+        <tr>
+          <th>Variable</th>
+          <th>Values</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>PLANNOTATOR_REMOTE</td>
+          <td style="color:var(--accent5); font-family:'IBM Plex Mono',monospace; font-size:12px">1 / 0 / unset</td>
+          <td>Force remote mode (SSH/devcontainer). Unset = auto-detect via SSH env vars.</td>
+        </tr>
+        <tr>
+          <td>PLANNOTATOR_PORT</td>
+          <td style="color:var(--accent5); font-family:'IBM Plex Mono',monospace; font-size:12px">number</td>
+          <td>Fixed port to use. Default: random locally, <code>19432</code> for remote sessions.</td>
+        </tr>
+        <tr>
+          <td>PLANNOTATOR_BROWSER</td>
+          <td style="color:var(--accent5); font-family:'IBM Plex Mono',monospace; font-size:12px">path/name</td>
+          <td>Custom browser to open plans in. macOS: app name. Linux/Windows: executable path.</td>
+        </tr>
+        <tr>
+          <td>PLANNOTATOR_SHARE</td>
+          <td style="color:var(--accent5); font-family:'IBM Plex Mono',monospace; font-size:12px">disabled</td>
+          <td>Set to <code>disabled</code> to turn off URL sharing entirely. Default: enabled.</td>
+        </tr>
+        <tr>
+          <td>PLANNOTATOR_SHARE_URL</td>
+          <td style="color:var(--accent5); font-family:'IBM Plex Mono',monospace; font-size:12px">URL</td>
+          <td>Custom base URL for share links if you self-host the portal. Default: <code>https://share.plannotator.ai</code>.</td>
+        </tr>
+        <tr>
+          <td>PLANNOTATOR_JINA</td>
+          <td style="color:var(--accent5); font-family:'IBM Plex Mono',monospace; font-size:12px">0 / 1</td>
+          <td>Disable/enable Jina Reader for URL annotation. Default: enabled. Also configurable in <code>~/.plannotator/config.json</code>.</td>
+        </tr>
+        <tr>
+          <td>JINA_API_KEY</td>
+          <td style="color:var(--accent5); font-family:'IBM Plex Mono',monospace; font-size:12px">string</td>
+          <td>Optional Jina Reader API key for higher rate limits (500 RPM vs 20 RPM unauthenticated). Free keys include 10M tokens.</td>
+        </tr>
+        <tr>
+          <td>PLANNOTATOR_VERIFY_ATTESTATION</td>
+          <td style="color:var(--accent5); font-family:'IBM Plex Mono',monospace; font-size:12px">1 / true</td>
+          <td>Run <code>gh attestation verify</code> on every install for supply-chain security. Requires <code>gh</code> CLI installed and authenticated.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout tip" style="margin-top:20px">
+      <strong>Persist Settings in config.json</strong>
+      <p>Create <code>~/.plannotator/config.json</code> to set options permanently without environment variables:</p>
+    </div>
+    <div class="code-block" style="margin-top:0"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment">// ~/.plannotator/config.json</span>
+<span class="str">{
+  "jina": false,
+  "verifyAttestation": true
+}</span></div>
+  </section>
+
+  <!-- ══ SECTION: BEST PRACTICES ══ -->
+  <section id="bestpractice">
+    <div class="section-header">
+      <div class="section-number">08</div>
+      <div class="section-title-wrap">
+        <span class="section-tag" style="color:var(--accent)">Tips &amp; Tricks</span>
+        <div class="section-title">Best Practices</div>
+      </div>
+    </div>
+
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-num">Best Practice 01 — Always Review Before Approving</div>
+        <h3>Never rubber-stamp a plan</h3>
+        <p>The whole point of Plannotator is to keep you in the loop. Even if the plan looks good, scan each section — AI agents can make subtle scope creep mistakes or touch files you didn't intend. Use highlights to mark sections you want to watch.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Best Practice 02 — Use Request Changes Iteratively</div>
+        <h3>Iterate until the plan is exactly right</h3>
+        <p>Don't approve a plan that's 80% right. Click <strong>Request Changes</strong> with specific annotations — the agent will revise and resubmit. The <strong>Plan Diff</strong> feature shows exactly what changed between versions so you can see if your feedback was addressed.</p>
+        <div class="callout tip" style="margin-top:12px"><strong>Plan Diff Badge</strong><p>Look for the <code>+N / -M</code> badge below the plan card. Click it to toggle between normal view and git-style diff view to see exactly what the agent revised.</p></div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Best Practice 03 — Be Specific in Annotations</div>
+        <h3>Write actionable comments, not vague ones</h3>
+        <ul style="margin-top:8px; padding-left:20px; color:var(--muted); font-size:13px; line-height:2.4">
+          <li>❌ Bad: <em style="color:#999">"I don't like this"</em></li>
+          <li>✅ Good: <em style="color:var(--text)">"Use dependency injection here instead of importing directly — makes unit testing easier"</em></li>
+          <li>❌ Bad: <em style="color:#999">"Change the database part"</em></li>
+          <li>✅ Good: <em style="color:var(--text)">"Use a transaction here — both inserts must succeed or fail together"</em></li>
+        </ul>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Best Practice 04 — Pin Versions in Production Workflows</div>
+        <h3>Don't use latest in automated or team setups</h3>
+        <p>If your team uses Plannotator in CI or shared dev environments, pin a specific version to avoid surprise breaking changes:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="cmd">& ([scriptblock]::Create((irm https://plannotator.ai/install.ps1))) <span class="flag">-Version v0.17.10</span></span></div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Best Practice 05 — Use the Archive for Audit Trails</div>
+        <h3>Every decision is saved automatically</h3>
+        <p>All approved and denied plans are saved to <code>~/.plannotator/plans/</code> with full version history under <code>~/.plannotator/history/</code>. Browse them any time via the Archive sidebar tab in any active session. Useful for understanding why a codebase evolved a certain way.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Best Practice 06 — Annotate URLs and Docs Too</div>
+        <h3>Plannotator isn't just for agent-generated plans</h3>
+        <p>You can annotate any URL, HTML file, or markdown file and send feedback back to the agent:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment"># Annotate a live webpage (fetched via Jina Reader)</span>
+<span class="cmd">/plannotator-annotate https://docs.example.com/api-reference</span>
+
+<span class="comment"># Annotate a local spec file</span>
+<span class="cmd">/plannotator-annotate specs/feature-spec.md</span>
+
+<span class="comment"># Open a folder browser and pick a file</span>
+<span class="cmd">/plannotator-annotate ./docs/</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ SECTION: DEVELOPER GUIDELINES ══ -->
+  <section id="devguide">
+    <div class="section-header">
+      <div class="section-number">09</div>
+      <div class="section-title-wrap">
+        <span class="section-tag" style="color:var(--accent4)">For Developers</span>
+        <div class="section-title">Developer Guidelines</div>
+      </div>
+    </div>
+    <p style="color:var(--muted); margin-bottom:28px; font-size:14px">Everything you need to build on top of, extend, or contribute to Plannotator.</p>
+
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-num">Dev — Project Structure</div>
+        <h3>Key folders to know</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="str">plannotator/
+├── apps/
+│   ├── hook/           </span><span class="comment"># Claude Code plugin (plan review + slash commands)</span>
+<span class="str">│   ├── opencode-plugin/ </span><span class="comment"># OpenCode plugin</span>
+<span class="str">│   ├── review/         </span><span class="comment"># Standalone code review editor (Vite dev server)</span>
+<span class="str">│   ├── vscode-extension/</span><span class="comment"># VS Code extension</span>
+<span class="str">│   └── paste-service/  </span><span class="comment"># Self-hostable short URL sharing service</span>
+<span class="str">└── packages/
+    ├── server/         </span><span class="comment"># Shared Bun server (plan, review, annotate APIs)</span>
+<span class="str">    ├── ui/             </span><span class="comment"># Shared React components, hooks, utilities</span>
+<span class="str">    ├── shared/         </span><span class="comment"># Cross-runtime types, storage, draft persistence</span>
+<span class="str">    ├── editor/         </span><span class="comment"># Plan review App.tsx</span>
+<span class="str">    └── review-editor/  </span><span class="comment"># Code review UI (DiffViewer, FileTree, ReviewSidebar)</span></div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Dev — Local Development Setup</div>
+        <h3>Run the dev servers</h3>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="cmd">bun install</span>
+
+<span class="comment"># Run individual apps</span>
+<span class="cmd">bun run dev:hook</span>      <span class="comment"># Plan review hook server</span>
+<span class="cmd">bun run dev:review</span>    <span class="comment"># Code review editor</span>
+<span class="cmd">bun run dev:portal</span>    <span class="comment"># Share portal</span>
+<span class="cmd">bun run dev:marketing</span> <span class="comment"># plannotator.ai website</span>
+<span class="cmd">bun run dev:vscode</span>    <span class="comment"># VS Code extension (watch mode)</span>
+
+<span class="comment"># Test the plugin locally without installing</span>
+<span class="cmd">claude --plugin-dir ./apps/hook</span></div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Dev — Build Order (Critical)</div>
+        <h3>Build order matters — always follow this sequence</h3>
+        <p>The hook build copies pre-built HTML from the review app. If you skip the review build, you'll get stale files.</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment"># If you changed UI code in packages/ui or review-editor:</span>
+<span class="cmd">bun run --cwd apps/review build &amp;&amp; bun run build:hook</span>
+
+<span class="comment"># If you only changed plan UI (not review UI):</span>
+<span class="cmd">bun run build:hook</span>
+
+<span class="comment"># For OpenCode plugin:</span>
+<span class="cmd">bun run build:hook &amp;&amp; bun run build:opencode</span>
+
+<span class="comment"># Full compile to binary (for local testing):</span>
+<span class="cmd">bun run --cwd apps/review build &amp;&amp; bun run build:hook &amp;&amp; bun build apps/hook/server/index.ts --compile --outfile ~/.local/bin/plannotator</span></div>
+        <div class="callout warn" style="margin-top:12px"><strong>⚠ Common Mistake</strong><p>Running only <code>bun run build</code> after changing review-editor code will silently copy stale HTML. Always run <code>build:review</code> first.</p></div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Dev — Key API Endpoints</div>
+        <h3>Server API surface (all servers use random port locally, 19432 in remote)</h3>
+        <div class="agent-commands" style="margin-top:8px">
+          <div class="cmd-item"><div class="cmd-label">GET /api/plan</div><div class="cmd-desc">Returns plan markdown, origin, version info, previousPlan for diff</div></div>
+          <div class="cmd-item"><div class="cmd-label">POST /api/approve</div><div class="cmd-desc">Approve plan — sends allow decision back to agent hook</div></div>
+          <div class="cmd-item"><div class="cmd-label">POST /api/deny</div><div class="cmd-desc">Deny plan with feedback — sends deny + message back to agent</div></div>
+          <div class="cmd-item"><div class="cmd-label">GET /api/diff</div><div class="cmd-desc">Review server: returns rawPatch, gitRef, diffType, gitContext</div></div>
+          <div class="cmd-item"><div class="cmd-label">POST /api/feedback</div><div class="cmd-desc">Submit review/annotate feedback with annotations array</div></div>
+          <div class="cmd-item"><div class="cmd-label">GET/POST /api/draft</div><div class="cmd-desc">Auto-save annotation drafts — survives server crashes</div></div>
+          <div class="cmd-item"><div class="cmd-label">POST /api/external-annotations</div><div class="cmd-desc">Inject annotations from external tools (e.g. ESLint, linters)</div></div>
+          <div class="cmd-item"><div class="cmd-label">GET /api/external-annotations/stream</div><div class="cmd-desc">SSE stream for real-time external annotation updates</div></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Dev — External Annotations API</div>
+        <h3>Inject annotations from external tools programmatically</h3>
+        <p>Any tool (linters, CI, custom scripts) can push annotations into the active Plannotator session via the REST API:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">COPY</button>
+<span class="comment"># Single annotation</span>
+<span class="cmd">curl -X POST http://localhost:19432/api/external-annotations \</span>
+<span class="str">  -H "Content-Type: application/json" \</span>
+<span class="str">  -d '{"source": "eslint", "type": "COMMENT", "originalText": "var x = 1", "text": "Use const instead of var"}'</span>
+
+<span class="comment"># Batch annotations</span>
+<span class="cmd">curl -X POST http://localhost:19432/api/external-annotations \</span>
+<span class="str">  -H "Content-Type: application/json" \</span>
+<span class="str">  -d '{"annotations": [{"source": "eslint", "type": "COMMENT", ...}, ...]}'</span></div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">Dev — Contributing</div>
+        <h3>How to submit a contribution</h3>
+        <ol style="margin-top:8px; padding-left:20px; color:var(--muted); font-size:13px; line-height:2.4">
+          <li>Fork the repo at <a href="https://github.com/backnotprop/plannotator" target="_blank" style="color:var(--accent2)">github.com/backnotprop/plannotator</a></li>
+          <li>Run <code>bun install</code> and <code>bun run dev:hook</code> to verify the dev environment works</li>
+          <li>Make your changes — if touching server endpoints, update <strong>both</strong> the Bun server (<code>packages/server/</code>) and the Pi server (<code>apps/pi-extension/server/</code>)</li>
+          <li>Put runtime-agnostic logic in <code>packages/shared/</code> so all runtimes benefit</li>
+          <li>Test locally with <code>claude --plugin-dir ./apps/hook</code></li>
+          <li>Submit a Pull Request — dual licensed MIT / Apache 2.0</li>
+        </ol>
+        <div class="callout warn" style="margin-top:14px"><strong>⚠ Two Server Runtimes</strong><p>There are two server implementations with the same API surface — <strong>Bun</strong> (used by Claude Code + OpenCode) and <strong>Node.js</strong> (used by Pi). If you add or change any server endpoint, you must update <em>both</em>.</p></div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <p>Plannotator · <a href="https://github.com/backnotprop/plannotator" target="_blank">github.com/backnotprop/plannotator</a> · MIT OR Apache-2.0 License</p>
+    <p style="margin-top:6px; color:#333">Tutorial created with Claude · C:\1.Work\11.Claude_Extentions\Extentions Tutorials\</p>
+  </footer>
+
+</main>
+
+<script>
+  // Tab switching
+  function switchTab(agent, btn) {
+    document.querySelectorAll('.agent-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.agent-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + agent).classList.add('active');
+  }
+
+  // Copy code
+  function copyCode(btn) {
+    const block = btn.parentElement;
+    const text = [...block.childNodes]
+      .filter(n => n.nodeType === 3 || (n.nodeType === 1 && n.tagName !== 'BUTTON'))
+      .map(n => n.textContent)
+      .join('')
+      .trim();
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'COPIED!';
+      btn.style.background = 'var(--accent)';
+      btn.style.color = 'var(--bg)';
+      setTimeout(() => { btn.textContent = 'COPY'; btn.style.background = ''; btn.style.color = ''; }, 2000);
+    });
+  }
+
+  // Active nav highlight on scroll
+  const sections = document.querySelectorAll('section[id], div.hero');
+  const navLinks = document.querySelectorAll('nav a[href^="#"]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id || ''; });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+</script>
+</body>
+</html>

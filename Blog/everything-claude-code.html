@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Everything Claude Code – Tutorial for Dummies</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f5f7;--surface:#fff;--surface2:#f0f1f5;--border:#d8dae2;--accent:#0ea5e9;--accent2:#7c3aed;--accent3:#d63050;--accent4:#059669;--accent5:#d97706;--text:#1a1a2e;--muted:#555577;--code-bg:#1e1e2e}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.7}
+nav{position:fixed;top:0;left:0;width:245px;height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;overflow-y:auto}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;color:var(--accent);padding:24px 20px 20px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,rgba(14,165,233,.06),transparent);line-height:1.2}
+.nav-logo span{color:var(--accent2)}.nav-logo small{display:block;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);margin-top:4px;text-transform:uppercase}
+nav a{display:flex;align-items:center;gap:8px;padding:8px 20px;text-decoration:none;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.5px;border-left:3px solid transparent;transition:all .18s}
+nav a .ni{font-size:12px;opacity:.7}
+nav a:hover,nav a.active{color:var(--accent);border-left-color:var(--accent);background:rgba(14,165,233,.04)}
+nav a.sec:hover,nav a.sec.active{color:var(--accent4);border-left-color:var(--accent4);background:rgba(5,150,105,.04)}
+nav a.sec2:hover,nav a.sec2.active{color:var(--accent2);border-left-color:var(--accent2);background:rgba(124,58,237,.04)}
+.ns{font-size:9px;letter-spacing:2.5px;color:var(--accent3);padding:16px 20px 5px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;opacity:.8}
+main{margin-left:245px;padding:0 72px 80px;max-width:980px}
+.hero{padding:64px 0;border-bottom:1px solid var(--border);margin-bottom:64px;position:relative;overflow:hidden}
+.hero::before{content:'ECC';position:absolute;top:0;right:-10px;font-family:'Bebas Neue',sans-serif;font-size:200px;color:rgba(14,165,233,.04);pointer-events:none;line-height:1}
+.hero-tag{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.hero-tag::before{content:'';display:inline-block;width:28px;height:1px;background:var(--accent)}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:88px;line-height:.88;letter-spacing:2px;margin-bottom:24px}
+.hero h1 .l1{color:var(--text)}.hero h1 .l2{color:var(--accent)}.hero h1 .l3{color:var(--accent2)}
+.hero-desc{font-size:16px;color:var(--muted);max-width:560px;line-height:1.65;margin-bottom:32px}
+.stats{display:flex;gap:10px;flex-wrap:wrap}
+.stat{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:5px 14px;border:1px solid;font-weight:600}
+.stat.blue{border-color:var(--accent);color:var(--accent);background:rgba(14,165,233,.07)}
+.stat.purple{border-color:var(--accent2);color:var(--accent2);background:rgba(124,58,237,.07)}
+.stat.green{border-color:var(--accent4);color:var(--accent4);background:rgba(5,150,105,.07)}
+.stat.amber{border-color:var(--accent5);color:var(--accent5);background:rgba(217,119,6,.07)}
+.stat.red{border-color:var(--accent3);color:var(--accent3);background:rgba(214,48,80,.07)}
+.pillar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:32px 0}
+.pillar{background:var(--surface);border:1px solid var(--border);border-top:3px solid;padding:18px 16px;transition:box-shadow .2s,transform .15s}
+.pillar:hover{box-shadow:0 4px 16px rgba(14,165,233,.10);transform:translateY(-2px)}
+.pillar.p1{border-top-color:var(--accent)}.pillar.p2{border-top-color:var(--accent2)}.pillar.p3{border-top-color:var(--accent3)}.pillar.p4{border-top-color:var(--accent4)}
+.pillar .pico{font-size:22px;margin-bottom:8px}.pillar h4{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--text);margin-bottom:6px}.pillar p{font-size:12px;color:var(--muted);line-height:1.5}
+section{margin-bottom:84px;scroll-margin-top:40px}
+.sh{display:flex;align-items:flex-end;gap:18px;margin-bottom:36px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.sn{font-family:'Bebas Neue',sans-serif;font-size:50px;color:var(--border);line-height:1;letter-spacing:2px}
+.stw{line-height:1}.stag{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;margin-bottom:5px;display:block}
+.stitle{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:1px;line-height:1}
+.atabs{display:flex;border:1px solid var(--border);overflow:hidden}
+.atab{flex:1;padding:11px 8px;background:#eef0f8;border:none;border-right:1px solid var(--border);color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:4px}
+.atab:last-child{border-right:none}.atab .ti{font-size:16px}.atab:hover{background:#e2e5f0;color:var(--text)}
+.atab.active{background:var(--surface);color:var(--accent);border-bottom:2px solid var(--accent);font-weight:600}
+.apanel{display:none;border:1px solid var(--border);border-top:none;padding:26px;background:var(--surface);animation:fadeIn .2s ease;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.apanel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.steps{display:flex;flex-direction:column;gap:14px}
+.step{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);padding:20px 24px;transition:box-shadow .2s;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.step:hover{box-shadow:0 2px 12px rgba(14,165,233,.08)}
+.step.g{border-left-color:var(--accent4)}.step.p{border-left-color:var(--accent2)}.step.r{border-left-color:var(--accent3)}.step.o{border-left-color:var(--accent5)}
+.snum{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
+.step h3{font-weight:600;font-size:15px;margin-bottom:7px;color:var(--text)}.step p{color:var(--muted);font-size:13px;margin-bottom:8px}
+.cb{background:#1e1e2e;border:1px solid #33334a;padding:13px 46px 13px 16px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#9ecfff;position:relative;overflow-x:auto;margin-top:10px;line-height:1.8}
+.cb .cm{color:#5a5a7a}.cb .cmd{color:#ffd060}.cb .fl{color:#ff7090}.cb .str{color:#70e0a0}.cb .kw{color:#c792ea}
+.cpb{position:absolute;top:7px;right:7px;background:#2a2a3e;border:1px solid #44445a;color:#7777aa;font-family:'IBM Plex Mono',monospace;font-size:9px;padding:3px 8px;cursor:pointer;letter-spacing:1px;transition:all .18s;text-transform:uppercase}
+.cpb:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.cl{padding:14px 18px;margin:14px 0;border-left:3px solid;font-size:13px}
+.cl.tip{border-color:var(--accent);background:rgba(14,165,233,.05)}.cl.warn{border-color:var(--accent3);background:rgba(214,48,80,.05)}.cl.info{border-color:var(--accent2);background:rgba(124,58,237,.06)}.cl.go{border-color:var(--accent4);background:rgba(5,150,105,.05)}
+.cl strong{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:5px}
+.cl.tip strong{color:var(--accent)}.cl.warn strong{color:var(--accent3)}.cl.info strong{color:var(--accent2)}.cl.go strong{color:var(--accent4)}.cl p{color:var(--muted)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ccard{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--accent);padding:18px 20px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.ccard h4{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:1px;margin-bottom:12px;color:var(--accent)}
+.ccard ul{list-style:none}.ccard ul li{padding:4px 0;border-bottom:1px solid var(--border);font-size:12px;display:flex;gap:8px;align-items:baseline}
+.ccard ul li:last-child{border:none}.ccard ul li code{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-size:11px;white-space:nowrap;flex-shrink:0}.ccard ul li span{color:var(--muted);font-size:11px}
+.ct{width:100%;border-collapse:collapse;font-size:13px}
+.ct th{text-align:left;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--accent3);padding:9px 12px;border-bottom:1px solid var(--border);text-transform:uppercase}
+.ct td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.ct tr:hover td{background:rgba(14,165,233,.02)}.ct td:first-child{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-size:11px;white-space:nowrap}.ct td:last-child{color:var(--muted)}
+.cmd-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.ci{background:#f4f6fb;border:1px solid var(--border);padding:10px 12px}
+.ci .cl2{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);margin-bottom:3px;font-weight:600}.ci .cd2{font-size:11px;color:var(--muted)}
+footer{border-top:1px solid var(--border);padding:32px 0;margin-top:40px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px}
+footer a{color:var(--accent2);text-decoration:none}footer p:last-child{color:#aaa;margin-top:6px}
+@media(max-width:900px){nav{display:none}main{margin-left:0;padding:24px 18px}.g2,.pillar-grid,.cmd-grid{grid-template-columns:1fr}.hero h1{font-size:56px}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">EVERYTHING<br><span>CLAUDE CODE</span><small>Tutorial for Dummies</small></div>
+  <span class="ns">Core Sections</span>
+  <a href="#overview"><span class="ni">🌐</span> Overview &amp; Architecture</a>
+  <a href="#install"><span class="ni">⚙️</span> 01 — Installation</a>
+  <a href="#agents-tab"><span class="ni">🤖</span> 02 — Agent Setup</a>
+  <a href="#basicuse"><span class="ni">🚀</span> 03 — Basic Use</a>
+  <a href="#advanced"><span class="ni">⚡</span> 04 — Advanced Use</a>
+  <a href="#cheat"><span class="ni">📋</span> 05 — Cheat Sheet</a>
+  <a href="#hidden"><span class="ni">🔮</span> 06 — Hidden Commands</a>
+  <span class="ns">Components</span>
+  <a href="#comp-skills" class="sec"><span class="ni">🧠</span> 183 Skills</a>
+  <a href="#comp-agents" class="sec"><span class="ni">🤖</span> 48 Agents</a>
+  <a href="#comp-commands" class="sec"><span class="ni">⚡</span> 79 Commands</a>
+  <a href="#comp-security" class="sec"><span class="ni">🛡️</span> AgentShield</a>
+  <a href="#comp-memory" class="sec"><span class="ni">🧬</span> Memory &amp; Instincts</a>
+  <a href="#comp-mcp" class="sec"><span class="ni">🔌</span> MCP Configs</a>
+  <span class="ns">Deep Dive</span>
+  <a href="#examples" class="sec2"><span class="ni">💡</span> Real Examples</a>
+  <a href="#bestpractice" class="sec2"><span class="ni">🏆</span> Best Practices</a>
+  <a href="#devguide" class="sec2"><span class="ni">🔬</span> Dev Guidelines</a>
+  <span class="ns">Links</span>
+  <a href="https://github.com/affaan-m/everything-claude-code" target="_blank"><span class="ni">↗</span> GitHub Repo</a>
+  <a href="https://ecc.tools" target="_blank"><span class="ni">↗</span> ecc.tools</a>
+</nav>
+
+<main>
+<div class="hero">
+  <div class="hero-tag">Agent Harness Performance System · Anthropic Hackathon Winner</div>
+  <h1><span class="l1">EVERY</span><br><span class="l2">THING</span><br><span class="l3">CLAUDE CODE</span></h1>
+  <p class="hero-desc">Not just configs. A complete agent harness: 183 skills, 48 agents, 79 commands, memory, instincts, security scanning, and research-first development. Works across Claude Code, Codex, Cursor, OpenCode, and Gemini. Built over 10+ months of intensive daily use.</p>
+  <div class="stats">
+    <span class="stat blue">183 Skills</span><span class="stat purple">48 Agents</span><span class="stat green">79 Commands</span>
+    <span class="stat amber">14 MCP Configs</span><span class="stat red">AgentShield 102 Rules</span>
+    <span class="stat blue">140K+ Stars</span><span class="stat green">12 Language Ecosystems</span>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="sh"><div class="sn">00</div><div class="stw"><span class="stag" style="color:var(--accent)">Architecture</span><div class="stitle">Overview &amp; Architecture</div></div></div>
+  <p style="color:var(--muted);margin-bottom:24px;font-size:14px">ECC is a multi-layer operating system for AI coding agents. It shapes agent behaviour from day one through five core pillars:</p>
+  <div class="pillar-grid">
+    <div class="pillar p1"><div class="pico">🧠</div><h4>Skills</h4><p>183 workflow skills covering every dev domain — TDD, debugging, research, security, frontend, DevOps, and more. Auto-invoked when relevant.</p></div>
+    <div class="pillar p2"><div class="pico">🤖</div><h4>Agents</h4><p>48 specialized subagents (code-reviewer, security-reviewer, architect, build-error-resolver, etc.) dispatched automatically.</p></div>
+    <div class="pillar p3"><div class="pico">🛡️</div><h4>Security</h4><p>AgentShield: 1282 tests, 102 rules. Scans CLAUDE.md, settings.json, MCP configs, hooks, agents, and skills for vulnerabilities and injection risks.</p></div>
+    <div class="pillar p4"><div class="pico">🧬</div><h4>Memory &amp; Instincts</h4><p>Persistent cross-session memory via MCP. Instinct system observes sessions, extracts patterns, and evolves them into new skills automatically.</p></div>
+  </div>
+  <div class="g2" style="margin-top:14px">
+    <div class="pillar" style="border-top-color:var(--accent5)"><div class="pico">⚡</div><h4 style="font-family:'IBM Plex Mono',monospace;font-size:11px">Commands &amp; Rules</h4><p style="font-size:12px;color:var(--muted)">79 slash commands + always-on rules per language: TypeScript, Python, Go, PHP, C++, Java, Kotlin, Rust, C#, Flutter, PyTorch, Nuxt 4.</p></div>
+    <div class="pillar" style="border-top-color:var(--accent2)"><div class="pico">🔌</div><h4 style="font-family:'IBM Plex Mono',monospace;font-size:11px">MCP Configurations</h4><p style="font-size:12px;color:var(--muted)">14 pre-configured MCP servers: Supabase, Playwright, Context7, Exa, GitHub, Memory, Sequential Thinking — ready to use.</p></div>
+  </div>
+  <div class="cl info" style="margin-top:20px"><strong>Repo Structure</strong><p><code>agents/</code> — 48 subagents &nbsp;·&nbsp; <code>skills/</code> — 183 workflow skills &nbsp;·&nbsp; <code>commands/</code> — 79 slash commands &nbsp;·&nbsp; <code>hooks/</code> — trigger automations &nbsp;·&nbsp; <code>rules/</code> — always-follow guidelines &nbsp;·&nbsp; <code>mcp-configs/</code> — 14 MCP configs &nbsp;·&nbsp; <code>tests/</code> — 978 tests</p></div>
+</section>
+
+<!-- INSTALL -->
+<section id="install">
+  <div class="sh"><div class="sn">01</div><div class="stw"><span class="stag" style="color:var(--accent)">Getting Started</span><div class="stitle">Installation</div></div></div>
+  <div class="cl info"><strong>Before You Start</strong><p>You need Node.js and one or more supported agents: Claude Code, Codex, Cursor, OpenCode, or Gemini CLI. ECC works across all of them from a single config source.</p></div>
+  <div class="steps">
+    <div class="step">
+      <div class="snum">Method A — Plugin Marketplace (Recommended)</div>
+      <h3>Install via Claude Code plugin system</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cm"># Step 1: Register marketplace</span>
+<span class="cmd">/plugin marketplace add affaan-m/everything-claude-code</span>
+<span class="cm"># Step 2: Install plugin</span>
+<span class="cmd">/plugin install everything-claude-code@affaan-m-everything-claude-code</span></div>
+      <div class="cl tip" style="margin-top:10px"><strong>Canonical ID</strong><p>Always use <code>everything-claude-code@affaan-m-everything-claude-code</code>. Old shorthand nicknames are deprecated.</p></div>
+    </div>
+    <div class="step g">
+      <div class="snum">Method B — OSS Installer (Most Reliable)</div>
+      <h3>Clone and copy rules directly</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">git clone https://github.com/affaan-m/everything-claude-code.git</span>
+<span class="cm"># User-level (all projects)</span>
+<span class="cmd">mkdir -p ~/.claude/rules</span>
+<span class="cmd">cp -r everything-claude-code/rules/common ~/.claude/rules/</span>
+<span class="cmd">cp -r everything-claude-code/rules/typescript ~/.claude/rules/</span>
+<span class="cm"># Project-level (current project only)</span>
+<span class="cmd">mkdir -p .claude/rules &amp;&amp; cp -r everything-claude-code/rules/common .claude/rules/</span></div>
+    </div>
+    <div class="step p">
+      <div class="snum">Method C — Selective Install</div>
+      <h3>Install only what you need</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">ecc install --profile developer --with lang:typescript --with agent:security-reviewer --without skill:continuous-learning</span></div>
+    </div>
+    <div class="step o">
+      <div class="snum">Method D — GitHub Extension</div>
+      <h3>Install via GitHub CLI</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">gh ext install affaan-m/everything-claude-code</span></div>
+    </div>
+  </div>
+  <div class="cl go" style="margin-top:16px"><strong>Verify Install</strong><p>Run <code>/harness-audit</code> to baseline what's active and check for issues.</p></div>
+</section>
+
+<!-- AGENT SETUP -->
+<section id="agents-tab">
+  <div class="sh"><div class="sn">02</div><div class="stw"><span class="stag" style="color:var(--accent2)">Multi-Agent</span><div class="stitle">Agent Setup</div></div></div>
+  <div class="atabs">
+    <button class="atab active" onclick="st('claude',this)"><span class="ti">🤖</span>Claude Code</button>
+    <button class="atab" onclick="st('codex',this)"><span class="ti">🔷</span>Codex</button>
+    <button class="atab" onclick="st('cursor',this)"><span class="ti">🖱️</span>Cursor</button>
+    <button class="atab" onclick="st('opencode',this)"><span class="ti">🟣</span>OpenCode</button>
+    <button class="atab" onclick="st('gemini',this)"><span class="ti">💎</span>Gemini</button>
+  </div>
+  <div class="apanel active" id="panel-claude">
+    <strong>🤖 Claude Code — Full support, all layers</strong>
+    <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">/plugin marketplace add affaan-m/everything-claude-code</span>
+<span class="cmd">/plugin install everything-claude-code@affaan-m-everything-claude-code</span>
+<span class="cmd">/harness-audit</span></div>
+  </div>
+  <div class="apanel" id="panel-codex">
+    <strong>🔷 Codex — Sync MCP config, instruction-based security</strong>
+    <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">bash scripts/sync-ecc-to-codex.sh</span>
+<span class="cm"># Or tell Codex directly:</span>
+<span class="cmd">Fetch and follow https://raw.githubusercontent.com/affaan-m/everything-claude-code/main/.codex/AGENTS.md</span></div>
+    <div class="cl warn" style="margin-top:10px"><strong>Codex Note</strong><p>Codex lacks hooks — security enforcement is instruction-based. Always validate inputs and never hardcode secrets.</p></div>
+  </div>
+  <div class="apanel" id="panel-cursor">
+    <strong>🖱️ Cursor — Agent chat or marketplace search</strong>
+    <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">/add-plugin everything-claude-code</span>
+<span class="cm"># Or search "everything-claude-code" in the Cursor plugin marketplace</span></div>
+  </div>
+  <div class="apanel" id="panel-opencode">
+    <strong>🟣 OpenCode — Full harness parity</strong>
+    <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="str">{ "plugin": ["everything-claude-code@latest"] }</span>
+<span class="cm"># Add to opencode.json, then restart OpenCode</span></div>
+  </div>
+  <div class="apanel" id="panel-gemini">
+    <strong>💎 Gemini CLI — Rules and skills supported</strong>
+    <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">cp -r everything-claude-code/rules/common ~/.gemini/rules/</span>
+<span class="cmd">cp -r everything-claude-code/rules/typescript ~/.gemini/rules/</span></div>
+  </div>
+</section>
+
+<!-- BASIC USE -->
+<section id="basicuse">
+  <div class="sh"><div class="sn">03</div><div class="stw"><span class="stag" style="color:var(--accent4)">Everyday Use</span><div class="stitle">Basic Use</div></div></div>
+  <div class="steps">
+    <div class="step g"><div class="snum">Basic — Harness Audit</div><h3>Run this first after every install or update</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">/harness-audit</span></div>
+      <p>Shows which skills, agents, rules, and hooks are loaded. Flags anything missing or misconfigured.</p>
+    </div>
+    <div class="step r"><div class="snum">Basic — Security Scan</div><h3>Scan your entire Claude config for vulnerabilities</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cm"># Quick scan</span>
+<span class="cmd">npx ecc-agentshield scan</span>
+<span class="cm"># Auto-fix safe issues</span>
+<span class="cmd">npx ecc-agentshield scan --fix</span>
+<span class="cm"># Deep 3-agent analysis</span>
+<span class="cmd">npx ecc-agentshield scan --opus --stream</span></div>
+    </div>
+    <div class="step p"><div class="snum">Basic — Quality Gate</div><h3>Full repo quality check before committing</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">/quality-gate . --strict</span></div>
+    </div>
+    <div class="step o"><div class="snum">Basic — Generate Skills from Your Git History</div><h3>Let ECC learn from what you've already built</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">/skill-create</span>
+<span class="cmd">/skill-create --instincts</span></div>
+    </div>
+    <div class="step"><div class="snum">Basic — Desktop Dashboard</div><h3>Visual GUI for managing ECC</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">npm run dashboard</span></div>
+      <p>Dark/light theme, font customisation, shows active skills/agents/hooks at a glance.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ADVANCED USE -->
+<section id="advanced">
+  <div class="sh"><div class="sn">04</div><div class="stw"><span class="stag" style="color:var(--accent3)">Power User</span><div class="stitle">Advanced Use</div></div></div>
+  <div class="steps">
+    <div class="step"><div class="snum">Advanced — Autonomous Agent Harness</div><h3>Scheduled, self-directing agents using native Claude Code crons</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cm"># Schedule a daily PR review (9 AM weekdays)</span>
+<span class="cm">mcp__scheduled-tasks__create_scheduled_task({</span>
+<span class="str">  name: "daily-pr-review", schedule: "0 9 * * 1-5",</span>
+<span class="str">  prompt: "Review all open PRs, check CI, flag issues, post summary to memory."</span>
+<span class="cm">})</span>
+<span class="cm"># Trigger remotely from CI/CD</span>
+<span class="cmd">curl -X POST "https://api.anthropic.com/dispatch" \</span>
+<span class="str">  -H "Authorization: Bearer $ANTHROPIC_API_KEY" \</span>
+<span class="str">  -d '{"prompt":"Build failed on main. Diagnose and fix.","project":"/repo"}'</span></div>
+    </div>
+    <div class="step g"><div class="snum">Advanced — Instinct System (Continuous Learning v2.1)</div><h3>Sessions observed, patterns extracted, skills evolved automatically</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">/instinct-import</span>   <span class="cm"># Import from session</span>
+<span class="cmd">/instinct-create "Always run npm audit before pushing"</span>
+<span class="cmd">/instinct-list</span>    <span class="cm"># View all learned instincts</span></div>
+      <div class="cl tip" style="margin-top:10px"><strong>v2.1 Project Scoping</strong><p>Instincts are now project-scoped — no cross-project contamination. Each project builds its own instinct library.</p></div>
+    </div>
+    <div class="step p"><div class="snum">Advanced — Multi-Agent Orchestration</div><h3>PM2-backed parallel multi-service workflows</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">/multi-plan</span>     <span class="cm"># Plan across multiple services</span>
+<span class="cmd">/multi-execute</span>  <span class="cm"># Execute in parallel</span>
+<span class="cmd">/multi-backend</span>  <span class="cm"># Backend-specific agents</span>
+<span class="cmd">/multi-frontend</span> <span class="cm"># Frontend-specific agents</span>
+<span class="cmd">/pm2</span>            <span class="cm"># Process management</span></div>
+    </div>
+    <div class="step r"><div class="snum">Advanced — AgentShield Deep Security</div><h3>CVE database, supply chain verification, 102 rules</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">npx ecc-agentshield init</span>               <span class="cm"># Generate secure config from scratch</span>
+<span class="cmd">npx ecc-agentshield scan --cve</span>         <span class="cm"># Check 25+ known MCP CVEs</span>
+<span class="cmd">npx ecc-agentshield scan --supply-chain</span><span class="cm"># Supply chain verification</span></div>
+    </div>
+    <div class="step o"><div class="snum">Advanced — Research-First Development</div><h3>Search docs and code before writing anything</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">/exa-search "OAuth2 PKCE Node.js 2026 best practices"</span>
+<span class="cm"># Or naturally:</span>
+<span class="cmd">Before implementing rate limiting, use exa-search to find current best practices and known pitfalls.</span></div>
+    </div>
+    <div class="step g"><div class="snum">Advanced — Context Window &amp; Cost Audit</div><h3>Find token bloat, reduce costs, route by complexity</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">/context-audit</span>   <span class="cm"># Find token bloat across all components</span>
+<span class="cmd">/cost-optimize</span>   <span class="cm"># Route tasks to cheaper models</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CHEAT SHEET -->
+<section id="cheat">
+  <div class="sh"><div class="sn">05</div><div class="stw"><span class="stag" style="color:var(--accent)">Quick Reference</span><div class="stitle">Cheat Sheet</div></div></div>
+  <div class="g2">
+    <div class="ccard">
+      <h4>🛠 Install Commands</h4>
+      <ul>
+        <li><code>/plugin marketplace add affaan-m/everything-claude-code</code><span>Register marketplace</span></li>
+        <li><code>/plugin install everything-claude-code@affaan-m-everything-claude-code</code><span>Install plugin</span></li>
+        <li><code>gh ext install affaan-m/everything-claude-code</code><span>GitHub CLI install</span></li>
+        <li><code>npx ecc-agentshield scan</code><span>Quick security scan</span></li>
+        <li><code>/harness-audit</code><span>Baseline after install</span></li>
+        <li><code>npm run dashboard</code><span>Open GUI dashboard</span></li>
+      </ul>
+    </div>
+    <div class="ccard" style="border-top-color:var(--accent2)">
+      <h4 style="color:var(--accent2)">⚡ Key Commands</h4>
+      <ul>
+        <li><code>/harness-audit</code><span>Audit all active components</span></li>
+        <li><code>/quality-gate . --strict</code><span>Full repo quality check</span></li>
+        <li><code>/skill-create [--instincts]</code><span>Generate skills from git history</span></li>
+        <li><code>/instinct-import / list / create</code><span>Manage continuous learning</span></li>
+        <li><code>/context-audit</code><span>Find token bloat</span></li>
+        <li><code>/cost-optimize</code><span>Model routing optimiser</span></li>
+        <li><code>/multi-plan / execute / backend / frontend</code><span>Multi-agent orchestration</span></li>
+        <li><code>/exa-search</code><span>Research before code</span></li>
+      </ul>
+    </div>
+    <div class="ccard" style="border-top-color:var(--accent4)">
+      <h4 style="color:var(--accent4)">🧠 Key Skills</h4>
+      <ul>
+        <li><code>autonomous-agent-harness</code><span>Persistent scheduled agents</span></li>
+        <li><code>continuous-agent-loop</code><span>Autonomous loop with quality gates</span></li>
+        <li><code>exa-search</code><span>Research-first development</span></li>
+        <li><code>skill-creator / instinct-creator</code><span>Self-improvement</span></li>
+        <li><code>analyze-repo / pattern-detection</code><span>Repo intelligence</span></li>
+        <li><code>learning-dna</code><span>Session learning extraction</span></li>
+        <li><code>frontend-slides</code><span>HTML slide deck builder</span></li>
+        <li><code>market-research / investor-materials</code><span>Business content</span></li>
+      </ul>
+    </div>
+    <div class="ccard" style="border-top-color:var(--accent3)">
+      <h4 style="color:var(--accent3)">🛡️ Security Commands</h4>
+      <ul>
+        <li><code>npx ecc-agentshield scan</code><span>Quick scan</span></li>
+        <li><code>npx ecc-agentshield scan --fix</code><span>Auto-fix safe issues</span></li>
+        <li><code>npx ecc-agentshield scan --opus --stream</code><span>Deep 3-agent scan</span></li>
+        <li><code>npx ecc-agentshield init</code><span>Generate secure config</span></li>
+        <li><code>npx ecc-agentshield scan --cve</code><span>CVE database check</span></li>
+        <li><code>npx ecc-agentshield scan --supply-chain</code><span>Supply chain verify</span></li>
+      </ul>
+    </div>
+
+    <div class="ccard" style="border-top-color:var(--accent3)">
+      <h4 style="color:var(--accent3)">🔮 Hidden Gems (8 Commands)</h4>
+      <ul>
+        <li><code>/aside &lt;question&gt;</code><span>Side question, auto-resume task</span></li>
+        <li><code>/santa-loop</code><span>Adversarial dual-review convergence</span></li>
+        <li><code>/gan-design / /gan-build</code><span>Generator-evaluator harness</span></li>
+        <li><code>/claw</code><span>NanoClaw v2 interactive REPL</span></li>
+        <li><code>/save-session / /resume-session</code><span>Persist &amp; resume context</span></li>
+        <li><code>/learn-eval</code><span>Extract patterns + self-evaluate</span></li>
+        <li><code>/evolve</code><span>Evolve instincts into skills</span></li>
+        <li><code>/plugin list everything-claude-code@...</code><span>See everything installed</span></li>
+      </ul>
+    </div>
+
+    <div class="ccard" style="border-top-color:var(--accent2)">
+      <h4 style="color:var(--accent2)">📝 Instinct Management (8)</h4>
+      <ul>
+        <li><code>/instinct-import &lt;file|url&gt;</code><span>Import from file or URL</span></li>
+        <li><code>/instinct-export</code><span>Export for sharing/backup</span></li>
+        <li><code>/instinct-status</code><span>Show with confidence scores</span></li>
+        <li><code>/promote</code><span>Project scope → global</span></li>
+        <li><code>/prune</code><span>Delete stale (&gt;30 day) instincts</span></li>
+        <li><code>/evolve</code><span>Generate evolved skill structures</span></li>
+        <li><code>/projects</code><span>List projects + stats</span></li>
+        <li><code>/learn-eval</code><span>Extract + eval + save</span></li>
+      </ul>
+    </div>
+
+    <div class="ccard" style="border-top-color:var(--accent4)">
+      <h4 style="color:var(--accent4)">🚀 PRP Pipeline (Product→PR)</h4>
+      <ul>
+        <li><code>/prp-prd</code><span>Interactive PRD generator</span></li>
+        <li><code>/prp-plan</code><span>Implementation plan + codebase scan</span></li>
+        <li><code>/prp-implement</code><span>Execute with validation loops</span></li>
+        <li><code>/prp-commit</code><span>Natural-language commit</span></li>
+        <li><code>/prp-pr</code><span>Auto-create GitHub PR</span></li>
+        <li><code>/hookify / -list / -configure</code><span>Auto-generate behaviour hooks</span></li>
+        <li><code>/checkpoint / /update-codemaps</code><span>Workflow checkpointing</span></li>
+        <li><code>/refactor-clean / /test-coverage</code><span>Dead code + test coverage</span></li>
+      </ul>
+    </div>
+
+    <div class="ccard" style="border-top-color:var(--accent5)">
+      <h4 style="color:var(--accent5)">🌍 Environment Variables</h4>
+      <ul>
+        <li><code>ECC_HOOK_PROFILE=minimal</code><span>Minimal hooks only</span></li>
+        <li><code>ECC_HOOK_PROFILE=standard</code><span>Default profile</span></li>
+        <li><code>ECC_HOOK_PROFILE=strict</code><span>All hooks + extra validation</span></li>
+        <li><code>ECC_DISABLED_HOOKS="h1,h2"</code><span>Disable specific hooks by name</span></li>
+        <li><code>ECC_ROOT=/path</code><span>Override source location</span></li>
+        <li><code>INSTALL_LEVEL=user|project|both</code><span>Install scope selector</span></li>
+      </ul>
+    </div>
+
+    <div class="ccard" style="border-top-color:var(--accent3); background:rgba(214,48,80,0.03)">
+      <h4 style="color:var(--accent3)">⛔ Rejected / Never Do This</h4>
+      <ul>
+        <li><code>hooks</code> field in plugin.json<span>❌ Causes duplicate detection errors in CC v2.1+ (issues #29, #52, #103)</span></li>
+        <li><code>everything-claude-code@everything-claude-code</code> (short form)<span>❌ Use <code>@affaan-m-everything-claude-code</code> — canonical ID</span></li>
+        <li>Modifying files in <code>$ECC_ROOT/</code><span>❌ Only modify target install dir, never source</span></li>
+        <li>Installing all 183 skills at once<span>❌ Bloats context; use <code>--with</code> / <code>--without</code> selective install</span></li>
+        <li><code>npm install</code> without <code>--legacy-peer-deps</code><span>❌ May fail on peer conflicts</span></li>
+        <li>Running <code>/santa-loop</code> on trivial code<span>❌ Expensive — reserve for security/payment/auth</span></li>
+        <li>Using deprecated <code>autonomous-loops</code> skill<span>❌ Renamed to <code>continuous-agent-loop</code> (v5+)</span></li>
+        <li>Hardcoding API keys in CLAUDE.md<span>❌ AgentShield flags this; use env vars</span></li>
+        <li><code>/plugin install</code> from untrusted marketplaces<span>❌ Scan first with <code>npx ecc-agentshield scan</code></span></li>
+        <li>Running <code>/evolve</code> without reviewing first<span>❌ Use <code>/instinct-status</code> first to check confidence scores</span></li>
+        <li>Disabling <code>security-reviewer</code> agent<span>❌ Core safety layer — keep enabled</span></li>
+      </ul>
+    </div>
+    <div class="ccard" style="grid-column:span 2;border-top-color:var(--accent5)">
+      <h4 style="color:var(--accent5)">🚦 Troubleshooting</h4>
+      <table class="ct" style="margin-top:0">
+        <thead><tr><th>Problem</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>Plugin not resolving</td><td>Use the OSS installer: <code>git clone</code> + <code>cp -r rules/</code> — more reliable for some Claude Code builds</td></tr>
+          <tr><td>Skills not activating</td><td>Run <code>/harness-audit</code>. Restart agent after install.</td></tr>
+          <tr><td>Instincts bleeding across projects</td><td>Update to v2.1+ — instincts are now project-scoped</td></tr>
+          <tr><td>Old install ID not working</td><td>Use: <code>everything-claude-code@affaan-m-everything-claude-code</code>. Old shortcuts are deprecated.</td></tr>
+          <tr><td>Codex hooks not firing</td><td>Codex doesn't support hooks — use AGENTS.md instruction-based enforcement</td></tr>
+          <tr><td>MCP configs not loading in Codex</td><td>Run <code>bash scripts/sync-ecc-to-codex.sh</code></td></tr>
+          <tr><td>Token costs too high</td><td>Run <code>/context-audit</code> + <code>/cost-optimize</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- HIDDEN COMMANDS (NEW) -->
+<section id="hidden">
+  <div class="sh"><div class="sn">06</div><div class="stw"><span class="stag" style="color:var(--accent3)">Undocumented</span><div class="stitle">Hidden Commands &amp; Easter Eggs</div></div></div>
+
+  <div class="cl warn"><strong>The Other 70 Commands</strong><p>ECC has <strong>79 slash commands</strong> but most users only know 5-10. Here are the hidden gems, easter eggs, and undocumented flags discovered by reading the <a href="https://esandorfi.github.io/ecc-explorer/catalog/commands/" target="_blank" style="color:var(--accent2)">ECC Explorer catalog</a> and plugin source code.</p></div>
+
+  <div class="steps">
+
+    <div class="step r">
+      <div class="snum">Hidden #01 — Check What's Actually Installed</div>
+      <h3>See every agent, skill, and command ECC registered <span class="badge new">ESSENTIAL</span></h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">/plugin list everything-claude-code@everything-claude-code</span></div>
+      <p style="margin-top:10px">Shows all 79 commands, 48 agents, 183 skills, 14 MCP configs in one view. Most users have never run this and don't realise 90% of what they installed.</p>
+    </div>
+
+    <div class="step">
+      <div class="snum">Hidden #02 — /aside — Side Questions Without Context Loss</div>
+      <h3>Answer a quick question then resume <span class="badge new">HIDDEN GEM</span></h3>
+      <p>Mid-task, you realise you need to ask something unrelated. Normally that pollutes the conversation context. <code>/aside</code> spins up a quick side answer and automatically resumes the original task:</p>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">/aside what's the shortest way to check if a port is free in bash?</span>
+<span class="comment"># → Quick answer, then auto-resumes your previous task</span></div>
+    </div>
+
+    <div class="step g">
+      <div class="snum">Hidden #03 — /santa-loop — Adversarial Dual Review</div>
+      <h3>Two independent reviewers must BOTH approve before code ships <span class="badge new">POWERFUL</span></h3>
+      <p>Nicknamed after "two Santas checking the list twice". Spawns two independent model reviewers who must converge on approval:</p>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">/santa-loop src/auth/login.ts</span>
+<span class="comment"># → Reviewer A finds issues → fix → Reviewer B finds different issues</span>
+<span class="comment"># → Loop continues until both approve independently</span></div>
+      <div class="cl tip" style="margin-top:10px"><strong>When to Use</strong><p>Use for security-critical code, payment flows, auth logic, or anything where a single-agent review isn't enough.</p></div>
+    </div>
+
+    <div class="step p">
+      <div class="snum">Hidden #04 — GAN-Inspired Build Commands</div>
+      <h3>Generator-Evaluator harness for high-quality code <span class="badge new">2026 RESEARCH</span></h3>
+      <p>Based on Anthropic's March 2026 harness design paper. Uses a generator-evaluator pattern where one agent builds and another evaluates iteratively:</p>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">/gan-design "user profile page with social links"</span>
+<span class="comment"># → Generator proposes designs, evaluator scores them, best wins</span>
+
+<span class="cmd">/gan-build "auth middleware with rate limiting"</span>
+<span class="comment"># → Generator builds, evaluator tests, loop until quality threshold met</span></div>
+    </div>
+
+    <div class="step o">
+      <div class="snum">Hidden #05 — /save-session &amp; /resume-session</div>
+      <h3>Persist session state to disk and resume it tomorrow <span class="badge new">UNDERRATED</span></h3>
+      <p>Working on a multi-day task? Save your session context to <code>~/.claude/session-data/</code> and resume it with full context later:</p>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">/save-session</span>
+<span class="comment"># → Saves current context to ~/.claude/session-data/YYYY-MM-DD.json</span>
+
+<span class="comment"># Next day, in a fresh session:</span>
+<span class="cmd">/resume-session</span>
+<span class="comment"># → Loads the most recent session file with full context restored</span></div>
+    </div>
+
+    <div class="step">
+      <div class="snum">Hidden #06 — /claw — NanoClaw v2 REPL</div>
+      <h3>Interactive model routing &amp; skill hot-load REPL <span class="badge new">POWER USER</span></h3>
+      <p>NanoClaw v2 is ECC's own interactive REPL. Lets you route between models mid-session, hot-load skills, branch sessions, search history, export conversations, compact context, and view metrics:</p>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">/claw</span>
+<span class="comment"># Enters NanoClaw REPL. Commands inside:</span>
+<span class="comment">#   :route opus  — switch to Opus for next turn</span>
+<span class="comment">#   :route haiku — switch to Haiku for quick tasks</span>
+<span class="comment">#   :load skill-name — hot-load a skill</span>
+<span class="comment">#   :branch      — branch the session</span>
+<span class="comment">#   :search foo  — search session history</span>
+<span class="comment">#   :export      — export session as markdown</span>
+<span class="comment">#   :compact     — compact context now</span>
+<span class="comment">#   :metrics     — show token usage, cost, cache hits</span></div>
+    </div>
+
+    <div class="step g">
+      <div class="snum">Hidden #07 — The Full Instinct Management Suite</div>
+      <h3>Manage the continuous learning system <span class="badge new">HIDDEN</span></h3>
+      <p>Beyond <code>/instinct-import</code> and <code>/instinct-list</code>, ECC ships a full management suite:</p>
+      <div class="cmd-grid" style="margin-top:10px">
+        <div class="ci"><div class="cl2">/instinct-status</div><div class="cd2">Show all learned instincts with confidence scores</div></div>
+        <div class="ci"><div class="cl2">/instinct-export</div><div class="cd2">Export instincts to file for sharing or backup</div></div>
+        <div class="ci"><div class="cl2">/instinct-import &lt;file|url&gt;</div><div class="cd2">Import instincts from file or URL into project/global</div></div>
+        <div class="ci"><div class="cl2">/promote</div><div class="cd2">Promote project-scoped instincts to global scope</div></div>
+        <div class="ci"><div class="cl2">/prune</div><div class="cd2">Delete pending instincts older than 30 days</div></div>
+        <div class="ci"><div class="cl2">/evolve</div><div class="cd2">Analyse instincts and generate evolved skill structures</div></div>
+        <div class="ci"><div class="cl2">/projects</div><div class="cd2">List all known projects with instinct statistics</div></div>
+        <div class="ci"><div class="cl2">/learn-eval</div><div class="cd2">Extract patterns + self-evaluate quality before saving</div></div>
+      </div>
+    </div>
+
+    <div class="step r">
+      <div class="snum">Hidden #08 — /hookify Suite</div>
+      <h3>Create hooks to prevent unwanted behaviours automatically <span class="badge new">HIDDEN</span></h3>
+      <p>Most people don't know ECC has its own hook creation system. It analyses your conversations and auto-generates hooks to prevent patterns you don't want:</p>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">/hookify</span>
+<span class="comment"># → Analyses conversation, suggests hooks to prevent repeated mistakes</span>
+
+<span class="cmd">/hookify-list</span>
+<span class="comment"># → Lists all configured hookify rules</span>
+
+<span class="cmd">/hookify-configure</span>
+<span class="comment"># → Enable/disable rules interactively</span>
+
+<span class="cmd">/hookify-help</span>
+<span class="comment"># → Get help with the hookify system</span></div>
+    </div>
+
+    <div class="step o">
+      <div class="snum">Hidden #09 — PRP Workflow (Plan→Implement→Commit→PR)</div>
+      <h3>Full product development request pipeline <span class="badge new">HIDDEN</span></h3>
+      <p>ECC has a complete PRP (Product Requirements Pipeline) workflow most users never discover:</p>
+      <div class="cmd-grid" style="margin-top:10px">
+        <div class="ci"><div class="cl2">/prp-prd</div><div class="cd2">Interactive PRD generator — problem-first, hypothesis-driven spec</div></div>
+        <div class="ci"><div class="cl2">/prp-plan</div><div class="cd2">Feature implementation plan with codebase analysis</div></div>
+        <div class="ci"><div class="cl2">/prp-implement</div><div class="cd2">Execute plan with rigorous validation loops</div></div>
+        <div class="ci"><div class="cl2">/prp-commit</div><div class="cd2">Natural language commit — "commit the auth changes"</div></div>
+        <div class="ci"><div class="cl2">/prp-pr</div><div class="cd2">Create GitHub PR with template discovery and auto-push</div></div>
+      </div>
+    </div>
+
+    <div class="step p">
+      <div class="snum">Hidden #10 — Infrastructure &amp; Code Commands</div>
+      <h3>Lesser-known utility commands <span class="badge new">HIDDEN</span></h3>
+      <div class="cmd-grid" style="margin-top:10px">
+        <div class="ci"><div class="cl2">/checkpoint</div><div class="cd2">Create or verify a checkpoint in your workflow</div></div>
+        <div class="ci"><div class="cl2">/update-codemaps</div><div class="cd2">Token-lean architecture docs from codebase structure</div></div>
+        <div class="ci"><div class="cl2">/update-docs</div><div class="cd2">Sync docs with codebase from source-of-truth files</div></div>
+        <div class="ci"><div class="cl2">/refactor-clean</div><div class="cd2">Safely remove dead code with test verification</div></div>
+        <div class="ci"><div class="cl2">/test-coverage</div><div class="cd2">Analyse coverage, generate missing tests to 80%+</div></div>
+        <div class="ci"><div class="cl2">/feature-dev</div><div class="cd2">Guided feature development with codebase understanding</div></div>
+        <div class="ci"><div class="cl2">/build-fix</div><div class="cd2">Incrementally fix build/type errors, minimal changes</div></div>
+        <div class="ci"><div class="cl2">/model-route</div><div class="cd2">Recommend best model tier by complexity &amp; budget</div></div>
+        <div class="ci"><div class="cl2">/loop-start</div><div class="cd2">Start managed autonomous loop with safety defaults</div></div>
+        <div class="ci"><div class="cl2">/loop-status</div><div class="cd2">Inspect active loop state, progress, failures</div></div>
+        <div class="ci"><div class="cl2">/skill-health</div><div class="cd2">Skill portfolio health dashboard with analytics</div></div>
+        <div class="ci"><div class="cl2">/setup-pm</div><div class="cd2">Configure package manager (npm/pnpm/yarn/bun)</div></div>
+      </div>
+    </div>
+
+    <div class="step g">
+      <div class="snum">Hidden #11 — Language-Specific Command Matrix</div>
+      <h3>Every language has build/review/test commands <span class="badge new">12 LANGUAGES</span></h3>
+      <p>ECC ships 12 language ecosystems — each with 3 commands. Most users don't realise all of these exist:</p>
+      <div class="cmd-grid" style="margin-top:10px">
+        <div class="ci"><div class="cl2">/python-review</div><div class="cd2">PEP 8, type hints, security, Pythonic idioms</div></div>
+        <div class="ci"><div class="cl2">/go-build / /go-review / /go-test</div><div class="cd2">Fix build, review concurrency, TDD with 80%+ coverage</div></div>
+        <div class="ci"><div class="cl2">/rust-build / /rust-review / /rust-test</div><div class="cd2">Ownership, lifetimes, cargo-llvm-cov coverage</div></div>
+        <div class="ci"><div class="cl2">/kotlin-build / /kotlin-review / /kotlin-test</div><div class="cd2">Null safety, coroutines, Kover coverage</div></div>
+        <div class="ci"><div class="cl2">/cpp-build / /cpp-review / /cpp-test</div><div class="cd2">Memory safety, modern C++, GoogleTest + gcov/lcov</div></div>
+        <div class="ci"><div class="cl2">/flutter-build / /flutter-review / /flutter-test</div><div class="cd2">Dart, widgets, state, golden + integration tests</div></div>
+        <div class="ci"><div class="cl2">/gradle-build</div><div class="cd2">Android + KMP Gradle error fixes</div></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="snum">Hidden #12 — Hook Runtime Controls (Environment Variables)</div>
+      <h3>Tune hooks without editing files <span class="badge new">POWER USER</span></h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="comment"># Control hook behaviour at runtime</span>
+<span class="cmd">export ECC_HOOK_PROFILE=minimal</span>   <span class="comment"># Minimal hooks only</span>
+<span class="cmd">export ECC_HOOK_PROFILE=standard</span>  <span class="comment"># Default</span>
+<span class="cmd">export ECC_HOOK_PROFILE=strict</span>    <span class="comment"># All hooks + extra validation</span>
+
+<span class="comment"># Disable specific hooks by name, comma-separated</span>
+<span class="cmd">export ECC_DISABLED_HOOKS="hook-name-1,hook-name-2"</span></div>
+      <div class="cl tip" style="margin-top:10px"><strong>When to Use</strong><p>Great for CI environments where you want fewer hooks, or for debugging when you suspect a specific hook is interfering.</p></div>
+    </div>
+
+    <div class="step r">
+      <div class="snum">Hidden #13 — Common Gotchas &amp; Traps</div>
+      <h3>Things that will break ECC setups</h3>
+      <ul style="margin-top:8px; padding-left:20px; color:var(--muted); font-size:13px; line-height:2.4">
+        <li>⚠️ <strong style="color:var(--text)">Never add "hooks" to plugin.json</strong> — Claude Code v2.1+ auto-loads hooks/hooks.json. Explicit declaration causes duplicate detection errors (see issues #29, #52, #103)</li>
+        <li>🎯 <strong style="color:var(--text)">Canonical install ID is mandatory</strong> — <code>everything-claude-code@everything-claude-code</code>. Older nicknames are deprecated</li>
+        <li>📝 <strong style="color:var(--text)">OSS installer is more reliable</strong> — if <code>/plugin install</code> fails, <code>git clone</code> + <code>cp -r rules/</code> is the fallback that always works</li>
+        <li>🌐 <strong style="color:var(--text)">Works with any model gateway</strong> — doesn't hardcode Anthropic transport, so works with custom API endpoints</li>
+        <li>🔒 <strong style="color:var(--text)">Project-scoped instincts</strong> — v2.1+ prevents cross-project contamination. Always update to latest</li>
+      </ul>
+    </div>
+
+    <div class="step o">
+      <div class="snum">Hidden #14 — Built-in Claude Code Commands That Pair With ECC</div>
+      <h3>Native commands that complement ECC workflows</h3>
+      <ul style="margin-top:8px; padding-left:20px; color:var(--muted); font-size:13px; line-height:2.4">
+        <li><code>/help</code> — lists ECC commands with plugin tag</li>
+        <li><code>/compact</code> — compress context (pairs well with /context-audit)</li>
+        <li><code>/clear</code> — fresh session (use <em>after</em> /save-session to resume)</li>
+        <li><code>/review</code> — Claude Code built-in (chains with /code-review from ECC)</li>
+        <li><code>/security-review</code> — built-in (complements /security-scan + AgentShield)</li>
+        <li><code>/init</code> — initialise CLAUDE.md (ECC rules inject automatically)</li>
+        <li><code>/plugin list</code> — see all installed plugins and their components</li>
+        <li><code>/plugin update</code> — pull latest ECC updates</li>
+        <li><code>Ctrl+B</code> — background current subagent (great for long /quality-gate runs)</li>
+        <li><code>ultrathink</code> (keyword) — force high-effort model for complex planning</li>
+        <li><code>Shift+Tab × 2</code> — enter plan mode (pairs with ECC's /plan command)</li>
+      </ul>
+    </div>
+
+    <div class="step p">
+      <div class="snum">Hidden #15 — Commands I'd Add That Don't Exist Yet</div>
+      <h3>Feature wishlist — submit as PRs</h3>
+      <ul style="margin-top:8px; padding-left:20px; color:var(--muted); font-size:13px; line-height:2.4">
+        <li>🔍 <code>/ecc-explore</code> — interactive browser for all 183 skills with preview</li>
+        <li>📊 <code>/ecc-metrics</code> — session metrics: which skills fired, token cost per skill</li>
+        <li>🔄 <code>/agent-diff</code> — show what changed when you switched agent (code-reviewer vs architect)</li>
+        <li>🎯 <code>/skill-benchmark</code> — benchmark a skill against a test repo for reliability</li>
+        <li>📦 <code>/skill-bundle</code> — export a curated skill set for team distribution</li>
+        <li>🤖 <code>/ai-pair</code> — real-time pair programming mode with persistent subagent</li>
+        <li>📈 <code>/agent-report</code> — weekly report of all agent activities + decisions</li>
+        <li>🔐 <code>/secrets-audit</code> — deeper than AgentShield — check git history for leaked secrets</li>
+        <li>🎯 <code>/cost-budget &lt;amount&gt;</code> — hard budget cap per session, warns when approaching</li>
+        <li>📢 Submit via PR at <a href="https://github.com/affaan-m/everything-claude-code" target="_blank" style="color:var(--accent2)">github.com/affaan-m/everything-claude-code</a></li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="comp-skills">
+  <div class="sh"><div class="sn" style="font-size:36px">🧠</div><div class="stw"><span class="stag" style="color:var(--accent4)">Component Deep Dive</span><div class="stitle">183 Skills</div></div></div>
+  <div class="cl go"><strong>What skills are</strong><p>Skills are SKILL.md files giving the agent structured instructions for specific tasks. They auto-invoke when relevant. ECC ships 183 across every dev domain — and you can write your own or auto-generate from git history.</p></div>
+  <div class="cmd-grid">
+    <div class="ci"><div class="cl2">Development</div><div class="cd2">TDD, debugging, code review, refactoring, architecture patterns</div></div>
+    <div class="ci"><div class="cl2">Security</div><div class="cd2">security-scan, AgentShield integration, CVE checking, sanitisation</div></div>
+    <div class="ci"><div class="cl2">Research</div><div class="cd2">exa-search, documentation-lookup, analyze-repo, pattern-detection</div></div>
+    <div class="ci"><div class="cl2">Autonomous</div><div class="cd2">autonomous-agent-harness, continuous-agent-loop, scheduled operations</div></div>
+    <div class="ci"><div class="cl2">Learning</div><div class="cd2">skill-creator, instinct-creator, learning-dna, workflow-discovery</div></div>
+    <div class="ci"><div class="cl2">Business</div><div class="cd2">article-writing, market-research, investor-materials, content-engine</div></div>
+    <div class="ci"><div class="cl2">Frontend</div><div class="cd2">frontend-slides, nextjs-turbopack, bun-runtime, UI patterns</div></div>
+    <div class="ci"><div class="cl2">DevOps</div><div class="cd2">pm2 workflows, multi-agent orchestration, CI/CD integration</div></div>
+  </div>
+</section>
+
+<!-- AGENTS -->
+<section id="comp-agents">
+  <div class="sh"><div class="sn" style="font-size:36px">🤖</div><div class="stw"><span class="stag" style="color:var(--accent2)">Component Deep Dive</span><div class="stitle">48 Specialized Agents</div></div></div>
+  <div class="cl info"><strong>What agents are</strong><p>Specialized subagents dispatched by the harness for specific roles. They operate with two-stage review (spec compliance, then code quality) and can run in parallel.</p></div>
+  <div class="cmd-grid">
+    <div class="ci"><div class="cl2">code-reviewer</div><div class="cd2">Reviews code against spec and standards after each task</div></div>
+    <div class="ci"><div class="cl2">security-reviewer</div><div class="cd2">Dedicated security analysis — triggers on any security finding</div></div>
+    <div class="ci"><div class="cl2">architect / code-architect</div><div class="cd2">System design and code-level architectural decisions</div></div>
+    <div class="ci"><div class="cl2">build-error-resolver</div><div class="cd2">Diagnoses and fixes build failures automatically</div></div>
+    <div class="ci"><div class="cl2">chief-of-staff</div><div class="cd2">Communication triage for complex coordination workflows</div></div>
+    <div class="ci"><div class="cl2">a11y-architect</div><div class="cd2">Accessibility review and WCAG compliance</div></div>
+    <div class="ci"><div class="cl2">code-simplifier</div><div class="cd2">Reduces complexity, applies YAGNI and DRY principles</div></div>
+    <div class="ci"><div class="cl2">typescript/java/kotlin-reviewer</div><div class="cd2">Language-specific review agents (10 languages total)</div></div>
+  </div>
+</section>
+
+<!-- COMMANDS -->
+<section id="comp-commands">
+  <div class="sh"><div class="sn" style="font-size:36px">⚡</div><div class="stw"><span class="stag" style="color:var(--accent)">Component Deep Dive</span><div class="stitle">79 Slash Commands</div></div></div>
+  <div class="cl tip"><strong>Note</strong><p>Commands are legacy slash-entry compatibility shims. New workflows land in <code>skills/</code> first. Commands are added only when a compatibility shim is required.</p></div>
+  <div class="cmd-grid">
+    <div class="ci"><div class="cl2">/harness-audit</div><div class="cd2">Baseline all active components and flag issues</div></div>
+    <div class="ci"><div class="cl2">/quality-gate [path] --strict</div><div class="cd2">Lint, test, build, and security gate</div></div>
+    <div class="ci"><div class="cl2">/skill-create [--instincts]</div><div class="cd2">Generate skills from git history</div></div>
+    <div class="ci"><div class="cl2">/instinct-import / list / create</div><div class="cd2">Manage the continuous learning system</div></div>
+    <div class="ci"><div class="cl2">/context-audit</div><div class="cd2">Token usage analysis across all components</div></div>
+    <div class="ci"><div class="cl2">/cost-optimize</div><div class="cd2">Model routing and cost reduction</div></div>
+    <div class="ci"><div class="cl2">/exa-search [query]</div><div class="cd2">Research-first web search via Exa</div></div>
+    <div class="ci"><div class="cl2">/multi-plan / execute / backend / frontend / pm2</div><div class="cd2">Multi-agent orchestration suite</div></div>
+  </div>
+</section>
+
+<!-- SECURITY -->
+<section id="comp-security">
+  <div class="sh"><div class="sn" style="font-size:36px">🛡️</div><div class="stw"><span class="stag" style="color:var(--accent3)">Component Deep Dive</span><div class="stitle">AgentShield Security</div></div></div>
+  <div class="cl warn"><strong>Why This Matters</strong><p>A repo, a PR, a PDF, a helpful MCP, a skill from Discord — any of these can be an injection vector. AgentShield treats agent security as infrastructure, not an afterthought.</p></div>
+  <div class="steps">
+    <div class="step r">
+      <div class="snum">5 Scanning Categories</div><h3>102 rules, 1282 tests, built at Anthropic hackathon</h3>
+      <div class="cmd-grid" style="margin-top:8px">
+        <div class="ci"><div class="cl2">Secrets Detection</div><div class="cd2">14 patterns — API keys, tokens, passwords hardcoded in configs</div></div>
+        <div class="ci"><div class="cl2">Permission Auditing</div><div class="cd2">Over-broad permissions in settings.json and agent definitions</div></div>
+        <div class="ci"><div class="cl2">Hook Injection Analysis</div><div class="cd2">Suspicious hook patterns, prompt injection vectors</div></div>
+        <div class="ci"><div class="cl2">MCP Server Risk</div><div class="cd2">CVE database with 25+ known MCP vulnerabilities</div></div>
+        <div class="ci"><div class="cl2">Agent Config Review</div><div class="cd2">Misconfigured agents, unsafe patterns in CLAUDE.md</div></div>
+        <div class="ci"><div class="cl2">Skills Review</div><div class="cd2">Skill files checked for injection risks</div></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="snum">Immutability Rule (Critical)</div><h3>Always create new objects — never mutate</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cm">// WRONG — mutates</span>
+<span class="fl">config.apiKey = process.env.KEY;</span>
+<span class="cm">// RIGHT — creates new object</span>
+<span class="str">const newConfig = { ...config, apiKey: process.env.KEY };</span>
+<span class="cm">// NEVER hardcode secrets</span>
+<span class="fl">const key = "sk-1234abcd";</span>
+<span class="cm">// ALWAYS use environment variables</span>
+<span class="str">const key = process.env.ANTHROPIC_API_KEY;</span></div>
+      <div class="cl warn" style="margin-top:10px"><strong>Security Protocol</strong><p>If a security issue is found: STOP → use security-reviewer agent → fix CRITICAL issues → rotate exposed secrets → review codebase for similar issues.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MEMORY & INSTINCTS -->
+<section id="comp-memory">
+  <div class="sh"><div class="sn" style="font-size:36px">🧬</div><div class="stw"><span class="stag" style="color:var(--accent4)">Component Deep Dive</span><div class="stitle">Memory &amp; Instincts</div></div></div>
+  <div class="cl go"><strong>Persistent Intelligence</strong><p>ECC's memory system uses MCP to persist context across sessions. The instinct system observes your work, extracts patterns, and evolves them into reusable skills — a homunculus-inspired continuous learning loop.</p></div>
+  <div class="steps">
+    <div class="step g">
+      <div class="snum">Memory MCP — Cross-Session Persistence</div><h3>Bootstrap your identity and context once, remember forever</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">Create memory entities for: me (user profile), my projects, my key contacts. Add observations about current priorities.</span>
+<span class="cm"># Schedule weekly pattern extraction</span>
+<span class="cmd">Create scheduled task: every Sunday 8pm, extract patterns from this week's sessions and update learned skills.</span></div>
+    </div>
+    <div class="step p">
+      <div class="snum">Instinct System v2.1 — Project-Scoped Continuous Learning</div><h3>Atomic instincts with confidence scoring</h3>
+      <ul style="margin-top:8px;padding-left:20px;color:var(--muted);font-size:13px;line-height:2.2">
+        <li>🔍 Hooks observe sessions and flag recurring patterns</li>
+        <li>⚡ <code>/instinct-import</code> creates atomic instincts with confidence scores</li>
+        <li>📈 High-confidence instincts graduate to full skills automatically</li>
+        <li>🔒 v2.1: Project-scoped — no cross-project contamination</li>
+        <li>🧬 <code>learning-dna</code> extracts your unique coding DNA from sessions</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- MCP -->
+<section id="comp-mcp">
+  <div class="sh"><div class="sn" style="font-size:36px">🔌</div><div class="stw"><span class="stag" style="color:var(--accent2)">Component Deep Dive</span><div class="stitle">14 MCP Configurations</div></div></div>
+  <div class="cl info"><strong>Pre-configured MCP Servers</strong><p>ECC ships ready-to-use configs for 14 MCP servers. User configs are never touched — only ECC-managed sections are updated.</p></div>
+  <div class="cmd-grid">
+    <div class="ci"><div class="cl2">Memory</div><div class="cd2">Cross-session persistent memory store</div></div>
+    <div class="ci"><div class="cl2">GitHub</div><div class="cd2">PR creation, issue management, repo operations</div></div>
+    <div class="ci"><div class="cl2">Exa</div><div class="cd2">Research-first web search for documentation and code</div></div>
+    <div class="ci"><div class="cl2">Context7</div><div class="cd2">Up-to-date library docs and API references</div></div>
+    <div class="ci"><div class="cl2">Playwright</div><div class="cd2">Browser automation and UI testing</div></div>
+    <div class="ci"><div class="cl2">Supabase</div><div class="cd2">Database operations and auth management</div></div>
+    <div class="ci"><div class="cl2">Sequential Thinking</div><div class="cd2">Structured multi-step reasoning</div></div>
+    <div class="ci"><div class="cl2">Scheduled Tasks</div><div class="cd2">Cron-based autonomous agent scheduling</div></div>
+  </div>
+  <div class="cb" style="margin-top:16px"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cm"># Sync all ECC MCP servers (add-only, safe, never removes user config)</span>
+<span class="cmd">bash scripts/sync-ecc-to-codex.sh</span>
+<span class="cm"># Update to latest recommended config</span>
+<span class="cmd">bash scripts/sync-ecc-to-codex.sh --update-mcp</span></div>
+</section>
+
+<!-- EXAMPLES -->
+<section id="examples">
+  <div class="sh"><div class="sn">06</div><div class="stw"><span class="stag" style="color:var(--accent2)">Practical Use</span><div class="stitle">Real-World Examples</div></div></div>
+  <div class="steps">
+    <div class="step g">
+      <div class="snum">Example 01 — First Day Setup</div><h3>Fully configured and audited in 5 minutes</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">/plugin marketplace add affaan-m/everything-claude-code</span>
+<span class="cmd">/plugin install everything-claude-code@affaan-m-everything-claude-code</span>
+<span class="cmd">/harness-audit</span>
+<span class="cmd">npx ecc-agentshield scan</span>
+<span class="cmd">/skill-create --instincts</span></div>
+    </div>
+    <div class="step">
+      <div class="snum">Example 02 — Research Before Build</div><h3>Research-first: search docs before writing code</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">Before implementing rate limiting, use exa-search to find current best practices and any known pitfalls for Express.js rate limiting in 2026.</span></div>
+    </div>
+    <div class="step p">
+      <div class="snum">Example 03 — Autonomous Daily PR Review</div><h3>Scheduled agent reviews PRs every morning</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">Set up a scheduled task for every weekday at 9 AM: review all open PRs on my repo, check CI status, flag blocking issues, write summary to memory.</span></div>
+    </div>
+    <div class="step r">
+      <div class="snum">Example 04 — Secure a Vibe-Coded Repo</div><h3>Audit and harden an existing codebase</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">npx ecc-agentshield scan --opus --stream --fix</span>
+<span class="cmd">/quality-gate . --strict</span>
+<span class="cmd">/skill-create</span></div>
+    </div>
+    <div class="step o">
+      <div class="snum">Example 05 — Multi-Service Feature</div><h3>Orchestrate across backend, frontend, and tests in parallel</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">Use multi-agent orchestration to implement the notifications feature across the Express backend, React frontend, and test suite in parallel.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- BEST PRACTICES -->
+<section id="bestpractice">
+  <div class="sh"><div class="sn">07</div><div class="stw"><span class="stag" style="color:var(--accent)">Tips &amp; Tricks</span><div class="stitle">Best Practices</div></div></div>
+  <div class="steps">
+    <div class="step g"><div class="snum">BP 01 — Research First, Always</div><h3>Never implement without checking current docs first</h3><p>Use <code>/exa-search</code> before any library integration, security feature, or architectural pattern. A 2-minute search prevents a 2-hour debugging session. This is ECC philosophy: battle-tested patterns beat gut instinct.</p></div>
+    <div class="step r"><div class="snum">BP 02 — Agent Security is Infrastructure</div><h3>Run AgentShield before every merge to main</h3>
+      <p>A malicious MCP, a skill from Discord, a PR hook — any can be an injection vector. Run <code>npx ecc-agentshield scan</code> in your CI/CD pipeline.</p>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cm"># Add to .github/workflows/security.yml</span>
+<span class="cmd">npx ecc-agentshield scan --fix</span></div>
+    </div>
+    <div class="step p"><div class="snum">BP 03 — Small Files, Feature-Organised</div><h3>200–400 lines typical, 800 max. Feature/domain over type</h3><p>ECC's rules enforce this. High cohesion, low coupling. Makes parallel subagent execution more reliable and reduces merge conflicts.</p></div>
+    <div class="step o"><div class="snum">BP 04 — Use Selective Install in Teams</div><h3>Not every project needs all 183 skills</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cm"># TypeScript API project</span>
+<span class="cmd">ecc install --profile developer --with lang:typescript --with agent:security-reviewer</span>
+<span class="cm"># Data science project</span>
+<span class="cmd">ecc install --profile developer --with lang:python --with skill:pytorch-patterns</span></div>
+    </div>
+    <div class="step"><div class="snum">BP 05 — Review Instincts Weekly</div><h3>Let high-confidence instincts graduate to skills</h3><p>Check <code>/instinct-list</code> weekly, prune false positives, promote the best ones to shared team skills via PR.</p></div>
+    <div class="step g"><div class="snum">BP 06 — Audit After Every Update</div><h3>Always baseline after updating ECC</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cmd">/plugin update everything-claude-code</span>
+<span class="cmd">/harness-audit</span>
+<span class="cmd">/quality-gate . --strict</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEV GUIDELINES -->
+<section id="devguide">
+  <div class="sh"><div class="sn">08</div><div class="stw"><span class="stag" style="color:var(--accent4)">For Developers</span><div class="stitle">Developer Guidelines</div></div></div>
+  <div class="steps">
+    <div class="step"><div class="snum">Dev — Always-On Coding Standards (rules/common)</div><h3>These rules apply to every project, every session</h3>
+      <div class="cmd-grid" style="margin-top:8px">
+        <div class="ci"><div class="cl2">Immutability</div><div class="cd2">Always create new objects. Never mutate. Return new copies.</div></div>
+        <div class="ci"><div class="cl2">File Size</div><div class="cd2">200–400 lines typical. 800 max. Feature-organised, not type-organised.</div></div>
+        <div class="ci"><div class="cl2">Error Handling</div><div class="cd2">Handle errors at every level. Never silent fails.</div></div>
+        <div class="ci"><div class="cl2">Secrets</div><div class="cd2">NEVER hardcode. Use env vars. Rotate any exposed secrets immediately.</div></div>
+        <div class="ci"><div class="cl2">Parallel Execution</div><div class="cd2">Use parallel agents for independent operations.</div></div>
+        <div class="ci"><div class="cl2">API Responses</div><div class="cd2">Consistent envelope: success, data, error, pagination.</div></div>
+      </div>
+    </div>
+    <div class="step g"><div class="snum">Dev — Commit &amp; PR Workflow</div><h3>Conventional commits + comprehensive PR summaries</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="cm"># Types: feat, fix, refactor, docs, test, chore, perf, ci</span>
+<span class="str">feat: add oauth2 pkce flow for mobile clients</span>
+<span class="str">fix: prevent session persistence after logout</span>
+<span class="str">perf: cache exa search results for 5 minutes</span></div>
+    </div>
+    <div class="step p"><div class="snum">Dev — Contributing New Skills</div><h3>New workflows land in skills/ first — commands are legacy shims</h3>
+      <ol style="margin-top:8px;padding-left:20px;color:var(--muted);font-size:13px;line-height:2.4">
+        <li>Fork <a href="https://github.com/affaan-m/everything-claude-code" target="_blank" style="color:var(--accent2)">github.com/affaan-m/everything-claude-code</a></li>
+        <li>Create <code>skills/your-skill-name/SKILL.md</code></li>
+        <li>Test with subagents using realistic scenarios</li>
+        <li>Run <code>npm test</code> — 978 tests must pass</li>
+        <li>Submit PR with commit analysis, description, test plan</li>
+      </ol>
+      <div class="cl warn" style="margin-top:12px"><strong>Multi-Language Community</strong><p>ECC has contributors in English, Portuguese, Chinese (Simplified &amp; Traditional), Japanese, Korean, and Turkish. Welcome contributors in any language.</p></div>
+    </div>
+    <div class="step r"><div class="snum">Dev — Repository Pattern (enforced by rules)</div><h3>Data access always behind a standard interface</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>
+<span class="kw">interface</span> <span class="str">Repository&lt;T&gt;</span> <span class="cm">{</span>
+<span class="str">  findAll(): Promise&lt;T[]&gt;</span>
+<span class="str">  findById(id: string): Promise&lt;T | null&gt;</span>
+<span class="str">  create(data: Partial&lt;T&gt;): Promise&lt;T&gt;</span>
+<span class="str">  update(id: string, data: Partial&lt;T&gt;): Promise&lt;T&gt;</span>
+<span class="str">  delete(id: string): Promise&lt;void&gt;</span>
+<span class="cm">}</span>
+<span class="cm">// Business logic depends on the interface, not storage mechanism</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Everything Claude Code &nbsp;·&nbsp; <a href="https://github.com/affaan-m/everything-claude-code" target="_blank">github.com/affaan-m/everything-claude-code</a> &nbsp;·&nbsp; Built by Affaan Mustafa &nbsp;·&nbsp; MIT License &nbsp;·&nbsp; <a href="https://ecc.tools" target="_blank">ecc.tools</a></p>
+  <p>Tutorial created with Claude &nbsp;·&nbsp; C:\1.Work\11.Claude_Extentions\Extentions Tutorials\everything-claude-code.html</p>
+</footer>
+</main>
+
+<script>
+function st(a,btn){document.querySelectorAll('.atab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.apanel').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.getElementById('panel-'+a).classList.add('active');}
+function cc(btn){const block=btn.parentElement;const text=[...block.childNodes].filter(n=>n.nodeType===3||(n.nodeType===1&&n.tagName!=='BUTTON')).map(n=>n.textContent).join('').trim();navigator.clipboard.writeText(text).then(()=>{btn.textContent='COPIED!';btn.style.background='var(--accent)';btn.style.color='#fff';setTimeout(()=>{btn.textContent='COPY';btn.style.background='';btn.style.color='';},2000);});}
+const secs=document.querySelectorAll('section[id]');const links=document.querySelectorAll('nav a[href^="#"]');window.addEventListener('scroll',()=>{let cur='';secs.forEach(s=>{if(window.scrollY>=s.offsetTop-120)cur=s.id;});links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));});
+</script>
+</body>
+</html>

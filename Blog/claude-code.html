@@ -1,0 +1,3811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code — The Definitive Tutorial</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f5f7;--surface:#ffffff;--surface2:#f0f1f5;--border:#d8dae2;--accent:#cc6633;--accent2:#0077cc;--accent3:#d63050;--accent4:#7744cc;--accent5:#00995a;--accent6:#d97706;--text:#1a1a2e;--muted:#555577}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.7}
+nav{position:fixed;top:0;left:0;width:260px;height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;overflow-y:auto}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:2.5px;color:var(--accent);padding:24px 20px 20px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,rgba(204,102,51,0.08),transparent);line-height:1.2}
+.nav-logo span{color:var(--accent2)}.nav-logo small{display:block;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);margin-top:5px;text-transform:uppercase}
+nav a{display:flex;align-items:center;gap:8px;padding:7px 20px;text-decoration:none;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.5px;border-left:3px solid transparent;transition:all 0.18s}
+nav a .ni{font-size:12px;opacity:0.75}
+nav a:hover,nav a.active{color:var(--accent);border-left-color:var(--accent);background:rgba(204,102,51,0.05)}
+nav a.sec:hover,nav a.sec.active{color:var(--accent4);border-left-color:var(--accent4);background:rgba(119,68,204,0.05)}
+nav a.sec2:hover,nav a.sec2.active{color:var(--accent5);border-left-color:var(--accent5);background:rgba(0,153,90,0.05)}
+nav a.sec3:hover,nav a.sec3.active{color:var(--accent3);border-left-color:var(--accent3);background:rgba(214,48,80,0.05)}
+.ns{font-size:9px;letter-spacing:2.5px;color:var(--accent3);padding:14px 20px 4px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;opacity:0.8}
+main{margin-left:260px;padding:0 64px 80px;max-width:1020px}
+.hero{padding:60px 0 56px;border-bottom:1px solid var(--border);margin-bottom:56px;position:relative;overflow:hidden}
+.hero::before{content:'CLAUDE CODE';position:absolute;top:40px;right:-20px;font-family:'Bebas Neue',sans-serif;font-size:140px;color:rgba(204,102,51,0.04);pointer-events:none;white-space:nowrap;letter-spacing:4px;line-height:1}
+.hero-tag{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.hero-tag::before{content:'';display:inline-block;width:28px;height:1px;background:var(--accent)}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:92px;line-height:0.88;letter-spacing:2px;margin-bottom:24px}
+.hero h1 .l1{color:var(--text)}.hero h1 .l2{color:var(--accent)}.hero h1 .l3{color:var(--accent2)}
+.hero-desc{font-size:16px;color:var(--muted);max-width:600px;line-height:1.65;margin-bottom:28px}
+.stats{display:flex;gap:8px;flex-wrap:wrap}
+.stat{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:5px 14px;border:1px solid;font-weight:600}
+.stat.orange{border-color:var(--accent);color:var(--accent);background:rgba(204,102,51,0.06)}
+.stat.blue{border-color:var(--accent2);color:var(--accent2);background:rgba(0,119,204,0.06)}
+.stat.purple{border-color:var(--accent4);color:var(--accent4);background:rgba(119,68,204,0.06)}
+.stat.green{border-color:var(--accent5);color:var(--accent5);background:rgba(0,153,90,0.06)}
+.stat.red{border-color:var(--accent3);color:var(--accent3);background:rgba(214,48,80,0.06)}
+section{margin-bottom:76px;scroll-margin-top:30px}
+.sh{display:flex;align-items:flex-end;gap:18px;margin-bottom:32px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.sn{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--border);line-height:1;letter-spacing:2px}
+.stw{line-height:1}
+.stag{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;margin-bottom:5px;display:block}
+.stitle{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:1px;line-height:1}
+.steps{display:flex;flex-direction:column;gap:13px}
+.step{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);padding:18px 22px;transition:box-shadow 0.2s;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.step:hover{box-shadow:0 2px 12px rgba(204,102,51,0.08)}
+.step.b{border-left-color:var(--accent2)}.step.g{border-left-color:var(--accent5)}
+.step.p{border-left-color:var(--accent4)}.step.r{border-left-color:var(--accent3)}.step.o{border-left-color:var(--accent6)}
+.snum{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:5px}
+.step h3{font-weight:600;font-size:15px;margin-bottom:7px;color:var(--text)}
+.step p{color:var(--muted);font-size:13px;margin-bottom:8px}
+.step ul,.step ol{color:var(--muted);font-size:13px;padding-left:20px;margin:8px 0;line-height:2.2}
+.step ul li strong,.step ol li strong{color:var(--text)}
+.cb{background:#1e1e2e;border:1px solid #33334a;padding:13px 46px 13px 16px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#9ecfff;position:relative;overflow-x:auto;margin-top:10px;line-height:1.75;white-space:pre}
+.cb .cm{color:#5a5a7a}.cb .cmd{color:#ffd060}.cb .fl{color:#ff7090}.cb .str{color:#70e0a0}.cb .kw{color:#c792ea}.cb .num{color:#f07bff}
+.cpb{position:absolute;top:7px;right:7px;background:#2a2a3e;border:1px solid #44445a;color:#7777aa;font-family:'IBM Plex Mono',monospace;font-size:9px;padding:3px 8px;cursor:pointer;letter-spacing:1px;transition:all 0.18s;text-transform:uppercase}
+.cpb:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.cl{padding:13px 17px;margin:14px 0;border-left:3px solid;font-size:13px}
+.cl.tip{border-color:var(--accent2);background:rgba(0,119,204,0.05)}.cl.warn{border-color:var(--accent3);background:rgba(214,48,80,0.06)}
+.cl.info{border-color:var(--accent4);background:rgba(119,68,204,0.05)}.cl.go{border-color:var(--accent5);background:rgba(0,153,90,0.05)}
+.cl strong{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:4px}
+.cl.tip strong{color:var(--accent2)}.cl.warn strong{color:var(--accent3)}.cl.info strong{color:var(--accent4)}.cl.go strong{color:var(--accent5)}
+.cl p{color:var(--muted)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.ccard{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--accent);padding:18px 20px;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.ccard h4{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:1px;margin-bottom:12px;color:var(--accent)}
+.ccard ul{list-style:none}
+.ccard ul li{padding:4px 0;border-bottom:1px solid var(--border);font-size:12px;display:flex;gap:8px;align-items:baseline}
+.ccard ul li:last-child{border:none}
+.ccard ul li code{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-size:11px;white-space:nowrap;flex-shrink:0}
+.ccard ul li span{color:var(--muted);font-size:11px}
+.ct{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px}
+.ct th{text-align:left;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--accent3);padding:9px 12px;border-bottom:1px solid var(--border);text-transform:uppercase;background:var(--surface2)}
+.ct td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.ct tr:hover td{background:rgba(204,102,51,0.02)}
+.ct td:first-child{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-size:11px;white-space:nowrap}
+.ct td:last-child{color:var(--muted)}
+.cmd-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.ci{background:#f4f6fb;border:1px solid var(--border);padding:10px 12px}
+.ci .cl2{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);margin-bottom:3px;font-weight:600}
+.ci .cd2{font-size:11px;color:var(--muted)}
+.badge{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1px;padding:2px 7px;border:1px solid;text-transform:uppercase;margin-left:8px;vertical-align:middle}
+.badge.new{border-color:var(--accent);color:var(--accent)}
+.badge.hid{border-color:var(--accent3);color:var(--accent3)}
+.badge.dep{border-color:#888;color:#888}
+.promptbox{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--accent2);padding:16px 18px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.promptbox.g{border-top-color:var(--accent5)}.promptbox.r{border-top-color:var(--accent3)}.promptbox.p{border-top-color:var(--accent4)}.promptbox.o{border-top-color:var(--accent6)}
+.promptbox .plbl{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--accent2);text-transform:uppercase;margin-bottom:5px}
+.promptbox.g .plbl{color:var(--accent5)}.promptbox.r .plbl{color:var(--accent3)}.promptbox.p .plbl{color:var(--accent4)}.promptbox.o .plbl{color:var(--accent6)}
+.promptbox h4{font-family:'IBM Plex Sans',sans-serif;font-size:14px;font-weight:600;margin-bottom:8px;color:var(--text)}
+.promptbox .ptext{background:#fafafb;border:1px dashed var(--border);padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#333;margin:8px 0;line-height:1.6;white-space:pre-wrap}
+.promptbox .pmeta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;font-size:11px;color:var(--muted)}
+.promptbox .pmeta div strong{color:var(--text);display:block;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:2px}
+.workflow{background:var(--surface);border:1px solid var(--border);padding:20px 24px;margin:14px 0;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.workflow h4{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--accent);margin-bottom:10px}
+.workflow-steps{display:flex;align-items:center;gap:0;margin:16px 0;flex-wrap:wrap}
+.ws{background:var(--surface2);border:1px solid var(--border);padding:10px 14px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent2);text-align:center;min-width:90px;border-radius:2px}
+.wa{color:var(--accent);font-size:14px;padding:0 4px;font-weight:bold}
+footer{border-top:1px solid var(--border);padding:30px 0;margin-top:40px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px}
+footer a{color:var(--accent2);text-decoration:none}
+footer p:last-child{color:#aaa;margin-top:5px}
+@media(max-width:900px){nav{display:none}main{margin-left:0;padding:24px 16px}.g2,.cmd-grid{grid-template-columns:1fr}.hero h1{font-size:52px}}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="nav-logo">CLAUDE <span>CODE</span><small>The Definitive Reference</small></div>
+
+<span class="ns">Fundamentals</span>
+<a href="#overview"><span class="ni">🌐</span> 00 — Overview</a>
+<a href="#install"><span class="ni">⚙️</span> 01 — Installation</a>
+<a href="#setup"><span class="ni">🚀</span> 02 — First-Time Setup</a>
+<a href="#slash"><span class="ni">⚡</span> 03 — Slash Commands</a>
+
+<span class="ns">Configuration</span>
+<a href="#claudemd" class="sec"><span class="ni">📄</span> 04 — CLAUDE.md</a>
+<a href="#skills" class="sec"><span class="ni">🧠</span> 05 — Skills (SKILL.md)</a>
+<a href="#hooks" class="sec"><span class="ni">🪝</span> 06 — Hooks</a>
+<a href="#mcp" class="sec"><span class="ni">🔌</span> 07 — MCP</a>
+
+<span class="ns">Advanced</span>
+<a href="#subagents" class="sec2"><span class="ni">🤖</span> 08 — Subagents</a>
+<a href="#planmode" class="sec2"><span class="ni">📋</span> 09 — Plan Mode & Worktrees</a>
+<a href="#plugins" class="sec2"><span class="ni">🧩</span> 10 — Plugins</a>
+<a href="#sdk" class="sec2"><span class="ni">🔧</span> 11 — SDK & Headless</a>
+<a href="#gha" class="sec2"><span class="ni">🔄</span> 12 — GitHub Actions</a>
+
+<span class="ns">Reference</span>
+<a href="#cheat" class="sec3"><span class="ni">📋</span> 13 — Cheat Sheet</a>
+<a href="#hidden" class="sec3"><span class="ni">🔮</span> 14 — Hidden Commands</a>
+
+<span class="ns">Prompt Engineering</span>
+<a href="#prompts" class="sec3"><span class="ni">💬</span> 15 — Prompt Playbook</a>
+<a href="#workflows" class="sec3"><span class="ni">🔗</span> 16 — Chained Workflows</a>
+
+<span class="ns">Blueprints</span>
+<a href="#bp1"><span class="ni">🧬</span> 17 — RAG AI App</a>
+<a href="#bp2"><span class="ni">🛠️</span> 18 — FastAPI + React</a>
+
+<span class="ns">Wisdom</span>
+<a href="#best" class="sec"><span class="ni">🏆</span> 19 — Best Practices</a>
+<a href="#dev" class="sec"><span class="ni">🔬</span> 20 — Dev Guidelines</a>
+
+<span class="ns">Links</span>
+<a href="https://code.claude.com/docs" target="_blank"><span class="ni">↗</span> Official Docs</a>
+<a href="https://github.com/anthropics/claude-code" target="_blank"><span class="ni">↗</span> GitHub</a>
+</nav>
+
+<main>
+
+<div class="hero">
+<div class="hero-tag">Anthropic's Terminal-Native AI Coding Agent · Claude Sonnet 4.5 / Opus 4.7</div>
+<h1><span class="l1">CLAUDE</span><br><span class="l2">CODE</span><br><span class="l3">DEEP DIVE</span></h1>
+<p class="hero-desc">The complete reference for Claude Code — Anthropic's command-line coding agent. Covers installation, CLAUDE.md, SKILL.md, hooks, MCP, subagents, plan mode, worktrees, plugins, the Agent SDK, GitHub Actions, 30+ battle-tested prompts, chained workflows, and 2 full app blueprints (RAG AI + FastAPI internal tool) with copy-paste-ready code.</p>
+<div class="stats">
+<span class="stat orange">30+ Slash Commands</span>
+<span class="stat blue">3 Config Files</span>
+<span class="stat purple">7 Hook Types</span>
+<span class="stat green">30+ Prompts</span>
+<span class="stat red">2 Full Blueprints</span>
+<span class="stat orange">C# · Python · TS · Mobile</span>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 00: OVERVIEW                   -->
+<!-- ═══════════════════════════════════════ -->
+<section id="overview">
+<div class="sh"><div class="sn">00</div><div class="stw"><span class="stag" style="color:var(--accent)">Fundamentals</span><div class="stitle">Overview &amp; Architecture</div></div></div>
+
+<p style="color:var(--muted);margin-bottom:24px;font-size:14px">Claude Code is Anthropic's <strong style="color:var(--text)">terminal-native coding agent</strong> — a CLI tool that runs inside your shell and has direct access to your filesystem, git, shell commands, and any MCP servers you connect. It is NOT the same as Claude.ai in a browser.</p>
+
+<div class="g2">
+<div class="ccard" style="border-top-color:var(--accent2)">
+<h4 style="color:var(--accent2)">✅ What Claude Code IS</h4>
+<ul>
+<li><code>CLI agent</code><span>Runs in your terminal, reads/writes files directly</span></li>
+<li><code>Shell-enabled</code><span>Can run bash, git, npm, tests, builds natively</span></li>
+<li><code>Extensible</code><span>Plugins, skills, hooks, MCP servers, subagents</span></li>
+<li><code>Multi-file</code><span>Edits entire projects, not single files in isolation</span></li>
+<li><code>Agentic</code><span>Plans, executes, verifies, iterates autonomously</span></li>
+<li><code>Git-aware</code><span>Commits, branches, PRs, worktrees built-in</span></li>
+</ul>
+</div>
+<div class="ccard" style="border-top-color:var(--accent3)">
+<h4 style="color:var(--accent3)">❌ What Claude Code is NOT</h4>
+<ul>
+<li><code>Not Claude.ai</code><span>Different product, different capabilities</span></li>
+<li><code>Not a chat</code><span>It's an agent — it DOES things, not just talks</span></li>
+<li><code>Not auto-safe</code><span>Can delete files, push commits — review carefully</span></li>
+<li><code>Not free forever</code><span>Uses API tokens; costs scale with usage</span></li>
+<li><code>Not a replacement</code><span>You still drive the ship; it's a force multiplier</span></li>
+<li><code>Not magic</code><span>Needs good CLAUDE.md + good prompts to shine</span></li>
+</ul>
+</div>
+</div>
+
+<div class="cl info" style="margin-top:20px"><strong>The Four Layers</strong><p>Claude Code is built on a layered architecture. Understanding this helps you configure it properly:</p></div>
+
+<div class="cmd-grid">
+<div class="ci"><div class="cl2">Layer 1 — CLI Core</div><div class="cd2">The <code>claude</code> binary, session loop, tool execution, model routing. This is the engine.</div></div>
+<div class="ci"><div class="cl2">Layer 2 — Configuration</div><div class="cd2">CLAUDE.md (per-project + user), AGENTS.md (multi-agent), settings.json (permissions), keybindings.json</div></div>
+<div class="ci"><div class="cl2">Layer 3 — Extensions</div><div class="cd2">Skills (SKILL.md), Slash Commands, Subagents, Hooks, Plugins, Output Styles</div></div>
+<div class="ci"><div class="cl2">Layer 4 — External</div><div class="cd2">MCP servers (Context7, Exa, Playwright...), GitHub Actions, Agent SDK, Dispatch API</div></div>
+</div>
+
+<div class="cl tip" style="margin-top:16px"><strong>Key Insight</strong><p>Most Claude Code problems aren't about the model — they're about <strong>Layer 2 (configuration)</strong>. A good CLAUDE.md and well-scoped skills will 10× your effectiveness. This tutorial focuses heavily on those layers.</p></div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 01: INSTALLATION                -->
+<!-- ═══════════════════════════════════════ -->
+<section id="install">
+<div class="sh"><div class="sn">01</div><div class="stw"><span class="stag" style="color:var(--accent)">Setup</span><div class="stitle">Installation</div></div></div>
+
+<div class="cl info"><strong>Prerequisites</strong><p>Claude Code requires <strong>Node.js 18+</strong> and either an Anthropic API key or a Claude Pro/Max subscription. On Windows, use PowerShell or WSL2 — Git Bash has known issues with some subagent operations.</p></div>
+
+<div class="steps">
+
+<div class="step">
+<div class="snum">Step 01 — Install Node.js</div>
+<h3>Install Node.js 18 or later</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Windows (winget)</span>
+<span class="cmd">winget install OpenJS.NodeJS.LTS</span>
+
+<span class="cm"># macOS (Homebrew)</span>
+<span class="cmd">brew install node</span>
+
+<span class="cm"># Linux (nvm recommended)</span>
+<span class="cmd">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash</span>
+<span class="cmd">nvm install --lts</span>
+
+<span class="cm"># Verify</span>
+<span class="cmd">node --version</span>  <span class="cm"># should be v18.x or higher</span></div>
+</div>
+
+<div class="step b">
+<div class="snum">Step 02 — Install Claude Code</div>
+<h3>Install the Claude Code CLI globally</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Global install via npm</span>
+<span class="cmd">npm install -g @anthropic-ai/claude-code</span>
+
+<span class="cm"># Alternative: pnpm</span>
+<span class="cmd">pnpm add -g @anthropic-ai/claude-code</span>
+
+<span class="cm"># Alternative: Bun</span>
+<span class="cmd">bun add -g @anthropic-ai/claude-code</span>
+
+<span class="cm"># Verify installation</span>
+<span class="cmd">claude --version</span></div>
+</div>
+
+<div class="step g">
+<div class="snum">Step 03 — Authenticate</div>
+<h3>Log in via browser or API key</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Option A: Browser login (Claude Pro/Max/Team)</span>
+<span class="cmd">claude login</span>  <span class="cm"># opens browser, handles OAuth</span>
+
+<span class="cm"># Option B: API key (pay-per-token)</span>
+<span class="cmd">export ANTHROPIC_API_KEY="sk-ant-..."</span>   <span class="cm">// macOS/Linux</span>
+<span class="cmd">$env:ANTHROPIC_API_KEY="sk-ant-..."</span>     <span class="cm"># PowerShell</span>
+
+<span class="cm"># Option C: Via 1Password / keychain (recommended)</span>
+<span class="cmd">export ANTHROPIC_API_KEY=$(op read "op://Private/Anthropic/key")</span></div>
+<div class="cl warn" style="margin-top:10px"><strong>Never Commit Keys</strong><p>If you set <code>ANTHROPIC_API_KEY</code> in a <code>.env</code> file, add <code>.env</code> to <code>.gitignore</code> FIRST. Claude Code reads the env var automatically.</p></div>
+</div>
+
+<div class="step p">
+<div class="snum">Step 04 — First Run</div>
+<h3>Navigate to a project and launch Claude Code</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">cd C:\MyProject</span>          <span class="cm"># Windows</span>
+<span class="cmd">cd ~/my-project</span>            <span class="cm"># macOS/Linux</span>
+
+<span class="cm"># Launch Claude Code</span>
+<span class="cmd">claude</span>
+
+<span class="cm"># First run will ask:</span>
+<span class="cm"># - Trust this directory? (y/N)</span>
+<span class="cm"># - Create .claude/ folder for config?</span></div>
+</div>
+
+<div class="step o">
+<div class="snum">Step 05 — Optional: IDE Integration</div>
+<h3>Install the VS Code extension (or Cursor / JetBrains)</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># VS Code marketplace search</span>
+<span class="cmd">code --install-extension anthropic.claude-code</span>
+
+<span class="cm"># Or from inside Claude Code CLI</span>
+<span class="cmd">/install-github-app</span>   <span class="cm"># for GitHub integration</span></div>
+<p style="margin-top:8px;font-size:12px">The VS Code extension adds inline chat, code lens buttons, and file context. JetBrains plugin is in beta at this writing.</p>
+</div>
+
+</div>
+
+<div class="cl go" style="margin-top:16px"><strong>Install Verification</strong><p>Run <code>claude --version</code>. If you see a version number (e.g. <code>1.x.y</code>), you're good. If you see "command not found", add your global npm bin path to PATH: <code>npm config get prefix</code> shows where it lives.</p></div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 02: FIRST-TIME SETUP            -->
+<!-- ═══════════════════════════════════════ -->
+<section id="setup">
+<div class="sh"><div class="sn">02</div><div class="stw"><span class="stag" style="color:var(--accent2)">Onboarding</span><div class="stitle">First-Time Setup</div></div></div>
+
+<div class="steps">
+
+<div class="step b">
+<div class="snum">Setup 01 — Run /init</div>
+<h3>Auto-generate your project's CLAUDE.md</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Inside Claude Code session</span>
+<span class="cmd">/init</span>
+
+<span class="cm"># What it does:</span>
+<span class="cm"># - Scans your repo</span>
+<span class="cm"># - Detects tech stack (package.json, requirements.txt, *.csproj, etc.)</span>
+<span class="cm"># - Creates a starter CLAUDE.md with project conventions</span>
+<span class="cm"># - Suggests skills, hooks, and MCP servers relevant to your stack</span></div>
+</div>
+
+<div class="step g">
+<div class="snum">Setup 02 — Review the Generated CLAUDE.md</div>
+<h3>The file will look something like this</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Generated CLAUDE.md example</span>
+
+<span class="kw">## Project Overview</span>
+This is a Next.js 15 + TypeScript app using Postgres and Prisma ORM.
+
+<span class="kw">## Tech Stack</span>
+- Frontend: Next.js 15 App Router, React 19, Tailwind CSS 4
+- Backend: Next.js API routes, tRPC, Zod
+- Database: Postgres 16, Prisma ORM
+- Testing: Vitest (unit), Playwright (E2E)
+
+<span class="kw">## Conventions</span>
+- Use TypeScript strict mode always
+- Zod schemas for all API boundaries
+- Prisma migrations via `pnpm prisma migrate dev`
+- Components in PascalCase, hooks in camelCase
+
+<span class="kw">## Commands</span>
+- Dev: `pnpm dev`
+- Test: `pnpm test` + `pnpm e2e`
+- Build: `pnpm build`
+- Lint: `pnpm lint --fix`</div>
+</div>
+
+<div class="step p">
+<div class="snum">Setup 03 — Configure Global Preferences</div>
+<h3>Create your user-level CLAUDE.md</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Global preferences that apply to ALL projects</span>
+<span class="cmd">mkdir -p ~/.claude</span>
+<span class="cmd">code ~/.claude/CLAUDE.md</span>
+
+<span class="cm"># Example content for ~/.claude/CLAUDE.md:</span>
+<span class="kw">## My Preferences</span>
+- Default package manager: pnpm (fallback npm)
+- Git commit style: Conventional Commits
+- Always ask before running destructive commands
+- Prefer verbose over clever code
+- Never use `any` in TypeScript without comment explaining why</div>
+</div>
+
+<div class="step o">
+<div class="snum">Setup 04 — Permission Profile</div>
+<h3>Configure what Claude Code can and cannot do</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># ~/.claude/settings.json</span>
+<span class="str">{
+  "permissions": {
+    "allow": [
+      "Bash(git:*)",
+      "Bash(pnpm:*)",
+      "Bash(npm:*)",
+      "Bash(node:*)",
+      "Read(**)",
+      "Write(**)"
+    ],
+    "deny": [
+      "Bash(rm -rf /)",
+      "Bash(curl:* | sh)",
+      "Bash(sudo:*)",
+      "Read(.env)",
+      "Read(**/*.key)"
+    ]
+  }
+}</span></div>
+<div class="cl warn" style="margin-top:10px"><strong>Critical</strong><p>The <code>deny</code> list is your safety net. Always include it. See Section 13 (Rejected Commands) for more things to block.</p></div>
+</div>
+
+<div class="step r">
+<div class="snum">Setup 05 — Verify Setup with /doctor</div>
+<h3>Run the health check</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">/doctor</span>
+
+<span class="cm"># Checks:</span>
+<span class="cm"># ✓ Node version</span>
+<span class="cm"># ✓ API key / login</span>
+<span class="cm"># ✓ CLAUDE.md exists</span>
+<span class="cm"># ✓ settings.json valid</span>
+<span class="cm"># ✓ MCP servers reachable</span>
+<span class="cm"># ✓ Git configured</span></div>
+</div>
+
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 03: SLASH COMMANDS              -->
+<!-- ═══════════════════════════════════════ -->
+<section id="slash">
+<div class="sh"><div class="sn">03</div><div class="stw"><span class="stag" style="color:var(--accent)">Reference</span><div class="stitle">Core Slash Commands</div></div></div>
+
+<p style="color:var(--muted);margin-bottom:20px;font-size:14px">Type <code>/</code> inside a Claude Code session to see the command picker. These are the built-in commands — plugins and skills add more.</p>
+
+<table class="ct">
+<thead><tr><th>Command</th><th>Purpose</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>/help</td><td>List all available commands</td><td>Shows both built-in and plugin commands</td></tr>
+<tr><td>/init</td><td>Auto-generate CLAUDE.md for current project</td><td>Run once per new project</td></tr>
+<tr><td>/clear</td><td>Clear conversation context</td><td>Preserves plan files and CLAUDE.md</td></tr>
+<tr><td>/compact</td><td>Compress long context into summary</td><td>Great for long sessions to reclaim tokens</td></tr>
+<tr><td>/resume</td><td>Resume a previous session</td><td>Lists recent sessions by date</td></tr>
+<tr><td>/sessions</td><td>Manage session history</td><td>List, rename, delete saved sessions</td></tr>
+<tr><td>/model</td><td>Switch model mid-session</td><td>Opus 4.7 / Sonnet 4.6 / Haiku 4.5</td></tr>
+<tr><td>/effort</td><td>Set reasoning effort level</td><td><code>low / medium / high</code> for next turn</td></tr>
+<tr><td>/review</td><td>Review recent changes</td><td>Built-in code review, runs as subagent</td></tr>
+<tr><td>/security-review</td><td>Security-focused review</td><td>Scans for secrets, injection, unsafe patterns</td></tr>
+<tr><td>/agents</td><td>List and manage subagents</td><td>See active agents, kill runaway ones</td></tr>
+<tr><td>/mcp</td><td>Manage MCP servers</td><td>Add/remove/test servers</td></tr>
+<tr><td>/plugin</td><td>Manage plugins</td><td>Install, update, list, marketplace</td></tr>
+<tr><td>/memory</td><td>View/edit persistent memory</td><td>Cross-session memory via MCP</td></tr>
+<tr><td>/config</td><td>Edit Claude Code config</td><td>Opens settings.json in $EDITOR</td></tr>
+<tr><td>/cost</td><td>Show token usage + cost</td><td>Current session + rolling totals</td></tr>
+<tr><td>/status</td><td>Show session status</td><td>Model, context used, active hooks</td></tr>
+<tr><td>/doctor</td><td>Health check</td><td>Verify setup is working</td></tr>
+<tr><td>/bug</td><td>Report a bug to Anthropic</td><td>Auto-includes session metadata</td></tr>
+<tr><td>/keybindings</td><td>Edit keyboard shortcuts</td><td>Saves to <code>~/.claude/keybindings.json</code></td></tr>
+<tr><td>/upgrade</td><td>Update Claude Code</td><td>Runs npm update behind scenes</td></tr>
+<tr><td>/exit</td><td>Exit Claude Code</td><td>Also: Ctrl+C twice, or Ctrl+D</td></tr>
+<tr><td>/vim</td><td>Toggle vim mode</td><td>Input mode with vim bindings</td></tr>
+<tr><td>/terminal-setup</td><td>Configure terminal integration</td><td>Sets up shell hooks for better UX</td></tr>
+<tr><td>/install-github-app</td><td>Install GitHub App integration</td><td>For automated PR reviews</td></tr>
+<tr><td>/pr_comments</td><td>Fetch PR review comments</td><td>Pulls comments from current PR branch</td></tr>
+</tbody>
+</table>
+
+<div class="cl info" style="margin-top:20px"><strong>Bundled Skills (also act as slash commands)</strong><p>These are built-in skills that behave like slash commands:</p></div>
+
+<div class="cmd-grid">
+<div class="ci"><div class="cl2">/simplify</div><div class="cd2">3-agent review pipeline — detects architectural issues, duplicate logic, perf issues</div></div>
+<div class="ci"><div class="cl2">/batch</div><div class="cd2">Run parallel changes across worktrees, auto-creates PRs</div></div>
+<div class="ci"><div class="cl2">/debug</div><div class="cd2">Systematic debugging — root cause → hypothesis → test → fix</div></div>
+<div class="ci"><div class="cl2">/loop</div><div class="cd2">Autonomous loop — runs task repeatedly until success criteria met</div></div>
+<div class="ci"><div class="cl2">/claude-api</div><div class="cd2">Help writing code against the Anthropic API</div></div>
+</div>
+</section>
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 04: CLAUDE.md DEEP DIVE         -->
+<!-- ═══════════════════════════════════════ -->
+<section id="claudemd">
+<div class="sh"><div class="sn">04</div><div class="stw"><span class="stag" style="color:var(--accent4)">Configuration</span><div class="stitle">CLAUDE.md Deep Dive</div></div></div>
+
+<p style="color:var(--muted);margin-bottom:20px;font-size:14px"><strong style="color:var(--text)">CLAUDE.md is the single most important file in your Claude Code setup.</strong> It's the system prompt for every session — Claude reads it first, every time. A great CLAUDE.md means Claude already knows your conventions before you type a single prompt.</p>
+
+<div class="cl info"><strong>Precedence Order (highest to lowest)</strong><p>1. User message (your prompt) &nbsp;·&nbsp; 2. Project CLAUDE.md (<code>.claude/CLAUDE.md</code>) &nbsp;·&nbsp; 3. User CLAUDE.md (<code>~/.claude/CLAUDE.md</code>) &nbsp;·&nbsp; 4. Imported @files &nbsp;·&nbsp; 5. Built-in system prompt</p></div>
+
+<div class="steps">
+
+<div class="step">
+<div class="snum">Concept — @imports</div>
+<h3>Keep CLAUDE.md small by importing other files</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Inside CLAUDE.md, use @ to pull in other files</span>
+
+<span class="kw">## Architecture</span>
+See @docs/architecture.md for system design.
+
+<span class="kw">## API Conventions</span>
+Read @docs/api-conventions.md before touching any route.
+
+<span class="kw">## Coding Standards</span>
+@docs/standards/typescript.md
+@docs/standards/react.md</div>
+<div class="cl tip" style="margin-top:10px"><strong>Why This Matters</strong><p>A CLAUDE.md over 300 lines bloats every session's context. Use <code>@imports</code> to keep the root file under 150 lines, then import detailed docs only when needed.</p></div>
+</div>
+
+<div class="step b">
+<div class="snum">Example A — TypeScript / Next.js Project</div>
+<h3>Real-world CLAUDE.md for a Next.js 15 app</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># .claude/CLAUDE.md — Next.js 15 App Router project</span>
+
+<span class="kw"># Project: Acme SaaS Dashboard</span>
+
+<span class="kw">## Stack</span>
+- Next.js 15.2 (App Router, Server Components by default)
+- React 19, TypeScript 5.6 (strict mode)
+- Tailwind CSS 4 + shadcn/ui
+- Prisma 6 + Postgres 16
+- tRPC 11 for API, Zod for validation
+- Auth: better-auth (email + OAuth)
+- Testing: Vitest + React Testing Library + Playwright
+
+<span class="kw">## Conventions</span>
+- **Server Components by default.** Only use `"use client"` when absolutely necessary.
+- **Data fetching in Server Components.** Mutations via Server Actions or tRPC.
+- **Zod schemas for ALL external boundaries** — API routes, env vars, form inputs.
+- **No `any`.** Use `unknown` + narrowing or proper types.
+- **Folder structure:** `app/` for routes, `components/` for UI, `lib/` for utils, `server/` for backend-only code.
+- **Imports:** Use `@/` alias for all absolute imports.
+
+<span class="kw">## Commands</span>
+- Dev: `pnpm dev`
+- Test: `pnpm test` (unit) + `pnpm e2e` (Playwright)
+- Type check: `pnpm tsc --noEmit`
+- Lint: `pnpm lint --fix`
+- DB: `pnpm db:migrate` (dev) · `pnpm db:deploy` (prod)
+- Build: `pnpm build`
+
+<span class="kw">## Do Not</span>
+- Do not use `fetch` in Server Components — use the tRPC caller instead.
+- Do not modify `prisma/schema.prisma` without running `pnpm db:migrate`.
+- Do not commit directly to `main` — always via PR.
+- Do not add new dependencies without confirming with the team.
+
+<span class="kw">## Imports</span>
+@docs/architecture.md
+@docs/auth-flow.md
+@docs/deployment.md</div>
+</div>
+
+<div class="step g">
+<div class="snum">Example B — Python / FastAPI Project</div>
+<h3>Real-world CLAUDE.md for a Python API</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># .claude/CLAUDE.md — FastAPI backend service</span>
+
+<span class="kw"># Project: Acme Data Platform API</span>
+
+<span class="kw">## Stack</span>
+- Python 3.12 + FastAPI 0.115
+- SQLModel (SQLAlchemy 2.x + Pydantic v2)
+- PostgreSQL 16 with asyncpg
+- Redis 7 (caching, rate limits, Celery broker)
+- Celery 5 for async jobs
+- Pytest + httpx for testing
+- Ruff for lint/format, mypy strict mode
+
+<span class="kw">## Conventions</span>
+- **Async everywhere** — all DB, HTTP, file I/O must be async.
+- **Pydantic v2 models for ALL I/O** — request bodies, responses, config.
+- **Dependency injection via FastAPI's Depends()** — never global state.
+- **Type hints mandatory.** `mypy --strict` must pass.
+- **One route = one function.** No router methods with 200 lines.
+- **Repository pattern** — business logic never talks to SQLAlchemy directly.
+
+<span class="kw">## Project Layout</span>
+```
+app/
+├── api/v1/routes/       # FastAPI routers
+├── core/                # config, security, middleware
+├── models/              # SQLModel / Pydantic models
+├── repositories/        # DB access layer
+├── services/            # business logic
+├── tasks/               # Celery tasks
+└── tests/
+    ├── unit/
+    └── integration/
+```
+
+<span class="kw">## Commands</span>
+- Dev: `uv run fastapi dev app/main.py`
+- Test: `uv run pytest -xvs`
+- Lint: `uv run ruff check --fix &amp;&amp; uv run ruff format`
+- Type: `uv run mypy app/ --strict`
+- Migrations: `uv run alembic upgrade head` &nbsp;· make: `alembic revision --autogenerate -m "msg"`
+
+<span class="kw">## Never Do</span>
+- Never use `datetime.now()` — use `datetime.now(timezone.utc)`.
+- Never use `json.dumps` on Pydantic models — use `.model_dump_json()`.
+- Never commit without running tests + ruff.
+- Never use bare `except:` — always catch specific exceptions.
+- Never use synchronous libraries in async code (requests, psycopg2 — use httpx, asyncpg).</div>
+</div>
+
+<div class="step p">
+<div class="snum">Example C — C# / ASP.NET Core Project</div>
+<h3>Real-world CLAUDE.md for an ASP.NET Core API</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># .claude/CLAUDE.md — ASP.NET Core 9 minimal API</span>
+
+<span class="kw"># Project: Acme Orders Service</span>
+
+<span class="kw">## Stack</span>
+- .NET 9 / ASP.NET Core Minimal API
+- Entity Framework Core 9 with Postgres (Npgsql)
+- MediatR for CQRS pattern
+- FluentValidation for request validation
+- Serilog for structured logging
+- xUnit + FluentAssertions + Testcontainers for tests
+- Docker for local Postgres
+
+<span class="kw">## Conventions</span>
+- **C# nullable reference types enabled.** Always. Every project.
+- **Record types** for DTOs, immutable data.
+- **CQRS via MediatR** — no controllers touching DbContext directly.
+- **Result&lt;T&gt; pattern** — never throw for expected failures; return Result.
+- **Minimal APIs, not MVC controllers** — endpoints grouped by feature.
+- **One feature folder = one vertical slice.** Command + Handler + Validator + Endpoint together.
+
+<span class="kw">## Project Layout</span>
+```
+src/
+├── Acme.Api/              # minimal API endpoints
+├── Acme.Application/      # commands, queries, handlers
+├── Acme.Domain/           # entities, value objects
+├── Acme.Infrastructure/   # EF Core, external services
+└── Acme.Contracts/        # shared DTOs
+tests/
+├── Acme.UnitTests/
+└── Acme.IntegrationTests/
+```
+
+<span class="kw">## Commands</span>
+- Run: `dotnet run --project src/Acme.Api`
+- Test: `dotnet test` (all) · `dotnet test tests/Acme.UnitTests` (unit only)
+- Build: `dotnet build -c Release`
+- Format: `dotnet format`
+- Migrations: `dotnet ef migrations add &lt;Name&gt; -p src/Acme.Infrastructure -s src/Acme.Api`
+- Apply: `dotnet ef database update -p src/Acme.Infrastructure -s src/Acme.Api`
+
+<span class="kw">## Testing Conventions</span>
+- Arrange / Act / Assert blocks clearly labeled
+- One assertion per test (use FluentAssertions for compound checks)
+- Integration tests use Testcontainers for real Postgres
+- Test naming: `Should_DoX_When_Y()`
+
+<span class="kw">## Never</span>
+- Never use `Task.Result` or `.Wait()` — always await.
+- Never catch `Exception` — catch specific types or let it bubble.
+- Never use `DateTime.Now` — use `DateTimeOffset.UtcNow`.
+- Never return IQueryable from public APIs — materialise with `ToListAsync()`.
+- Never use EF Core migrations on production DB — use SQL scripts.</div>
+</div>
+
+<div class="step r">
+<div class="snum">CLAUDE.md Anti-Patterns</div>
+<h3>What to NEVER put in CLAUDE.md</h3>
+<ul>
+<li>❌ <strong>Secrets / API keys</strong> — CLAUDE.md gets committed. Use env vars.</li>
+<li>❌ <strong>Walls of prose</strong> — keep it scannable. Claude reads lists better than paragraphs.</li>
+<li>❌ <strong>Conflicting conventions</strong> — "use tabs" + "use 2 spaces" confuses the model.</li>
+<li>❌ <strong>Stale commands</strong> — outdated commands make Claude hallucinate failures.</li>
+<li>❌ <strong>Over 300 lines</strong> — use @imports to break it up.</li>
+<li>❌ <strong>Opinions without justification</strong> — "no classes" works better than "hate OOP".</li>
+<li>❌ <strong>Every possible rule</strong> — focus on what's non-obvious. Claude knows TypeScript basics.</li>
+</ul>
+</div>
+
+<div class="step o">
+<div class="snum">Concept — AGENTS.md (the newer file)</div>
+<h3>CLAUDE.md vs AGENTS.md — which to use?</h3>
+<p><strong style="color:var(--text)">AGENTS.md</strong> is the newer open standard (used by multiple AI coding tools — Codex, OpenCode, Cursor). It serves the same purpose as CLAUDE.md but is tool-agnostic.</p>
+<ul>
+<li>Use <strong>CLAUDE.md</strong> if your team only uses Claude Code</li>
+<li>Use <strong>AGENTS.md</strong> if you share the project across Codex / Cursor / OpenCode / Claude Code</li>
+<li>You can have <strong>both</strong> — Claude Code reads both, with CLAUDE.md winning conflicts</li>
+</ul>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Symlink pattern — one file, both names</span>
+<span class="cmd">ln -s CLAUDE.md AGENTS.md</span>     <span class="cm"># macOS/Linux</span>
+<span class="cmd">mklink AGENTS.md CLAUDE.md</span>     <span class="cm"># Windows (admin)</span></div>
+</div>
+
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 05: SKILL.md DEEP DIVE          -->
+<!-- ═══════════════════════════════════════ -->
+<section id="skills">
+<div class="sh"><div class="sn">05</div><div class="stw"><span class="stag" style="color:var(--accent4)">Configuration</span><div class="stitle">Skills (SKILL.md) Deep Dive</div></div></div>
+
+<p style="color:var(--muted);margin-bottom:20px;font-size:14px"><strong style="color:var(--text)">Skills are Claude Code's killer feature.</strong> A skill is a folder with a <code>SKILL.md</code> file that teaches Claude how to do a specific task. Skills can be auto-invoked by Claude when the context matches, or manually via <code>/skill-name</code>. They replaced the old "slash commands" system as the primary extension mechanism.</p>
+
+<div class="cl info"><strong>Skill Locations (precedence order)</strong>
+<p>1. Project: <code>.claude/skills/&lt;name&gt;/SKILL.md</code> &nbsp;·&nbsp; 2. User: <code>~/.claude/skills/&lt;name&gt;/SKILL.md</code> &nbsp;·&nbsp; 3. Plugin: <code>&lt;plugin-dir&gt;/skills/&lt;name&gt;/SKILL.md</code></p></div>
+
+<div class="steps">
+
+<div class="step">
+<div class="snum">Anatomy — Skill Structure</div>
+<h3>Every skill is a directory with a SKILL.md plus optional support files</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>.claude/skills/deploy-to-vercel/
+├── SKILL.md              <span class="cm"># REQUIRED — the skill itself</span>
+├── reference/
+│   ├── vercel-cli.md     <span class="cm"># progressive disclosure</span>
+│   └── troubleshoot.md
+├── scripts/
+│   └── pre-deploy.sh
+└── templates/
+    └── vercel.json</div>
+</div>
+
+<div class="step b">
+<div class="snum">Anatomy — SKILL.md Frontmatter</div>
+<h3>All available frontmatter options</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="str">---
+name: deploy-to-vercel
+description: Deploys the current Next.js app to Vercel production. Runs tests, builds, checks env vars, then deploys. Use when user says "deploy to vercel" or "ship to prod".
+allowed-tools: Bash(vercel:*), Bash(pnpm:*), Read(**), Write(vercel.json)
+disable-model-invocation: true
+user-invocable: true
+model: claude-sonnet-4-6
+context: fork
+agent: general-purpose
+---</span>
+
+<span class="cm"># Skill body goes here — markdown instructions Claude follows when this skill is invoked</span></div>
+<div class="cmd-grid" style="margin-top:10px">
+<div class="ci"><div class="cl2">name</div><div class="cd2">Required. The slash command — e.g. <code>/deploy-to-vercel</code></div></div>
+<div class="ci"><div class="cl2">description</div><div class="cd2">Required. Tells Claude when to auto-invoke. Be specific.</div></div>
+<div class="ci"><div class="cl2">allowed-tools</div><div class="cd2">Optional. Pre-authorised tools, no permission prompts</div></div>
+<div class="ci"><div class="cl2">disable-model-invocation</div><div class="cd2">If true, only the user can invoke. Claude can't auto-call it.</div></div>
+<div class="ci"><div class="cl2">user-invocable</div><div class="cd2">If false, only Claude invokes (hidden from <code>/</code> menu)</div></div>
+<div class="ci"><div class="cl2">model</div><div class="cd2">Pin a model — <code>claude-opus-4-7</code>, <code>claude-sonnet-4-6</code>, etc.</div></div>
+<div class="ci"><div class="cl2">context: fork</div><div class="cd2">Run in a separate context window (no pollution)</div></div>
+<div class="ci"><div class="cl2">agent</div><div class="cd2"><code>Explore</code> / <code>Plan</code> / <code>general-purpose</code> or custom</div></div>
+</div>
+</div>
+
+<div class="step g">
+<div class="snum">Example Skill A — Deploy to Vercel</div>
+<h3>Full skill with safety gates</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># .claude/skills/deploy-to-vercel/SKILL.md</span>
+<span class="str">---
+name: deploy-to-vercel
+description: Deploys the current Next.js app to Vercel production after running gates. Use when user says "deploy", "ship to prod", or "push to vercel".
+allowed-tools: Bash(vercel:*), Bash(pnpm:*), Bash(git:*), Read(**)
+disable-model-invocation: true
+---</span>
+
+<span class="kw"># Deploy to Vercel</span>
+
+Run these steps in order. ABORT on any failure.
+
+<span class="kw">## 1. Pre-deploy Gates</span>
+- Run `git status` — must be clean
+- Run `pnpm test` — all tests must pass
+- Run `pnpm build` — must succeed locally
+- Verify `vercel.json` exists
+- Check required env vars exist on Vercel via `vercel env ls production`
+
+<span class="kw">## 2. Confirm with User</span>
+Print summary: branch, commit SHA, changed files count, estimated impact.
+Ask: "Deploy commit &lt;sha&gt; to vercel production? (yes/no)"
+If response is not an exact "yes", ABORT.
+
+<span class="kw">## 3. Deploy</span>
+- Run `vercel --prod` from repo root
+- Capture deployment URL
+- Tag the commit: `git tag -a v$(date +%Y%m%d-%H%M%S) -m "prod deploy"`
+- Push tag: `git push origin --tags`
+
+<span class="kw">## 4. Verify</span>
+- Curl deployment URL `/api/health` — expect 200
+- Print deployment URL + tag to user
+- Done.
+
+<span class="kw">## Abort Protocol</span>
+If any step fails, print exactly what failed, do NOT proceed.</div>
+<div class="cl warn" style="margin-top:10px"><strong>Why disable-model-invocation?</strong><p>Deploys have real consequences. We don't want Claude to accidentally deploy when it "thinks" the user asked for it. Only an explicit <code>/deploy-to-vercel</code> triggers this.</p></div>
+</div>
+
+<div class="step p">
+<div class="snum">Example Skill B — Code Review</div>
+<h3>Auto-invoking review skill</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># ~/.claude/skills/code-review/SKILL.md</span>
+<span class="str">---
+name: code-review
+description: Reviews recently changed code for bugs, security issues, and style violations. Use when user says "review this", "check my code", or after completing a feature task.
+allowed-tools: Bash(git diff:*), Bash(git log:*), Read(**)
+context: fork
+agent: general-purpose
+---</span>
+
+<span class="kw"># Code Review</span>
+
+Perform a thorough review of uncommitted changes OR the current feature branch.
+
+<span class="kw">## Scope</span>
+- If working tree has uncommitted changes → review `git diff`
+- Else → review `git diff main...HEAD`
+
+<span class="kw">## Review Checklist</span>
+Go through each category. Report findings as a structured list.
+
+<span class="kw">### Bugs</span>
+- Off-by-one errors
+- Null/undefined handling
+- Race conditions
+- Incorrect error handling
+- Wrong API contract
+
+<span class="kw">### Security</span>
+- SQL injection, XSS, path traversal
+- Secrets/keys hardcoded
+- Insecure randomness (Math.random for crypto)
+- Missing input validation
+- Auth bypass patterns
+
+<span class="kw">### Style / Maintainability</span>
+- Violations of project CLAUDE.md conventions
+- Dead code
+- Excessive complexity (cyclomatic &gt; 10)
+- Missing tests for new code
+- Inconsistent naming
+
+<span class="kw">## Output Format</span>
+```
+## Review Summary
+X issues found (Y critical, Z warnings)
+
+### Critical
+- file.ts:42 — &lt;description&gt;
+
+### Warnings
+- ...
+
+### Suggestions
+- ...
+```
+Do NOT make changes — only report. User decides what to fix.</div>
+</div>
+
+<div class="step o">
+<div class="snum">Example Skill C — Commit with Convention</div>
+<h3>Structured git commit skill</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># ~/.claude/skills/commit/SKILL.md</span>
+<span class="str">---
+name: commit
+description: Create a conventional-commit style git commit from current changes. Use when user says "commit", "commit this", or "save progress".
+allowed-tools: Bash(git:*)
+disable-model-invocation: true
+---</span>
+
+<span class="kw"># Git Commit (Conventional)</span>
+
+<span class="kw">## 1. Inspect</span>
+- Run `git status` and `git diff --staged` (or `git diff` if nothing staged)
+- Identify the dominant change type:
+  - `feat:` new feature
+  - `fix:` bug fix
+  - `refactor:` no behavior change
+  - `perf:` performance
+  - `docs:` docs only
+  - `test:` tests only
+  - `chore:` build/config
+  - `ci:` pipeline
+
+<span class="kw">## 2. Draft Message</span>
+Format:
+```
+&lt;type&gt;(&lt;scope&gt;): &lt;imperative subject, lowercase, no period, ≤ 72 chars&gt;
+
+&lt;body — what changed and why, wrapped at 72 chars&gt;
+
+&lt;footer — Closes #123 etc.&gt;
+```
+
+<span class="kw">## 3. Confirm</span>
+Show the drafted message. Ask "Commit with this message? (yes/edit/no)".
+- yes → stage all, commit, print SHA
+- edit → user rewrites, then commit
+- no → abort, don't touch git
+
+<span class="kw">## 4. Never</span>
+- Never commit without asking first
+- Never force-push
+- Never commit to main directly (check branch first)</div>
+</div>
+
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 06: HOOKS                       -->
+<!-- ═══════════════════════════════════════ -->
+<section id="hooks">
+<div class="sh"><div class="sn">06</div><div class="stw"><span class="stag" style="color:var(--accent4)">Configuration</span><div class="stitle">Hooks System</div></div></div>
+
+<p style="color:var(--muted);margin-bottom:20px;font-size:14px">Hooks are scripts that fire at specific points in Claude Code's lifecycle. They let you inject context, block dangerous actions, or automate workflows. Every hook communicates via JSON on stdin / stdout.</p>
+
+<div class="cl info"><strong>Hook Types (7 total)</strong></div>
+<table class="ct" style="margin-top:0">
+<thead><tr><th>Hook</th><th>Fires When</th><th>Use Case</th></tr></thead>
+<tbody>
+<tr><td>PreToolUse</td><td>Before Claude calls any tool</td><td>Block dangerous commands, inject context</td></tr>
+<tr><td>PostToolUse</td><td>After tool completes</td><td>Log actions, notify, post-process output</td></tr>
+<tr><td>UserPromptSubmit</td><td>User hits Enter on prompt</td><td>Rewrite prompts, add metadata, audit</td></tr>
+<tr><td>Stop</td><td>Session ends</td><td>Cleanup, summary, cost report</td></tr>
+<tr><td>SessionStart</td><td>New session begins</td><td>Auto-load context, check env, run linter</td></tr>
+<tr><td>Notification</td><td>Claude needs user attention</td><td>Desktop notify, sound, Slack webhook</td></tr>
+<tr><td>PermissionRequest</td><td>Claude asks for tool permission</td><td>Auto-approve safe patterns, deny risky ones</td></tr>
+</tbody>
+</table>
+
+<div class="steps" style="margin-top:24px">
+
+<div class="step">
+<div class="snum">Hook Config — hooks.json Format</div>
+<h3>Where and how to define hooks</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># .claude/hooks/hooks.json — project level</span>
+<span class="cm"># ~/.claude/hooks/hooks.json — user level</span>
+<span class="str">{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash(rm -rf:*)",
+        "command": "python .claude/hooks/block-rm-rf.py"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit(*.ts)",
+        "command": "pnpm lint --fix $FILE"
+      }
+    ],
+    "SessionStart": [
+      {
+        "command": "echo 'Claude Code session started at $(date)' &gt;&gt; .claude/session.log"
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "command": "python .claude/hooks/audit-prompt.py"
+      }
+    ]
+  }
+}</span></div>
+</div>
+
+<div class="step b">
+<div class="snum">Hook Example — Block rm -rf</div>
+<h3>PreToolUse hook that blocks dangerous deletions</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># .claude/hooks/block-rm-rf.py</span>
+<span class="kw">import</span> sys, json, re
+
+data = json.load(sys.stdin)
+<span class="cm"># data has shape: {"tool": "Bash", "tool_input": {"command": "..."}}</span>
+
+cmd = data.get(<span class="str">"tool_input"</span>, {}).get(<span class="str">"command"</span>, <span class="str">""</span>)
+dangerous = [<span class="str">r"rm\s+-rf\s+/"</span>, <span class="str">r"rm\s+-rf\s+~"</span>, <span class="str">r":\(\)\{"</span>]
+
+<span class="kw">for</span> pattern <span class="kw">in</span> dangerous:
+    <span class="kw">if</span> re.search(pattern, cmd):
+        print(json.dumps({
+            <span class="str">"hookSpecificOutput"</span>: {
+                <span class="str">"decision"</span>: {
+                    <span class="str">"behavior"</span>: <span class="str">"deny"</span>,
+                    <span class="str">"message"</span>: f<span class="str">"Blocked dangerous command: {cmd}"</span>
+                }
+            }
+        }))
+        sys.exit(0)
+
+<span class="cm"># Allow by default</span>
+print(json.dumps({<span class="str">"hookSpecificOutput"</span>: {<span class="str">"decision"</span>: {<span class="str">"behavior"</span>: <span class="str">"allow"</span>}}}))</div>
+</div>
+
+<div class="step g">
+<div class="snum">Hook Example — Auto-lint on Edit</div>
+<h3>PostToolUse hook that lints files after Claude edits them</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># .claude/hooks/auto-lint.sh</span>
+<span class="cmd">#!/bin/bash</span>
+<span class="cm"># Reads JSON from stdin with edited file info</span>
+
+FILE=$(jq -r <span class="str">'.tool_input.file_path'</span>)
+
+<span class="kw">case</span> <span class="str">"$FILE"</span> <span class="kw">in</span>
+  *.ts|*.tsx)   pnpm eslint --fix <span class="str">"$FILE"</span> ;;
+  *.py)         ruff format <span class="str">"$FILE"</span> &amp;&amp; ruff check --fix <span class="str">"$FILE"</span> ;;
+  *.cs)         dotnet format --include <span class="str">"$FILE"</span> ;;
+  *.go)         gofmt -w <span class="str">"$FILE"</span> ;;
+  *.rs)         rustfmt <span class="str">"$FILE"</span> ;;
+<span class="kw">esac</span>
+
+<span class="cm"># Always signal success so Claude continues</span>
+<span class="kw">exit</span> 0</div>
+</div>
+
+<div class="step p">
+<div class="snum">Hook Example — Session Summary</div>
+<h3>Stop hook that logs session cost + summary</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># .claude/hooks/stop-summary.sh</span>
+<span class="cmd">#!/bin/bash</span>
+<span class="cm"># Runs when session ends</span>
+
+DATE=$(date <span class="str">'+%Y-%m-%d %H:%M'</span>)
+INPUT=$(cat)
+TOKENS=$(echo <span class="str">"$INPUT"</span> | jq -r <span class="str">'.session.tokens_used // 0'</span>)
+COST=$(echo <span class="str">"$INPUT"</span> | jq -r <span class="str">'.session.cost_usd // 0'</span>)
+
+<span class="kw">echo</span> <span class="str">"$DATE | tokens=$TOKENS | cost=\$$COST"</span> <span class="kw">&gt;&gt;</span> ~/.claude/session-log.txt
+
+<span class="cm"># Slack webhook if cost over $1</span>
+<span class="kw">if</span> (( $(echo <span class="str">"$COST &gt; 1.0"</span> | bc -l) )); <span class="kw">then</span>
+  curl -X POST -H <span class="str">'Content-type: application/json'</span> \
+    --data <span class="str">"{\"text\":\"High-cost session: \\$$COST\"}"</span> \
+    $SLACK_WEBHOOK_URL
+<span class="kw">fi</span></div>
+</div>
+
+<div class="step r">
+<div class="snum">Hook Security — The JSON Contract</div>
+<h3>How hooks return decisions</h3>
+<p>Hooks communicate via JSON on stdout. To <strong>deny</strong> an action:</p>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="str">{
+  "hookSpecificOutput": {
+    "decision": {
+      "behavior": "deny",
+      "message": "Explanation shown to user and Claude"
+    }
+  }
+}</span></div>
+<p style="margin-top:10px">To <strong>allow</strong>:</p>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="str">{
+  "hookSpecificOutput": {
+    "decision": { "behavior": "allow" }
+  }
+}</span></div>
+<p style="margin-top:10px">To <strong>inject context</strong> (UserPromptSubmit):</p>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="str">{
+  "hookSpecificOutput": {
+    "additionalContext": "Current git branch: feature/auth-v2\nUncommitted files: 3"
+  }
+}</span></div>
+</div>
+
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 07: MCP                         -->
+<!-- ═══════════════════════════════════════ -->
+<section id="mcp">
+<div class="sh"><div class="sn">07</div><div class="stw"><span class="stag" style="color:var(--accent4)">Configuration</span><div class="stitle">MCP (Model Context Protocol)</div></div></div>
+
+<p style="color:var(--muted);margin-bottom:20px;font-size:14px">MCP is Anthropic's open protocol for connecting external tools to AI agents. An MCP server exposes tools (functions) that Claude Code can call. Think of them as "plugins for data and actions" — access databases, browse the web, control browsers, send emails, query APIs.</p>
+
+<div class="steps">
+
+<div class="step b">
+<div class="snum">MCP Concepts</div>
+<h3>How MCP works</h3>
+<ul>
+<li><strong>MCP Server</strong> — a process that exposes tools. Runs locally or remotely.</li>
+<li><strong>MCP Client</strong> — Claude Code is the client. It discovers and calls server tools.</li>
+<li><strong>Transport</strong> — stdio (local subprocess), SSE (HTTP Server-Sent Events), or WebSocket</li>
+<li><strong>Config</strong> — added via <code>claude mcp add</code> or in <code>~/.claude/mcp.json</code></li>
+</ul>
+</div>
+
+<div class="step">
+<div class="snum">MCP Setup — Adding a Server</div>
+<h3>Use <code>claude mcp add</code> command</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Add Context7 (library docs lookup) — via npx</span>
+<span class="cmd">claude mcp add context7 -- npx -y @upstash/context7-mcp</span>
+
+<span class="cm"># Add Playwright (browser automation)</span>
+<span class="cmd">claude mcp add playwright -- npx -y @modelcontextprotocol/server-playwright</span>
+
+<span class="cm"># Add GitHub (requires GITHUB_TOKEN env)</span>
+<span class="cmd">claude mcp add github -e GITHUB_TOKEN=$GH_TOKEN -- npx -y @modelcontextprotocol/server-github</span>
+
+<span class="cm"># List configured MCP servers</span>
+<span class="cmd">claude mcp list</span>
+
+<span class="cm"># Test a server</span>
+<span class="cmd">claude mcp test context7</span>
+
+<span class="cm"># Remove a server</span>
+<span class="cmd">claude mcp remove context7</span></div>
+</div>
+
+<div class="step g">
+<div class="snum">Top MCP Servers for Daily Use</div>
+<h3>The essential toolkit</h3>
+<div class="cmd-grid">
+<div class="ci"><div class="cl2">Context7</div><div class="cd2">Up-to-date library docs. Claude fetches real API references before writing code.</div></div>
+<div class="ci"><div class="cl2">Exa</div><div class="cd2">Research-first web search. Better than Google for code docs.</div></div>
+<div class="ci"><div class="cl2">Playwright</div><div class="cd2">Browser automation. Claude can test UIs, scrape, screenshot.</div></div>
+<div class="ci"><div class="cl2">GitHub</div><div class="cd2">PRs, issues, repos, workflows — all via natural language.</div></div>
+<div class="ci"><div class="cl2">Postgres</div><div class="cd2">Query your DB directly. Schemas, sample data, query tuning.</div></div>
+<div class="ci"><div class="cl2">Memory</div><div class="cd2">Persistent cross-session memory. Remember user prefs, project context.</div></div>
+<div class="ci"><div class="cl2">Sequential Thinking</div><div class="cd2">Structured multi-step reasoning for complex problems.</div></div>
+<div class="ci"><div class="cl2">Scheduled Tasks</div><div class="cd2">Cron-based agent scheduling. "Review PRs every morning at 9am"</div></div>
+<div class="ci"><div class="cl2">Supabase</div><div class="cd2">DB + auth + storage for Supabase projects.</div></div>
+<div class="ci"><div class="cl2">Figma</div><div class="cd2">Read design files, convert mockups to code.</div></div>
+</div>
+</div>
+
+<div class="step p">
+<div class="snum">MCP Config — mcp.json</div>
+<h3>Manual config file format</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># ~/.claude/mcp.json</span>
+<span class="str">{
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-playwright"]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres", "$DATABASE_URL"]
+    },
+    "scheduled-tasks": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/scheduled-tasks-mcp"]
+    }
+  }
+}</span></div>
+</div>
+
+<div class="step o">
+<div class="snum">MCP Power Move — Scheduled Tasks</div>
+<h3>Turn Claude Code into an autonomous background agent</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Inside a Claude Code session, ask:</span>
+<span class="cmd">Set up a scheduled task: every weekday at 9 AM, review open PRs on my repo,
+check CI status, flag blocking issues, and write a summary to memory.</span>
+
+<span class="cm"># Claude calls the MCP tool:</span>
+<span class="cm"># mcp__scheduled-tasks__create_scheduled_task({</span>
+<span class="cm">#   name: "daily-pr-review",</span>
+<span class="cm">#   schedule: "0 9 * * 1-5",</span>
+<span class="cm">#   prompt: "...",</span>
+<span class="cm">#   project_dir: "/path/to/repo"</span>
+<span class="cm"># })</span></div>
+<div class="cl tip" style="margin-top:10px"><strong>Unlocks Serious Power</strong><p>Combined with <code>claude -p</code> headless mode + dispatch API, this effectively replaces tools like Hermes or AutoGPT. Your agent becomes self-directing.</p></div>
+</div>
+
+<div class="step r">
+<div class="snum">MCP Security — The Risks</div>
+<h3>MCP servers are arbitrary code — treat them accordingly</h3>
+<ul>
+<li>⚠️ <strong>Review before installing.</strong> MCP servers have full access to whatever their code does.</li>
+<li>⚠️ <strong>Known CVEs exist.</strong> There's a database of 25+ known MCP vulnerabilities.</li>
+<li>⚠️ <strong>Scope env vars.</strong> Pass only what's needed — don't export your whole <code>.env</code> to every MCP.</li>
+<li>⚠️ <strong>Audit with AgentShield.</strong> Run <code>npx ecc-agentshield scan</code> periodically.</li>
+<li>⚠️ <strong>Prefer official servers.</strong> <code>@modelcontextprotocol/*</code> are maintained by Anthropic and partners.</li>
+</ul>
+</div>
+
+</div>
+</section>
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 08: SUBAGENTS                   -->
+<!-- ═══════════════════════════════════════ -->
+<section id="subagents">
+<div class="sh"><div class="sn">08</div><div class="stw"><span class="stag" style="color:var(--accent5)">Advanced</span><div class="stitle">Subagents &amp; Parallel Execution</div></div></div>
+
+<p style="color:var(--muted);margin-bottom:20px;font-size:14px">Subagents are isolated Claude instances spawned by the main session to handle specific tasks in parallel. Each runs in its own context window, returns results to the orchestrator, and doesn't pollute the main conversation. This is how Claude Code handles complex multi-file work.</p>
+
+<div class="cl info"><strong>Built-in Subagent Types</strong>
+<p><strong>Explore</strong> — fast codebase navigation &amp; search &nbsp;·&nbsp; <strong>Plan</strong> — design implementation strategies &nbsp;·&nbsp; <strong>general-purpose</strong> — catch-all for research &amp; multi-step tasks</p></div>
+
+<div class="steps">
+
+<div class="step">
+<div class="snum">Concept — When Subagents Fire</div>
+<h3>Two ways subagents launch</h3>
+<ul>
+<li><strong>Automatic (Task tool)</strong> — Claude's main session calls the <code>Task</code> tool with a prompt + agent type. A fresh subagent runs, returns a summary.</li>
+<li><strong>Manual (via skill frontmatter)</strong> — A skill with <code>agent: Explore</code> runs in that agent's context.</li>
+</ul>
+</div>
+
+<div class="step b">
+<div class="snum">Custom Subagents — .claude/agents/ Directory</div>
+<h3>Write your own subagent</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># .claude/agents/security-reviewer.md</span>
+<span class="str">---
+name: security-reviewer
+description: Dedicated security review. Triggers on any security finding, before deploys, or when user says "security check".
+tools: Read, Grep, Glob, Bash(git diff:*), Bash(git log:*)
+model: claude-opus-4-7
+---</span>
+
+<span class="kw">## Role</span>
+You are a paranoid security reviewer. Your job is to find vulnerabilities.
+Be skeptical. Assume the code has issues. Investigate before accepting.
+
+<span class="kw">## Review Scope</span>
+- Recent changes: `git diff main...HEAD`
+- Focus on: input validation, auth, secrets, injection, deserialization
+
+<span class="kw">## Output Format</span>
+Return a structured JSON-like block:
+```
+CRITICAL: &lt;file:line&gt; — &lt;issue&gt;
+HIGH: ...
+MEDIUM: ...
+LOW: ...
+```
+Never modify files. Only report.</div>
+</div>
+
+<div class="step g">
+<div class="snum">Parallel Execution — The Pattern</div>
+<h3>Dispatch multiple subagents in one message</h3>
+<p>When the main session calls <code>Task</code> multiple times in a single message, they run <strong>in parallel</strong>. Use this for independent workstreams.</p>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Example prompt that triggers 3 parallel subagents:</span>
+<span class="cmd">For the user auth feature, launch 3 parallel subagents:
+1. Research agent: find best practices for JWT + refresh tokens in Node.js 2026
+2. Explorer agent: map all existing auth code in /src/auth
+3. Test agent: identify gaps in current auth test coverage
+
+Aggregate findings and propose a plan.</span></div>
+<div class="cl tip" style="margin-top:10px"><strong>Why Parallel</strong><p>Three 30-second subagent calls serially = 90s. In parallel = 30s. For research-heavy tasks this is a huge speedup.</p></div>
+</div>
+
+<div class="step p">
+<div class="snum">Subagent Pattern — Two-Stage Review</div>
+<h3>Spec compliance + code quality as separate subagents</h3>
+<p>Battle-tested pattern from Superpowers &amp; ECC: never trust a single-agent review.</p>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># In orchestrator's prompt:</span>
+Stage 1: Dispatch spec-reviewer subagent.
+  - Reads spec + reads actual code
+  - Does NOT trust implementer's "I did it" report
+  - Returns: ✓ complies / ✗ gaps (list specific)
+
+If Stage 1 passes:
+  Stage 2: Dispatch code-quality-reviewer subagent.
+    - Style, patterns, test coverage, complexity
+    - Returns structured report
+
+Only mark task complete if BOTH pass.</div>
+</div>
+
+<div class="step o">
+<div class="snum">Context Isolation — Critical Pattern</div>
+<h3>Subagents see ONLY what you send them</h3>
+<p>A subagent starts with a fresh context. It doesn't see your main conversation. This is a feature, not a bug:</p>
+<ul>
+<li>✅ <strong>No context pollution</strong> — subagent outputs don't clog your main session</li>
+<li>✅ <strong>Focused work</strong> — subagent has a clear single task</li>
+<li>⚠️ <strong>But you must send context</strong> — paths, spec, constraints all go in the prompt</li>
+</ul>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># BAD subagent prompt (missing context):</span>
+<span class="fl">"Review the auth code"</span>
+
+<span class="cm"># GOOD subagent prompt (self-contained):</span>
+<span class="str">"Review /src/auth/**/*.ts against the spec in /docs/auth-spec.md.
+Constraints: Node 18+, no new deps, must preserve session-based flow.
+Output: structured list of findings by severity."</span></div>
+</div>
+
+<div class="step r">
+<div class="snum">Anti-Pattern — Recursion</div>
+<h3>Don't let subagents spawn subagents unchecked</h3>
+<p>A subagent that spawns 3 more subagents that each spawn 3 more = runaway costs. Many frameworks (Superpowers v5, ECC) have anti-recursion guards. Your custom subagents should too:</p>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Add to custom subagent's SKILL.md:</span>
+<span class="str">## Subagent Policy
+You are a subagent. You MUST NOT spawn additional subagents.
+If a task would require a subagent, report it back to the orchestrator.</span></div>
+</div>
+
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 09: PLAN MODE & WORKTREES       -->
+<!-- ═══════════════════════════════════════ -->
+<section id="planmode">
+<div class="sh"><div class="sn">09</div><div class="stw"><span class="stag" style="color:var(--accent5)">Advanced</span><div class="stitle">Plan Mode &amp; Git Worktrees</div></div></div>
+
+<p style="color:var(--muted);margin-bottom:20px;font-size:14px"><strong style="color:var(--text)">Plan mode</strong> forces Claude to produce a written plan before touching any code. <strong>Git worktrees</strong> isolate parallel tasks in separate branches. Together they enable complex multi-step work without chaos.</p>
+
+<div class="steps">
+
+<div class="step b">
+<div class="snum">Plan Mode — How to Enter</div>
+<h3>Three ways to activate</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Method 1: Keyboard shortcut</span>
+<span class="cmd">Shift+Tab × 2</span>    <span class="cm"># cycles: normal → auto-accept → plan mode</span>
+
+<span class="cm"># Method 2: Explicit command in prompt</span>
+<span class="cmd">Plan how you would add OAuth to this app. Do not write code yet.</span>
+
+<span class="cm"># Method 3: Via skill frontmatter</span>
+<span class="cm"># In SKILL.md:  agent: Plan</span></div>
+</div>
+
+<div class="step g">
+<div class="snum">Plan Mode — The Flow</div>
+<h3>What Claude does in plan mode</h3>
+<ol>
+<li><strong>Reads context</strong> — relevant files, CLAUDE.md, git state</li>
+<li><strong>Researches</strong> — may dispatch Explore subagent, MCP queries (Context7, Exa)</li>
+<li><strong>Drafts plan</strong> — structured markdown: goals, approach, files, steps, risks</li>
+<li><strong>Calls ExitPlanMode tool</strong> — submits plan for approval</li>
+<li><strong>Awaits user decision</strong> — approve / request changes / deny</li>
+<li><strong>On approve</strong> — proceeds to implement</li>
+</ol>
+<div class="cl tip" style="margin-top:10px"><strong>Pair with Plannotator</strong><p>The Plannotator plugin (see sibling tutorial) gives you a visual browser UI to annotate plans before approving. Massive upgrade over terminal-only.</p></div>
+</div>
+
+<div class="step p">
+<div class="snum">Git Worktrees — Parallel Isolation</div>
+<h3>Use <code>--worktree</code> flag to isolate tasks</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Launch Claude in a fresh worktree on a new branch</span>
+<span class="cmd">claude --worktree feature-auth</span>
+
+<span class="cm"># What this does:</span>
+<span class="cm"># 1. Creates git worktree at ../myrepo-feature-auth/</span>
+<span class="cm"># 2. Creates branch feature-auth (or checks out existing)</span>
+<span class="cm"># 3. Starts Claude Code in that directory</span>
+<span class="cm"># 4. Auto-cleans if no changes are made</span></div>
+<div class="cl info" style="margin-top:10px"><strong>Why Worktrees Matter</strong><p>You can have 3 Claude sessions running in parallel — one on <code>feature-auth</code>, one on <code>feature-billing</code>, one on <code>bug-fix-42</code>. They don't collide. Combined with <code>/batch</code> skill, Claude can ship multiple features autonomously.</p></div>
+</div>
+
+<div class="step o">
+<div class="snum">Checkpoints</div>
+<h3>File snapshots for rollback</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Create a checkpoint at any time</span>
+<span class="cmd">/checkpoint</span>
+
+<span class="cm"># Saves current state of all tracked files to .claude/checkpoints/</span>
+<span class="cm"># Then if things go wrong:</span>
+<span class="cmd">Restore to checkpoint &lt;id&gt;</span>     <span class="cm"># revert files only, not git</span></div>
+</div>
+
+<div class="step r">
+<div class="snum">Shift+Tab Mode Reference</div>
+<h3>The 3-state cycle</h3>
+<table class="ct" style="margin-top:0">
+<thead><tr><th>Press</th><th>Mode</th><th>Behavior</th></tr></thead>
+<tbody>
+<tr><td>Shift+Tab (1×)</td><td><strong>Auto-accept</strong></td><td>Claude skips permission prompts — for non-destructive tools only</td></tr>
+<tr><td>Shift+Tab (2×)</td><td><strong>Plan mode</strong></td><td>Claude MUST plan before acting; no file writes until approved</td></tr>
+<tr><td>Shift+Tab (3×)</td><td><strong>Normal</strong></td><td>Default — Claude asks before each tool call</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 10: PLUGINS                     -->
+<!-- ═══════════════════════════════════════ -->
+<section id="plugins">
+<div class="sh"><div class="sn">10</div><div class="stw"><span class="stag" style="color:var(--accent5)">Advanced</span><div class="stitle">Plugins &amp; Marketplaces</div></div></div>
+
+<p style="color:var(--muted);margin-bottom:20px;font-size:14px">Plugins package skills, subagents, hooks, and commands into installable bundles. A <strong>marketplace</strong> is a GitHub repo that lists multiple plugins. Claude Code discovers and installs them via the <code>/plugin</code> command.</p>
+
+<div class="steps">
+
+<div class="step">
+<div class="snum">Plugin Workflow</div>
+<h3>Install a plugin from a marketplace</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Step 1: Register a marketplace</span>
+<span class="cmd">/plugin marketplace add obra/superpowers-marketplace</span>
+
+<span class="cm"># Step 2: Browse what's available</span>
+<span class="cmd">/plugin</span>     <span class="cm"># opens interactive browser</span>
+
+<span class="cm"># Step 3: Install a plugin</span>
+<span class="cmd">/plugin install superpowers@superpowers-marketplace</span>
+
+<span class="cm"># Step 4: List installed plugins</span>
+<span class="cmd">/plugin list</span>
+
+<span class="cm"># Step 5: Update</span>
+<span class="cmd">/plugin update superpowers</span>
+
+<span class="cm"># Step 6: Uninstall</span>
+<span class="cmd">/plugin remove superpowers</span></div>
+</div>
+
+<div class="step b">
+<div class="snum">Essential Plugins to Know</div>
+<h3>Battle-tested plugins worth installing</h3>
+<div class="cmd-grid">
+<div class="ci"><div class="cl2">superpowers (obra)</div><div class="cd2">TDD, brainstorming, subagent-driven dev, systematic debugging</div></div>
+<div class="ci"><div class="cl2">everything-claude-code (affaan-m)</div><div class="cd2">183 skills, 48 agents, 79 commands, AgentShield security</div></div>
+<div class="ci"><div class="cl2">plannotator (backnotprop)</div><div class="cd2">Visual plan review in browser before code execution</div></div>
+<div class="ci"><div class="cl2">claude-code-commands</div><div class="cd2">Productivity shortcuts — test-runner, deploy, bundle-size</div></div>
+<div class="ci"><div class="cl2">trail-of-bits security skills</div><div class="cd2">Professional security audit skills (CodeQL, Semgrep integration)</div></div>
+<div class="ci"><div class="cl2">frontend-design</div><div class="cd2">Polished, non-generic UI patterns with shadcn/ui</div></div>
+</div>
+</div>
+
+<div class="step g">
+<div class="snum">Creating Your Own Plugin</div>
+<h3>The structure of a plugin repo</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>my-plugin/
+├── .claude-plugin/
+│   ├── plugin.json       <span class="cm"># REQUIRED — plugin manifest</span>
+│   └── README.md
+├── commands/             <span class="cm"># Slash commands (legacy, prefer skills/)</span>
+│   └── my-command.md
+├── skills/               <span class="cm"># Modern skill definitions</span>
+│   └── my-skill/
+│       └── SKILL.md
+├── agents/               <span class="cm"># Custom subagents</span>
+│   └── my-reviewer.md
+├── hooks/                <span class="cm"># Hook definitions</span>
+│   └── hooks.json
+└── README.md</div>
+</div>
+
+<div class="step p">
+<div class="snum">plugin.json Format</div>
+<h3>The plugin manifest</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="str">{
+  "name": "my-awesome-plugin",
+  "displayName": "My Awesome Plugin",
+  "version": "1.0.0",
+  "description": "Adds superpowers for &lt;your domain&gt;",
+  "author": "Your Name",
+  "repository": "https://github.com/you/my-plugin",
+  "claude_code_version": "&gt;=1.0.0",
+  "components": {
+    "skills": ["skills/*/SKILL.md"],
+    "agents": ["agents/*.md"],
+    "commands": ["commands/*.md"]
+  }
+}</span></div>
+<div class="cl warn" style="margin-top:10px"><strong>Do NOT add "hooks" to plugin.json</strong><p>Claude Code v2.1+ auto-loads <code>hooks/hooks.json</code>. Explicit declaration causes duplicate-hook errors. This is the #1 plugin authoring gotcha.</p></div>
+</div>
+
+<div class="step o">
+<div class="snum">Marketplace Format</div>
+<h3>How to build a marketplace</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>my-marketplace/
+├── marketplace.json      <span class="cm"># REQUIRED</span>
+└── README.md
+
+<span class="cm"># marketplace.json format:</span>
+<span class="str">{
+  "name": "my-marketplace",
+  "plugins": [
+    {
+      "name": "plugin-one",
+      "source": "github.com/me/plugin-one",
+      "description": "..."
+    },
+    {
+      "name": "plugin-two",
+      "source": "github.com/me/plugin-two",
+      "description": "..."
+    }
+  ]
+}</span>
+
+<span class="cm"># Users install your marketplace:</span>
+<span class="cmd">/plugin marketplace add github.com/me/my-marketplace</span></div>
+</div>
+
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 11: SDK & HEADLESS              -->
+<!-- ═══════════════════════════════════════ -->
+<section id="sdk">
+<div class="sh"><div class="sn">11</div><div class="stw"><span class="stag" style="color:var(--accent5)">Advanced</span><div class="stitle">Claude Agent SDK &amp; Headless Mode</div></div></div>
+
+<p style="color:var(--muted);margin-bottom:20px;font-size:14px">Claude Code's underlying engine is exposed via the <strong>Claude Agent SDK</strong> (<code>@anthropic-ai/claude-agent-sdk</code>). You can embed agent functionality in scripts, CI jobs, webhooks, and custom tools. Same loop, same tools, no interactive UI.</p>
+
+<div class="steps">
+
+<div class="step b">
+<div class="snum">Headless Mode (-p flag)</div>
+<h3>Run Claude Code non-interactively</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Simple one-shot prompt</span>
+<span class="cmd">claude -p "List all TODO comments in the codebase and tag them by priority"</span>
+
+<span class="cm"># With project context</span>
+<span class="cmd">claude -p "Fix the failing tests in tests/" --project /path/to/repo</span>
+
+<span class="cm"># Pipe output to file</span>
+<span class="cmd">claude -p "Analyze security of auth module" &gt; security-report.md</span>
+
+<span class="cm"># Use in a shell script</span>
+<span class="cmd">#!/bin/bash</span>
+<span class="kw">for</span> repo <span class="kw">in</span> ~/repos/*; <span class="kw">do</span>
+  <span class="cmd">claude -p "Run tests and report failures"</span> <span class="fl">--project</span> <span class="str">"$repo"</span>
+<span class="kw">done</span></div>
+</div>
+
+<div class="step">
+<div class="snum">SDK Install</div>
+<h3>TypeScript/Node SDK</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">npm install @anthropic-ai/claude-agent-sdk</span>
+<span class="cm"># or</span>
+<span class="cmd">pnpm add @anthropic-ai/claude-agent-sdk</span></div>
+</div>
+
+<div class="step g">
+<div class="snum">SDK Basic Usage</div>
+<h3>Programmatic agent calls</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="kw">import</span> { query } <span class="kw">from</span> <span class="str">"@anthropic-ai/claude-agent-sdk"</span>;
+
+<span class="cm">// Simple prompt-response loop</span>
+<span class="kw">for await</span> (<span class="kw">const</span> msg <span class="kw">of</span> query({
+  prompt: <span class="str">"Add a health check endpoint to the API"</span>,
+  options: {
+    maxTurns: <span class="num">5</span>,
+    cwd: <span class="str">"./my-api"</span>,
+    model: <span class="str">"claude-sonnet-4-6"</span>
+  }
+})) {
+  <span class="kw">if</span> (msg.type === <span class="str">"assistant"</span>) {
+    console.log(<span class="str">"Claude:"</span>, msg.message);
+  }
+  <span class="kw">if</span> (msg.type === <span class="str">"tool_use"</span>) {
+    console.log(<span class="str">"Tool:"</span>, msg.tool_name, msg.input);
+  }
+  <span class="kw">if</span> (msg.type === <span class="str">"result"</span>) {
+    console.log(<span class="str">"Result:"</span>, msg.result);
+  }
+}</div>
+</div>
+
+<div class="step p">
+<div class="snum">SDK with Subagents</div>
+<h3>Inline subagent configuration</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="kw">import</span> { query } <span class="kw">from</span> <span class="str">"@anthropic-ai/claude-agent-sdk"</span>;
+
+<span class="kw">const</span> result = query({
+  prompt: <span class="str">"Audit the auth module for OWASP Top 10"</span>,
+  options: {
+    maxTurns: <span class="num">10</span>,
+    agents: {
+      <span class="str">"security-auditor"</span>: {
+        description: <span class="str">"Paranoid security reviewer"</span>,
+        prompt: <span class="str">"You find OWASP vulnerabilities. Return structured JSON."</span>,
+        tools: [<span class="str">"Read"</span>, <span class="str">"Grep"</span>, <span class="str">"Bash"</span>],
+        model: <span class="str">"claude-opus-4-7"</span>
+      }
+    }
+  }
+});
+
+<span class="kw">for await</span> (<span class="kw">const</span> msg <span class="kw">of</span> result) {
+  <span class="cm">// Handle messages</span>
+}</div>
+</div>
+
+<div class="step o">
+<div class="snum">SDK with MCP Servers</div>
+<h3>Load MCP inside an SDK call</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="kw">const</span> result = query({
+  prompt: <span class="str">"Browse example.com and summarize the pricing page"</span>,
+  options: {
+    mcpServers: {
+      playwright: {
+        command: <span class="str">"npx"</span>,
+        args: [<span class="str">"-y"</span>, <span class="str">"@modelcontextprotocol/server-playwright"</span>]
+      }
+    }
+  }
+});</div>
+</div>
+
+<div class="step r">
+<div class="snum">Dispatch API — Remote Triggering</div>
+<h3>Trigger Claude Code from webhooks / CI</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># HTTP POST to dispatch endpoint</span>
+<span class="cmd">curl -X POST https://api.anthropic.com/dispatch \
+  -H "Authorization: Bearer $ANTHROPIC_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "Build failed on main. Diagnose and open PR with fix.",
+    "project": "/repos/myapp",
+    "model": "claude-opus-4-7"
+  }'</span>
+
+<span class="cm"># Use cases:</span>
+<span class="cm">#  - GitHub webhook → dispatch → Claude reviews PR</span>
+<span class="cm">#  - CI failure → dispatch → Claude fixes + opens PR</span>
+<span class="cm">#  - Sentry alert → dispatch → Claude investigates</span></div>
+</div>
+
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 12: GITHUB ACTIONS              -->
+<!-- ═══════════════════════════════════════ -->
+<section id="gha">
+<div class="sh"><div class="sn">12</div><div class="stw"><span class="stag" style="color:var(--accent5)">Advanced</span><div class="stitle">GitHub Actions Integration</div></div></div>
+
+<p style="color:var(--muted);margin-bottom:20px;font-size:14px">Claude Code can run inside GitHub Actions to auto-review PRs, respond to mentions, fix CI failures, and more. The official action is <code>anthropics/claude-code-action@v1</code>.</p>
+
+<div class="steps">
+
+<div class="step b">
+<div class="snum">Setup — Install GitHub App</div>
+<h3>Two options for auth</h3>
+<ul>
+<li><strong>Option A:</strong> Install the <a href="https://github.com/apps/claude" target="_blank" style="color:var(--accent2)">Claude GitHub App</a> — uses OAuth, no tokens to manage</li>
+<li><strong>Option B:</strong> Set <code>ANTHROPIC_API_KEY</code> as a repo secret — pay-per-use via API</li>
+</ul>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># From inside a Claude Code session:</span>
+<span class="cmd">/install-github-app</span>
+<span class="cm"># Opens browser to install, guides you through secret setup</span></div>
+</div>
+
+<div class="step g">
+<div class="snum">Example Workflow — PR Review</div>
+<h3>Auto-review on pull request</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># .github/workflows/claude-review.yml</span>
+<span class="kw">name</span>: Claude PR Review
+<span class="kw">on</span>:
+  pull_request:
+    types: [opened, synchronize]
+
+<span class="kw">jobs</span>:
+  review:
+    <span class="kw">runs-on</span>: ubuntu-latest
+    <span class="kw">permissions</span>:
+      contents: read
+      pull-requests: write
+    <span class="kw">steps</span>:
+      - <span class="kw">uses</span>: actions/checkout@v4
+        <span class="kw">with</span>:
+          fetch-depth: <span class="num">0</span>
+
+      - <span class="kw">uses</span>: anthropics/claude-code-action@v1
+        <span class="kw">with</span>:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: <span class="str">|</span>
+            Review the changes in this PR.
+            Focus on: correctness, security, test coverage.
+            Post findings as inline PR comments.
+            Don't approve unless all critical issues are addressed.
+          model: claude-opus-4-7
+          max_turns: <span class="num">10</span></div>
+</div>
+
+<div class="step p">
+<div class="snum">Example Workflow — Fix CI Failures</div>
+<h3>Auto-fix on CI failure</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># .github/workflows/claude-autofix.yml</span>
+<span class="kw">name</span>: Auto-fix CI
+<span class="kw">on</span>:
+  workflow_run:
+    workflows: [<span class="str">"CI"</span>]
+    types: [completed]
+
+<span class="kw">jobs</span>:
+  fix:
+    <span class="kw">if</span>: ${{ github.event.workflow_run.conclusion == <span class="str">'failure'</span> }}
+    <span class="kw">runs-on</span>: ubuntu-latest
+    <span class="kw">permissions</span>:
+      contents: write
+      pull-requests: write
+    <span class="kw">steps</span>:
+      - <span class="kw">uses</span>: actions/checkout@v4
+      - <span class="kw">uses</span>: anthropics/claude-code-action@v1
+        <span class="kw">with</span>:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: <span class="str">|</span>
+            The CI pipeline failed. Read the logs from the previous workflow run,
+            diagnose the failure, and open a PR with a fix. Branch name: autofix/&lt;run_id&gt;</div>
+</div>
+
+<div class="step o">
+<div class="snum">Example Workflow — Respond to Mentions</div>
+<h3>Claude responds when @claude-code is mentioned in issues/PRs</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="kw">name</span>: Claude Mention
+<span class="kw">on</span>:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+
+<span class="kw">jobs</span>:
+  respond:
+    <span class="kw">if</span>: contains(github.event.comment.body, <span class="str">'@claude-code'</span>)
+    <span class="kw">runs-on</span>: ubuntu-latest
+    <span class="kw">permissions</span>:
+      contents: write
+      issues: write
+      pull-requests: write
+    <span class="kw">steps</span>:
+      - <span class="kw">uses</span>: actions/checkout@v4
+      - <span class="kw">uses</span>: anthropics/claude-code-action@v1
+        <span class="kw">with</span>:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: <span class="str">|</span>
+            A user mentioned you in a comment:
+            "${{ github.event.comment.body }}"
+            Respond helpfully. If they asked to fix something, open a PR.</div>
+</div>
+
+<div class="step r">
+<div class="snum">Security in GitHub Actions</div>
+<h3>Critical safeguards</h3>
+<ul>
+<li>⚠️ <strong>Use <code>permissions:</code> block</strong> — grant minimum needed, never default</li>
+<li>⚠️ <strong>Fork PRs run with different permissions</strong> — Claude cannot commit to forks automatically</li>
+<li>⚠️ <strong>Secret masking</strong> — never echo secrets; Claude never outputs them</li>
+<li>⚠️ <strong>Cost caps</strong> — set <code>max_turns</code> to avoid runaway costs</li>
+<li>⚠️ <strong>Branch protection</strong> — require human review on Claude-authored PRs</li>
+<li>⚠️ <strong>Review the action version</strong> — pin to <code>@v1</code> or a SHA, never <code>@main</code></li>
+</ul>
+</div>
+
+</div>
+</section>
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 13: CHEAT SHEET                 -->
+<!-- ═══════════════════════════════════════ -->
+<section id="cheat">
+<div class="sh"><div class="sn">13</div><div class="stw"><span class="stag" style="color:var(--accent3)">Quick Reference</span><div class="stitle">Cheat Sheet</div></div></div>
+
+<div class="g2">
+
+<div class="ccard">
+<h4>🛠 Install Commands</h4>
+<ul>
+<li><code>npm i -g @anthropic-ai/claude-code</code><span>Install CLI globally</span></li>
+<li><code>claude login</code><span>OAuth login (Pro/Max/Team)</span></li>
+<li><code>claude --version</code><span>Verify install</span></li>
+<li><code>claude</code><span>Launch in current dir</span></li>
+<li><code>claude --project /path</code><span>Launch for specific project</span></li>
+<li><code>claude --worktree &lt;branch&gt;</code><span>Launch in isolated worktree</span></li>
+<li><code>claude --resume</code><span>Resume previous session</span></li>
+<li><code>claude -p "prompt"</code><span>Headless (non-interactive)</span></li>
+<li><code>npm update -g @anthropic-ai/claude-code</code><span>Update to latest</span></li>
+</ul>
+</div>
+
+<div class="ccard" style="border-top-color:var(--accent2)">
+<h4 style="color:var(--accent2)">⚡ Core Slash Commands</h4>
+<ul>
+<li><code>/help</code><span>List all commands</span></li>
+<li><code>/init</code><span>Generate CLAUDE.md</span></li>
+<li><code>/clear</code><span>Clear conversation</span></li>
+<li><code>/compact</code><span>Compress context</span></li>
+<li><code>/resume</code><span>Resume session</span></li>
+<li><code>/sessions</code><span>Manage session history</span></li>
+<li><code>/model</code><span>Switch model</span></li>
+<li><code>/effort</code><span>Set reasoning effort (low/med/high)</span></li>
+<li><code>/review</code><span>Code review subagent</span></li>
+<li><code>/security-review</code><span>Security-focused review</span></li>
+<li><code>/agents</code><span>Manage subagents</span></li>
+<li><code>/mcp</code><span>Manage MCP servers</span></li>
+<li><code>/plugin</code><span>Plugin manager</span></li>
+<li><code>/doctor</code><span>Health check</span></li>
+<li><code>/cost</code><span>Token usage + $$$</span></li>
+<li><code>/bug</code><span>Report bug to Anthropic</span></li>
+<li><code>/exit</code><span>Exit session</span></li>
+</ul>
+</div>
+
+<div class="ccard" style="border-top-color:var(--accent4)">
+<h4 style="color:var(--accent4)">⌨ Keyboard Shortcuts</h4>
+<ul>
+<li><code>Shift+Tab × 1</code><span>Auto-accept mode</span></li>
+<li><code>Shift+Tab × 2</code><span>Plan mode</span></li>
+<li><code>Shift+Tab × 3</code><span>Back to normal</span></li>
+<li><code>Ctrl+B</code><span>Send current subagent to background</span></li>
+<li><code>Ctrl+R</code><span>Search command history</span></li>
+<li><code>Ctrl+C</code> (once)<span>Cancel current operation</span></li>
+<li><code>Ctrl+C</code> (twice)<span>Exit Claude Code</span></li>
+<li><code>Ctrl+D</code><span>Exit (EOF)</span></li>
+<li><code>Esc</code><span>Cancel tool prompt</span></li>
+<li><code>@filename</code><span>Reference a file</span></li>
+<li><code># topic</code><span>Add inline context tag</span></li>
+<li><code>ultrathink</code><span>Force high-effort reasoning (1 turn)</span></li>
+</ul>
+</div>
+
+<div class="ccard" style="border-top-color:var(--accent5)">
+<h4 style="color:var(--accent5)">📄 CLAUDE.md Patterns</h4>
+<ul>
+<li><code>## Stack</code><span>Enumerate tech stack</span></li>
+<li><code>## Conventions</code><span>Non-obvious project rules</span></li>
+<li><code>## Commands</code><span>Dev/test/build/lint commands</span></li>
+<li><code>## Do Not</code><span>Explicit blacklist</span></li>
+<li><code>## Imports</code><span>@file references to other docs</span></li>
+<li><code>@docs/api.md</code><span>Import another markdown file</span></li>
+<li><code>## Project Layout</code><span>Folder structure overview</span></li>
+<li><code>## Testing</code><span>Test conventions and commands</span></li>
+</ul>
+</div>
+
+<div class="ccard" style="border-top-color:var(--accent5)">
+<h4 style="color:var(--accent5)">🧠 SKILL.md Frontmatter</h4>
+<ul>
+<li><code>name:</code><span>Slash command name</span></li>
+<li><code>description:</code><span>When to auto-invoke</span></li>
+<li><code>allowed-tools:</code><span>Pre-authorised tools</span></li>
+<li><code>disable-model-invocation: true</code><span>User-only invocation</span></li>
+<li><code>user-invocable: false</code><span>Hidden from / menu</span></li>
+<li><code>model: claude-opus-4-7</code><span>Pin model</span></li>
+<li><code>context: fork</code><span>Separate context window</span></li>
+<li><code>agent: Explore</code><span>Run in agent type</span></li>
+</ul>
+</div>
+
+<div class="ccard" style="border-top-color:var(--accent4)">
+<h4 style="color:var(--accent4)">🪝 Hook Triggers</h4>
+<ul>
+<li><code>PreToolUse</code><span>Before tool call</span></li>
+<li><code>PostToolUse</code><span>After tool completes</span></li>
+<li><code>UserPromptSubmit</code><span>User hits Enter</span></li>
+<li><code>Stop</code><span>Session ends</span></li>
+<li><code>SessionStart</code><span>New session begins</span></li>
+<li><code>Notification</code><span>Claude needs attention</span></li>
+<li><code>PermissionRequest</code><span>Tool permission asked</span></li>
+</ul>
+</div>
+
+<div class="ccard" style="border-top-color:var(--accent2)">
+<h4 style="color:var(--accent2)">🔌 MCP Setup</h4>
+<ul>
+<li><code>claude mcp add &lt;name&gt; -- &lt;cmd&gt;</code><span>Add server</span></li>
+<li><code>claude mcp list</code><span>List configured servers</span></li>
+<li><code>claude mcp test &lt;name&gt;</code><span>Test connection</span></li>
+<li><code>claude mcp remove &lt;name&gt;</code><span>Remove server</span></li>
+<li><code>@upstash/context7-mcp</code><span>Library docs</span></li>
+<li><code>@modelcontextprotocol/server-playwright</code><span>Browser automation</span></li>
+<li><code>@modelcontextprotocol/server-github</code><span>GitHub API</span></li>
+<li><code>@anthropic/scheduled-tasks-mcp</code><span>Cron agent scheduling</span></li>
+</ul>
+</div>
+
+<div class="ccard" style="border-top-color:var(--accent6)">
+<h4 style="color:var(--accent6)">🤖 Subagents</h4>
+<ul>
+<li><code>Explore</code><span>Fast codebase navigation</span></li>
+<li><code>Plan</code><span>Design implementation strategies</span></li>
+<li><code>general-purpose</code><span>Catch-all</span></li>
+<li><code>.claude/agents/*.md</code><span>Custom subagents</span></li>
+<li><code>Task tool</code><span>Orchestrator dispatches</span></li>
+<li><code>Parallel dispatch</code><span>Multiple Task() in one msg</span></li>
+<li><code>context: fork</code><span>Isolated context window</span></li>
+</ul>
+</div>
+
+<div class="ccard" style="border-top-color:var(--accent3); background:rgba(214,48,80,0.04)">
+<h4 style="color:var(--accent3)">⛔ Rejected / Never Do This</h4>
+<ul>
+<li><code>API keys in CLAUDE.md</code><span>❌ CLAUDE.md is committed — use env vars</span></li>
+<li><code>--dangerously-skip-permissions</code><span>❌ In untrusted repos — instant RCE risk</span></li>
+<li><code>Commit .claude/ with secrets</code><span>❌ Add .claude/local/ to .gitignore</span></li>
+<li><code>CLAUDE.md over 500 lines</code><span>❌ Bloats every session; use @imports</span></li>
+<li><code>Skipping plan mode on complex tasks</code><span>❌ Leads to wasted tokens, bad code</span></li>
+<li><code>Subagents spawning subagents</code><span>❌ Runaway cost; add anti-recursion guard</span></li>
+<li><code>claude -p on prod DB</code><span>❌ Use read-only creds + --dry-run</span></li>
+<li><code>"hooks" field in plugin.json</code><span>❌ Duplicate-hook error — auto-loaded now</span></li>
+<li><code>MCP from unknown source</code><span>❌ Audit first; 25+ known CVEs exist</span></li>
+<li><code>Installing all plugins at once</code><span>❌ Context bloat; install as needed</span></li>
+<li><code>Auto-approving git push</code><span>❌ Always require human confirmation</span></li>
+<li><code>Hardcoding prod URLs in skills</code><span>❌ Use env vars; skills are committed</span></li>
+<li><code>Disabling security-reviewer hook</code><span>❌ Core safety layer — keep enabled</span></li>
+<li><code>Running unknown .sh hooks</code><span>❌ Read every hook script before install</span></li>
+<li><code>Sharing sessions with secrets</code><span>❌ /sessions export may leak creds</span></li>
+</ul>
+</div>
+
+<div class="ccard" style="grid-column:span 2;border-top-color:var(--accent6)">
+<h4 style="color:var(--accent6)">🚦 Troubleshooting</h4>
+<table class="ct" style="margin-top:0">
+<thead><tr><th>Problem</th><th>Fix</th></tr></thead>
+<tbody>
+<tr><td>claude: command not found</td><td>Add npm global bin to PATH: <code>export PATH="$(npm config get prefix)/bin:$PATH"</code></td></tr>
+<tr><td>CLAUDE.md not being read</td><td>Check file is at repo root OR <code>.claude/CLAUDE.md</code>. Run <code>/doctor</code> to verify.</td></tr>
+<tr><td>Skill not auto-invoking</td><td>Description too vague. Be specific: "Use when user says X" with exact trigger phrases.</td></tr>
+<tr><td>Hook not firing</td><td>Check <code>hooks.json</code> syntax, make script executable (<code>chmod +x</code>), check matcher glob.</td></tr>
+<tr><td>MCP server timeout</td><td>Run <code>claude mcp test &lt;name&gt;</code>. Check network/env vars. Some servers need API keys.</td></tr>
+<tr><td>Costs too high</td><td>Run <code>/compact</code> mid-session. Use <code>/effort low</code> for simple tasks. Prefer Sonnet over Opus for code gen.</td></tr>
+<tr><td>Subagent context lost</td><td>You must send all context in the prompt — subagent doesn't see main conversation.</td></tr>
+<tr><td>Plugin not found after install</td><td>Restart Claude Code. Plugins load at session start, not mid-session.</td></tr>
+<tr><td>Plan mode not activating</td><td>Shift+Tab cycles modes; terminal may eat the signal — use explicit "do not write code, just plan."</td></tr>
+<tr><td>Worktree remains after session</td><td>Only cleans if no changes. Run <code>git worktree remove &lt;path&gt;</code> manually.</td></tr>
+<tr><td>Permissions prompts every time</td><td>Add patterns to settings.json <code>allow</code> list, or use skill's <code>allowed-tools</code> frontmatter.</td></tr>
+<tr><td>GitHub Action runs but does nothing</td><td>Check <code>permissions:</code> block — needs <code>contents: write</code> + <code>pull-requests: write</code>.</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 14: HIDDEN COMMANDS             -->
+<!-- ═══════════════════════════════════════ -->
+<section id="hidden">
+<div class="sh"><div class="sn">14</div><div class="stw"><span class="stag" style="color:var(--accent3)">Power User</span><div class="stitle">Hidden Commands &amp; Power Tips</div></div></div>
+
+<div class="cl warn"><strong>Things Most Users Don't Know</strong><p>Deep features that don't appear in the <code>/help</code> menu. Discovered through source code, Anthropic blog posts, and community experimentation.</p></div>
+
+<div class="steps">
+
+<div class="step">
+<div class="snum">Hidden #01 — The ultrathink Keyword</div>
+<h3>Force high-effort reasoning for a single turn <span class="badge new">HIDDEN</span></h3>
+<p>Type the word <code>ultrathink</code> anywhere in your prompt. Claude will use maximum reasoning effort for that turn only, then revert to your default.</p>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">ultrathink — debug this tricky race condition in the payment handler</span></div>
+<div class="cl info" style="margin-top:10px"><strong>When to Use</strong><p>Tricky algorithms, race conditions, obscure bugs, architectural decisions. Costs more per turn but often saves overall by getting it right the first time.</p></div>
+</div>
+
+<div class="step b">
+<div class="snum">Hidden #02 — @file and # Reference Syntax</div>
+<h3>Inline file references in prompts</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># @ references a file - Claude reads it fully</span>
+<span class="cmd">Review @src/auth/login.ts for security issues</span>
+
+<span class="cm"># # is a context tag — Claude prioritises related knowledge</span>
+<span class="cmd">Add rate limiting #security #performance</span>
+
+<span class="cm"># Combine them</span>
+<span class="cmd">Refactor @src/payments/stripe.ts for better error handling #testing</span></div>
+</div>
+
+<div class="step g">
+<div class="snum">Hidden #03 — /effort high Before Complex Tasks</div>
+<h3>Pin effort level for the whole session</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">/effort high</span>      <span class="cm"># maximum reasoning, higher cost</span>
+<span class="cmd">/effort medium</span>    <span class="cm"># default</span>
+<span class="cmd">/effort low</span>       <span class="cm"># fast, cheaper, less reasoning</span>
+
+<span class="cm"># Tip: for Max/Team plans, default changed from high → medium in 2026</span>
+<span class="cm"># Explicitly request /effort high when tackling gnarly problems</span></div>
+</div>
+
+<div class="step p">
+<div class="snum">Hidden #04 — Ctrl+B Background Mode</div>
+<h3>Send a running task to the background</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># While Claude is running a long task:</span>
+<span class="cmd">Ctrl+B</span>
+
+<span class="cm"># Effect:</span>
+<span class="cm"># - Task continues running in a subagent</span>
+<span class="cm"># - You get the prompt back immediately</span>
+<span class="cm"># - Task output arrives as a notification when done</span>
+<span class="cm"># - Keep working on other things in the meantime</span></div>
+<div class="cl tip" style="margin-top:10px"><strong>Great For</strong><p>Long test runs, migrations, big refactors. Kick it off, work on something else, get notified when done.</p></div>
+</div>
+
+<div class="step o">
+<div class="snum">Hidden #05 — Bundled Built-in Skills</div>
+<h3>Skills you already have but may not know about</h3>
+<div class="cmd-grid">
+<div class="ci"><div class="cl2">/simplify</div><div class="cd2">3-agent quality review pipeline — runs before PR submission</div></div>
+<div class="ci"><div class="cl2">/batch</div><div class="cd2">Parallel execution across multiple worktrees with auto-PR creation</div></div>
+<div class="ci"><div class="cl2">/debug</div><div class="cd2">Systematic 4-phase debugging — root cause → pattern → hypothesis → fix</div></div>
+<div class="ci"><div class="cl2">/loop</div><div class="cd2">Autonomous retry loop — keeps trying until success criteria met</div></div>
+<div class="ci"><div class="cl2">/claude-api</div><div class="cd2">Writing code against the Anthropic API with latest docs context</div></div>
+</div>
+</div>
+
+<div class="step r">
+<div class="snum">Hidden #06 — --dangerously-skip-permissions</div>
+<h3>The YOLO flag <span class="badge hid">DANGEROUS</span></h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Bypass ALL permission prompts for the session</span>
+<span class="cmd">claude --dangerously-skip-permissions</span></div>
+<div class="cl warn" style="margin-top:10px"><strong>Use ONLY If</strong><p>1. You're in a trusted container/sandbox &nbsp;·&nbsp; 2. No production credentials are accessible &nbsp;·&nbsp; 3. You've reviewed the prompt/task carefully &nbsp;·&nbsp; 4. You understand Claude can now <em>delete everything</em>.</p><p style="margin-top:8px"><strong>Never</strong> use on your main dev machine or in repos with secrets.</p></div>
+</div>
+
+<div class="step">
+<div class="snum">Hidden #07 — /compact with Decisions Preserved</div>
+<h3>Smart context compression</h3>
+<p>When you run <code>/compact</code>, you can tell Claude what to preserve:</p>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">/compact preserve decisions, file paths, and open questions</span>
+<span class="cmd">/compact keep plan file contents</span>
+<span class="cmd">/compact summarize but keep any failing test output</span></div>
+</div>
+
+<div class="step b">
+<div class="snum">Hidden #08 — /clear Doesn't Touch Plan Files</div>
+<h3>Safe to clear mid-project</h3>
+<p><code>/clear</code> wipes the conversation but preserves:</p>
+<ul>
+<li>CLAUDE.md and AGENTS.md</li>
+<li>Skill definitions</li>
+<li>Plan files in <code>docs/plans/</code> or <code>.claude/plans/</code></li>
+<li>Session checkpoints</li>
+</ul>
+<p>This lets you "start fresh" without losing the work-in-progress plan. Resume with: <code>Let's continue the plan in docs/plans/feature-auth.md</code></p>
+</div>
+
+<div class="step g">
+<div class="snum">Hidden #09 — Output Styles</div>
+<h3>Customise how Claude formats responses</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Built-in output styles</span>
+<span class="cmd">/output-style concise</span>    <span class="cm"># minimal, short answers</span>
+<span class="cmd">/output-style verbose</span>    <span class="cm"># detailed explanations</span>
+<span class="cmd">/output-style code-only</span>  <span class="cm"># skip prose, return code</span>
+<span class="cmd">/output-style json</span>       <span class="cm"># structured JSON responses</span>
+
+<span class="cm"># Custom style — create ~/.claude/output-styles/my-style.md</span></div>
+</div>
+
+<div class="step p">
+<div class="snum">Hidden #10 — Custom Status Line</div>
+<h3>Make the bottom bar useful</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># ~/.claude/statusline.sh</span>
+<span class="cmd">#!/bin/bash</span>
+branch=$(git branch --show-current 2&gt;/dev/null)
+cost=$(echo <span class="str">"$1"</span> | jq -r <span class="str">'.cost_usd // 0'</span>)
+tokens=$(echo <span class="str">"$1"</span> | jq -r <span class="str">'.tokens_used // 0'</span>)
+
+<span class="kw">echo</span> <span class="str">"[$branch] tokens=$tokens cost=\$$cost"</span>
+
+<span class="cm"># Register it:</span>
+<span class="cmd">/statusline ~/.claude/statusline.sh</span></div>
+</div>
+
+<div class="step o">
+<div class="snum">Hidden #11 — /vim Mode</div>
+<h3>Vim bindings in the input field</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">/vim</span>     <span class="cm"># toggle — Esc to switch to normal mode, etc.</span>
+
+<span class="cm"># In normal mode:</span>
+<span class="cm">#   hjkl move, w/b word jumps, dd delete line, yy yank, p paste</span>
+<span class="cm"># Escape twice to exit vim mode permanently for that session</span></div>
+</div>
+
+<div class="step r">
+<div class="snum">Hidden #12 — /config Opens in $EDITOR</div>
+<h3>Edit settings without leaving Claude Code</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">/config</span>
+
+<span class="cm"># Opens ~/.claude/settings.json in your $EDITOR</span>
+<span class="cm"># When you save + close, Claude Code reloads it live</span>
+
+<span class="cm"># Sister command:</span>
+<span class="cmd">/keybindings</span>    <span class="cm"># edits ~/.claude/keybindings.json</span></div>
+</div>
+
+<div class="step">
+<div class="snum">Hidden #13 — Session History &amp; Aliases</div>
+<h3>Name and reuse sessions</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Save current session with an alias</span>
+<span class="cmd">/sessions save feature-auth-refactor</span>
+
+<span class="cm"># Resume by name later</span>
+<span class="cmd">claude --resume feature-auth-refactor</span>
+
+<span class="cm"># List all named sessions</span>
+<span class="cmd">/sessions list</span>
+
+<span class="cm"># Delete old sessions</span>
+<span class="cmd">/sessions clean --older-than 30d</span></div>
+</div>
+
+<div class="step b">
+<div class="snum">Hidden #14 — Commands Claude SHOULD Add</h3>
+<h3>Feature wishlist</h3>
+<ul>
+<li>🔍 <code>/explain-last</code> — have Claude explain its own last action in detail</li>
+<li>📊 <code>/cost-breakdown</code> — token cost per tool / per subagent</li>
+<li>🎯 <code>/replay</code> — re-run the last session on a fresh branch</li>
+<li>🏷️ <code>/tag</code> — tag a moment in the session for later retrieval</li>
+<li>📝 <code>/snapshot</code> — save full session state + files as ZIP</li>
+<li>🔀 <code>/branch</code> — fork the session at this point, explore alternate path</li>
+<li>📨 Submit as issues to <a href="https://github.com/anthropics/claude-code/issues" target="_blank" style="color:var(--accent2)">github.com/anthropics/claude-code</a></li>
+</ul>
+</div>
+
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 15: PROMPT PLAYBOOK             -->
+<!-- ═══════════════════════════════════════ -->
+<section id="prompts">
+<div class="sh"><div class="sn">15</div><div class="stw"><span class="stag" style="color:var(--accent3)">The Playbook</span><div class="stitle">30+ Battle-Tested Prompts</div></div></div>
+
+<p style="color:var(--muted);margin-bottom:20px;font-size:14px">Copy-pasteable prompts organized by task type. Each includes when to use it, expected output, and a follow-up chain. The single biggest leverage in Claude Code is prompt quality — these have been field-tested in production work.</p>
+
+<!-- =============== BUG FIXING ==================== -->
+<h3 style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--accent3);margin:32px 0 16px;letter-spacing:1px;border-bottom:2px solid var(--accent3);padding-bottom:6px">🐛 BUG FIXING PROMPTS (8)</h3>
+
+<div class="promptbox r">
+<div class="plbl">Prompt 1 · Reproduce First</div>
+<h4>Force reproduction before touching any code</h4>
+<div class="ptext">Before fixing anything, reproduce this bug. Show me:
+1. The exact command that triggers it
+2. The observed output (actual)
+3. The expected output
+4. Relevant log lines
+5. The minimal input that causes it
+
+Do NOT propose a fix yet. Only reproduce and report.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>User reports a bug. Any ambiguity in the symptom.</div>
+<div><strong>Next Prompt</strong>"Now form 2-3 hypotheses about the root cause, ranked by likelihood."</div>
+</div>
+</div>
+
+<div class="promptbox r">
+<div class="plbl">Prompt 2 · Root Cause Hunt</div>
+<h4>Systematic root cause analysis</h4>
+<div class="ptext">We've reproduced the bug. Now find the root cause:
+1. Trace the code path from the entry point to the failure
+2. Identify every function involved
+3. For each function, state what it expects vs what it gets
+4. Point to the EXACT line where wrong behaviour starts
+5. Explain WHY it's wrong at that line
+
+Don't fix it yet. Just pinpoint the cause with evidence.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>After reproducing, before fixing.</div>
+<div><strong>Next Prompt</strong>"Propose a minimal fix. List 2 alternatives with tradeoffs."</div>
+</div>
+</div>
+
+<div class="promptbox r">
+<div class="plbl">Prompt 3 · Hypothesis Testing</div>
+<h4>When root cause isn't obvious</h4>
+<div class="ptext">I have 3 hypotheses about why this fails:
+H1: [your hypothesis 1]
+H2: [your hypothesis 2]
+H3: [your hypothesis 3]
+
+Design a minimal test for each that will definitively confirm or rule it out.
+Run each test. Report which hypothesis is correct with evidence.
+Do not write fix code until exactly one hypothesis is confirmed.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Intermittent bugs, race conditions, unclear causes.</div>
+<div><strong>Next Prompt</strong>"Given H2 is confirmed, design the smallest possible fix."</div>
+</div>
+</div>
+
+<div class="promptbox r">
+<div class="plbl">Prompt 4 · Minimal Incremental Fix</div>
+<h4>Force minimal changes</h4>
+<div class="ptext">Fix this bug with the SMALLEST possible change. Rules:
+- Change no more than 10 lines of production code
+- Do not refactor anything adjacent
+- Do not "improve" other code while you're there
+- One concept = one commit
+
+If the fix requires &gt;10 lines, stop and explain why before proceeding.
+Add a regression test that would have caught this bug.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>You need a fast fix without scope creep.</div>
+<div><strong>Next Prompt</strong>"Run the regression test + full test suite. Show output."</div>
+</div>
+</div>
+
+<div class="promptbox r">
+<div class="plbl">Prompt 5 · Regression-Proof Fix</div>
+<h4>Fix + test + prove not broken elsewhere</h4>
+<div class="ptext">Fix this bug. For each file you touch:
+1. Add at least one test that fails before your fix, passes after
+2. Run the full test suite — show me if ANYTHING else regressed
+3. If anything regressed, roll back your fix and try a different approach
+4. Only mark done when the specific bug is fixed AND nothing else breaks
+
+Final output: diff of the fix + test outputs before/after.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Fixing production bugs, customer-facing issues.</div>
+<div><strong>Next Prompt</strong>"Now look for similar patterns elsewhere — scan for sibling bugs."</div>
+</div>
+</div>
+
+<div class="promptbox r">
+<div class="plbl">Prompt 6 · Flakey Test Debugging</div>
+<h4>For non-deterministic failures</h4>
+<div class="ptext">This test fails intermittently. Investigate:
+- Run it 20 times in a loop. Record pass/fail ratio.
+- Look for: timing dependencies, shared state, non-deterministic ordering, test isolation issues, external dependencies.
+- Identify the source of flakiness with evidence.
+- Propose a fix that removes the non-determinism (not just retries).
+
+If you can't reproduce flakiness in 20 runs, report that + likely triggers.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>CI is flaky, tests pass locally but fail in CI.</div>
+<div><strong>Next Prompt</strong>"Apply the fix. Run the loop again to prove it's stable."</div>
+</div>
+</div>
+
+<div class="promptbox r">
+<div class="plbl">Prompt 7 · Production Hotfix (Surgical)</div>
+<h4>Under pressure, maximum safety</h4>
+<div class="ptext">🚨 PRODUCTION HOTFIX mode. Rules:
+- This goes to prod in minutes. Do not refactor.
+- One-line fix preferred. Max 5 lines.
+- Do not touch any other file.
+- Add one test that asserts the fix.
+- Explain in one sentence what you changed and why it's safe.
+
+Bug: [describe bug]
+Error: [paste error]
+Affected file: [path]</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Production is down. Time is critical.</div>
+<div><strong>Next Prompt</strong>"Open hotfix PR with the diff. Follow up with full fix next sprint."</div>
+</div>
+</div>
+
+<div class="promptbox r">
+<div class="plbl">Prompt 8 · Sibling Bug Scan</div>
+<h4>Find similar bugs after fixing one</h4>
+<div class="ptext">I just fixed this bug: [paste diff].
+
+Now scan the codebase for similar patterns that might have the same bug.
+Look for:
+- Same function called with same wrong args elsewhere
+- Same copy-paste logic without the fix applied
+- Related code paths that might share the vulnerability
+
+Report each finding with file:line + why you suspect it + suggested test.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Common bug patterns (off-by-one, null handling, etc.)</div>
+<div><strong>Next Prompt</strong>"For finding #1, apply the same fix pattern + test."</div>
+</div>
+</div>
+
+<!-- =============== PLANNING ==================== -->
+<h3 style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--accent2);margin:40px 0 16px;letter-spacing:1px;border-bottom:2px solid var(--accent2);padding-bottom:6px">📋 PLANNING PROMPTS (8)</h3>
+
+<div class="promptbox">
+<div class="plbl">Prompt 9 · Feature Planning (Brainstorm)</div>
+<h4>Turn vague ideas into specs</h4>
+<div class="ptext">I want to build: [rough idea in 1-2 sentences]
+
+Before any code, ask me clarifying questions ONE AT A TIME:
+- What users benefit from this?
+- What's the key metric of success?
+- What's the smallest version that would prove value?
+- What happens if it fails silently?
+- What does the happy path look like end to end?
+- What constraints exist (budget, timeline, tech)?
+
+After I answer, write a 1-page spec I can sign off on. Do not write code yet.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Starting any new feature. Ambiguous requirements.</div>
+<div><strong>Next Prompt</strong>"Approved. Now write the implementation plan as file-by-file tasks."</div>
+</div>
+</div>
+
+<div class="promptbox">
+<div class="plbl">Prompt 10 · Implementation Plan</div>
+<h4>Convert spec to actionable tasks</h4>
+<div class="ptext">Given this approved spec [link or paste], produce an implementation plan.
+
+Format:
+## Files to Create
+- [path] — [purpose, ~line count]
+
+## Files to Modify
+- [path] — [what changes]
+
+## Tasks (each 5-15 minutes)
+1. [task] — acceptance criteria: [test]
+2. ...
+
+## Risks
+- [risk] — mitigation: [plan]
+
+## Success Criteria
+- [measurable outcome]
+
+DO NOT WRITE CODE. Just the plan.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>After spec approval, before coding.</div>
+<div><strong>Next Prompt</strong>"Approved. Execute task 1. Show test output before moving on."</div>
+</div>
+</div>
+
+<div class="promptbox">
+<div class="plbl">Prompt 11 · Migration Planning</div>
+<h4>Safe migration of large systems</h4>
+<div class="ptext">Plan the migration from [old system] to [new system].
+
+Include:
+1. Pre-migration audit — what uses the old system? (exact file:line list)
+2. Compatibility layer — can both coexist during migration?
+3. Feature flags — how to toggle per-user?
+4. Data migration — script + verification + rollback
+5. Cut-over plan — how and when to flip
+6. Rollback plan — exact steps if we need to revert
+7. Monitoring — what to watch for 24/48 hours
+8. Success criteria — when is migration "done"?
+
+Phase it: prep → dual-write → flip reads → flip writes → remove old.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>DB migrations, library upgrades, infra changes.</div>
+<div><strong>Next Prompt</strong>"Begin phase 1 (prep). Show gates before moving to phase 2."</div>
+</div>
+</div>
+
+<div class="promptbox">
+<div class="plbl">Prompt 12 · Refactor Planning</div>
+<h4>Strategic refactor without breaking everything</h4>
+<div class="ptext">The code at [path] is messy. Plan a safe refactor.
+
+Deliverables:
+1. **Current state** — describe what it does + smell list with examples
+2. **Target state** — post-refactor structure (files, modules, interfaces)
+3. **Step plan** — each step makes code BETTER and TESTS STILL PASS
+4. **Test safety net** — what tests cover this? Gaps?
+5. **Escape hatches** — how to bail mid-refactor if it goes wrong
+
+Constraint: No big-bang rewrites. Refactor must be merge-able in small PRs.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Legacy code, tech debt sprints.</div>
+<div><strong>Next Prompt</strong>"First add the missing tests from 'Test safety net'. Run them."</div>
+</div>
+</div>
+
+<div class="promptbox">
+<div class="plbl">Prompt 13 · Architecture Design</div>
+<h4>High-level design for a new system</h4>
+<div class="ptext">Design the architecture for [system].
+
+Constraints:
+- Scale: [users/QPS/data size]
+- Budget: [$/month target]
+- Team: [size/expertise]
+- Tech preferences: [e.g. Python + Postgres, or empty for your recommendation]
+
+Deliver:
+1. C4 Level 1 (context) + Level 2 (containers) diagrams in Mermaid
+2. Key decisions with rationale (DB choice, sync vs async, monolith vs services)
+3. Three alternatives considered + why rejected
+4. Scaling plan (2x, 10x, 100x load)
+5. Failure modes + mitigations
+6. Observability strategy
+
+This is a design doc, not code.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Greenfield projects, major rewrites.</div>
+<div><strong>Next Prompt</strong>"Now zoom into the [component] — detail its internal design."</div>
+</div>
+</div>
+
+<div class="promptbox">
+<div class="plbl">Prompt 14 · API Design</div>
+<h4>Design a REST/GraphQL/tRPC API</h4>
+<div class="ptext">Design the [public API] for [feature].
+
+For each endpoint:
+- Method + path + description
+- Request schema (Zod / Pydantic / types)
+- Response schema (success + error shapes)
+- Error codes + when each fires
+- Auth requirement (public / user / admin)
+- Rate limits
+- Caching behavior
+- Example curl
+
+Also list:
+- Versioning strategy
+- Breaking change policy
+- Deprecation process
+- Test plan (unit, contract, integration)
+
+DO NOT implement. Design doc only.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>New APIs, platform expansion.</div>
+<div><strong>Next Prompt</strong>"Approved. Implement endpoint 1 with full tests."</div>
+</div>
+</div>
+
+<div class="promptbox">
+<div class="plbl">Prompt 15 · Database Schema Planning</div>
+<h4>Relational schema design</h4>
+<div class="ptext">Design the DB schema for [domain].
+
+Deliverables:
+1. ERD in Mermaid
+2. Table definitions (SQL or Prisma/SQLModel)
+3. Indexes: which columns? why? expected query patterns?
+4. Constraints: PKs, FKs, uniques, checks
+5. Partitioning strategy if tables get large
+6. Migration strategy (can we add these tables online?)
+7. Seed data + fixtures for tests
+8. Common query patterns with EXPLAIN ANALYZE expectations
+
+Flag any fields likely to become performance issues at 10x scale.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>New features requiring new tables.</div>
+<div><strong>Next Prompt</strong>"Write the first migration. Apply it in dev + show schema diff."</div>
+</div>
+</div>
+
+<div class="promptbox">
+<div class="plbl">Prompt 16 · Test Plan Before Code</div>
+<h4>TDD planning</h4>
+<div class="ptext">For this feature spec, write ONLY the test cases (not impl) first.
+
+Format each test as:
+- Name: should_DoX_When_Y
+- Arrange: [setup]
+- Act: [action]
+- Assert: [expected]
+
+Coverage:
+- Happy path (1-2)
+- Edge cases (list ALL you can think of: empty input, max input, null, boundary values, concurrent, etc.)
+- Error paths (each error class)
+- Security tests (injection, auth bypass, etc.)
+
+Aim for 15-25 test cases. Output them as actual test file code, with TODO comments for the impl we'll write next.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>TDD workflow, critical features.</div>
+<div><strong>Next Prompt</strong>"Now implement minimally to pass test 1. Red → Green → Refactor."</div>
+</div>
+</div>
+
+<!-- ===== PROBLEM IDENTIFICATION ===== -->
+<h3 style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--accent4);margin:40px 0 16px;letter-spacing:1px;border-bottom:2px solid var(--accent4);padding-bottom:6px">🔍 PROBLEM IDENTIFICATION (8)</h3>
+
+<div class="promptbox p">
+<div class="plbl">Prompt 17 · Code Smell Audit</div>
+<h4>Find anti-patterns and smells</h4>
+<div class="ptext">Scan @[path or module] for code smells. Report each with file:line + category.
+
+Check for:
+- God functions (&gt;50 lines)
+- Deeply nested logic (&gt;3 levels)
+- Duplicate code (same logic in 2+ places)
+- Magic numbers (hardcoded values without names)
+- Poorly named identifiers (x, tmp, data)
+- Mixed abstraction levels in one function
+- Comments that explain WHAT instead of WHY
+- Dead code (unused imports, vars, functions)
+- Primitive obsession (passing 5 strings vs a value object)
+- Shotgun surgery signals (one change requires edits in many places)
+
+For each: severity (high/med/low) + suggested refactor in ONE sentence.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Pre-merge, tech debt sprints, code review.</div>
+<div><strong>Next Prompt</strong>"Fix the 3 highest-severity smells. Preserve all tests."</div>
+</div>
+</div>
+
+<div class="promptbox p">
+<div class="plbl">Prompt 18 · Security Audit</div>
+<h4>OWASP-aligned security scan</h4>
+<div class="ptext">Audit @[path] for security issues. Find and report:
+
+1. **Injection** — SQL, NoSQL, command, LDAP, template
+2. **Broken auth** — weak crypto, exposed tokens, session issues
+3. **Sensitive data** — logs with PII, secrets in code, weak encryption
+4. **XXE / SSRF** — external input to XML parsers, URL fetches
+5. **Broken access** — IDOR, privilege escalation, missing auth checks
+6. **Misconfigurations** — default creds, verbose errors, CORS *
+7. **Known-vulnerable deps** — outdated packages with CVEs
+8. **Unsafe deserialization** — pickle, YAML load, Java ObjectInputStream
+9. **Logging gaps** — security events not logged
+10. **Rate limiting** — endpoints without it
+
+Format: CVE-style severity, file:line, proof of concept, mitigation.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Pre-launch, security reviews, incident response.</div>
+<div><strong>Next Prompt</strong>"Fix issues 1-3 (critical). Add regression tests."</div>
+</div>
+</div>
+
+<div class="promptbox p">
+<div class="plbl">Prompt 19 · Performance Bottlenecks</div>
+<h4>Find slow code with evidence</h4>
+<div class="ptext">Find performance bottlenecks in @[path].
+
+Investigate:
+- N+1 queries (ORM loops, missing .include/.eager)
+- Unnecessary fetching (SELECT *, missing pagination)
+- Sync blocking calls in async code
+- Unbatched API calls (loop making individual requests)
+- Missing caches (repeated identical computations)
+- O(n²) or worse algorithms
+- Memory allocations in hot paths (string concat in loops)
+- Large payloads (missing compression, over-fetching)
+- Blocking the event loop (Node/browser)
+
+For each finding: file:line, estimated impact (ms/QPS/memory), fix approach, test to verify improvement.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Slow app, high cloud bills, SLO misses.</div>
+<div><strong>Next Prompt</strong>"Fix the top-3. Benchmark before/after with real data."</div>
+</div>
+</div>
+
+<div class="promptbox p">
+<div class="plbl">Prompt 20 · Dead Code Hunt</div>
+<h4>Find unused code to delete</h4>
+<div class="ptext">Find dead code in @[path].
+
+Categories:
+- Unused exports (nothing imports them)
+- Unused function params
+- Unused imports
+- Unreachable code (after return/throw)
+- Dead conditional branches (unreachable if/else)
+- Feature flags never toggled
+- Commented-out code blocks
+- Files never referenced
+- DB columns never read/written
+
+For each: file:line, confidence (99% vs 60%), how you verified it's dead.
+
+Do NOT delete. Only report. I'll decide what to remove.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Tech debt, reducing bundle size, pre-refactor.</div>
+<div><strong>Next Prompt</strong>"Delete items with 99% confidence. Open PR per category."</div>
+</div>
+</div>
+
+<div class="promptbox p">
+<div class="plbl">Prompt 21 · Dependency Audit</div>
+<h4>Check deps for problems</h4>
+<div class="ptext">Audit package.json / requirements.txt / *.csproj / Gemfile for:
+
+1. **Known CVEs** — run npm audit / pip-audit / dotnet list package --vulnerable
+2. **Outdated majors** — packages &gt;1 major behind
+3. **Unused deps** — installed but never imported
+4. **Heavy deps** — bundle size &gt;100KB, check alternatives
+5. **Deprecated packages** — flagged by registry
+6. **Duplicate deps** — multiple versions of same package
+7. **License issues** — GPL/AGPL in proprietary code
+8. **Maintenance signals** — last publish &gt;2 years, few maintainers
+
+Output: table with package, issue category, severity, recommended action.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Quarterly audits, pre-release, supply chain reviews.</div>
+<div><strong>Next Prompt</strong>"Plan upgrade PRs — one per major version bump, grouped safely."</div>
+</div>
+</div>
+
+<div class="promptbox p">
+<div class="plbl">Prompt 22 · Test Quality Audit</div>
+<h4>Find bad tests</h4>
+<div class="ptext">Audit the test suite in @tests/ for:
+
+- **Tests that always pass** — no real assertion, or asserting constant
+- **Flaky tests** — tests with retries, sleeps, network calls without mocks
+- **Duplicate tests** — same coverage, different name
+- **Tests that test the mock** — asserting `mock.called` without checking args
+- **Over-mocked tests** — so mocked they don't test real code
+- **Tests with unclear names** — can't tell what's being tested
+- **Giant setUp blocks** — &gt;30 lines of arrange
+- **Asserting implementation** — test breaks on refactor even though behavior unchanged
+- **Missing edge cases** — no test for null, empty, max, error
+
+Report each with file + reason + fix suggestion.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Before scaling team, sprints with flaky CI.</div>
+<div><strong>Next Prompt</strong>"Rewrite tests flagged as 'testing implementation' to assert behavior instead."</div>
+</div>
+</div>
+
+<div class="promptbox p">
+<div class="plbl">Prompt 23 · Accessibility Audit (a11y)</div>
+<h4>WCAG-aligned UI audit</h4>
+<div class="ptext">Audit @components/ for accessibility issues aligned with WCAG 2.2 AA.
+
+Check:
+- **Semantic HTML** — divs where button/nav/main/article should be
+- **Alt text** — images without alt, decorative marked as alt=""
+- **ARIA** — redundant, wrong role, missing labels
+- **Keyboard nav** — focus traps, skip links, tab order
+- **Color contrast** — text below 4.5:1 (3:1 for large)
+- **Focus indicators** — removed with outline:none and no replacement
+- **Forms** — labels missing, errors not associated with field
+- **Motion** — no prefers-reduced-motion respect
+- **Screen reader** — announcements missing for async updates
+- **Touch targets** — under 44×44px on mobile
+
+Each finding: component:line, WCAG rule, fix.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Pre-launch, compliance audits, enterprise sales.</div>
+<div><strong>Next Prompt</strong>"Fix the 5 critical items. Add Playwright a11y tests (axe-core)."</div>
+</div>
+</div>
+
+<div class="promptbox p">
+<div class="plbl">Prompt 24 · Error Handling Audit</div>
+<h4>Find gaps in error handling</h4>
+<div class="ptext">Audit @[path] for error handling problems:
+
+- **Swallowed errors** — catch blocks that do nothing
+- **Catch all exceptions** — `catch (e)` / `except:` too broad
+- **Logged but not handled** — console.error but no user feedback
+- **Missing error paths** — happy path only, no else/error branch
+- **Inconsistent error shapes** — some endpoints return 500 with text, others JSON
+- **No retry for transient failures** — network, DB connection blips
+- **Wrong HTTP codes** — 500 for user errors, 200 for failures
+- **Leaked internals** — stack traces in production responses
+- **Missing timeouts** — network calls with no timeout
+- **Unbounded queues** — no backpressure/circuit breakers
+
+Each: file:line, category, severity, fix approach.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Stability sprints, production incidents.</div>
+<div><strong>Next Prompt</strong>"Propose a consistent error envelope. Refactor top-5 offenders to use it."</div>
+</div>
+</div>
+
+<!-- ===== REFACTORING ===== -->
+<h3 style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--accent5);margin:40px 0 16px;letter-spacing:1px;border-bottom:2px solid var(--accent5);padding-bottom:6px">🔨 REFACTORING PROMPTS (8)</h3>
+
+<div class="promptbox g">
+<div class="plbl">Prompt 25 · Simplify Without Breaking</div>
+<h4>Safe simplification</h4>
+<div class="ptext">Simplify @[file or function] without changing behaviour.
+
+Safety rules:
+1. Run tests BEFORE — record pass/fail baseline
+2. Make ONE simplification at a time
+3. Run tests AFTER each change — must match baseline
+4. Commit each passing simplification separately
+5. If any test fails, revert that change and try a different approach
+
+Target: reduce cognitive complexity, NOT just line count.
+Prefer: early returns, extract method, replace nested ifs with guard clauses, remove dead branches.
+Avoid: introducing new abstractions, changing public API, reordering statements that have side effects.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Before adding features to messy code.</div>
+<div><strong>Next Prompt</strong>"Now that it's simpler, add the new feature cleanly."</div>
+</div>
+</div>
+
+<div class="promptbox g">
+<div class="plbl">Prompt 26 · Extract Module</div>
+<h4>Pull out a cohesive unit</h4>
+<div class="ptext">Extract a new module from @[file] that groups related functionality.
+
+Process:
+1. Identify functions/types that form a cohesive unit (analyze call graph)
+2. Propose the new module's name + exports
+3. Show me the proposed boundary — list what moves and what stays
+4. Wait for approval
+5. Move them with explicit imports
+6. Update all call sites
+7. Add a barrel file if needed
+8. Run the tests — MUST all pass
+
+Criteria: new module should have high internal cohesion, low coupling back to origin.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Large files, growing modules.</div>
+<div><strong>Next Prompt</strong>"Add unit tests for the new module in isolation."</div>
+</div>
+</div>
+
+<div class="promptbox g">
+<div class="plbl">Prompt 27 · Decouple Tight Coupling</div>
+<h4>Break hard dependencies</h4>
+<div class="ptext">The code in @[file] is tightly coupled to @[other]. Decouple it.
+
+Use these techniques as applicable:
+- Dependency injection (pass via constructor/args, don't import directly)
+- Repository/interface pattern (abstract data access)
+- Event emitter (publish events, don't call consumers directly)
+- Adapter pattern (wrap the dependency)
+- Pure functions (remove hidden state)
+
+Output:
+1. Current coupling map (what depends on what)
+2. Proposed boundary
+3. Incremental refactor plan (small commits)
+4. Migration path for call sites
+5. Test strategy (mock the new interface)
+
+DO NOT change behaviour. Only structure.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Testing is hard, changes ripple everywhere.</div>
+<div><strong>Next Prompt</strong>"Execute step 1 (introduce interface). Run tests. Commit."</div>
+</div>
+</div>
+
+<div class="promptbox g">
+<div class="plbl">Prompt 28 · Test-First Refactor</div>
+<h4>Pin behavior with tests before refactoring</h4>
+<div class="ptext">Before refactoring @[file], write characterization tests that PIN its current behaviour (including any bugs).
+
+Steps:
+1. Identify the PUBLIC interface of this module (what outsiders call)
+2. For each public function: write tests for happy path + edge cases, asserting actual current output
+3. Include "weird but works" behaviors — any quirks callers might rely on
+4. Run — all must pass before we touch anything
+5. Commit tests as "characterize: &lt;module&gt; current behaviour"
+
+After this, we can refactor aggressively knowing the safety net catches regressions.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Legacy code with no tests, before any refactor.</div>
+<div><strong>Next Prompt</strong>"Characterization tests pass. Now refactor — tests must stay green."</div>
+</div>
+</div>
+
+<div class="promptbox g">
+<div class="plbl">Prompt 29 · Remove Duplication (DRY)</div>
+<h4>Careful deduplication</h4>
+<div class="ptext">Find and remove duplicated code in @[path]. Safety first.
+
+Process:
+1. List all duplicates with file:line pairs + similarity %
+2. For each: is it REALLY the same, or coincidentally similar?
+   - Different meanings that look alike SHOULD stay duplicated
+   - "Three strikes" rule: only dedupe after 3rd occurrence
+3. For true duplicates: propose shared location (utility, base class, hook, mixin)
+4. Show the extracted version + all call sites updated
+5. Run tests — all pass
+6. One commit per dedup (easy to revert if wrong)
+
+Avoid: premature abstraction, making code LESS readable to save LOC.</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Cleaning up copy-paste code.</div>
+<div><strong>Next Prompt</strong>"Scan the new shared module — does it need tests? Add them."</div>
+</div>
+</div>
+
+<div class="promptbox g">
+<div class="plbl">Prompt 30 · Modernize Legacy Code</div>
+<h4>Bring old code to current standards</h4>
+<div class="ptext">Modernize @[file] to match current project conventions (see CLAUDE.md).
+
+Apply incrementally — one concept per commit:
+1. Typing: add types to untyped code (infer from usage)
+2. Async: callbacks → promises → async/await
+3. Deprecated APIs: replace with modern equivalents
+4. ES features: var → const/let, IIFE → modules, require → import
+5. Error handling: align with project's Result/exception strategy
+6. Naming: align with style guide
+7. Formatting: run formatter
+
+Rules:
+- Tests must pass after every commit
+- Keep public API stable (or deprecate + migrate in separate PR)
+- Don't add new features; only modernize</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Legacy modules, onboarding old projects.</div>
+<div><strong>Next Prompt</strong>"Next commit: typing. Show me the plan before executing."</div>
+</div>
+</div>
+
+<div class="promptbox g">
+<div class="plbl">Prompt 31 · Replace Primitives with Types</div>
+<h4>Fix primitive obsession</h4>
+<div class="ptext">Fix primitive obsession in @[path].
+
+Find cases where primitives carry meaning:
+- `string userId` (just any string?) → `type UserId = string &amp; { _brand: 'UserId' }`
+- `number price` (in cents? USD?) → `type Money = { cents: number; currency: 'USD' }`
+- 3+ primitives passed together → value object/record
+- `boolean shouldRetry` + `number retryCount` → `type RetryConfig = ...`
+
+For each:
+1. Propose the new type + validation
+2. Show migration plan (gradual, not big-bang)
+3. Update high-traffic call sites first
+4. Keep interop functions for still-primitive callers
+5. Tests prove nothing changed behaviorally</div>
+<div class="pmeta">
+<div><strong>Use When</strong>Bugs from wrong-type passing, fragile contracts.</div>
+<div><strong>Next Prompt</strong>"Migrate the `UserId` first. All call sites. Tests green."</div>
+</div>
+</div>
+
+<div class="promptbox g">
+<div class="plbl">Prompt 32 · Convert to Immutable</div>
+<h4>Remove mutation</h4>
+<div class="ptext">Refactor @[file] to avoid mutation. Current issues:
+- Data structures being mutated in place
+- Functions with side effects on inputs
+- Shared mutable state
+
+Change to:
+- Return new objects with spread/copy
+- Use `readonly` / `Final` / `const` / `record` / `frozen`
+- Extract pure functions; move side effects to edges
+- Use immutable collections where the language supports them
+
+Safety:
+- Keep same public behaviour
+- Benchmark before/after — perf shouldn't regress meaningfully
+- Tests must pass
+- Commit per function converted</div>
+<div class="pmeta">
+<div><strong>Use When</strong>State management bugs, concurrency issues.</div>
+<div><strong>Next Prompt</strong>"Now that it's immutable, enable parallel processing for X."</div>
+</div>
+</div>
+
+<!-- ===== ANTI-PATTERNS ===== -->
+<h3 style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--accent3);margin:40px 0 16px;letter-spacing:1px;border-bottom:2px solid var(--accent3);padding-bottom:6px">⛔ ANTI-PATTERNS (What NOT to Prompt)</h3>
+
+<div class="promptbox r">
+<div class="plbl">Anti-pattern 1 · The Vague Request</div>
+<h4>Bad prompt — Claude fills gaps with assumptions</h4>
+<div class="ptext">❌ BAD: "Make the auth better"
+❌ BAD: "Fix the database"
+❌ BAD: "Refactor this"
+❌ BAD: "Add some tests"
+
+✅ GOOD: "Replace session-based auth with JWT in @src/auth/. Preserve the /login and /logout endpoints' behavior. Add tests. Do not touch user model."</div>
+<div class="pmeta">
+<div><strong>Why It Fails</strong>Claude invents requirements. Wastes tokens exploring wrong paths. Output doesn't match intent.</div>
+<div><strong>The Fix</strong>Always include: WHAT + WHERE + CONSTRAINTS + ACCEPTANCE.</div>
+</div>
+</div>
+
+<div class="promptbox r">
+<div class="plbl">Anti-pattern 2 · Jump to Code</div>
+<h4>Skipping the plan</h4>
+<div class="ptext">❌ BAD: "Build a multi-tenant SaaS with billing and webhook delivery"
+   → Claude writes code for 30 mins, gets it wrong, wastes $10
+
+✅ GOOD: "Plan (don't code) a multi-tenant SaaS design. Ask clarifying questions first. Produce a 1-page spec I approve before any code."</div>
+<div class="pmeta">
+<div><strong>Why It Fails</strong>Complex tasks without a plan = guaranteed wasted effort.</div>
+<div><strong>The Fix</strong>Always start with "Plan. Do not write code."</div>
+</div>
+</div>
+
+<div class="promptbox r">
+<div class="plbl">Anti-pattern 3 · No Acceptance Criteria</div>
+<h4>Claude doesn't know when it's done</h4>
+<div class="ptext">❌ BAD: "Make the search faster"
+   → Claude makes something faster but is it enough? You don't know.
+
+✅ GOOD: "Make the search return in &lt;200ms at p95 for queries over 1M rows. Measure with benchmark.ts. Show before/after numbers."</div>
+<div class="pmeta">
+<div><strong>Why It Fails</strong>Without criteria, Claude optimises for "something" not "the right thing".</div>
+<div><strong>The Fix</strong>State measurable outcomes. Numbers, tests, or specific behaviors.</div>
+</div>
+</div>
+
+<div class="promptbox r">
+<div class="plbl">Anti-pattern 4 · Missing Context</div>
+<h4>Assumes Claude remembers</h4>
+<div class="ptext">❌ BAD: "Finish what we started yesterday"
+   → Claude has no memory of yesterday.
+
+✅ GOOD: "Resume work on @docs/plans/auth-refactor.md. We finished steps 1-3 (commits: abc, def, ghi). Continue with step 4: 'Add password reset flow.' Constraints in the plan file still apply."</div>
+<div class="pmeta">
+<div><strong>Why It Fails</strong>No cross-session memory. Context from yesterday is gone.</div>
+<div><strong>The Fix</strong>Reference plan files, previous commits, use @file imports.</div>
+</div>
+</div>
+
+<div class="promptbox r">
+<div class="plbl">Anti-pattern 5 · No Verification Loop</div>
+<h4>Trusting Claude claimed success</h4>
+<div class="ptext">❌ BAD: "Add the feature"
+   → Claude: "Done!" → Reality: tests fail.
+
+✅ GOOD: "Add the feature. Then: run all tests. Report which passed/failed. If any failed, fix them and re-run. Only say 'done' when output is green."</div>
+<div class="pmeta">
+<div><strong>Why It Fails</strong>Claude may claim "done" without running tests.</div>
+<div><strong>The Fix</strong>Always force "verify with command X. Show output."</div>
+</div>
+</div>
+
+<div class="promptbox r">
+<div class="plbl">Anti-pattern 6 · Asking for Too Many Things</div>
+<h4>Monster prompt with 10 goals</h4>
+<div class="ptext">❌ BAD: "Refactor auth, add tests, update docs, migrate DB, add rate limiting, improve errors, fix that weird bug"
+   → Claude does 2 things poorly, forgets the rest.
+
+✅ GOOD (split it): Phase 1: "Refactor auth. That's it."
+Phase 2: "Now add tests for the refactor."
+Phase 3: "Now update docs to match."</div>
+<div class="pmeta">
+<div><strong>Why It Fails</strong>Context dilution. Claude can't focus on everything.</div>
+<div><strong>The Fix</strong>One concern per prompt. Chain them.</div>
+</div>
+</div>
+
+</section>
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 16: CHAINED WORKFLOWS           -->
+<!-- ═══════════════════════════════════════ -->
+<section id="workflows">
+<div class="sh"><div class="sn">16</div><div class="stw"><span class="stag" style="color:var(--accent3)">Battle-Tested</span><div class="stitle">Chained Workflows</div></div></div>
+
+<p style="color:var(--muted);margin-bottom:20px;font-size:14px">Real tasks rarely fit in one prompt. These are proven multi-prompt chains for common scenarios. Copy the whole chain; run each step; use the output of one as input to the next.</p>
+
+<div class="workflow">
+<h4>🐛 Workflow A — Full Bug Fix (6 prompts)</h4>
+<div class="workflow-steps">
+<div class="ws">Reproduce</div><div class="wa">→</div>
+<div class="ws">Root Cause</div><div class="wa">→</div>
+<div class="ws">Hypothesis</div><div class="wa">→</div>
+<div class="ws">Fix</div><div class="wa">→</div>
+<div class="ws">Verify</div><div class="wa">→</div>
+<div class="ws">Sibling Scan</div>
+</div>
+<p style="color:var(--muted);font-size:13px;margin-bottom:10px">The gold standard for production bugs. Never skip a step — each one catches issues the others miss.</p>
+
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Step 1 — Reproduce</span>
+<span class="cmd">Before fixing anything, reproduce this bug. Show me: exact command, actual output, expected output, relevant logs, minimal input that triggers it. Do NOT propose a fix yet.</span>
+
+<span class="cm"># Step 2 — Root Cause</span>
+<span class="cmd">We've reproduced. Now find the root cause: trace the code path, identify every function involved, state what each expects vs gets, point to the EXACT line where behaviour goes wrong, explain WHY. Don't fix yet.</span>
+
+<span class="cm"># Step 3 — Hypothesis Testing (if unclear)</span>
+<span class="cmd">I have 3 hypotheses: [list]. Design a minimal test for each to confirm/rule out. Run them. Report winner with evidence.</span>
+
+<span class="cm"># Step 4 — Minimal Fix</span>
+<span class="cmd">Apply the SMALLEST possible fix. Max 10 lines. No refactoring adjacent code. Add a regression test that would have caught this.</span>
+
+<span class="cm"># Step 5 — Verify</span>
+<span class="cmd">Run the regression test + full test suite. Show output. If anything regressed, roll back and try a different approach.</span>
+
+<span class="cm"># Step 6 — Sibling Bug Scan</span>
+<span class="cmd">Scan the codebase for similar patterns that might have the same bug. Report each with file:line + why you suspect it + suggested test.</span></div>
+</div>
+
+<div class="workflow">
+<h4>✨ Workflow B — New Feature End-to-End (8 prompts)</h4>
+<div class="workflow-steps">
+<div class="ws">Brainstorm</div><div class="wa">→</div>
+<div class="ws">Spec</div><div class="wa">→</div>
+<div class="ws">Plan</div><div class="wa">→</div>
+<div class="ws">Tests</div><div class="wa">→</div>
+<div class="ws">Impl</div><div class="wa">→</div>
+<div class="ws">Review</div><div class="wa">→</div>
+<div class="ws">Docs</div><div class="wa">→</div>
+<div class="ws">PR</div>
+</div>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Step 1 — Brainstorm (ask clarifying Qs)</span>
+<span class="cmd">I want to build [feature]. Ask clarifying questions ONE at a time: user benefit, success metric, MVP scope, failure modes, happy path, constraints. Then write a 1-page spec for approval.</span>
+
+<span class="cm"># Step 2 — Spec Approval</span>
+<span class="cmd">Approved. Save spec to docs/specs/[feature].md.</span>
+
+<span class="cm"># Step 3 — Implementation Plan</span>
+<span class="cmd">Convert spec to plan: Files to Create/Modify, Tasks (5-15min each w/ acceptance tests), Risks+mitigations, Success Criteria. DO NOT WRITE CODE.</span>
+
+<span class="cm"># Step 4 — Test Plan First (TDD)</span>
+<span class="cmd">Write ONLY the test cases (not impl). Cover: happy path, edge cases, error paths, security. 15-25 tests as actual code with TODO comments for impl.</span>
+
+<span class="cm"># Step 5 — Implement Task-by-Task</span>
+<span class="cmd">Execute task 1. Make test 1 pass. Show output. Commit. STOP. Wait for my go-ahead for task 2.</span>
+
+<span class="cm"># Step 6 — Review</span>
+<span class="cmd">Dispatch code-review subagent on all changes. Report findings. Fix any critical issues.</span>
+
+<span class="cm"># Step 7 — Documentation</span>
+<span class="cmd">Update README.md + relevant docs to reflect the new feature. Add example usage. Update CHANGELOG.</span>
+
+<span class="cm"># Step 8 — Open PR</span>
+<span class="cmd">Open PR. Title: feat(scope): summary. Body: what changed, why, screenshots if UI, testing done, migration notes if any. Request review from [team].</span></div>
+</div>
+
+<div class="workflow">
+<h4>🔨 Workflow C — Legacy Code Refactor (7 prompts)</h4>
+<div class="workflow-steps">
+<div class="ws">Map</div><div class="wa">→</div>
+<div class="ws">Characterize</div><div class="wa">→</div>
+<div class="ws">Plan</div><div class="wa">→</div>
+<div class="ws">Decouple</div><div class="wa">→</div>
+<div class="ws">Simplify</div><div class="wa">→</div>
+<div class="ws">Modernize</div><div class="wa">→</div>
+<div class="ws">Measure</div>
+</div>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Step 1 — Map the Legacy Code</span>
+<span class="cmd">Analyze @[legacy module]. Produce: public API list, dependency graph (imports/imported-by), complexity hotspots (cyclomatic &gt; 10), test coverage %. No changes.</span>
+
+<span class="cm"># Step 2 — Characterize Current Behavior</span>
+<span class="cmd">Before any refactor, write characterization tests pinning current behavior including quirks. Aim for every public function. These must pass — they're our safety net.</span>
+
+<span class="cm"># Step 3 — Refactor Plan</span>
+<span class="cmd">Plan safe refactor: current state, target state, step-by-step, test safety net, escape hatches. Mergeable in small PRs. No big-bang rewrites.</span>
+
+<span class="cm"># Step 4 — Decouple</span>
+<span class="cmd">Break the tight coupling to @[other]. Use DI/interfaces/events. Characterization tests must still pass after.</span>
+
+<span class="cm"># Step 5 — Simplify</span>
+<span class="cmd">Simplify without behavior change. Early returns, extract method, remove dead branches. Tests green. One commit per simplification.</span>
+
+<span class="cm"># Step 6 — Modernize</span>
+<span class="cmd">Align with current CLAUDE.md: typing, async patterns, naming, deprecated APIs. Incremental. Tests green.</span>
+
+<span class="cm"># Step 7 — Measure Improvement</span>
+<span class="cmd">Compare before/after: complexity, test coverage, LOC, runtime perf on benchmark. Write a report.</span></div>
+</div>
+
+<div class="workflow">
+<h4>🔒 Workflow D — Security Audit &amp; Hardening (6 prompts)</h4>
+<div class="workflow-steps">
+<div class="ws">Scan</div><div class="wa">→</div>
+<div class="ws">Triage</div><div class="wa">→</div>
+<div class="ws">Fix Critical</div><div class="wa">→</div>
+<div class="ws">Deps</div><div class="wa">→</div>
+<div class="ws">Tests</div><div class="wa">→</div>
+<div class="ws">Runbook</div>
+</div>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Step 1 — Scan</span>
+<span class="cmd">Dispatch security-reviewer subagent. OWASP Top 10 scan across @src/. Report by severity with file:line + PoC + mitigation.</span>
+
+<span class="cm"># Step 2 — Triage</span>
+<span class="cmd">Group findings: must-fix-now (exploitable in prod), fix-this-sprint, fix-this-quarter, won't-fix-with-justification. Assign priority.</span>
+
+<span class="cm"># Step 3 — Fix Critical</span>
+<span class="cmd">Fix must-fix-now items. Each fix: add regression test, verify test fails before fix, passes after. No scope creep.</span>
+
+<span class="cm"># Step 4 — Dependencies</span>
+<span class="cmd">Run npm audit / pip-audit / dotnet list --vulnerable. Triage results. Propose upgrade PRs per major version bump.</span>
+
+<span class="cm"># Step 5 — Add Security Tests</span>
+<span class="cmd">For each vuln class found, add automated tests: SQL injection fuzzer, auth bypass tests, XSS probes. Integrate into CI.</span>
+
+<span class="cm"># Step 6 — Incident Runbook</span>
+<span class="cmd">Write docs/runbooks/security-incident.md: detection steps, containment, investigation, comms template, post-mortem template.</span></div>
+</div>
+
+<div class="workflow">
+<h4>🚀 Workflow E — Deploy Pipeline Setup (5 prompts)</h4>
+<div class="workflow-steps">
+<div class="ws">Audit</div><div class="wa">→</div>
+<div class="ws">CI</div><div class="wa">→</div>
+<div class="ws">CD</div><div class="wa">→</div>
+<div class="ws">Rollback</div><div class="wa">→</div>
+<div class="ws">Observability</div>
+</div>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Step 1 — Audit Current State</span>
+<span class="cmd">Audit @.github/workflows/ (or equivalent). Map what runs when, what's missing. Report: build gaps, test gaps, deploy gaps, rollback capability.</span>
+
+<span class="cm"># Step 2 — Set Up CI</span>
+<span class="cmd">Design CI pipeline: lint + typecheck + unit tests + integration tests + security scan. Run on PR. Block merge on failure. Cache deps.</span>
+
+<span class="cm"># Step 3 — Set Up CD</span>
+<span class="cmd">Design CD: deploy to staging on main merge, deploy to prod on tag. Include: smoke tests post-deploy, canary rollout, env var validation.</span>
+
+<span class="cm"># Step 4 — Rollback Plan</span>
+<span class="cmd">Design rollback: atomic deploys, previous version tags, one-command revert, DB migration reversibility rules.</span>
+
+<span class="cm"># Step 5 — Observability</span>
+<span class="cmd">Add observability: structured logs, metrics for key SLOs, alert on deploy failure, error budget burn rate. Dashboards.</span></div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 17: BLUEPRINT 1 - RAG AI APP    -->
+<!-- ═══════════════════════════════════════ -->
+<section id="bp1">
+<div class="sh"><div class="sn">17</div><div class="stw"><span class="stag" style="color:var(--accent)">Blueprint 1</span><div class="stitle">RAG AI App — Chat with Your Docs</div></div></div>
+
+<p style="color:var(--muted);margin-bottom:20px;font-size:14px">Full build blueprint for a RAG (Retrieval-Augmented Generation) chat app. Users upload docs, ask questions, get answers grounded in their content with citations. This is the archetypal AI app.</p>
+
+<div class="g2">
+<div class="ccard" style="border-top-color:var(--accent2)">
+<h4 style="color:var(--accent2)">📦 Tech Stack</h4>
+<ul>
+<li><code>Frontend</code><span>Next.js 15 + TS + Tailwind 4 + shadcn/ui</span></li>
+<li><code>Backend</code><span>Python FastAPI 0.115 (async)</span></li>
+<li><code>Vector DB</code><span>Postgres 16 + pgvector (or Pinecone)</span></li>
+<li><code>Embeddings</code><span>voyage-3 (Anthropic) or OpenAI text-embedding-3</span></li>
+<li><code>LLM</code><span>Claude Sonnet 4.6 via Anthropic SDK</span></li>
+<li><code>Streaming</code><span>Server-Sent Events (SSE)</span></li>
+<li><code>Mobile</code><span>PWA with offline cache</span></li>
+<li><code>Deploy</code><span>Vercel (FE) + Railway/Fly.io (BE)</span></li>
+</ul>
+</div>
+<div class="ccard" style="border-top-color:var(--accent4)">
+<h4 style="color:var(--accent4)">🤖 Subagents to Deploy</h4>
+<ul>
+<li><code>indexer-agent</code><span>Chunks + embeds uploaded docs</span></li>
+<li><code>retrieval-agent</code><span>Hybrid search (vector + keyword + rerank)</span></li>
+<li><code>evaluator-agent</code><span>Measures retrieval quality on golden queries</span></li>
+<li><code>citation-agent</code><span>Validates all citations map to real chunks</span></li>
+</ul>
+</div>
+</div>
+
+<div class="steps" style="margin-top:20px">
+
+<div class="step">
+<div class="snum">Phase 1 — Setup &amp; CLAUDE.md</div>
+<h3>Initialize the project</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Start in an empty dir</span>
+<span class="cmd">mkdir rag-chat-app &amp;&amp; cd rag-chat-app</span>
+<span class="cmd">claude</span>
+
+<span class="cm"># First prompt:</span>
+<span class="cmd">Plan a monorepo RAG chat app. Do not write code yet.
+Stack: Next.js 15 + FastAPI + Postgres/pgvector + Claude Sonnet + SSE streaming.
+Structure: apps/web (Next), apps/api (FastAPI), packages/shared (types).
+Ask clarifying questions, then show me the top-level layout.</span></div>
+</div>
+
+<div class="step b">
+<div class="snum">Phase 1.5 — The CLAUDE.md to Use</div>
+<h3>After <code>/init</code>, replace with this</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># .claude/CLAUDE.md</span>
+
+<span class="kw"># RAG Chat Application</span>
+
+<span class="kw">## Mission</span>
+Production-grade RAG app. Users upload docs, ask questions, get grounded answers with citations.
+
+<span class="kw">## Monorepo Structure</span>
+```
+apps/
+├── web/          Next.js 15 frontend (SSE chat, auth, upload)
+├── api/          Python FastAPI — RAG pipeline, embeddings, retrieval
+packages/
+├── shared/       TS + Python types (via Zod + Pydantic codegen)
+└── eval/         Golden eval queries + retrieval benchmarks
+```
+
+<span class="kw">## Stack</span>
+- Next.js 15 App Router, React 19, TS strict, Tailwind 4, shadcn/ui
+- Python 3.12, FastAPI, SQLModel, asyncpg, httpx
+- Postgres 16 + pgvector, Redis (cache + rate limit)
+- voyage-3 embeddings, Claude Sonnet 4.6 for generation
+- Vercel (frontend) + Fly.io (backend)
+
+<span class="kw">## Conventions</span>
+- **All RAG answers MUST cite sources** (chunk_id + page + excerpt).
+- **Never hallucinate citations.** If no evidence, say "I don't know."
+- **Hybrid retrieval** — never pure vector. Always vector + BM25 + rerank.
+- **Streaming responses** — never buffer and dump at end.
+- **Idempotent ingestion** — re-uploading same doc = no-op via content hash.
+- **Chunk strategy** — semantic splitter, target 400-800 tokens, 15% overlap.
+
+<span class="kw">## Commands</span>
+- Web dev: `pnpm --filter web dev`
+- API dev: `uv run fastapi dev apps/api/src/main.py`
+- Tests: `pnpm test` (web) + `uv run pytest` (api)
+- Eval: `uv run python packages/eval/run.py` — retrieval quality benchmark
+- Migrate: `uv run alembic upgrade head`
+- Docker: `docker compose up -d` (postgres + redis locally)
+
+<span class="kw">## Never</span>
+- Never answer without retrieval — even simple Qs go through the pipeline.
+- Never embed user queries without first redacting PII.
+- Never truncate retrieved context silently — if too large, summarize first.
+- Never return raw vectors to the client.
+- Never skip eval — every retrieval change must be measured.
+
+<span class="kw">## Imports</span>
+@docs/rag-pipeline.md
+@docs/retrieval-strategy.md
+@docs/eval-methodology.md</div>
+</div>
+
+<div class="step g">
+<div class="snum">Phase 2 — Build the API Backend</div>
+<h3>Prompt sequence</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Prompt 1: Scaffolding</span>
+<span class="cmd">Scaffold apps/api — FastAPI project with:
+- main.py, settings.py (pydantic-settings), routes/, services/, models/, tasks/
+- SQLModel for DB, alembic for migrations
+- pgvector extension migration
+- Docker compose for Postgres + Redis
+- .env.example with all needed vars
+- pytest + httpx setup
+Do not implement endpoints yet. Just scaffolding + health check.</span>
+
+<span class="cm"># Prompt 2: Ingestion endpoint</span>
+<span class="cmd">Implement POST /v1/ingest. Multipart upload (PDF, TXT, MD). Pipeline:
+1. Save file to object storage (minio locally, S3 prod)
+2. Compute SHA-256; if exists, return existing doc_id (idempotent)
+3. Extract text (pypdf for PDF, plain read for others)
+4. Chunk via langchain RecursiveCharacterTextSplitter (400 tokens, 60 overlap)
+5. Embed chunks in batches of 100 via voyage-3
+6. Insert into docs + chunks tables
+7. Return doc_id + chunk count + status
+
+Tests: upload PDF, assert chunks exist, assert re-upload is no-op.</span>
+
+<span class="cm"># Prompt 3: Retrieval endpoint</span>
+<span class="cmd">Implement POST /v1/retrieve. Body: {query, doc_ids?, top_k=10}.
+Hybrid retrieval:
+1. Embed query
+2. Vector search via pgvector (cosine), top 30
+3. BM25 via Postgres tsvector, top 30
+4. Merge + dedup
+5. Rerank via Cohere rerank-3 (or simple cross-encoder)
+6. Return top_k with scores + chunks + source metadata
+
+Tests: golden query set returns expected doc_ids in top_5.</span>
+
+<span class="cm"># Prompt 4: Chat endpoint (streaming)</span>
+<span class="cmd">Implement POST /v1/chat. Body: {conversation_id, message, doc_ids?}. SSE stream.
+Flow:
+1. Load conversation history
+2. Call /v1/retrieve internally, get top_k chunks
+3. Build prompt: system + history + retrieved context + user msg
+4. Call Claude Sonnet 4.6 with streaming
+5. Parse citations from output [doc:chunk_id] format
+6. Stream tokens as SSE events: {type:"token"|"citation"|"done"}
+7. Persist assistant message + citations on done
+
+Tests: real PDF → real question → streamed tokens → citations valid.</span></div>
+</div>
+
+<div class="step p">
+<div class="snum">Phase 3 — Build the Frontend</div>
+<h3>Prompts for Next.js UI</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Prompt 1: Scaffold</span>
+<span class="cmd">Scaffold apps/web — Next.js 15 App Router with:
+- TS strict, Tailwind 4 + shadcn/ui initialized
+- better-auth for email + OAuth
+- API route proxy to FastAPI backend
+- Zod schemas mirroring Pydantic models in apps/api
+- layout.tsx with header, theme toggle, auth guard
+
+Just scaffolding + auth. No RAG UI yet.</span>
+
+<span class="cm"># Prompt 2: Upload UI</span>
+<span class="cmd">Build the upload page: drag-drop dropzone, file list with progress,
+"Process" button → POST /v1/ingest. Show chunk count on success.
+Error handling for file too big, wrong type, backend down.
+Use useOptimistic for snappy UX. Add Playwright test for happy path.</span>
+
+<span class="cm"># Prompt 3: Chat UI with streaming</span>
+<span class="cmd">Build the chat page: conversation list sidebar, message thread, input at bottom.
+Use SSE client (EventSource or fetch streaming) for /v1/chat.
+Stream tokens into the latest message bubble as they arrive.
+Render citation chips inline [1][2] that scroll to source on click.
+Show loading skeleton. Handle abort via AbortController.
+Mobile: collapsible sidebar, full-width on &lt;768px.</span>
+
+<span class="cm"># Prompt 4: Source viewer</span>
+<span class="cmd">Build the source viewer drawer: when user clicks a citation,
+open a drawer showing the source chunk + surrounding context +
+link to download original PDF at the right page.
+Highlight the cited text. Escape to close. Accessible (focus trap, ESC).</span></div>
+</div>
+
+<div class="step o">
+<div class="snum">Phase 4 — Retrieval Quality (Evaluator Agent)</div>
+<h3>Don't ship without measuring retrieval</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Prompt:</span>
+<span class="cmd">Dispatch an evaluator-agent to:
+1. Generate 50 golden Q-A pairs from sample docs (using Claude)
+2. Build packages/eval/golden.jsonl
+3. Write packages/eval/run.py — runs each Q against retrieval, checks if answer's supporting chunks are in top_10
+4. Metrics: Recall@10, MRR, nDCG@10
+5. Output report table: baseline → after reranker → after BM25+vector hybrid
+6. Fail the build if Recall@10 &lt; 0.85
+
+Commit the script + golden set + CI integration.</span></div>
+</div>
+
+<div class="step r">
+<div class="snum">Phase 5 — Mobile Considerations (PWA)</div>
+<h3>Make it work on phones</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Prompt:</span>
+<span class="cmd">Turn apps/web into a PWA:
+1. Add manifest.json (name, icons, theme_color, display: standalone)
+2. Service worker for:
+   - Shell caching (fast cold start)
+   - Offline fallback page
+   - Background sync for failed uploads
+3. iOS: add apple-touch-icons, viewport-fit=cover for notch
+4. Android: trusted web activity setup guide in docs
+5. Push notifications for long-running ingestion jobs (Web Push + VAPID)
+6. IndexedDB cache for recent conversations
+
+Test: Lighthouse PWA score &gt; 95.</span></div>
+<div class="cl info" style="margin-top:10px"><strong>Alt: React Native</strong><p>For native iOS/Android, swap apps/web for apps/mobile using Expo SDK 52+. Reuse the same FastAPI backend, use react-native-sse for streaming, expo-document-picker for uploads.</p></div>
+</div>
+
+<div class="step">
+<div class="snum">Phase 6 — CSS &amp; Tailwind Patterns</div>
+<h3>Design tokens + patterns</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Prompt:</span>
+<span class="cmd">Set up Tailwind 4 design tokens for the chat UI:
+- Semantic tokens: --color-bg, --color-surface, --color-text, --color-accent
+- Message bubbles: user (accent bg, white text), assistant (surface bg, text)
+- Citation chips: pill with hover elevation, click-through underline
+- Code blocks in messages: monospace, syntax highlighting via shiki (SSR)
+- Streaming cursor: blinking underscore after last token
+- Dark mode via .dark class on html, all tokens switch
+
+Pattern library in apps/web/components/ui/. Document in Storybook.</span></div>
+</div>
+
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 18: BLUEPRINT 2 - INTERNAL TOOL -->
+<!-- ═══════════════════════════════════════ -->
+<section id="bp2">
+<div class="sh"><div class="sn">18</div><div class="stw"><span class="stag" style="color:var(--accent)">Blueprint 2</span><div class="stitle">Internal Tool — FastAPI + React Admin</div></div></div>
+
+<p style="color:var(--muted);margin-bottom:20px;font-size:14px">Full blueprint for an internal admin tool. Auth-protected, CRUD over business data, tables + forms + charts + reports. The most common "build me an internal thing" pattern.</p>
+
+<div class="g2">
+<div class="ccard" style="border-top-color:var(--accent2)">
+<h4 style="color:var(--accent2)">📦 Tech Stack</h4>
+<ul>
+<li><code>Backend</code><span>Python FastAPI + SQLModel + asyncpg</span></li>
+<li><code>Frontend</code><span>Vite + React 19 + TS + shadcn/ui + Tanstack Query + Table</span></li>
+<li><code>DB</code><span>Postgres 16, Alembic migrations</span></li>
+<li><code>Auth</code><span>JWT (access + refresh), bcrypt, RBAC</span></li>
+<li><code>Deploy</code><span>Docker Compose → VPS (Hetzner/DigitalOcean)</span></li>
+<li><code>CI/CD</code><span>GitHub Actions → docker push → SSH deploy</span></li>
+<li><code>Testing</code><span>pytest + httpx + Playwright</span></li>
+<li><code>Charts</code><span>Recharts for React</span></li>
+</ul>
+</div>
+<div class="ccard" style="border-top-color:var(--accent5)">
+<h4 style="color:var(--accent5)">🎯 Core Features</h4>
+<ul>
+<li><code>Login + RBAC</code><span>Admin, Manager, Viewer roles</span></li>
+<li><code>User CRUD</code><span>List + create + edit + deactivate</span></li>
+<li><code>Business entities</code><span>Paginated tables, server-side sort/filter</span></li>
+<li><code>Audit log</code><span>Every mutation logged with actor + diff</span></li>
+<li><code>Reports</code><span>Dashboards with Recharts + CSV export</span></li>
+<li><code>Bulk ops</code><span>CSV import, bulk update, queued jobs</span></li>
+<li><code>API tokens</code><span>Generate tokens for 3rd party integrations</span></li>
+</ul>
+</div>
+</div>
+
+<div class="steps" style="margin-top:20px">
+
+<div class="step b">
+<div class="snum">Phase 1 — CLAUDE.md</div>
+<h3>The config for this project</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># .claude/CLAUDE.md</span>
+
+<span class="kw"># Acme Internal Admin Tool</span>
+
+<span class="kw">## Mission</span>
+Internal admin dashboard for Acme's ops team. CRUD + reports + audit trail.
+Trusted network only — no public exposure. Used by ~20 employees daily.
+
+<span class="kw">## Stack</span>
+- Backend: Python 3.12 + FastAPI 0.115 + SQLModel + asyncpg
+- Frontend: Vite + React 19 + TS strict + shadcn/ui
+- State: Tanstack Query (server) + Zustand (UI state)
+- Tables: Tanstack Table (client render, server sort/filter/page)
+- Forms: react-hook-form + zod
+- Auth: JWT access (15min) + refresh (7 day) + httpOnly cookies
+- Tests: pytest (backend) + vitest (FE unit) + Playwright (E2E)
+
+<span class="kw">## Project Layout</span>
+```
+backend/
+├── app/
+│   ├── api/v1/routes/      # feature routers
+│   ├── core/               # config, security, deps, middleware
+│   ├── models/             # SQLModel tables + DTOs
+│   ├── repositories/       # DB access
+│   ├── services/           # business logic
+│   ├── tasks/              # Celery jobs
+│   └── main.py
+├── alembic/
+└── tests/ (unit/ + integration/)
+
+frontend/
+├── src/
+│   ├── features/&lt;feature&gt;/  # slice per feature
+│   ├── components/ui/       # shadcn + custom primitives
+│   ├── lib/                 # api client, auth, utils
+│   ├── hooks/
+│   ├── routes/              # Tanstack Router
+│   └── main.tsx
+└── tests/e2e/
+```
+
+<span class="kw">## Conventions</span>
+- **Vertical slices** — each feature has its own folder with routes+models+services+tests.
+- **Repository pattern** — services never touch SQLModel directly.
+- **Every mutation writes an AuditLog row** — actor, action, before, after.
+- **All endpoints require auth** — except /health, /docs (dev only).
+- **Pagination default** — max 100 per page, opaque cursor tokens.
+- **React features own their data** — no global store for server state, use Tanstack Query.
+- **Forms** — zod schema shared between FE and BE via codegen.
+
+<span class="kw">## Commands</span>
+- Dev: `docker compose up -d` then `uv run fastapi dev` + `pnpm dev`
+- Test: `uv run pytest -xvs` + `pnpm test` + `pnpm e2e`
+- Lint: `uv run ruff check --fix &amp;&amp; ruff format` + `pnpm lint --fix`
+- Migrate: `uv run alembic upgrade head`
+- New migration: `uv run alembic revision --autogenerate -m "msg"`
+- Build: `docker compose build`
+
+<span class="kw">## Never</span>
+- Never skip writing an audit log row on mutations.
+- Never use `SELECT *` — explicit columns, always.
+- Never commit DB dump with real user data.
+- Never allow DELETE on users — use soft delete (deleted_at).
+- Never put business logic in routes — move to services.
+- Never use class-based views — functions only.</div>
+</div>
+
+<div class="step g">
+<div class="snum">Phase 2 — Backend Build Sequence</div>
+<h3>Prompt chain for the API</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Prompt 1: Scaffold</span>
+<span class="cmd">Scaffold backend/ per CLAUDE.md layout. Include:
+- main.py with FastAPI app + CORS + request id middleware
+- settings.py via pydantic-settings
+- docker-compose.yml (postgres + redis)
+- alembic configured
+- pytest + httpx + pytest-asyncio
+- GitHub Actions CI (lint + test + build docker)
+Just scaffolding. No business logic yet.</span>
+
+<span class="cm"># Prompt 2: Auth</span>
+<span class="cmd">Implement auth: models (User, RefreshToken), routes (POST /auth/login, /refresh, /logout).
+JWT access 15min, refresh 7day rolling, httpOnly cookie for refresh.
+bcrypt for passwords. Rate limit login (5/min per IP).
+RBAC decorator: @require_role("admin"). Write tests.</span>
+
+<span class="cm"># Prompt 3: Users feature</span>
+<span class="cmd">Implement users feature (vertical slice):
+- Router: GET /users (paginated), POST, PATCH, POST /:id/deactivate
+- Service: user_service (hash password, check email unique, write audit log)
+- Repository: user_repo
+- Tests: unit (service), integration (router with real Postgres via testcontainers)
+Include: pagination, filtering (q=search, role=X), sorting</span>
+
+<span class="cm"># Prompt 4: Audit log</span>
+<span class="cmd">Implement audit log as a middleware + service:
+- AuditLog table: id, user_id, action, resource_type, resource_id, before_json, after_json, ip, ts
+- Service.log_mutation() called from all write services
+- GET /audit with filters (user, resource_type, date range, action)
+- Never log secret fields (passwords, tokens) — redact</span>
+
+<span class="cm"># Prompt 5: Bulk CSV import</span>
+<span class="cmd">Implement POST /users/import — multipart CSV upload:
+- Validate CSV structure (zod-like via pydantic)
+- Preview mode: return first 10 rows + validation errors, no write
+- Apply mode: queue Celery job, return job_id
+- GET /jobs/:id — status (queued/running/done/failed) + error log
+- Tests: valid CSV, invalid CSV, partial failures</span></div>
+</div>
+
+<div class="step p">
+<div class="snum">Phase 3 — Frontend Build Sequence</div>
+<h3>React + shadcn + Tanstack</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Prompt 1: Scaffold</span>
+<span class="cmd">Scaffold frontend/ with Vite + React 19 + TS + Tailwind + shadcn/ui.
+Set up: Tanstack Router, Tanstack Query (with devtools), auth context,
+axios interceptor for JWT + refresh, theme (light/dark/system).
+Just scaffolding + login page + protected route stub.</span>
+
+<span class="cm"># Prompt 2: Login + auth flow</span>
+<span class="cmd">Implement login page: email + password form (react-hook-form + zod),
+error states (wrong pw, rate limited, server down), loading states.
+On success: store access token in memory (NOT localStorage), refresh in httpOnly cookie.
+Silent refresh via axios interceptor on 401. Logout clears + redirects.
+Playwright E2E: login happy path + bad creds path.</span>
+
+<span class="cm"># Prompt 3: Data table primitive</span>
+<span class="cmd">Build the DataTable component (shared): Tanstack Table + shadcn styling.
+Features: server-side sort/filter/pagination, row selection, bulk actions dropdown,
+column visibility toggle, density toggle, CSV export.
+API: &lt;DataTable columns={} queryKey={} queryFn={} /&gt;
+It should handle all the plumbing. Test with Storybook + vitest.</span>
+
+<span class="cm"># Prompt 4: Users feature page</span>
+<span class="cmd">Build features/users/ — list page using DataTable,
+detail drawer (click row → slide-in with edit form),
+create dialog (button → modal form),
+row actions (deactivate with confirm, view audit log).
+Use Tanstack Query mutations with optimistic updates.
+Toasts for success/error.</span>
+
+<span class="cm"># Prompt 5: Dashboard</span>
+<span class="cmd">Build features/dashboard/ — KPI cards (users active/new, actions last 7d),
+Recharts line chart for activity over time, pie chart for role distribution,
+recent audit log table. Date range picker affects all. Skeleton on load.</span></div>
+</div>
+
+<div class="step o">
+<div class="snum">Phase 4 — C# Equivalent (ASP.NET Core)</div>
+<h3>Same blueprint, .NET stack</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># If your team prefers .NET, swap backend with:</span>
+
+Acme.Api/                       <span class="cm"># Minimal API endpoints per feature</span>
+├── Features/
+│   ├── Users/
+│   │   ├── Endpoints.cs        <span class="cm"># app.MapGroup("/users").MapGet(...)</span>
+│   │   ├── Commands/           <span class="cm"># MediatR: CreateUserCommand + Handler</span>
+│   │   ├── Queries/            <span class="cm"># GetUsersQuery + Handler</span>
+│   │   └── Validators/         <span class="cm"># FluentValidation</span>
+│   ├── Auth/
+│   └── AuditLog/
+└── Program.cs
+
+Acme.Domain/                    <span class="cm"># Entities, value objects</span>
+Acme.Infrastructure/            <span class="cm"># EF Core DbContext, repos, external</span>
+Acme.Contracts/                 <span class="cm"># DTOs shared with frontend (OpenAPI codegen)</span>
+
+<span class="cm"># Key mappings Python → C#:</span>
+<span class="cm">#   SQLModel         → EF Core + record types</span>
+<span class="cm">#   Pydantic         → records + FluentValidation</span>
+<span class="cm">#   FastAPI routes   → Minimal API endpoints</span>
+<span class="cm">#   services/        → MediatR handlers</span>
+<span class="cm">#   Depends()        → built-in DI container</span>
+<span class="cm">#   Celery           → BackgroundService + Channels</span>
+<span class="cm">#   pytest           → xUnit + FluentAssertions + Testcontainers</span>
+
+<span class="cm"># Prompt to Claude:</span>
+<span class="cmd">Translate my FastAPI backend to ASP.NET Core 9 minimal API with MediatR CQRS.
+Same vertical-slice layout. Preserve all endpoint contracts (same JSON shapes).
+Use EF Core with Npgsql. Tests with xUnit + Testcontainers for real Postgres.</span></div>
+</div>
+
+<div class="step r">
+<div class="snum">Phase 5 — Testing Strategy</div>
+<h3>Multi-layer testing</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Prompt:</span>
+<span class="cmd">Set up a layered test strategy:
+
+Backend tests:
+1. Unit (pytest) — services + repos with mocked DB
+2. Integration (pytest + testcontainers) — real Postgres, real HTTP via httpx
+3. Contract tests — verify API matches OpenAPI spec
+
+Frontend tests:
+1. Component (vitest + RTL) — each UI component in isolation
+2. Integration (vitest + MSW) — feature flows with mocked API
+3. E2E (Playwright) — critical paths only: login, create user, CSV import
+
+Coverage targets:
+- Backend: 85% services, 75% overall
+- Frontend: 70% components, 50% overall
+- E2E: critical paths (login, CRUD happy path, bulk ops)
+
+CI gates: all tests must pass + coverage must not drop.</span></div>
+</div>
+
+<div class="step">
+<div class="snum">Phase 6 — CI/CD with GitHub Actions</div>
+<h3>The deploy pipeline</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># .github/workflows/ci.yml</span>
+<span class="kw">name</span>: CI
+<span class="kw">on</span>: [pull_request, push]
+
+<span class="kw">jobs</span>:
+  backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env: { POSTGRES_PASSWORD: test }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv sync
+      - run: uv run ruff check &amp;&amp; ruff format --check
+      - run: uv run mypy app
+      - run: uv run pytest --cov=app --cov-fail-under=75
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - run: pnpm install
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test --coverage
+      - run: pnpm build
+
+  e2e:
+    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose up -d
+      - run: pnpm playwright install
+      - run: pnpm e2e
+
+  deploy:
+    needs: [e2e]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t registry/acme:${{ github.sha }} .
+      - run: docker push registry/acme:${{ github.sha }}
+      - name: Deploy via SSH
+        run: ssh $DEPLOY_HOST "cd /app &amp;&amp; docker pull $IMAGE &amp;&amp; docker compose up -d"</div>
+</div>
+
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 19: BEST PRACTICES              -->
+<!-- ═══════════════════════════════════════ -->
+<section id="best">
+<div class="sh"><div class="sn">19</div><div class="stw"><span class="stag" style="color:var(--accent4)">Wisdom</span><div class="stitle">Best Practices</div></div></div>
+
+<div class="steps">
+
+<div class="step">
+<div class="snum">BP 01 — Invest in CLAUDE.md Early</div>
+<h3>The #1 leverage point</h3>
+<p>Teams that spend 2-3 hours crafting a great CLAUDE.md (with real project conventions, explicit "never do" rules, and commands) report 3-5x better Claude Code output. Teams that skip it wrestle with hallucinated commands and wrong conventions forever.</p>
+<ul>
+<li>Start from <code>/init</code>, heavily customise</li>
+<li>Treat it like code — review, iterate, commit</li>
+<li>Break it up with <code>@imports</code> when it exceeds ~150 lines</li>
+<li>Include a "Never Do" section — Claude pays attention to negatives</li>
+</ul>
+</div>
+
+<div class="step b">
+<div class="snum">BP 02 — Always Plan Complex Tasks</div>
+<h3>Plan mode &gt; Jump-to-code</h3>
+<p>For anything more complex than a single-file change, force a plan first. <code>Shift+Tab × 2</code> or "Plan (don't code)" at the start of the prompt. The planning step catches 80% of misunderstandings before you've spent tokens on wrong code.</p>
+</div>
+
+<div class="step g">
+<div class="snum">BP 03 — One Concept Per Prompt</div>
+<h3>Don't overload the context</h3>
+<p>A prompt with "refactor X + add feature Y + fix bug Z + update docs" produces a mediocre version of everything. Split into 4 prompts. Each gets full attention. Chain them.</p>
+</div>
+
+<div class="step p">
+<div class="snum">BP 04 — Verify Claims</div>
+<h3>"It's done" is a hypothesis, not a fact</h3>
+<p>Every claim of completion must be verified by running something: tests, builds, curl, manual check. "Run the tests and show me output" should appear at the end of most tasks.</p>
+</div>
+
+<div class="step o">
+<div class="snum">BP 05 — Use Subagents for Research</div>
+<h3>Keep main context clean</h3>
+<p>Research tasks (explore codebase, look up library docs, analyse failure logs) should go to subagents. Their output comes back as a summary. Main session stays focused on the actual work.</p>
+</div>
+
+<div class="step r">
+<div class="snum">BP 06 — Commit Early, Commit Often</div>
+<h3>Small commits = easy rollback</h3>
+<p>When Claude goes off the rails, a 200-line commit is painful to untangle. 20-line commits take seconds. Ask Claude to commit after each logical step — "commit this refactor, then move to the next task."</p>
+</div>
+
+<div class="step">
+<div class="snum">BP 07 — Custom Skills Over Inline Prompts</div>
+<h3>Encode repeat workflows</h3>
+<p>If you've typed the same instructions twice, make a skill. Future-you will thank you. Skills keep your workflows reproducible and shareable across the team.</p>
+</div>
+
+<div class="step b">
+<div class="snum">BP 08 — Monitor Cost</div>
+<h3>Don't get surprised</h3>
+<p>Run <code>/cost</code> periodically. If a session is spending $5+ on routine tasks, something is wrong — usually too-large context or wrong model tier. Sonnet 4.6 is ~5x cheaper than Opus 4.7 for similar output quality on most code tasks.</p>
+</div>
+
+<div class="step g">
+<div class="snum">BP 09 — Pin Model for Critical Skills</div>
+<h3>Don't leave it to chance</h3>
+<p>Skills that do security review, production deploys, or architectural decisions should pin <code>model: claude-opus-4-7</code>. Skills that do quick code edits or refactors can use Sonnet. Right tool for the job.</p>
+</div>
+
+<div class="step p">
+<div class="snum">BP 10 — Keep Plans Persistent</div>
+<h3>Write plans to disk</h3>
+<p>Instead of holding plans in conversation memory, save them to <code>docs/plans/&lt;feature&gt;.md</code>. You can <code>/clear</code> the session and resume later by referencing the file. Plans survive session boundaries this way.</p>
+</div>
+
+<div class="step o">
+<div class="snum">BP 11 — Hooks for Repeatable Safety</div>
+<h3>Encode your safety rules</h3>
+<p>Don't rely on remembering "don't let Claude touch production DB". Write a <code>PreToolUse</code> hook that blocks any command matching your danger patterns. One hook, zero ongoing discipline required.</p>
+</div>
+
+<div class="step r">
+<div class="snum">BP 12 — Review Before Merging</div>
+<h3>Claude Code + human review</h3>
+<p>Claude-authored PRs still need human review. Period. Set up branch protection. Require approvals. Claude is fantastic at execution, but architecture decisions and product intent still need you.</p>
+</div>
+
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 20: DEV GUIDELINES              -->
+<!-- ═══════════════════════════════════════ -->
+<section id="dev">
+<div class="sh"><div class="sn">20</div><div class="stw"><span class="stag" style="color:var(--accent4)">For Contributors</span><div class="stitle">Developer Guidelines</div></div></div>
+
+<div class="steps">
+
+<div class="step">
+<div class="snum">Dev 01 — Extending Claude Code</div>
+<h3>Three ways to add functionality</h3>
+<ul>
+<li><strong>Skills</strong> — add a <code>SKILL.md</code> in <code>.claude/skills/</code>. Fastest, scoped to repo.</li>
+<li><strong>Plugins</strong> — bundle skills + agents + hooks + commands. Publish via marketplace.</li>
+<li><strong>MCP server</strong> — for external tool integration. Use the MCP SDK (TypeScript or Python).</li>
+</ul>
+</div>
+
+<div class="step b">
+<div class="snum">Dev 02 — Writing a Good Skill</div>
+<h3>Best practices for skill authors</h3>
+<ul>
+<li><strong>Specific description.</strong> Say EXACTLY when to invoke. Use trigger phrases: "Use when user says X, Y, or Z."</li>
+<li><strong>Explicit outcome format.</strong> Tell Claude the output shape you want.</li>
+<li><strong>Safety gates.</strong> For destructive ops: require confirmation, list what will change, allow abort.</li>
+<li><strong>Idempotent.</strong> Running it twice = same result as running once.</li>
+<li><strong>Error protocol.</strong> What to do when things fail — abort? retry? escalate?</li>
+<li><strong>Small surface.</strong> Use <code>allowed-tools</code> to limit what the skill can do.</li>
+</ul>
+</div>
+
+<div class="step g">
+<div class="snum">Dev 03 — Building an MCP Server</div>
+<h3>Starter template (TypeScript)</h3>
+<div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="kw">import</span> { Server } <span class="kw">from</span> <span class="str">"@modelcontextprotocol/sdk/server/index.js"</span>;
+<span class="kw">import</span> { StdioServerTransport } <span class="kw">from</span> <span class="str">"@modelcontextprotocol/sdk/server/stdio.js"</span>;
+
+<span class="kw">const</span> server = <span class="kw">new</span> Server({
+  name: <span class="str">"my-mcp-server"</span>,
+  version: <span class="str">"1.0.0"</span>
+});
+
+server.setRequestHandler(<span class="str">"tools/list"</span>, <span class="kw">async</span> () =&gt; ({
+  tools: [{
+    name: <span class="str">"search_products"</span>,
+    description: <span class="str">"Search product catalog by keyword"</span>,
+    inputSchema: {
+      type: <span class="str">"object"</span>,
+      properties: { query: { type: <span class="str">"string"</span> } },
+      required: [<span class="str">"query"</span>]
+    }
+  }]
+}));
+
+server.setRequestHandler(<span class="str">"tools/call"</span>, <span class="kw">async</span> (req) =&gt; {
+  <span class="kw">if</span> (req.params.name === <span class="str">"search_products"</span>) {
+    <span class="kw">const</span> results = <span class="kw">await</span> searchDB(req.params.arguments.query);
+    <span class="kw">return</span> { content: [{ type: <span class="str">"text"</span>, text: JSON.stringify(results) }] };
+  }
+});
+
+<span class="kw">await</span> server.connect(<span class="kw">new</span> StdioServerTransport());</div>
+</div>
+
+<div class="step p">
+<div class="snum">Dev 04 — Publishing a Plugin</div>
+<h3>The checklist</h3>
+<ul>
+<li>Create GitHub repo with <code>.claude-plugin/plugin.json</code> + <code>skills/</code></li>
+<li>Add thorough README with install instructions</li>
+<li>Add screenshots/GIFs showing the plugin in action</li>
+<li>Add example prompts that trigger each skill</li>
+<li>Version with git tags (<code>v1.0.0</code>)</li>
+<li>Submit to a marketplace (your own, or community ones like <code>claude-plugins-official</code>)</li>
+<li>Publish a blog post / tweet with use cases</li>
+<li>Monitor issues, respond within 48h initially</li>
+</ul>
+</div>
+
+<div class="step o">
+<div class="snum">Dev 05 — Contributing to Claude Code Ecosystem</div>
+<h3>Where the community lives</h3>
+<ul>
+<li><strong>Official docs:</strong> <a href="https://code.claude.com/docs" target="_blank" style="color:var(--accent2)">code.claude.com/docs</a></li>
+<li><strong>Platform docs:</strong> <a href="https://docs.claude.com" target="_blank" style="color:var(--accent2)">docs.claude.com</a></li>
+<li><strong>Claude Code repo:</strong> <a href="https://github.com/anthropics/claude-code" target="_blank" style="color:var(--accent2)">github.com/anthropics/claude-code</a></li>
+<li><strong>MCP servers:</strong> <a href="https://github.com/modelcontextprotocol" target="_blank" style="color:var(--accent2)">github.com/modelcontextprotocol</a></li>
+<li><strong>Essential plugins:</strong> superpowers (obra), everything-claude-code (affaan-m), plannotator (backnotprop)</li>
+<li><strong>Community:</strong> Discord, r/ClaudeAI subreddit, Hacker News discussion threads</li>
+</ul>
+</div>
+
+<div class="step r">
+<div class="snum">Dev 06 — The Feedback Loop</div>
+<h3>When Claude Code fails, help Anthropic fix it</h3>
+<p>Inside any Claude Code session, run <code>/bug</code> to report issues. It auto-includes session metadata (model, version, OS, context). Be specific: "Claude tried to run <code>rm -rf /</code> after prompt X" is much more useful than "it's broken."</p>
+</div>
+
+</div>
+</section>
+
+<footer>
+<p>Claude Code · <a href="https://code.claude.com/docs" target="_blank">code.claude.com/docs</a> · <a href="https://github.com/anthropics/claude-code" target="_blank">github.com/anthropics/claude-code</a></p>
+<p>Tutorial built with Claude · C:\1.Work\11.Claude_Extentions\Extentions Tutorials\ · 20 sections · 30+ prompts · 2 full blueprints</p>
+</footer>
+
+</main>
+
+<script>
+function cc(btn){
+  const block=btn.parentElement;
+  const text=[...block.childNodes]
+    .filter(n=&gt;n.nodeType===3||(n.nodeType===1&amp;&amp;n.tagName!=='BUTTON'))
+    .map(n=&gt;n.textContent)
+    .join('')
+    .trim();
+  navigator.clipboard.writeText(text).then(()=&gt;{
+    btn.textContent='COPIED!';
+    btn.style.background='var(--accent)';
+    btn.style.color='#fff';
+    setTimeout(()=&gt;{btn.textContent='COPY';btn.style.background='';btn.style.color=''},2000);
+  });
+}
+
+const sections=document.querySelectorAll('section[id],div.hero');
+const navLinks=document.querySelectorAll('nav a[href^="#"]');
+window.addEventListener('scroll',()=&gt;{
+  let current='';
+  sections.forEach(s=&gt;{if(window.scrollY&gt;=s.offsetTop-120)current=s.id||''});
+  navLinks.forEach(a=&gt;{
+    a.classList.toggle('active',a.getAttribute('href')==='#'+current);
+  });
+});
+</script>
+</body>
+</html>

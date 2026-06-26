@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Codex Coing 101 - App, VS Code, CLI, Automations, and Power Workflows</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f5f7;
+  --surface:#ffffff;
+  --surface2:#f0f1f5;
+  --border:#d8dae2;
+  --accent:#0ea5e9;
+  --accent2:#7c3aed;
+  --accent3:#d63050;
+  --accent4:#059669;
+  --accent5:#d97706;
+  --text:#1a1a2e;
+  --muted:#555577;
+  --code-bg:#1e1e2e;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'IBM Plex Sans','Segoe UI',sans-serif;
+  font-size:16px;
+  line-height:1.7;
+}
+a{color:var(--accent2);text-decoration:none}
+a:hover{text-decoration:underline}
+code,pre,kbd{font-family:'IBM Plex Mono',Consolas,monospace}
+nav{
+  position:fixed;
+  top:0;
+  left:0;
+  width:245px;
+  height:100vh;
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
+  z-index:100;
+  overflow-y:auto;
+}
+.nav-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:17px;
+  letter-spacing:2px;
+  color:var(--accent);
+  padding:24px 20px 20px;
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,rgba(14,165,233,.06),transparent);
+  line-height:1.2;
+}
+.nav-logo span{color:var(--accent2)}
+.nav-logo small{
+  display:block;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  letter-spacing:2px;
+  color:var(--muted);
+  margin-top:4px;
+  text-transform:uppercase;
+}
+nav a{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 20px;
+  color:var(--muted);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  letter-spacing:.5px;
+  border-left:3px solid transparent;
+  transition:all .18s;
+}
+nav a:hover,nav a.active{
+  color:var(--accent);
+  border-left-color:var(--accent);
+  background:rgba(14,165,233,.04);
+  text-decoration:none;
+}
+nav a.sec:hover,nav a.sec.active{
+  color:var(--accent4);
+  border-left-color:var(--accent4);
+  background:rgba(5,150,105,.04);
+}
+nav a.sec2:hover,nav a.sec2.active{
+  color:var(--accent2);
+  border-left-color:var(--accent2);
+  background:rgba(124,58,237,.04);
+}
+.ns{
+  font-size:9px;
+  letter-spacing:2.5px;
+  color:var(--accent3);
+  padding:16px 20px 5px;
+  font-family:'IBM Plex Mono',monospace;
+  text-transform:uppercase;
+  opacity:.8;
+}
+main{
+  margin-left:245px;
+  padding:0 72px 80px;
+  max-width:1080px;
+}
+.hero{
+  padding:64px 0;
+  border-bottom:1px solid var(--border);
+  margin-bottom:64px;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'CODEX';
+  position:absolute;
+  top:-8px;
+  right:-8px;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:168px;
+  color:rgba(14,165,233,.04);
+  pointer-events:none;
+  line-height:1;
+}
+.hero-tag{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  letter-spacing:3px;
+  color:var(--accent);
+  text-transform:uppercase;
+  margin-bottom:18px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.hero-tag::before{
+  content:'';
+  display:inline-block;
+  width:28px;
+  height:1px;
+  background:var(--accent);
+}
+.hero h1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:84px;
+  line-height:.9;
+  letter-spacing:2px;
+  margin-bottom:24px;
+}
+.hero h1 .l1{color:var(--text)}
+.hero h1 .l2{color:var(--accent)}
+.hero h1 .l3{color:var(--accent2)}
+.hero-desc{
+  font-size:16px;
+  color:var(--muted);
+  max-width:720px;
+  line-height:1.65;
+  margin-bottom:28px;
+}
+.stats{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.stat{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  padding:5px 14px;
+  border:1px solid;
+  font-weight:600;
+}
+.stat.blue{border-color:var(--accent);color:var(--accent);background:rgba(14,165,233,.07)}
+.stat.purple{border-color:var(--accent2);color:var(--accent2);background:rgba(124,58,237,.07)}
+.stat.green{border-color:var(--accent4);color:var(--accent4);background:rgba(5,150,105,.07)}
+.stat.amber{border-color:var(--accent5);color:var(--accent5);background:rgba(217,119,6,.07)}
+.stat.red{border-color:var(--accent3);color:var(--accent3);background:rgba(214,48,80,.07)}
+.pillar-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin:32px 0;
+}
+.pillar{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-top:3px solid;
+  padding:18px 16px;
+  transition:box-shadow .2s,transform .15s;
+}
+.pillar:hover{
+  box-shadow:0 4px 16px rgba(14,165,233,.10);
+  transform:translateY(-2px);
+}
+.pillar.p1{border-top-color:var(--accent)}
+.pillar.p2{border-top-color:var(--accent2)}
+.pillar.p3{border-top-color:var(--accent3)}
+.pillar.p4{border-top-color:var(--accent4)}
+.pillar .pico{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  color:var(--muted);
+  margin-bottom:8px;
+  letter-spacing:2px;
+}
+.pillar h4{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  font-weight:600;
+  color:var(--text);
+  margin-bottom:6px;
+}
+.pillar p{font-size:12px;color:var(--muted);line-height:1.55}
+section{margin-bottom:84px;scroll-margin-top:40px}
+.sh{
+  display:flex;
+  align-items:flex-end;
+  gap:18px;
+  margin-bottom:36px;
+  padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+}
+.sn{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:50px;
+  color:var(--border);
+  line-height:1;
+  letter-spacing:2px;
+}
+.stw{line-height:1}
+.stag{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  margin-bottom:5px;
+  display:block;
+}
+.stitle{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:42px;
+  letter-spacing:1px;
+  line-height:1;
+}
+.intro{
+  color:var(--muted);
+  margin-bottom:22px;
+  font-size:14px;
+}
+.atabs{
+  display:flex;
+  border:1px solid var(--border);
+  overflow:hidden;
+}
+.atab{
+  flex:1;
+  padding:11px 8px;
+  background:#eef0f8;
+  border:none;
+  border-right:1px solid var(--border);
+  color:var(--muted);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  cursor:pointer;
+  transition:all .18s;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+}
+.atab:last-child{border-right:none}
+.atab:hover{background:#e2e5f0;color:var(--text)}
+.atab.active{
+  background:var(--surface);
+  color:var(--accent);
+  border-bottom:2px solid var(--accent);
+  font-weight:600;
+}
+.apanel{
+  display:none;
+  border:1px solid var(--border);
+  border-top:none;
+  padding:26px;
+  background:var(--surface);
+  animation:fadeIn .2s ease;
+  box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+.apanel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.steps{display:flex;flex-direction:column;gap:14px}
+.step{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-left:3px solid var(--accent);
+  padding:20px 24px;
+  transition:box-shadow .2s;
+  box-shadow:0 1px 4px rgba(0,0,0,.04);
+}
+.step:hover{box-shadow:0 2px 12px rgba(14,165,233,.08)}
+.step.g{border-left-color:var(--accent4)}
+.step.p{border-left-color:var(--accent2)}
+.step.r{border-left-color:var(--accent3)}
+.step.o{border-left-color:var(--accent5)}
+.snum{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  letter-spacing:2px;
+  color:var(--accent);
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+.step h3{
+  font-weight:600;
+  font-size:15px;
+  margin-bottom:7px;
+  color:var(--text);
+}
+.step p{color:var(--muted);font-size:13px;margin-bottom:8px}
+.cb{
+  background:var(--code-bg);
+  border:1px solid #33334a;
+  padding:13px 46px 13px 16px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  color:#9ecfff;
+  position:relative;
+  overflow-x:auto;
+  margin-top:10px;
+  line-height:1.8;
+  white-space:pre-wrap;
+}
+.cb .cm{color:#5a5a7a}
+.cb .cmd{color:#ffd060}
+.cb .fl{color:#ff7090}
+.cb .str{color:#70e0a0}
+.cb .kw{color:#c792ea}
+.cpb{
+  position:absolute;
+  top:7px;
+  right:7px;
+  background:#2a2a3e;
+  border:1px solid #44445a;
+  color:#7777aa;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  padding:3px 8px;
+  cursor:pointer;
+  letter-spacing:1px;
+  transition:all .18s;
+  text-transform:uppercase;
+}
+.cpb:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.cl{
+  padding:14px 18px;
+  margin:14px 0;
+  border-left:3px solid;
+  font-size:13px;
+}
+.cl.tip{border-color:var(--accent);background:rgba(14,165,233,.05)}
+.cl.warn{border-color:var(--accent3);background:rgba(214,48,80,.05)}
+.cl.info{border-color:var(--accent2);background:rgba(124,58,237,.06)}
+.cl.go{border-color:var(--accent4);background:rgba(5,150,105,.05)}
+.cl strong{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  display:block;
+  margin-bottom:5px;
+}
+.cl.tip strong{color:var(--accent)}
+.cl.warn strong{color:var(--accent3)}
+.cl.info strong{color:var(--accent2)}
+.cl.go strong{color:var(--accent4)}
+.cl p{color:var(--muted)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.ccard{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-top:3px solid var(--accent);
+  padding:18px 20px;
+  box-shadow:0 1px 4px rgba(0,0,0,.04);
+}
+.ccard h4{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:17px;
+  letter-spacing:1px;
+  margin-bottom:12px;
+  color:var(--accent);
+}
+.ccard ul{list-style:none}
+.ccard ul li{
+  padding:4px 0;
+  border-bottom:1px solid var(--border);
+  font-size:12px;
+  display:flex;
+  gap:8px;
+  align-items:baseline;
+}
+.ccard ul li:last-child{border:none}
+.ccard ul li code{
+  font-family:'IBM Plex Mono',monospace;
+  color:var(--accent);
+  font-size:11px;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.ccard ul li span{color:var(--muted);font-size:11px}
+.ct{width:100%;border-collapse:collapse;font-size:13px}
+.ct th{
+  text-align:left;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  letter-spacing:2px;
+  color:var(--accent3);
+  padding:9px 12px;
+  border-bottom:1px solid var(--border);
+  text-transform:uppercase;
+}
+.ct td{
+  padding:10px 12px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.ct tr:hover td{background:rgba(14,165,233,.02)}
+.ct td:first-child{
+  font-family:'IBM Plex Mono',monospace;
+  color:var(--accent);
+  font-size:11px;
+  white-space:nowrap;
+}
+.ct td:last-child{color:var(--muted)}
+.cmd-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.ci{
+  background:#f4f6fb;
+  border:1px solid var(--border);
+  padding:10px 12px;
+}
+.ci .cl2{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  color:var(--accent);
+  margin-bottom:3px;
+  font-weight:600;
+}
+.ci .cd2{font-size:11px;color:var(--muted)}
+.links{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.linkbox{
+  background:var(--surface);
+  border:1px solid var(--border);
+  padding:16px 18px;
+  border-top:3px solid var(--accent2);
+}
+.linkbox h4{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  letter-spacing:1px;
+  margin-bottom:8px;
+  color:var(--accent2);
+  text-transform:uppercase;
+}
+.linkbox p{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+footer{
+  border-top:1px solid var(--border);
+  padding:32px 0;
+  margin-top:40px;
+  color:var(--muted);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  letter-spacing:1px;
+}
+footer p:last-child{color:#aaa;margin-top:6px}
+@media(max-width:980px){
+  nav{display:none}
+  main{margin-left:0;padding:24px 18px}
+  .g2,.g3,.pillar-grid,.cmd-grid,.links{grid-template-columns:1fr}
+  .hero h1{font-size:56px}
+  .atabs{flex-direction:column}
+  .atab{border-right:none;border-bottom:1px solid var(--border)}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">CODEX<br><span>COING 101</span><small>App, VS Code, CLI, Cloud</small></div>
+  <span class="ns">Core Sections</span>
+  <a href="#overview">Overview &amp; Positioning</a>
+  <a href="#install">01 - Installation</a>
+  <a href="#surfaces">02 - Surfaces</a>
+  <a href="#commands">03 - Commands</a>
+  <a href="#prompts">04 - Prompting</a>
+  <a href="#bootstrap">05 - Bootstrap Files</a>
+  <a href="#advanced">06 - Advanced Workflows</a>
+  <a href="#automations">07 - Automations</a>
+  <a href="#creative">08 - Images, Decks, Integrations</a>
+  <a href="#underhood">09 - Under the Hood</a>
+  <a href="#maintenance">10 - Maintenance</a>
+  <a href="#examples">11 - Repos &amp; Links</a>
+  <a href="#bestpractice">12 - Best Practices</a>
+  <span class="ns">Power Topics</span>
+  <a href="#plans-workflow" class="sec">PLANS Workflow</a>
+  <a href="#bootstrap-files" class="sec">AGENTS + Skills</a>
+  <a href="#power-commands" class="sec">Power Commands</a>
+  <a href="#hidden" class="sec">Useful "Easter Eggs"</a>
+  <a href="#automation-modes" class="sec">Automation Modes</a>
+  <a href="#creative-images" class="sec">Images &amp; PowerPoint</a>
+  <a href="#integration-options" class="sec">Office 365 + Jira</a>
+  <a href="#functions-model" class="sec">Tools / Functions Model</a>
+  <a href="#cleanup" class="sec">Cache &amp; History Cleanup</a>
+  <span class="ns">External Links</span>
+  <a href="https://developers.openai.com/codex/app" target="_blank" class="sec2">Codex App Docs</a>
+  <a href="https://developers.openai.com/codex/ide" target="_blank" class="sec2">VS Code / IDE Docs</a>
+  <a href="https://developers.openai.com/codex/cli" target="_blank" class="sec2">CLI Docs</a>
+  <a href="https://cookbook.openai.com/topic/codex" target="_blank" class="sec2">Codex Cookbook</a>
+  <a href="https://github.com/openai/gpt-5-coding-examples" target="_blank" class="sec2">Prompt Example Repo</a>
+</nav>
+
+<main>
+<div class="hero">
+  <div class="hero-tag">Verified against current OpenAI docs on April 18, 2026</div>
+  <h1><span class="l1">CODEX</span><br><span class="l2">COING</span><br><span class="l3">101</span></h1>
+  <p class="hero-desc">This is a polished operating guide for using Codex in the desktop app and in VS Code, written for beginners through senior AI developers. It covers practical setup, prompt blueprints, hidden productivity wins, advanced command usage, automations, how Codex behaves as a tool-calling coding agent, and a set of high-signal external repos and cookbooks for real-world examples.</p>
+  <div class="stats">
+    <span class="stat blue">App + VS Code + CLI</span>
+    <span class="stat purple">Cloud + GitHub + MCP</span>
+    <span class="stat green">Automations + Skills</span>
+    <span class="stat amber">Prompt Blueprints</span>
+    <span class="stat red">Maintenance + Safety</span>
+  </div>
+</div>
+
+<section id="overview">
+  <div class="sh"><div class="sn">00</div><div class="stw"><span class="stag" style="color:var(--accent)">Positioning</span><div class="stitle">Overview &amp; Positioning</div></div></div>
+  <p class="intro">Codex is not just a chat interface. In practice it behaves like a coding agent with repo context, a planning loop, tool access, diff generation, validation, and review steps. For senior AI developers, the useful mental model is: <strong>Codex = model + execution harness + tools + state + review workflow</strong>.</p>
+  <div class="pillar-grid">
+    <div class="pillar p1"><div class="pico">SURFACE</div><h4>Codex App</h4><p>Best full workflow shell: threads, worktrees, Git diff pane, commit/PR flow, automations, local terminal, and in-app project switching.</p></div>
+    <div class="pillar p2"><div class="pico">EDITOR</div><h4>VS Code Extension</h4><p>Best day-to-day development surface when you want file selections, command palette actions, recent editor context, and quick cloud handoff.</p></div>
+    <div class="pillar p3"><div class="pico">TERMINAL</div><h4>CLI</h4><p>Best keyboard-first interface with deep command control, profiles, MCP management, resume/fork flows, and automation-friendly execution modes.</p></div>
+    <div class="pillar p4"><div class="pico">SYSTEM</div><h4>Cloud + GitHub + Automations</h4><p>Best for parallel tasks, PR reviews, recurring jobs, and workflows that should continue beyond one local session.</p></div>
+  </div>
+  <div class="cl info"><strong>Best Mental Model</strong><p>Use the app when you want the strongest workflow shell. Use VS Code when you want the tightest coding loop. Use the CLI when you want total command-line control. Use Cloud and GitHub when you want Codex working in parallel with you rather than under your cursor.</p></div>
+</section>
+
+<section id="install">
+  <div class="sh"><div class="sn">01</div><div class="stw"><span class="stag" style="color:var(--accent)">Getting Started</span><div class="stitle">Installation</div></div></div>
+  <div class="steps">
+    <div class="step">
+      <div class="snum">CLI Install</div>
+      <h3>Install, launch, and upgrade Codex CLI</h3>
+      <p>These commands match the current official CLI docs.</p>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">npm i -g @openai/codex</span>
+<span class="cmd">codex</span>
+<span class="cmd">npm i -g @openai/codex@latest</span></div>
+    </div>
+    <div class="step g">
+      <div class="snum">OpenAI Docs MCP</div>
+      <h3>Add the official OpenAI developer docs as an MCP server</h3>
+      <p>Useful for current model, API, and Codex guidance inside your editor or CLI.</p>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">codex mcp add openaiDeveloperDocs --url https://developers.openai.com/mcp</span>
+<span class="cmd">codex mcp list</span></div>
+    </div>
+    <div class="step p">
+      <div class="snum">VS Code Setup</div>
+      <h3>Install the extension from the marketplace and sign in</h3>
+      <p>The current IDE docs say the extension works with Visual Studio Code and VS Code forks like Cursor and Windsurf. In VS Code it opens in the right sidebar by default after install, and it prompts you to sign in with ChatGPT or an API key.</p>
+      <div class="cl tip"><strong>Windows Note</strong><p>The IDE docs currently say Windows support is experimental. For the best Windows experience in the extension and CLI, use a WSL2 workspace.</p></div>
+    </div>
+    <div class="step o">
+      <div class="snum">Windows App</div>
+      <h3>Install the Codex app from the Microsoft Store or with winget</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">winget install Codex -s msstore</span></div>
+      <p>The Windows app can run natively with PowerShell and Windows sandboxing, or through WSL2.</p>
+    </div>
+  </div>
+  <div class="cl go"><strong>Fast Start Path</strong><p>Open one repo, start one thread, ask for a plan first, let Codex inspect before editing, run validation, then review the diff before you accept changes.</p></div>
+</section>
+
+<section id="surfaces">
+  <div class="sh"><div class="sn">02</div><div class="stw"><span class="stag" style="color:var(--accent2)">Workflow Surfaces</span><div class="stitle">Which Surface To Use</div></div></div>
+  <div class="atabs">
+    <button class="atab active" onclick="st('app',this)">App</button>
+    <button class="atab" onclick="st('vscode',this)">VS Code</button>
+    <button class="atab" onclick="st('cli',this)">CLI</button>
+    <button class="atab" onclick="st('cloud',this)">Cloud</button>
+    <button class="atab" onclick="st('github',this)">GitHub</button>
+  </div>
+  <div class="apanel active" id="panel-app">
+    <strong>Codex App - Best all-around product workflow</strong>
+    <p style="margin-top:8px;color:var(--muted)">Use the app when you want project switching, thread management, worktrees, built-in Git review, local terminal visibility, and automations from one place.</p>
+    <div class="cmd-grid">
+      <div class="ci"><div class="cl2">Strength</div><div class="cd2">Best overall workflow shell</div></div>
+      <div class="ci"><div class="cl2">Use for</div><div class="cd2">feature work, review, isolated worktrees, automations</div></div>
+      <div class="ci"><div class="cl2">Power move</div><div class="cd2">local vs worktree vs cloud per thread</div></div>
+      <div class="ci"><div class="cl2">Watch out</div><div class="cd2">do not over-permission a repo before you trust the flow</div></div>
+    </div>
+  </div>
+  <div class="apanel" id="panel-vscode">
+    <strong>VS Code Extension - Best coding loop</strong>
+    <p style="margin-top:8px;color:var(--muted)">Use it when you want to highlight code, add file context directly, stay in your editor, and still switch between local and cloud execution.</p>
+    <div class="cmd-grid">
+      <div class="ci"><div class="cl2">Strength</div><div class="cd2">tight editor-context iteration</div></div>
+      <div class="ci"><div class="cl2">Use for</div><div class="cd2">daily coding, targeted fixes, review of selected files</div></div>
+      <div class="ci"><div class="cl2">Power move</div><div class="cd2">add only selected text or file to thread context</div></div>
+      <div class="ci"><div class="cl2">Watch out</div><div class="cd2">long-lived chats get noisy fast if scope drifts</div></div>
+    </div>
+  </div>
+  <div class="apanel" id="panel-cli">
+    <strong>CLI - Best keyboard-first control</strong>
+    <p style="margin-top:8px;color:var(--muted)">Use the CLI when you want slash commands, exact profiles, MCP control, inline images, automation-friendly exec mode, and session forking or resuming.</p>
+    <div class="cmd-grid">
+      <div class="ci"><div class="cl2">Strength</div><div class="cd2">precise control + scriptability</div></div>
+      <div class="ci"><div class="cl2">Use for</div><div class="cd2">terminal-heavy repos, ops, batch-style prompting, MCP setup</div></div>
+      <div class="ci"><div class="cl2">Power move</div><div class="cd2">resume, fork, compact, debug-config, statusline</div></div>
+      <div class="ci"><div class="cl2">Watch out</div><div class="cd2">be explicit about directories and approvals</div></div>
+    </div>
+  </div>
+  <div class="apanel" id="panel-cloud">
+    <strong>Codex Cloud - Best for parallel or background work</strong>
+    <p style="margin-top:8px;color:var(--muted)">Use cloud when you want a task to keep running remotely, or when you want to compare alternate attempts without tying up your local environment.</p>
+    <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">codex cloud list</span>
+<span class="cmd">codex cloud status</span>
+<span class="cmd">codex cloud diff</span>
+<span class="cmd">codex cloud apply</span></div>
+  </div>
+  <div class="apanel" id="panel-github">
+    <strong>GitHub - Best for PR review and task delegation from comments</strong>
+    <p style="margin-top:8px;color:var(--muted)">The current GitHub integration docs support PR review comments like <code>@codex review</code> and other task prompts such as CI triage and cloud task handoff.</p>
+    <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">@codex review</span>
+<span class="cmd">@codex review for security regressions</span>
+<span class="cmd">@codex fix the CI failures</span></div>
+  </div>
+</section>
+
+<section id="commands">
+  <div class="sh"><div class="sn">03</div><div class="stw"><span class="stag" style="color:var(--accent4)">Operational Control</span><div class="stitle">Commands That Matter</div></div></div>
+  <div class="g2">
+    <div class="ccard">
+      <h4>App Slash Commands</h4>
+      <ul>
+        <li><code>/feedback</code><span>submit feedback and optionally attach logs</span></li>
+        <li><code>/mcp</code><span>open MCP status and connected servers</span></li>
+        <li><code>/plan-mode</code><span>toggle plan mode for complex tasks</span></li>
+        <li><code>/review</code><span>review uncommitted changes or compare to a base branch</span></li>
+        <li><code>/status</code><span>show thread id, context usage, and rate limits</span></li>
+      </ul>
+    </div>
+    <div class="ccard">
+      <h4>VS Code Slash Commands</h4>
+      <ul>
+        <li><code>/auto-context</code><span>toggle auto-inclusion of recent files and IDE context</span></li>
+        <li><code>/cloud</code><span>switch to cloud mode</span></li>
+        <li><code>/cloud-environment</code><span>pick the cloud environment</span></li>
+        <li><code>/local</code><span>switch back to local mode</span></li>
+        <li><code>/review</code><span>start review mode</span></li>
+        <li><code>/status</code><span>inspect thread and context state</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="g2" style="margin-top:14px">
+    <div class="ccard">
+      <h4>VS Code Command Palette</h4>
+      <ul>
+        <li><code>chatgpt.addToThread</code><span>add selected text range to current thread</span></li>
+        <li><code>chatgpt.addFileToThread</code><span>add the current file to thread context</span></li>
+        <li><code>chatgpt.newChat</code><span>create a new thread</span></li>
+        <li><code>chatgpt.implementTodo</code><span>ask Codex to address the selected TODO</span></li>
+        <li><code>chatgpt.newCodexPanel</code><span>open a new Codex panel</span></li>
+        <li><code>chatgpt.openSidebar</code><span>open the Codex sidebar panel</span></li>
+      </ul>
+    </div>
+    <div class="ccard" id="power-commands">
+      <h4>CLI Power Commands</h4>
+      <ul>
+        <li><code>/model</code><span>switch active model</span></li>
+        <li><code>/permissions</code><span>change approval behavior mid-session</span></li>
+        <li><code>/status</code><span>inspect model, policy, roots, and token usage</span></li>
+        <li><code>/review</code><span>review local diff</span></li>
+        <li><code>/compact</code><span>summarize older context to stay lean</span></li>
+        <li><code>/fork</code><span>branch a session while preserving transcript</span></li>
+        <li><code>/resume</code><span>continue earlier sessions</span></li>
+        <li><code>/plan</code><span>switch directly into planning mode</span></li>
+        <li><code>/copy</code><span>copy the latest response</span></li>
+        <li><code>/debug-config</code><span>inspect config precedence and policy sources</span></li>
+        <li><code>/statusline</code><span>customize footer status fields</span></li>
+        <li><code>/title</code><span>customize terminal title fields</span></li>
+        <li><code>/ps</code><span>inspect background terminals</span></li>
+        <li><code>/stop</code><span>stop background terminals</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="cl info" id="hidden"><strong>Useful "Easter Eggs"</strong><p>These are not undocumented hacks. They are simply easy-to-miss power features: <code>Cmd+K</code> opens the Codex app command palette, <code>Ctrl+L</code> clears the integrated terminal, <code>/statusline</code> customizes footer telemetry, <code>/title</code> customizes your terminal title, and on native Windows CLI <code>/sandbox-add-read-dir C:\path</code> grants sandbox read access to an extra absolute directory.</p></div>
+  <table class="ct" style="margin-top:18px">
+    <thead>
+      <tr><th>Command</th><th>Where</th><th>Why it matters</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>codex review</code></td><td>CLI</td><td>Run a code review non-interactively when you want a review pipeline or a shell-based second pass.</td></tr>
+      <tr><td><code>codex resume --last</code></td><td>CLI</td><td>Jump back into the most recent session fast.</td></tr>
+      <tr><td><code>codex fork --last</code></td><td>CLI</td><td>Create a new attempt from the latest session without destroying the original line of reasoning.</td></tr>
+      <tr><td><code>codex completion powershell</code></td><td>CLI</td><td>Generate PowerShell shell completions for faster local command use.</td></tr>
+      <tr><td><code>codex features list</code></td><td>CLI</td><td>Inspect current feature flags and stages.</td></tr>
+      <tr><td><code>codex login status</code></td><td>CLI</td><td>Check auth status when a surface behaves unexpectedly.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="prompts">
+  <div class="sh"><div class="sn">04</div><div class="stw"><span class="stag" style="color:var(--accent3)">Prompting</span><div class="stitle">Prompt Blueprints</div></div></div>
+  <div class="cl tip"><strong>Senior AI Developer Rule</strong><p>The Codex prompting guidance and GPT-5-Codex cookbook both reinforce a useful principle: less is often more. Codex already knows how to code, inspect, plan, and validate. The main prompt job is to specify the task boundary, constraints, validation, and what good looks like.</p></div>
+  <div class="steps">
+    <div class="step">
+      <div class="snum">Blueprint 01</div>
+      <h3>Debug a bug</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>Debug this bug in <span class="fl">&lt;repo&gt;</span>.
+Symptom: <span class="fl">&lt;what fails&gt;</span>
+Expected: <span class="fl">&lt;expected behavior&gt;</span>
+Actual: <span class="fl">&lt;actual behavior&gt;</span>
+Relevant files: <span class="fl">&lt;paths&gt;</span>
+Validation: <span class="fl">&lt;test or repro command&gt;</span>
+Inspect first, explain the root cause, patch minimally, then verify.</div>
+    </div>
+    <div class="step g">
+      <div class="snum">Blueprint 02</div>
+      <h3>Review a diff or PR</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>Review these changes for:
+- real bugs
+- regressions
+- risky assumptions
+- security or data-loss issues
+- missing tests
+
+Prioritize correctness over style. Findings first, ordered by severity.</div>
+    </div>
+    <div class="step p">
+      <div class="snum">Blueprint 03</div>
+      <h3>Understand a codebase</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>Read <span class="fl">&lt;repo&gt;</span> and produce a concise onboarding brief:
+- what the system does
+- main modules and entry points
+- how to run / test / lint it
+- where <span class="fl">&lt;feature&gt;</span> lives
+- the first 5 files a new engineer should read</div>
+    </div>
+    <div class="step o">
+      <div class="snum">Blueprint 04</div>
+      <h3>Build a new application</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>I want to build a new <span class="fl">&lt;app type&gt;</span> in <span class="fl">&lt;stack&gt;</span>.
+Audience: <span class="fl">&lt;users&gt;</span>
+Must-have features: <span class="fl">&lt;list&gt;</span>
+Non-goals: <span class="fl">&lt;list&gt;</span>
+Constraints: <span class="fl">&lt;hosting, auth, budget, team, compliance&gt;</span>
+
+First propose a realistic v1, then scaffold the smallest working version.</div>
+    </div>
+    <div class="step">
+      <div class="snum">Blueprint 05</div>
+      <h3>UI / UX iteration</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>Use this screenshot or design reference to improve <span class="fl">&lt;screen&gt;</span>.
+Goals: <span class="fl">&lt;visual goals&gt;</span>
+Constraints:
+- responsive desktop + mobile
+- preserve accessibility
+- stay aligned with the existing design system
+- change only the relevant files
+
+Inspect first, then implement.</div>
+    </div>
+  </div>
+</section>
+
+<section id="bootstrap">
+  <div class="sh"><div class="sn">05</div><div class="stw"><span class="stag" style="color:var(--accent)">Bootstrap</span><div class="stitle">AGENTS.md, SKILL.md, PLANS.md, and Build/Test Blueprints</div></div></div>
+  <p class="intro">This is the missing operating layer most teams need. If you want Codex to behave consistently, you need repo guidance, reusable workflows, and a planning convention for larger work. The official best-practices docs emphasize <code>AGENTS.md</code>, the skills docs emphasize <code>SKILL.md</code>, and the cookbook shows how <code>PLANS.md</code> can drive long-running implementation work.</p>
+  <div class="g2" id="bootstrap-files">
+    <div class="ccard">
+      <h4>What AGENTS.md Should Contain</h4>
+      <ul>
+        <li><code>repo layout</code><span>important directories and entry points</span></li>
+        <li><code>run commands</code><span>dev server, scripts, env expectations</span></li>
+        <li><code>build / test / lint</code><span>exact commands Codex should run</span></li>
+        <li><code>review expectations</code><span>PR standards and done criteria</span></li>
+        <li><code>constraints</code><span>do-not rules and safety boundaries</span></li>
+      </ul>
+    </div>
+    <div class="ccard">
+      <h4>What a Skill Should Do</h4>
+      <ul>
+        <li><code>trigger narrowly</code><span>be explicit about when it should and should not trigger</span></li>
+        <li><code>stay reusable</code><span>encode repeatable workflows, not one-off context</span></li>
+        <li><code>use progressive disclosure</code><span>keep the metadata short; load detail only when needed</span></li>
+        <li><code>include scripts only when needed</code><span>use code if it improves reliability</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="steps" style="margin-top:14px">
+    <div class="step" id="plans-workflow">
+      <div class="snum">Plan Workflow</div>
+      <h3>Use AGENTS.md + PLANS.md for larger multi-step work</h3>
+      <p>The Codex cookbook’s <code>PLANS.md</code> pattern is explicitly designed for multi-hour problem solving. It recommends teaching Codex, through <code>AGENTS.md</code>, when to use a planning document, then keeping the plan as a living design-and-implementation artifact.</p>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Example AGENTS.md convention</span>
+# ExecPlans
+
+When writing complex features or significant refactors, use an ExecPlan
+(as described in .agent/PLANS.md) from design to implementation.</div>
+      <div class="cl tip"><strong>Why This Matters</strong><p>The cookbook shows this pattern supporting very long Codex runs. The win is not just planning quality. It is restartability: the plan becomes a self-contained artifact that both humans and agents can resume from.</p></div>
+    </div>
+    <div class="step g">
+      <div class="snum">Bootstrap Command</div>
+      <h3>Start with <code>/init</code> for repo guidance</h3>
+      <p>The best-practices docs explicitly call out <code>/init</code> as the quick-start command to scaffold a starter <code>AGENTS.md</code> in the current directory.</p>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">/init</span></div>
+    </div>
+    <div class="step p">
+      <div class="snum">AGENTS.md Starter</div>
+      <h3>Minimal high-signal AGENTS.md blueprint</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button># Repository Guide for Codex
+
+## Repo Layout
+- app: main application code
+- tests: automated tests
+- scripts: helper scripts
+
+## Run Commands
+- dev: <command>
+- build: <command>
+- test: <command>
+- lint: <command>
+
+## Rules
+- inspect before editing
+- change only relevant files
+- run the most relevant validation after changes
+- review diffs before stopping
+
+## Done Means
+- requested behavior implemented
+- relevant tests updated or explained
+- build / lint / type checks addressed as needed
+- summary of changes and verification provided</div>
+    </div>
+    <div class="step o">
+      <div class="snum">SKILL.md Starter</div>
+      <h3>Minimal skill blueprint</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>---
+name: skill-name
+description: Explain exactly when this skill should and should not trigger.
+---
+
+# Overview
+Use this skill when the task is <span class="fl">&lt;repeatable workflow&gt;</span>.
+
+## Workflow
+1. Inspect the current state
+2. Gather the minimum required context
+3. Perform the workflow
+4. Validate the output
+5. Summarize what changed and any risks</div>
+    </div>
+    <div class="step">
+      <div class="snum">Build / Test / Review Blueprint</div>
+      <h3>Prompt Codex to run a disciplined implementation loop</h3>
+      <p>The best-practices docs explicitly call out writing or updating tests, running the right test suites, checking lint/format/type checks, confirming behavior, and reviewing the diff.</p>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>Implement <span class="fl">&lt;feature or fix&gt;</span>.
+
+Before editing:
+- inspect the current implementation
+- propose a short plan
+
+After editing:
+- update or add tests if appropriate
+- run <span class="fl">&lt;build command&gt;</span>
+- run <span class="fl">&lt;test command&gt;</span>
+- run <span class="fl">&lt;lint / typecheck command&gt;</span> if relevant
+- review the diff for regressions before stopping
+
+Summarize:
+- what changed
+- how it was verified
+- what remains unverified</div>
+    </div>
+  </div>
+</section>
+
+<section id="advanced">
+  <div class="sh"><div class="sn">06</div><div class="stw"><span class="stag" style="color:var(--accent3)">Senior Level</span><div class="stitle">Advanced Workflows</div></div></div>
+  <div class="steps">
+    <div class="step">
+      <div class="snum">Workflow 01</div>
+      <h3>Prompt -&gt; AGENTS.md -&gt; Skill -&gt; Plugin -&gt; Automation</h3>
+      <p>Promote stable knowledge upward. Do not keep paying token tax for reusable instructions.</p>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cm"># Fast start for repo guidance</span>
+<span class="cmd">/init</span>
+
+<span class="cm"># Then refine AGENTS.md with:</span>
+<span class="cm"># - repo layout</span>
+<span class="cm"># - run / test / lint commands</span>
+<span class="cm"># - PR expectations</span>
+<span class="cm"># - constraints and done criteria</span></div>
+    </div>
+    <div class="step g">
+      <div class="snum">Workflow 02</div>
+      <h3>Use cloud for comparison runs</h3>
+      <p>A strong expert pattern is to keep local work moving while one or more remote tasks explore alternate implementations.</p>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">codex cloud list</span>
+<span class="cmd">codex cloud status</span>
+<span class="cmd">codex cloud diff</span>
+<span class="cmd">codex cloud apply</span></div>
+    </div>
+    <div class="step p">
+      <div class="snum">Workflow 03</div>
+      <h3>Use PLANS.md for multi-hour tasks</h3>
+      <p>The Codex cookbook includes an explicit pattern for long-running work using <code>PLANS.md</code>. Use this for migrations, deep refactors, or broader system changes where you want implementation to follow a reviewed design document.</p>
+    </div>
+    <div class="step r">
+      <div class="snum">Workflow 04</div>
+      <h3>Review-first engineering</h3>
+      <p>Codex is at its best when the loop includes tests and review, not just generation. For senior teams, this means treating it as part of your software delivery process rather than a one-shot assistant.</p>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>Implement <span class="fl">&lt;feature&gt;</span>.
+After coding:
+- add or update tests if needed
+- run the most relevant checks
+- summarize the behavior change
+- review the diff for regressions before stopping</div>
+    </div>
+    <div class="step o">
+      <div class="snum">Workflow 05</div>
+      <h3>Use screenshots and multimodal input intentionally</h3>
+      <p>The official use cases and frontend guidance consistently show that UI work gets better when you attach screenshots, visual references, or design inputs instead of describing layouts in prose.</p>
+    </div>
+  </div>
+</section>
+
+<section id="automations">
+  <div class="sh"><div class="sn">07</div><div class="stw"><span class="stag" style="color:var(--accent5)">Recurring Work</span><div class="stitle">Automations</div></div></div>
+  <p class="intro">The current app docs define automations as recurring background Codex tasks. Results go to the app inbox / Triage when there is something to report, or the task can auto-archive when there is nothing notable.</p>
+  <div class="g2" id="automation-modes">
+    <div class="ccard">
+      <h4>Standalone / Project Automations</h4>
+      <ul>
+        <li><code>Fresh run each time</code><span>best when every scheduled run should be independent</span></li>
+        <li><code>Multiple projects</code><span>can run across one or more projects</span></li>
+        <li><code>Triage output</code><span>findings show up as separate automation runs</span></li>
+        <li><code>Worktree option</code><span>ideal for isolation in Git repositories</span></li>
+      </ul>
+    </div>
+    <div class="ccard">
+      <h4>Thread Automations</h4>
+      <ul>
+        <li><code>Heartbeat style</code><span>wake up the same thread on a schedule</span></li>
+        <li><code>Same context</code><span>best when continuity matters</span></li>
+        <li><code>Minute / daily / weekly</code><span>supports active follow-up loops and check-ins</span></li>
+        <li><code>Good for</code><span>polling GitHub, Slack, long-running checks, ongoing triage</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="steps" style="margin-top:14px">
+    <div class="step">
+      <div class="snum">How They Work</div>
+      <h3>Automation execution model</h3>
+      <p>The current app docs say automations run in the background, use your default sandbox settings, can use the same plugins and skills available to Codex, and in Git repos can run either in your local project or in a dedicated background worktree.</p>
+    </div>
+    <div class="step g">
+      <div class="snum">Why Skills Matter</div>
+      <h3>Skills define the method; automations define the schedule</h3>
+      <p>The docs explicitly recommend using skills to keep automations maintainable and shareable. You can trigger a skill from an automation with <code>$skill-name</code>.</p>
+    </div>
+    <div class="step p">
+      <div class="snum">Test First</div>
+      <h3>Manual thread first, schedule second</h3>
+      <p>The docs explicitly recommend testing the prompt manually in a normal thread before scheduling it. This is the right pattern: prove that the task is reliable manually, then automate it.</p>
+    </div>
+    <div class="step r">
+      <div class="snum">Security Model</div>
+      <h3>Automations run unattended</h3>
+      <p>That makes sandbox and approval choices more important. Read-only blocks many useful operations. Full access raises risk. Workspace write plus targeted rules is usually the right middle ground.</p>
+    </div>
+  </div>
+  <div class="cl info"><strong>Promotion Message For Senior Teams</strong><p>Automations are how Codex stops being just an interactive agent and starts behaving like programmable engineering labor. The stable pattern is: human-designed prompt + durable repo guidance + optional skill + scheduled execution + inbox review.</p></div>
+</section>
+
+<section id="creative">
+  <div class="sh"><div class="sn">08</div><div class="stw"><span class="stag" style="color:var(--accent2)">Creative + Business Work</span><div class="stitle">Images, PowerPoint, and Integration Options</div></div></div>
+  <div class="g2" id="creative-images">
+    <div class="ccard">
+      <h4>How To Draw / Generate Images</h4>
+      <p style="color:var(--muted);font-size:12px">For product work inside Codex, the main pattern is multimodal: attach screenshots or visual references for UI tasks. For actual image output, OpenAI’s image generation docs recommend the image generation tool in the Responses API or the Image API with GPT Image models.</p>
+      <ul>
+        <li><code>attach screenshots</code><span>best for UI fixes and redesigns</span></li>
+        <li><code>image_generation tool</code><span>best for creating or editing raster images in API workflows</span></li>
+        <li><code>gpt-image-1.5</code><span>OpenAI’s current top image generation model in the docs</span></li>
+      </ul>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>Use this screenshot to redesign <span class="fl">&lt;screen&gt;</span>.
+Keep the layout responsive and accessible.
+If an image asset is needed, generate a new image that matches the product style and explain where it should be used.</div>
+    </div>
+    <div class="ccard">
+      <h4>How To Build PowerPoint / Slide Decks</h4>
+      <p style="color:var(--muted);font-size:12px">The official Codex use cases explicitly include generating slide decks. In the local plugin cache on this machine, the SharePoint plugin exposes a <code>sharepoint-powerpoint</code> skill specifically for creating, editing, restyling, and reviewing PowerPoint <code>.pptx</code> files while preserving deck style.</p>
+      <ul>
+        <li><code>generate slide decks</code><span>official Codex use case</span></li>
+        <li><code>sharepoint-powerpoint</code><span>style-preserving PowerPoint workflow from SharePoint</span></li>
+        <li><code>rendered visual QA</code><span>recommended when slide fidelity matters</span></li>
+      </ul>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>Open the SharePoint PowerPoint workflow and update the deck:
+- preserve the existing design language
+- add a new summary slide
+- keep formatting and theme consistent
+- render and visually QA the changed slides before upload</div>
+    </div>
+  </div>
+  <div class="steps" style="margin-top:14px" id="integration-options">
+    <div class="step">
+      <div class="snum">Microsoft 365 / Office 365</div>
+      <h3>Available plugin-backed options in this Codex install</h3>
+      <p>The local plugin marketplace cache on this machine includes <code>teams</code>, <code>outlook-email</code>, <code>outlook-calendar</code>, and <code>sharepoint</code>. That gives you practical Microsoft workflow coverage for chat summarization, inbox triage, calendar context, SharePoint documents, spreadsheets, and PowerPoint decks.</p>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>Examples:
+- Summarize the last 24 hours of Teams channel discussion and draft a follow-up.
+- Triage my Outlook inbox and draft replies for the urgent threads.
+- Summarize this SharePoint site and identify owners, status, and next actions.
+- Update the PowerPoint deck in SharePoint and preserve the theme.</div>
+    </div>
+    <div class="step g">
+      <div class="snum">Teams + Planner</div>
+      <h3>Teams can also drive Planner task workflows</h3>
+      <p>The local Teams plugin skills include channel summarization, notification triage, reply drafting, and Planner task management. That makes it a good surface for turning meeting or channel follow-ups into trackable work.</p>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>Summarize the launch channel in Teams for this week, extract the action items, and turn confirmed follow-ups into Planner tasks in the launch board.</div>
+    </div>
+    <div class="step p">
+      <div class="snum">Jira + Confluence</div>
+      <h3>Use Atlassian Rovo for Jira and Confluence</h3>
+      <p>The local plugin metadata identifies <code>atlassian-rovo</code> as “Manage Jira and Confluence fast.” Its bundled skills include converting specs to backlogs and triaging issues, which is exactly the kind of high-value PM + engineering bridge workflow many teams need.</p>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>Create Jira tasks from this Confluence spec in project <span class="fl">&lt;KEY&gt;</span>.
+Break the spec into an Epic plus implementation tickets, present the planned breakdown first, then create the backlog.</div>
+    </div>
+    <div class="step r">
+      <div class="snum">GitHub</div>
+      <h3>Use the GitHub plugin for PRs, issues, CI, and publish flows</h3>
+      <p>The local GitHub plugin metadata describes it as a hybrid GitHub connector and CLI workflow for repositories, pull requests, issues, CI, and publishing changes. Its local skills include addressing review comments and fixing CI.</p>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>Inspect the open PR, triage the failing checks, summarize the root cause, and prepare a focused fix plan before making any changes.</div>
+    </div>
+    <div class="step o">
+      <div class="snum">Slack, Linear, and Other Product Tools</div>
+      <h3>Use plugins when the workflow lives outside the repo</h3>
+      <p>The official Codex docs already expose Slack and Linear as integrations, and the local plugin marketplace cache here also includes <code>slack</code>, <code>linear</code>, <code>notion</code>, <code>figma</code>, and many others. The correct pattern is to install the plugin, start a new thread, then describe the outcome you want.</p>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button>Examples:
+- Summarize unread Slack threads from today and extract engineering action items.
+- Pull the latest launch notes from Google Drive.
+- Review the latest Linear issues tagged payment and propose a triage summary.
+- Turn a Figma selection into responsive production-ready UI code.</div>
+    </div>
+  </div>
+</section>
+
+<section id="underhood">
+  <div class="sh"><div class="sn">09</div><div class="stw"><span class="stag" style="color:var(--accent2)">Architecture</span><div class="stitle">How Codex Works Under The Hood</div></div></div>
+  <div class="g2" id="functions-model">
+    <div class="ccard">
+      <h4>Think "tool-calling agent"</h4>
+      <p style="color:var(--muted);font-size:12px">For senior AI developers, the right model is close to function calling or tool orchestration rather than plain chat. Codex receives a task, maintains thread state, decides when to inspect code, when to use shell or review tools, when to read docs through MCP, and when to return a diff or review output.</p>
+    </div>
+    <div class="ccard">
+      <h4>Typical execution path</h4>
+      <ul>
+        <li><code>Prompt</code><span>task, constraints, validation target</span></li>
+        <li><code>Plan</code><span>Codex decides a work strategy</span></li>
+        <li><code>Tools</code><span>shell, Git, MCP, web/docs, images, skills</span></li>
+        <li><code>Patch / diff</code><span>implement or review output</span></li>
+        <li><code>Validation</code><span>tests, lint, direct repro</span></li>
+        <li><code>Review</code><span>final inspection before acceptance</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="steps" style="margin-top:14px">
+    <div class="step">
+      <div class="snum">Component 01</div>
+      <h3><code>AGENTS.md</code> supplies durable repository behavior</h3>
+      <p>The best-practices docs explicitly position <code>AGENTS.md</code> as the default place for repo-specific agent rules such as how to build, test, lint, review, and define done.</p>
+    </div>
+    <div class="step g">
+      <div class="snum">Component 02</div>
+      <h3>Skills supply reusable workflows with progressive disclosure</h3>
+      <p>The skills docs explain that Codex loads skill metadata first and only loads the full <code>SKILL.md</code> when it decides the skill is relevant. That is a context-efficiency pattern, not just a packaging detail.</p>
+    </div>
+    <div class="step p">
+      <div class="snum">Component 03</div>
+      <h3>MCP connects Codex to external tools and live systems</h3>
+      <p>MCP is the tool / connector layer. Use it when the needed context is outside the repo or changes frequently.</p>
+    </div>
+    <div class="step o">
+      <div class="snum">Component 04</div>
+      <h3>Cloud, GitHub, and automations extend the same agent pattern</h3>
+      <p>Cloud offloads runs, GitHub triggers tasks from comments or PRs, and automations schedule the work. These are not separate products conceptually; they are alternate execution surfaces for the same tool-using Codex workflow.</p>
+    </div>
+  </div>
+</section>
+
+<section id="maintenance">
+  <div class="sh"><div class="sn">10</div><div class="stw"><span class="stag" style="color:var(--accent)">Maintenance</span><div class="stitle">Cache, History, Auth, and Cleanup</div></div></div>
+  <div class="cl warn"><strong>Important</strong><p>The commands below are operational maintenance commands. Some are official CLI commands. The cleanup examples are manual filesystem operations based on the local Codex home layout on this machine. Use them intentionally and back up first if you care about preserving local history.</p></div>
+  <div class="g2">
+    <div class="ccard">
+      <h4>Official Maintenance Commands</h4>
+      <ul>
+        <li><code>codex login status</code><span>check whether auth is valid</span></li>
+        <li><code>codex logout</code><span>remove stored credentials</span></li>
+        <li><code>codex login</code><span>sign in again</span></li>
+        <li><code>codex features list</code><span>inspect effective feature flags</span></li>
+        <li><code>codex completion powershell</code><span>generate shell completions</span></li>
+        <li><code>codex resume --last</code><span>re-open your latest session</span></li>
+        <li><code>codex fork --last</code><span>create an alternate branch of the last session</span></li>
+      </ul>
+    </div>
+    <div class="ccard" id="cleanup">
+      <h4>Manual Local Housekeeping</h4>
+      <ul>
+        <li><code>%USERPROFILE%\.codex\cache</code><span>cache files</span></li>
+        <li><code>%USERPROFILE%\.codex\sessions</code><span>session history by year</span></li>
+        <li><code>%USERPROFILE%\.codex\archived_sessions</code><span>archived session logs</span></li>
+        <li><code>%USERPROFILE%\.codex\logs_2.sqlite</code><span>local logs database</span></li>
+        <li><code>%USERPROFILE%\.codex\auth.json</code><span>stored authentication metadata</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="steps" style="margin-top:14px">
+    <div class="step">
+      <div class="snum">Inspect First</div>
+      <h3>Inspect local Codex state</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">Get-ChildItem -Force "$env:USERPROFILE\.codex"</span></div>
+    </div>
+    <div class="step g">
+      <div class="snum">Clear Cache</div>
+      <h3>Remove cached files only</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">Remove-Item -Recurse -Force "$env:USERPROFILE\.codex\cache\*"</span></div>
+      <p>This is the lowest-risk cleanup step if Codex metadata feels stale.</p>
+    </div>
+    <div class="step p">
+      <div class="snum">Inspect Session History</div>
+      <h3>Review sessions before deleting anything</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">Get-ChildItem -Recurse "$env:USERPROFILE\.codex\sessions" | Sort-Object LastWriteTime -Descending | Select-Object -First 20 FullName,LastWriteTime</span></div>
+    </div>
+    <div class="step r">
+      <div class="snum">Clear Archived Sessions</div>
+      <h3>Delete archived history only</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">Remove-Item -Recurse -Force "$env:USERPROFILE\.codex\archived_sessions\*"</span></div>
+      <p>This is safer than deleting active session history under <code>sessions</code>.</p>
+    </div>
+    <div class="step o">
+      <div class="snum">Auth Reset</div>
+      <h3>Reset authentication cleanly</h3>
+      <div class="cb"><button class="cpb" onclick="cc(this)">COPY</button><span class="cmd">codex logout</span>
+<span class="cmd">codex login</span>
+<span class="cmd">codex login status</span></div>
+    </div>
+  </div>
+  <div class="cl info"><strong>History Reality Check</strong><p>Current product docs do not expose a first-class “clear all history” command. In practice, the right controls are: start a new thread, use <code>/compact</code>, use <code>/fork</code> for alternate branches, use <code>/resume</code> for continuity, and only do manual cleanup when you intentionally want to remove local stored state.</p></div>
+</section>
+
+<section id="examples">
+  <div class="sh"><div class="sn">11</div><div class="stw"><span class="stag" style="color:var(--accent2)">External References</span><div class="stitle">Prompt Repos, Cookbooks, and Example Links</div></div></div>
+  <p class="intro">If this document is meant to help promote Codex internally or externally to senior AI developers, include living examples. The links below are the highest-signal ones I found for prompt examples, durable patterns, and real generated outputs.</p>
+  <div class="links">
+    <div class="linkbox">
+      <h4>OpenAI GPT-5 Coding Examples</h4>
+      <p>A curated repository of apps generated from single prompts. Good for showing what “prompt to runnable artifact” looks like in practice.</p>
+      <a href="https://github.com/openai/gpt-5-coding-examples" target="_blank">https://github.com/openai/gpt-5-coding-examples</a>
+    </div>
+    <div class="linkbox">
+      <h4>Codex Cookbook Topic</h4>
+      <p>Central landing page for Codex cookbooks such as the Codex Prompting Guide, PLANS.md workflow, CI failure autofix, and code review patterns.</p>
+      <a href="https://cookbook.openai.com/topic/codex" target="_blank">https://cookbook.openai.com/topic/codex</a>
+    </div>
+    <div class="linkbox">
+      <h4>GPT-5-Codex Prompting Guide</h4>
+      <p>Strong source for the “less is more” guidance that senior prompt engineers will care about.</p>
+      <a href="https://cookbook.openai.com/examples/gpt-5-codex_prompting_guide" target="_blank">https://cookbook.openai.com/examples/gpt-5-codex_prompting_guide</a>
+    </div>
+    <div class="linkbox">
+      <h4>PLANS.md for Multi-Hour Problem Solving</h4>
+      <p>Useful for teams that want reviewed implementation plans before long-running agent work starts.</p>
+      <a href="https://cookbook.openai.com/articles/codex_exec_plans" target="_blank">https://cookbook.openai.com/articles/codex_exec_plans</a>
+    </div>
+    <div class="linkbox">
+      <h4>OpenAI Codex Repository</h4>
+      <p>Useful for engineers who want to inspect the open-source CLI project and see examples of real <code>AGENTS.md</code> usage in the repo itself.</p>
+      <a href="https://github.com/openai/codex" target="_blank">https://github.com/openai/codex</a>
+    </div>
+    <div class="linkbox">
+      <h4>Codex Prompt Refinery</h4>
+      <p>Community project focused on mining Codex histories into reusable prompt clusters. Useful if your team wants to operationalize prompt reuse.</p>
+      <a href="https://github.com/BjornMelin/codex-prompt-refinery" target="_blank">https://github.com/BjornMelin/codex-prompt-refinery</a>
+    </div>
+    <div class="linkbox">
+      <h4>MinecraftCodex</h4>
+      <p>Older Microsoft demo, but still useful because it explicitly includes prompt assets in the repo and shows prompt-driven behavior control in code tasks.</p>
+      <a href="https://github.com/microsoft/MinecraftCodex" target="_blank">https://github.com/microsoft/MinecraftCodex</a>
+    </div>
+    <div class="linkbox">
+      <h4>Codex Use Cases</h4>
+      <p>Official use cases page, useful when presenting Codex to stakeholders who want concrete workflow examples such as PR review, UI work, skills, and codebase understanding.</p>
+      <a href="https://developers.openai.com/codex/use-cases" target="_blank">https://developers.openai.com/codex/use-cases</a>
+    </div>
+    <div class="linkbox">
+      <h4>OpenAI Image Generation Guide</h4>
+      <p>Use this when your Codex workflow needs actual generated or edited images, not just screenshot-based UI iteration.</p>
+      <a href="https://platform.openai.com/docs/guides/image-generation" target="_blank">https://platform.openai.com/docs/guides/image-generation</a>
+    </div>
+  </div>
+</section>
+
+<section id="bestpractice">
+  <div class="sh"><div class="sn">12</div><div class="stw"><span class="stag" style="color:var(--accent4)">Quality</span><div class="stitle">Best Practices That Actually Matter</div></div></div>
+  <div class="g2">
+    <div class="ccard">
+      <h4>Do This</h4>
+      <ul>
+        <li><code>One thread per task</code><span>keeps context coherent and token-efficient</span></li>
+        <li><code>Plan before broad work</code><span>prevents premature edits and scope drift</span></li>
+        <li><code>Move durable rules to AGENTS.md</code><span>stop repeating yourself manually</span></li>
+        <li><code>Use skills for recurring workflows</code><span>keep context lean through progressive disclosure</span></li>
+        <li><code>Attach screenshots for UI</code><span>better than long visual prose</span></li>
+        <li><code>Use review mode</code><span>find regressions before you accept code</span></li>
+        <li><code>Use worktrees</code><span>avoid overlapping file edits across live tasks</span></li>
+        <li><code>Automate only proven workflows</code><span>manual first, scheduled second</span></li>
+      </ul>
+    </div>
+    <div class="ccard">
+      <h4>Avoid This</h4>
+      <ul>
+        <li><code>One giant thread per repo</code><span>bloats context and quality decays over time</span></li>
+        <li><code>Overprompting</code><span>Codex often gets worse when the harness is too verbose</span></li>
+        <li><code>Full access by default</code><span>especially before you trust the repo workflow</span></li>
+        <li><code>Prompting instead of tooling</code><span>use MCP when the data is external and dynamic</span></li>
+        <li><code>Recurring job without a skill</code><span>harder to maintain, share, and debug</span></li>
+        <li><code>Skipping verification</code><span>generation without tests or review is not an engineering workflow</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="cl go" style="margin-top:18px"><strong>Strong Closing Message</strong><p>Codex is most impressive when you stop using it as a conversational novelty and start using it as a disciplined engineering system: scoped threads, durable repo guidance, reusable workflows, explicit validation, review loops, and the right execution surface for the job.</p></div>
+</section>
+
+<footer>
+  <p>Primary official sources used: Codex app, app features, app commands, app automations, app Windows, IDE extension, IDE commands, IDE slash commands, CLI, CLI slash commands, best practices, plugins, skills, MCP, cloud, GitHub integration, Codex use cases, Codex cookbook topic, GPT-5-Codex prompting guide, PLANS.md cookbook.</p>
+  <p>Additional example repositories linked for prompt and workflow inspiration: openai/gpt-5-coding-examples, openai/codex, BjornMelin/codex-prompt-refinery, microsoft/MinecraftCodex.</p>
+  <p>Integration examples for Teams, Outlook, SharePoint, Jira/Confluence, and GitHub are based on the local plugin marketplace cache present in this Codex install, in addition to the official Codex plugin docs.</p>
+  <p>File generated and updated locally at C:\1.Work\12.Codex\codex_coing101.html.</p>
+</footer>
+</main>
+
+<script>
+function cc(button){
+  const block = button.parentElement;
+  const text = block.innerText.replace(/^COPY\s*/,'').trim();
+  const old = button.textContent;
+  function fallbackCopy(value){
+    const area = document.createElement('textarea');
+    area.value = value;
+    area.style.position = 'absolute';
+    area.style.left = '-9999px';
+    document.body.appendChild(area);
+    area.select();
+    const ok = document.execCommand('copy');
+    document.body.removeChild(area);
+    return ok;
+  }
+  const onDone = (value) => {
+    button.textContent = value;
+    setTimeout(() => button.textContent = old, 1200);
+  };
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => onDone('COPIED')).catch(() => onDone(fallbackCopy(text) ? 'COPIED' : 'FAILED'));
+  } else {
+    onDone(fallbackCopy(text) ? 'COPIED' : 'FAILED');
+  }
+}
+function st(name, el){
+  document.querySelectorAll('.atab').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.apanel').forEach(x => x.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel-' + name).classList.add('active');
+}
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('nav a[href^="#"]');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(section => {
+    const top = section.offsetTop - 120;
+    if (scrollY >= top) current = section.getAttribute('id');
+  });
+  navLinks.forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+});
+</script>
+</body>
+</html>
